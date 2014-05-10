@@ -4,7 +4,8 @@
 /////////////////////////////////
 
 //var base_url = 'http://memreasdev.elasticbeanstalk.com/eventapp_zend2.1/webservices/index.php?';
-var base_url = 'http://192.168.1.9/eventapp_zend2.1/webservices/index_json.php';
+//var base_url = 'http://192.168.1.9/eventapp_zend2.1/webservices/index_json.php';
+var base_url = '/index/';
 var isUserNameValid = false;
 
 onEmailFocusOut = function () {

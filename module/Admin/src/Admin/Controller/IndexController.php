@@ -91,7 +91,7 @@ error_log("Inside getSessionStorage....");
         return $this->storage;
     }
 
-    function security() {
+    function security() {return;
 error_log("Inside security....");
         //if already login, redirect to success page
         if ($this->getAuthService()->hasIdentity()) {
@@ -120,7 +120,7 @@ error_log("Inside security....");
 error_log("Inside indexAction....");
 
 		$redirect = 'login';
-    	return $this->redirect()->toRoute('admin', array('action' => $redirect));
+    //	return $this->redirect()->toRoute('admin', array('action' => $redirect));
 
 
 
@@ -231,13 +231,14 @@ error_log("Inside successAction....");
         $role = $this->security();
         try {
         $users = $this->getUserTable()->fetchAll();
-//        echo "<pre>";
-//        print_r($users);
-        $page = $this->params()->fromRoute('page', 1);
+        
+            $page = $this->params()->fromRoute('page', 1);
             $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($users);
             $paginator = new Paginator($iteratorAdapter);
             $paginator->setCurrentPageNumber($page);
-            $paginator->setItemCountPerPage(ADMIN_QUERY_LIMIT);
+            //$paginator->setItemCountPerPage(ADMIN_QUERY_LIMIT);
+                      $paginator->setItemCountPerPage(10);
+
         
         } catch (Exception $exc) {
             
@@ -375,7 +376,8 @@ error_log("Inside viewuserAction....");
             $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($res);
             $paginator = new Paginator($iteratorAdapter);
             $paginator->setCurrentPageNumber($page);
-            $paginator->setItemCountPerPage(ADMIN_QUERY_LIMIT);
+            //$paginator->setItemCountPerPage(ADMIN_QUERY_LIMIT);
+            $paginator->setItemCountPerPage(10);
                       //  $paginator=$this->getEventTable()->fetchAll();
             $return['event_total']=count($res);
             $return['users']=$user;

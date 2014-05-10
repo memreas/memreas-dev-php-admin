@@ -59,8 +59,16 @@ function centerPopup(id){
 
 function popup(id){
 //alert(id);	
+
+				
 centerPopup(id);	
 loadPopup(id);
+$("ul.scrollpopup").mCustomScrollbar("destroy");
+	$("ul.scrollpopup").mCustomScrollbar({
+					scrollButtons:{
+						enable:true
+					}
+				});
 }
 
 

@@ -1,0 +1,525 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Memreas</title>
+
+<!--Custom css-->
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<link href="css/jquery.mCustomScrollbar.css" rel="stylesheet" />
+<link rel="stylesheet" href="css/swipebox.css">
+<link href="css/jquery.akordeon.css" rel="stylesheet" type="text/css" />
+
+<!--Bootstrap Css-->
+<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="css/datepicker.css" rel="stylesheet" type="text/css">
+
+<!--jQuery Lybrary-->
+<script src="js/jquery.js"></script>
+<script src="js/modernizr.custom.17475.js"></script>
+
+<!--Bootstrap jQuery-->
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+$(function() {
+$( "#datepicker" ).datepicker();
+$( "#datepicker-1" ).datepicker();
+$( "#datepicker-2" ).datepicker();
+$( "#datepicker-3" ).datepicker();
+});
+</script>
+
+<!--Backgound Strecher-->
+<script type="text/javascript" src="js/bgstretcher.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+$(document).bgStretcher({
+			images: ['img/bg.jpg'],
+			imageWidth: 1366, imageHeight: 700
+		});
+	});
+</script>
+
+</head>
+
+<body>
+<!-- Begin : Container -->
+<div class="container">
+  <!-- Begin : Header -->
+  <div class="row-fluid">
+  	<header>
+      <h1 id="logo"><a href="index.html">memreas</a></h1>
+      <input name="input" type="text" class="search_bar" value="@person, #discover" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == '@person, #discover')this.value = '';"/>
+      <a href="notifications.html" class="notification_icon"></a>
+      <div class="pro-info">
+      	<figure class="pro-pic"><img src="img/profile-pic.jpg" alt=""></figure>
+        <div class="pro-name">User Name</div>
+      </div>
+    </header>
+  </div>
+  <!-- End : Header -->
+  <!-- Begin : Content -->
+  	<div class="row-fluid content">
+    
+      <div class="span12 fixed">
+      	<div class="row-fluid">
+        <ul id="tabs" class="medium_tabs">
+            <li><a href="#" title="tab1">manage events</a></li>
+            <li><a href="#" title="tab2">manage users</a></li>
+            <li><a href="#" title="tab3">change passwords</a></li>
+        </ul>
+        <div id="tab-content">
+          <div id="tab1" class="hideCls">
+            <div class="manage-event"><p>manage events</p><div class="total"><p>Total Events:67</p></div></div>
+            <div class="username"><p>user</p>
+            <div class="styled-select fl width200">
+                       <select>
+                          <option>john</option>
+                          <option>trent</option>
+                          <option>frnak</option>
+                       </select>
+                  </div>
+                  </div>
+            <div class="clr"></div>
+                  <table class="manageusertable" width="90%" border="1" align="center" cellpadding="0" cellspacing="0">
+                  <thead>
+  <tr>
+    <th>Id</th>
+    <th>Event Name</th>
+    <th>Location</th>
+    <th>Date</th>
+    <th>Friends can post
+    </th>
+    <th>Friends can Share
+    </th>
+    <th>Public</th>
+    <th>Viewable Form</th>
+    <th>Viewable To</th>
+    <th>Self Destruct</th>
+    <th>Action</th>
+   
+  </tr>
+  </thead>
+  <tr>
+    <td>1</td>
+    <td>anything</td>
+    <td>india</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>yes</td>
+    <td>yes</td>
+    <td><a href="#"><img src="img/eye.png"></a></td>
+    <td><a href="#"><img src="img/cross.png"></a></td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>anything</td>
+    <td>india</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>yes</td>
+    <td>yes</td>
+    <td><a href="#"><img src="img/eye.png"></a></td>
+    <td><a href="#"><img src="img/cross.png"></a></td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>anything</td>
+    <td>india</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>yes</td>
+    <td>yes</td>
+    <td><a href="#"><img src="img/eye.png"></a></td>
+    <td><a href="#"><img src="img/cross.png"></a></td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>anything</td>
+    <td>india</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>yes</td>
+    <td>yes</td>
+    <td><a href="#"><img src="img/eye.png"></a></td>
+    <td><a href="#"><img src="img/cross.png"></a></td>
+  </tr>
+ <tr>
+    <td>1</td>
+    <td>anything</td>
+    <td>india</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>yes</td>
+    <td>yes</td>
+    <td><a href="#"><img src="img/eye.png"></a></td>
+    <td><a href="#"><img src="img/cross.png"></a></td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>anything</td>
+    <td>india</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>yes</td>
+    <td>yes</td>
+    <td><a href="#"><img src="img/eye.png"></a></td>
+    <td><a href="#"><img src="img/cross.png"></a></td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>anything</td>
+    <td>india</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>yes</td>
+    <td>yes</td>
+    <td><a href="#"><img src="img/eye.png"></a></td>
+    <td><a href="#"><img src="img/cross.png"></a></td>
+  </tr>
+
+</table>
+
+       <div class="count"><a href="#"><<1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">6</a> <a href="#">7>></a></div>   
+              
+            </div>
+            
+            
+            
+            
+            
+            
+            
+            
+           <div id="tab2" class="hideCls">
+            <div class="manage-event"><p>manage users</p><div class="total"><p>Total Events:67</p></div></div>
+            
+            <div class="clr"></div>
+             <table class="manageusertable" width="90%" border="1" align="center" cellpadding="0" cellspacing="0">
+                  <thead>
+  <tr>
+    <th>Id</th>
+    <th>User Name</th>
+    <th>Email</th>
+    <th>Profile Photo</th>
+    <th>Facebook User Name</th>
+    <th>Twitter Usern Name</th>
+    <th>Role</th>
+    <th>Status</th>
+    
+    <th>Action</th>
+ 
+  </tr>
+  </thead>
+  <tr>
+    <td>1</td>
+    <td>anything</td>
+    <td>india</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+   
+    <td>yes</td>
+    <td><a href="#"><img src="img/status.png"></a></td>
+     <td><a href="#"><img src="img/edit.png"></a></td>
+    <td><a href="#"><img src="img/eye.png"></a></td>
+   
+  </tr>
+  
+ 
+  
+  <tr>
+    <td>1</td>
+    <td>anything</td>
+    <td>india</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+   
+    <td>yes</td>
+    <td><a href="#"><img src="img/status.png"></a></td>
+     <td><a href="#"><img src="img/edit.png"></a></td>
+    <td><a href="#"><img src="img/eye.png"></a></td>
+   
+  </tr>
+   <tr>
+    <td>1</td>
+    <td>anything</td>
+    <td>india</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+   
+    <td>yes</td>
+     <td><a href="#"><img src="img/status.png"></a></td>
+      <td><a href="#"><img src="img/edit.png"></a></td>
+    <td><a href="#"><img src="img/eye.png"></a></td>
+    
+  </tr>
+   <tr>
+    <td>1</td>
+    <td>anything</td>
+    <td>india</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+   
+    <td>yes</td>
+     <td><a href="#"><img src="img/status.png"></a></td>
+      <td><a href="#"><img src="img/edit.png"></a></td>
+    <td><a href="#"><img src="img/eye.png"></a></td>
+    
+  </tr>
+   <tr>
+    <td>1</td>
+    <td>anything</td>
+    <td>india</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+   
+    <td>yes</td>
+     <td><a href="#"><img src="img/status.png"></a></td>
+      <td><a href="#"><img src="img/edit.png"></a></td>
+    <td><a href="#"><img src="img/eye.png"></a></td>
+   
+  </tr>
+   <tr>
+    <td>1</td>
+    <td>anything</td>
+    <td>sanjeevcs44@gmail.com</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+   
+    <td>yes</td>
+    <td><a href="#"><img src="img/status.png"></a></td>
+     <td><a href="#"><img src="img/edit.png"></a></td>
+    <td><a href="#"><img src="img/eye.png"></a></td>
+    
+  </tr>
+   <tr>
+    <td>1</td>
+    <td>anything</td>
+    <td>india</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+   
+    <td>yes</td>
+     <td><a href="#"><img src="img/status.png"></a></td>
+      <td><a href="#"><img src="img/edit.png"></a></td>
+    <td><a href="#"><img src="img/eye.png"></a></td>
+   
+  </tr>
+   <tr>
+    <td>1</td>
+    <td>anything</td>
+    <td>india</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+   
+    <td>yes</td>
+     <td><a href="#"><img src="img/status.png"></a></td>
+      <td><a href="#"><img src="img/edit.png"></a></td>
+    <td><a href="#"><img src="img/eye.png"></a></td>
+   
+  </tr>
+  
+ 
+ 
+ 
+  
+  
+</table>
+<div class="count"><a href="#"><<1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">6</a> <a href="#">7>></a></div>
+          
+              
+          </div>
+              
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        <!--    
+              <div id="tab2" class="hideCls">
+           <div class="manage-event"><p>manage events</p><div class="total"><p>Total Events:67</p></div></div>
+                  
+                <a class="black_btn_skin f-center" href="#">next</a>
+                <a class="black_btn_skin f-middle" href="#">cancel</a>
+                </div>-->
+             <div id="tab3" class="hideCls" style="display: block;">
+             <div class="manage-event"><p>edit users</p></div>
+            <ul id="content_1" class="share_memreas_details scrollClass mCustomScrollbar _mCS_1"><div class="mCustomScrollBox mCS-light" id="mCSB_1" style="position:relative; height:100%; overflow:hidden; max-width:100%;"><div class="mCSB_container mCS_no_scrollbar" style="position: relative; top: 0px;">
+            <li>
+            <label class="textfield_names1">name :</label>
+            <input name="input" type="text" class="share-txtfield1" value="sample" onblur="if(!/\S/.test(this.value))this.value=this.defaultValue" onfocus="if(this.value == 'sample')this.value = '';">
+            </li>
+             <li>
+            <label class="textfield_names1">email :</label>
+            <input name="input" type="text" class="share-txtfield1" value="sample" onblur="if(!/\S/.test(this.value))this.value=this.defaultValue" onfocus="if(this.value == 'sample')this.value = '';">
+            </li>
+              <li>
+            <label class="textfield_names1">facebook account :</label>
+            <input name="input" type="text" class="share-txtfield1" value="sample" onblur="if(!/\S/.test(this.value))this.value=this.defaultValue" onfocus="if(this.value == 'sample')this.value = '';">
+            </li>
+              <li>
+            <label class="textfield_names1">twitter account :</label>
+            <input name="input" type="text" class="share-txtfield1" value="sample" onblur="if(!/\S/.test(this.value))this.value=this.defaultValue" onfocus="if(this.value == 'sample')this.value = '';">
+            </li>
+            
+            <li>
+            <label class="textfield_names1">disable account :</label>
+             <input id="demo_box_1" class="css-checkbox" type="radio" name="sel"> <p style="display:inline-block; margin-left:5px;">yes</p> <input name="sel" id="demo_box_1" class="css-checkbox" type="radio" ><p style="display:inline-block; margin-left:8px">no</p>
+            
+            </li>
+              <li>
+            <label class="textfield_names1">profile photo :</label><p>yes</p>
+            </li>
+           
+           
+            </div><div class="mCSB_scrollTools" style="position: absolute; display: none;"><a class="mCSB_buttonUp" oncontextmenu="return false;"></a><div class="mCSB_draggerContainer"><div class="mCSB_dragger" style="position: absolute; top: 0px;" oncontextmenu="return false;"><div class="mCSB_dragger_bar" style="position:relative;"></div></div><div class="mCSB_draggerRail"></div></div><a class="mCSB_buttonDown" oncontextmenu="return false;"></a></div></div></ul>
+                <a class="black_btn_skin f-center" href="#">save user</a> 
+                <a class="black_btn_skin" href="#">cancel</a>
+            </div>
+          <!------------------first-pop-up-------------------->
+          		<div id="locationmap" class="popups2">
+                  <a id="popupContactClose" onClick="disablePopup('locationmap')" class='popupClose'>x</a>
+                    <h2>location</h2>
+                    <input name="input"type="text" class="search_bar" value="Search your location" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'Search your location')this.value = '';"/>
+                    <div class="clear"></div>
+                	<div class="map_box"></div>
+                </div>
+                <div id="bglocationmap" class="backgroundPopup"></div> 
+      	</div>
+      </div>
+    </div>
+  <!-- End : Content -->
+</div>
+<!-- Begin : Footer -->
+<footer>&copy; 2013 memreas, llc. All rights reserved.</footer>
+<!-- End : Footer -->
+<!-- End : Container -->
+
+<script src="js/jquery.akordeon.js" type="text/javascript"></script>
+<script type="text/javascript">
+     $(document).ready(function () {
+     $('#buttons').akordeon();
+       $('#button-less').akordeon({ buttons: false, toggle: true, itemsOrder: [2, 0, 1] });
+	 $('#buttons2').akordeon();
+       $('#button-less').akordeon({ buttons: false, toggle: true, itemsOrder: [2, 0, 1] });
+	 $('#buttons3').akordeon();
+       $('#button-less').akordeon({ buttons: false, toggle: true, itemsOrder: [2, 0, 1] });
+	 $('#buttons4').akordeon();
+       $('#button-less').akordeon({ buttons: false, toggle: true, itemsOrder: [2, 0, 1] });
+	 $('#buttons5').akordeon();
+       $('#button-less').akordeon({ buttons: false, toggle: true, itemsOrder: [2, 0, 1] });
+    });
+	
+</script>
+
+
+<!--pop-up-->
+<script src="js/popup.js" type="text/javascript"></script>
+
+<!-- custom scrollbars plugin -->
+	<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script>
+	
+		(function($){
+			$(window).load(function(){
+			
+			$("ul.scrollClass").mCustomScrollbar({
+					scrollButtons:{
+						enable:true
+					}
+				});
+				
+				
+				
+				
+			$("#tab-content div.hideCls").hide(); // Initially hide all content
+			$("#tabs li:first").attr("id","current"); // Activate first tab
+			$("#tab-content div:first").fadeIn(); // Show first tab content*/
+			
+			$('#tabs a').click(function(e) {
+				
+				e.preventDefault();        
+				$("#tab-content div.hideCls").hide(); //Hide all content
+				$("#tabs li").attr("id",""); //Reset id's
+				$(this).parent().attr("id","current"); // Activate this
+				$('#' + $(this).attr('title')).fadeIn(); // Show content for current tab
+			});
+
+			
+				
+				
+				//ajax demo fn
+				$("a[rel='load-content']").click(function(e){
+					
+					e.preventDefault();
+					var $this=$(this),
+						url=$this.attr("href");
+					$this.addClass("loading");
+					$.get(url,function(data){
+						$this.removeClass("loading");
+						$("ul.scrollClass .mCSB_container").html(data); //load new content inside .mCSB_container
+						$("ul.scrollClass").mCustomScrollbar("update"); //update scrollbar according to newly loaded content
+						$("ul.scrollClass").mCustomScrollbar("scrollTo","top",{scrollInertia:200}); //scroll to top
+					});
+				});
+				$("a[rel='append-content']").click(function(e){
+					e.preventDefault();
+					var $this=$(this),
+						url=$this.attr("href");
+					$this.addClass("loading");
+					$.get(url,function(data){
+						$this.removeClass("loading");
+						$("ul.scrollClass .mCSB_container").append(data); //append new content inside .mCSB_container
+						$("ul.scrollClass").mCustomScrollbar("update"); //update scrollbar according to newly appended content
+						$("ul.scrollClass").mCustomScrollbar("scrollTo","h2:last",{scrollInertia:2500,scrollEasing:"easeInOutQuad"}); //scroll to appended content
+					});
+				});
+			});
+		})(jQuery);
+	</script>
+    
+    <!-- custom swipebox plugin -->    
+	<script src="js/jquery.swipebox.min.js"></script>
+	<script type="text/javascript">
+		jQuery(function($) {
+			$(".swipebox").swipebox();
+		});
+	</script>
+</body>
+</html>
