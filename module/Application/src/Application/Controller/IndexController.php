@@ -25,8 +25,8 @@ class IndexController extends AbstractActionController
 {
 
 	//Updated....
-	protected $url = "http://memreasdev-ws1.elasticbeanstalk.com/";
-   // protected $url = "http://test/";
+	//protected $url = "http://memreasdev-ws1.elasticbeanstalk.com/";
+   protected $url = "http://test/";
 	protected $test = "Hope this works!";
     //protected $url = "http://localhost/memreas-dev-php-ws/app/";
     protected $user_id;
@@ -36,6 +36,12 @@ class IndexController extends AbstractActionController
     protected $eventTable;
     protected $mediaTable;
     protected $friendmediaTable;
+
+    public function getToken()
+    {
+        $session = $this->getAuthService()->getIdentity();
+        return  empty($session['token'])?'':$session['token']; ;
+    }
     
     public function fetchXML($action, $xml) {
 		$guzzle = new Client();
@@ -50,7 +56,7 @@ error_log("Inside fetch XML request XML ---> " . $xml . PHP_EOL);
 			'action' => $action,
 			//'cache_me' => true,
     		'xml' => $xml,
-            'PHPSESSID' => empty($_COOKIE[session_name()])?'':$_COOKIE[session_name()],
+            'PHPSESSID' => $this->getToken(),
 	    	)
 		);
 		$response = $request->send();
@@ -173,19 +179,7 @@ error_log("Exit indexAction".PHP_EOL);
 		return $view;
     }
 
-    public function manageAction() { 
-	    $path = $this->security("application/index/manage.phtml");
-
-		$action = 'listallmedia';
-		$session = new Container('user');
-		$xml = "<xml><listallmedia><event_id></event_id><user_id>" . $session->offsetGet('user_id') . "</user_id><device_id></device_id><limit>10</limit><page>1</page></listallmedia></xml>";
-		$result = $this->fetchXML($action, $xml);
- 
-		$view = new ViewModel(array('xml'=>$result));
-		$view->setTemplate($path); // path to phtml file under view folder
-		return $view;
-        //return new ViewModel();
-    }
+    
 
     public function s3uploadAction(){
         $S3Service = new S3Service();
@@ -294,27 +288,23 @@ header('Location: ' . $targetUrl);
 		$username = $postData ['username'];
 		$password = $postData ['password'];
 
-		//Setup the URL and action
-		$action = 'login';
-		$xml = "<xml><login><username>$username</username><password>$password</password></login></xml>";
-		$redirect = 'gallery';
+		 $this->getAuthService()->getAdapter()->setUsername($username);
+        $this->getAuthService()->getAdapter()->setPassword($password);
+        $token = empty($this->session->token)?'':$this->session->token;
+        $this->getAuthService()->getAdapter()->setToken($token);
+        $result = $this->getAuthService()->authenticate();
+        $data = $result->getIdentity();
+        
+ 	       $redirect = 'manage';
+        if ($data ) {
+            $this->setSession($username);
+            return $this->redirect()->toRoute('admin/default', array('controller' =>'manage','action' => 'index'));
+        } else {
+            error_log("Inside loginresponse else...");
+            return $this->redirect()->toRoute('index', array('action' => "index"));
+        }
 
-		//Guzzle the LoginWeb Service
-		$result = $this->fetchXML($action, $xml);
 
-		$data = simplexml_load_string($result);
-        setcookie(session_name(),$data->loginresponse->sid,0,'/');
- 		//ZF2 Authenticate
-		if ($data->loginresponse->status == 'success') {
-error_log("Inside loginresponse success...");
-//			$this->setSession($username);
-            //Redirect here
-error_log("Inside loginresponse success redirect ---> " . $redirect);
-			return $this->redirect()->toRoute('index', array('action' => $redirect));
-		} else {
-error_log("Inside loginresponse else...");
-			return $this->redirect()->toRoute('index', array('action' => "index"));
-		}
     }
 
     public function logoutAction() {
@@ -337,13 +327,12 @@ error_log("Inside setSession ...");
        	$user->disable_account='';
    	    $user->create_date='';
         $user->update_time='';
-		$session = new Container('user');
-error_log("Inside setSession got new Container...");
-		$session->offsetSet('user_id', $user->user_id);
-		$session->offsetSet('username', $username);
-        $session->offsetSet('user', json_encode($user));
-error_log("Inside setSession set user data...");
-    }
+		
+		$_SESSION['user']['user_id'] = $user->user_id;
+        $_SESSION['user']['username'] = $user->username;
+        $_SESSION['user']['role'] = $user->role;
+
+     }
 
     public function registrationAction()
     {

@@ -3,15 +3,14 @@
 namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use Application\Controller\Common;
+use DoctrineModule\Paginator\Adapter\Selectable as SelectableAdapter;
+use Zend\Paginator\Paginator;
 use Zend\View\Model\ViewModel;
-use Zend\Session\Container;
-use Application\Model;
-use Application\Form;
-use Zend\Mail\Message;
-use Zend\Mail\Transport\Sendmail as SendmailTransport;
-use Guzzle\Http\Client;
-use Application\Model\MemreasConstants;
-use Application\memreas\Login;
+     use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
+   // use DoctrineORMModule\Form\Annotation\AnnotationBuilder;
+     use Zend\Form\Annotation;
+    use Zend\Form\Annotation\AnnotationBuilder;
 
 
 class EventController extends AbstractActionController {
@@ -21,12 +20,28 @@ class EventController extends AbstractActionController {
        
     
     public function indexAction() {
-        //Common::$url .= '/admin/event';
-        print_r($_SESSION);exit;
-        $xml = '<xml><viewevent><user_id>1</user_id><is_my_event>1</is_my_event><is_friend_event></is_friend_event><is_public_event>1</is_public_event><page>1</page><limit>2</limit></viewevent></xml>';
-		$result = Common::fetchXML('viewevents',$xml);
-        echo $result;exit;
-        return $this->response;
+        $this->db = $this->getServiceLocator()->get ( 'doctrine.entitymanager.orm_default' );
+                $objectRepository = $this->db->getRepository('Application\Entity\Event');
+
+
+
+// Create the adapter
+$adapter = new SelectableAdapter($objectRepository); // An object repository implements Selectable
+
+// Create the paginator itself
+$paginator = new Paginator($adapter);
+    $paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
+
+$paginator->setItemCountPerPage(5);
+
+                
+                
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator 
+            )
+        );
   
     }
 	public function addAction() {
@@ -39,6 +54,25 @@ class EventController extends AbstractActionController {
     }
 	public function deleteAction() {
 
+  
+    }
+    public function viewAction() {
+           $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        $repository = $entityManager->getRepository('Application\Entity\Event');
+             $id = $this->params()->fromRoute('id'); 
+              $event = $repository->findOneBy(array('event_id' => $id));
+ 
+              $medias = $repository->getEventMedia($id);
+
+                  $view =  new ViewModel();
+                  $view->setVariable('event',$event );
+                  $view->setVariable('medias',$medias );
+
+                  //$view->setVariable('messages',$this->messages );
+                  //$view->setVariable('status',$this->status );
+
+
+        return $view;
   
     }
    

@@ -37,9 +37,9 @@ foreach ($paginator as $key => $user) {
      ?>
     </td>
     
-<td><a href="#"><img src="/img/status.png"></a></td>
-     <td><a href="#"><img src="/img/edit.png"></a></td>
-    <td><a href="#"><img src="/img/eye.png"></a></td>
+<td><a class="intab" href="/admin/user/add"><img src="/img/status.png"></a></td>
+     <td><a class="intab" href="/admin/user/edit/<?php echo $user -> user_id ?>"><img src="/img/edit.png"></a></td>
+    <td><a class="intab" href="/admin/user/view"><img src="/img/eye.png"></a></td>
   </tr>
 
     

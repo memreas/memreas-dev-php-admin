@@ -18,7 +18,7 @@ $routeparams=$routeMatch->getParams();
 <div class="count">
 <!-- Previous page link -->
 <?php if (isset($this->previous)): ?>
-                    <a href="<?php echo $this->url($this->route,$routeparams); ?>?page=<?php echo $this->previous; ?>">
+                    <a class="paginate_click" href="<?php echo $this->url($this->route,$routeparams); ?>?page=<?php echo $this->previous; ?>">
     &lt; Previous
   </a> |
 <?php else: ?>
@@ -28,7 +28,7 @@ $routeparams=$routeMatch->getParams();
 <!-- Numbered page links -->
 <?php foreach ($this->pagesInRange as $page): ?>
   <?php if ($page != $this->current): ?>
-                        <a href="<?php echo $this->url($this->route,$routeparams);?>?page=<?php echo $page; ?>">
+                        <a class="paginate_click" href="<?php echo $this->url($this->route,$routeparams);?>?page=<?php echo $page; ?>">
         <?php echo $page; ?>
     </a> |
   <?php else: ?>
@@ -38,7 +38,7 @@ $routeparams=$routeMatch->getParams();
 
 <!-- Next page link -->
 <?php if (isset($this->next)): ?>
-                    <a href="<?php echo $this->url($this->route,$routeparams); ?>?page=<?php echo $this->next; ?>">
+                    <a class="paginate_click" href="<?php echo $this->url($this->route,$routeparams); ?>?page=<?php echo $this->next; ?>">
     Next &gt;
   </a>
 <?php else: ?>

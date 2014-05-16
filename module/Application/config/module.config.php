@@ -21,31 +21,12 @@ return array(
             'home' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route' => '/',
+                    'route'    => '/',
                     'defaults' => array(
                         'controller' => 'Application\Controller\Index',
-                        'action' => 'index',
+                         'action' => 'index',
                     ),
                 ),
-
-                'may_terminate' => true,
-            'child_routes' => array(
-                'default' => array(
-                    'type' => 'Segment',
-                    'options' => array(
-                        'route' => '[:controller][/:action][/:id][/:id2]',
-                        'constraints' => array(
-                            'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
-                        ),
-                        'defaults' => array(
-                            //'action' => 'index',
-                            '__NAMESPACE__' => 'Application\Controller'
-                        )
-                    ),
-                      
-                )
-            )
             ),
             'index' => array(
                 'type' => 'Segment',
@@ -117,7 +98,9 @@ return array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
 			'Application\Controller\User' => 'Application\Controller\UserController',
 			'Application\Controller\Event' => 'Application\Controller\EventController',
-            'Application\Controller\Paypal' => 'Application\Controller\PaypalController'
+            'Application\Controller\Paypal' => 'Application\Controller\PaypalController',
+            'Application\Controller\Manage' => 'Application\Controller\ManageController'
+
         ),
     ),
     'view_manager' => array(
