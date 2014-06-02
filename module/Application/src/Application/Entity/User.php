@@ -1,16 +1,21 @@
 <?php
 namespace Application\Entity;
 use Doctrine\ORM\Mapping as ORM;
+  use Zend\Form\Annotation;
+
 
 /**
  * A User.
  *
  * @ORM\Entity
  * @ORM\Table(name="user")
+* @Annotation\Name("user")
  * 
  */
 class User  
 {
+    const ADMIN = '1';
+    const MEMBER = '2';
     protected $inputFilter;
 
     /**      @var string
@@ -28,6 +33,8 @@ class User
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=255, nullable=false)
+     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Options({"label":"Username: "})
      */
     protected $username;
 	
@@ -41,20 +48,15 @@ class User
    /**
      * @var boolean
      *
-     * @ORM\Column(name="disable_account", type="boolean", nullable=false)
+* @Annotation\Type("Zend\Form\Element\Radio")
+* @Annotation\Options({"label":"Disable Account:", "value_options" : {"0":"NO","1":"YES"}})
+* @ORM\Column(name="disable_account", type="boolean", nullable=false)
      */
 
 	
 	protected $disable_account = '0';
 	
-	    /**
-     * @var string
-     *
-     * @ORM\Column(name="role", type="string", length=20, nullable=false)
-     */
-
-	
-	protected $role;
+	 
 	
 	 /**
      * @var string
@@ -71,20 +73,7 @@ class User
      */
     private $database_id =0;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="username", type="string", length=255, nullable=false)
-     */
-   // private $username;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="password", type="string", length=255, nullable=false)
-     */
-//private $password;
-//
+   
     /**
      * @var string
      *
@@ -94,10 +83,12 @@ class User
 
     /**
      * @var string
-     *
+     * @Annotation\Type("Zend\Form\Element\Select")
+     * @Annotation\Options({"label":"Role:",
+          *                      "value_options" : {"2":"Member","1":"Admin"}})
      * @ORM\Column(name="role", type="string", length=20, nullable=false)
      */
-    //private $role;
+    private $role;
 
     /**
      * @var boolean
@@ -120,12 +111,7 @@ class User
      */
     private $twitter_username='';
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="disable_account", type="boolean", nullable=false)
-     */
-  //  private $disableAccount = '0';
+     
 
     /**
      * @var string
@@ -151,7 +137,7 @@ class User
     
     return $this->$name;
   }
-
+   
 
     
 }

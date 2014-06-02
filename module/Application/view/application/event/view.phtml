@@ -1,0 +1,66 @@
+                     <div class="required"> 
+Event Details</div>
+
+                    <ul id="content_1" class="share_memreas_details">
+                    <li>
+                    <label class="textfield_names">name :</label>
+                    <input name="input" type="text" id="txt_name" class="share-txtfield" value="<?=$this->event->name?>" >
+                    </li>
+                    <li>
+                    <label class="textfield_names">date :</label>
+                    <input name="input" type="text" id="dtp_date" class="share-txtfield date-picker hasDatepicker" readonly="" value="<?=$this->event->date?>" >
+                    </li>
+                    <li>
+                    <label class="textfield_names">location :</label>
+                    <input name="input3" type="text" id="txt_location" class="share-txtfield" value="<?=$this->event->location?>" >
+                    </li>
+                    <li>
+                     <input id="ckb_canpost" class="css-checkbox" type="checkbox" 
+                     <?php if(!empty($this->event->friends_can_post)){echo 'checked="checked"';}?>>
+                     <label for="ckb_canpost" name="demo_lbl_1" class="css-label margin-none">friends can post pics/videos</label>
+                    </li>
+                    <li>
+                     <input id="ckb_canadd" class="css-checkbox" type="checkbox" 
+                     <?php if(!empty($this->event->friends_can_share)){echo 'checked="checked"';}?>>
+                     <label for="ckb_canadd" name="demo_lbl_2" class="css-label margin-none">friends can add Friends</label>
+                    </li>
+                    <li>
+                     <input id="ckb_public" class="css-checkbox" type="checkbox" 
+                     <?php if(!empty($this->event->public)){echo 'checked="checked"';}?>>
+                     <label for="ckb_public" name="demo_lbl_3" class="css-label margin-none" onclick="javascript:share_clickCkbPublic();">public (anyone can add or post)</label>
+                    </li>
+                    <li>
+                     <label class="textfield_names">viewable :</label>
+                     
+                     <input name="input" type="text" id="dtp_from" class="date-picker hasDatepicker" readonly="" value="<?=date("d-M-Y",$this->event->viewable_from)?>" >
+                     <input name="input" type="text" id="dtp_to" class="date-picker hasDatepicker" readonly="" value="<?=date("d-M-Y",$this->event->viewable_to)?>" >
+                    </li>
+                    <li>
+                     <label class="textfield_names">self destruct :</label>
+                     <input name="input" type="text" id="dtp_selfdestruct" class="share-txtfield-2 " readonly="" value="<?=date("d-M-Y",$this->event->self_destruct)?>" >
+                    </li>
+                    </ul>
+                    <div>
+                         <div class="required"> 
+Event Media Details</div>
+ 
+<ul class="personresults">
+    <?php 
+    use Application\Model\MemreasConstants;
+    foreach ($this->medias as  $media) { 
+$json_array = json_decode ( $media['metadata'], true );
+   if (! empty ( $json_array ['S3_files'] ['path'] )){
+        }
+                     $url = MemreasConstants::CLOUDFRONT_DOWNLOAD_HOST . $json_array ['S3_files'] ['path'];
+
+        ?>
+    
+<li><figure class="pro-pics"><img src="<?=$url?>" alt=""></figure>
+    <a class="intab" href="/admin/media/delete/<?php echo $media['media_id']  ?>"><img src="/img/eye.png"></a></li>
+
+ <?php } ?>
+
+</ul>
+                    </div>
+                    
+                   

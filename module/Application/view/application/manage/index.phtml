@@ -72,63 +72,14 @@ $(document).bgStretcher({
         <ul id="tabs" class="medium_tabs">
             <li><a href="#" title="tab1">manage events</a></li>
             <li><a href="#" title="tab2">manage users</a></li>
+            <li><a href="#" title="tab4">manage feedback</a></li>
             <li><a href="#" title="tab3">change passwords</a></li>
+
         </ul>
         <div id="tab-content">
-          <div id="tab1" class="hideCls">
-            <div class="manage-event"><p>manage events</p><div class="total"><p>Total Events:67</p></div></div>
-            <div class="username"><p>user</p>
-            <div class="styled-select fl width200">
-                       <select>
-                          <option>john</option>
-                          <option>trent</option>
-                          <option>frnak</option>
-                       </select>
-                  </div>
-                  </div>
-            <div class="clr"></div>
-                  <table id="eventTbl" class="manageusertable" width="90%" border="1" align="center" cellpadding="0" cellspacing="0">
-                  <thead>
-  <tr>
-    <th>Id</th>
-    <th>Event Name</th>
-    <th>Location</th>
-    <th>Date</th>
-    <th>Friends can post
-    </th>
-    <th>Friends can Share
-    </th>
-    <th>Public</th>
-    <th>Viewable Form</th>
-    <th>Viewable To</th>
-    <th>Self Destruct</th>
-    <th>Action</th>
-   
-  </tr>
-  </thead>
-   
-
-</table>
-
-       <div class="count"><a href="#"><<1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">6</a> <a href="#">7>></a></div>   
-              
-            </div>
-            
-            
-            
-            
-            
-            
-            
-            
-           <div id="tab2" class="hideCls">
-          
-  
-  
-
-          
-              
-          </div>
+          <div id="tab1" class="hideCls"></div>
+          <div id="tab4" class="hideCls"></div>
+          <div id="tab2" class="hideCls"></div>
               
             
             
@@ -136,6 +87,7 @@ $(document).bgStretcher({
             
             
             
+
             
             
             
@@ -233,15 +185,10 @@ $(document).on("click" , "a.paginate_click, a.intab", function(e){
           e.preventDefault();
           var $this=$(this),
             url=$this.attr("href");
-            
-            $this.addClass("loading");
-            $.get(url,function(data){
-              $this.removeClass("loading");
-              $('#tab2').html( data );
-            });
-
-
-
+            var target = $(this).parents('div .hideCls');
+            $(target).load( url );
+ 
+ 
 } );
  
 			
@@ -306,13 +253,12 @@ $(document).on("click" , "a.paginate_click, a.intab", function(e){
 		jQuery(function($) {
 			$(".swipebox").swipebox();
 		});
-        $.get("/admin/user", function( res ) {
-	  
-     $('#tab2').append( res );
-  });
+       
  
  
- 
+ $('#tab1').load('/admin/event/index');
+  $('#tab2').load('/admin/user');
+    $('#tab4').load('/admin/feedback');
  
 
 

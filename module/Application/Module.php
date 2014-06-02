@@ -38,32 +38,84 @@ class Module
         $serviceManager      = $e->getApplication()->getServiceManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
-        $this->bootstrapSession($e);
 
-    }
 
-    public function bootstrapSession($e)
-    {
         $session = $e->getApplication()
                      ->getServiceManager()
                      ->get('Zend\Session\SessionManager');
         $session->start();
+       
+        $this -> initAcl($e);
+        $eventManager-> attach('route', array($this, 'checkAcl'));
 
-        $container = new Container('user');
-        if (!isset($container->init)) {
-             $session->regenerateId(true);
-             $container->init = 1;
-        }
-
-         $e->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH, function($e) {
-                    //print_r($e->getRouteMatch());
-
-                }
-        );
+         
     }
 
+public function initAcl(MvcEvent $e) {
+ error_log('initAcl');
+    $acl = new \Zend\Permissions\Acl\Acl();
+   // $roles = include __DIR__ . '/config/module.acl.roles.php';
+    $roles =array(
+    'guest'=> array(
+        'home',
+        'index'
+    ),
+    'admin'=> array(
+        'admin',
+        'admin/default',
+    ),
+);
+    $allResources = array();
+    foreach ($roles as $role => $resources) {
+ 
+        $role = new \Zend\Permissions\Acl\Role\GenericRole($role);
+        $acl -> addRole($role);
+ 
+        $allResources = array_merge($resources, $allResources);
+ 
+        //adding resources
+        foreach ($resources as $resource) {
+             // Edit 4
+             if(!$acl ->hasResource($resource))
+                $acl -> addResource(new \Zend\Permissions\Acl\Resource\GenericResource($resource));
+        }
+        //adding restrictions
+        foreach ($allResources as $resource) {
+            $acl -> allow($role, $resource);
+        }
+    }
+    //testing
+    //var_dump($acl->isAllowed('guest','admin/default'));
+    //true
+ 
+    //setting to view
+    $e -> getViewModel() -> acl = $acl;
+ 
+}
 
+public function checkAcl(MvcEvent $e) {
+    $route = $e -> getRouteMatch() -> getMatchedRouteName();
+    
+    //you set your role
+    $userRole = 'guest';
+     if (isset($_SESSION['user']['role']) && $_SESSION['user']['role'] == 1) {
+        $userRole = 'admin';
+     }
+  error_log('checking acess ->'.$userRole .'->'. $route);
+    if (!$e -> getViewModel() -> acl -> isAllowed($userRole, $route)) {  error_log('access deny');
 
+        $response = $e -> getResponse(); 
+        //location to page or what ever
+       /*  $response -> getHeaders() -> addHeaderLine('Location', $e -> getRequest() -> getBaseUrl() . '/');
+        $response -> setStatusCode(404);*/
+         $response->getHeaders()->clearHeaders()->addHeaderLine('Location', '/');
+                // Set the status code to redirect
+                return $response->setStatusCode(302)->sendHeaders();
+                // Don't forget to exit
+                exit;
+ 
+    }
+}
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
@@ -132,7 +184,7 @@ class Module
                         },
 
                         'Application\Model\MyAuthStorage' => function($sm) {
-                            return new \Application\Model\MyAuthStorage('memreas');
+                            return new \Application\Model\MyAuthStorage('user');
                         },
                         'AuthService' => function($sm) {
                             //My assumption, you've alredy set dbAdapter

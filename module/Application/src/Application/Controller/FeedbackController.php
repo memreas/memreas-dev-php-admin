@@ -16,7 +16,7 @@ use Zend\View\Model\ViewModel;
       use Zend\Form\Element;
 
     
-class UserController extends AbstractActionController {
+class FeedbackController extends AbstractActionController {
 
 public $messages = array();
 public $status ;
@@ -24,7 +24,7 @@ public $status ;
           
     public function indexAction() {
                 $this->db = $this->getServiceLocator()->get ( 'doctrine.entitymanager.orm_default' );
-                $objectRepository = $this->db->getRepository('Application\Entity\User');
+                $objectRepository = $this->db->getRepository('Application\Entity\Feedback');
 
 
 
@@ -53,17 +53,17 @@ $paginator->setItemCountPerPage(5);
       
 
       $builder = new AnnotationBuilder( $entityManager);
-      $form = $builder->createForm( 'Application\Entity\User' );
+      $form = $builder->createForm( 'Application\Entity\Feedback' );
       $form->setHydrator(new DoctrineHydrator($entityManager,false));
-      $user =new \Application\Entity\User();
-      $form->bind($user);
+      $Feedback =new \Application\Entity\Feedback();
+      $form->bind($Feedback);
 
         $request = $this->getRequest();
         if ($request->isPost()){
           //$form->bind($student);
             $form->setData($request->getPost());
             if ($form->isValid()){
-                $entityManager->persist($user);
+                $entityManager->persist($Feedback);
                 $entityManager->flush();
 
             }
@@ -79,23 +79,22 @@ $paginator->setItemCountPerPage(5);
 
   return $view;
     }
-	public function editAction() {
+	public function viewAction() {
         $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-        $repository = $entityManager->getRepository('Application\Entity\User');
+        $repository = $entityManager->getRepository('Application\Entity\Feedback');
         //$builder    = new AnnotationBuilder();
-        //$form       = $builder->createForm('Application\Entity\User');
-        //$form->bind($user);
+        //$form       = $builder->createForm('Application\Entity\Feedback');
+        //$form->bind($Feedback);
         if ($this->request->isPost()) {
             $id = $this->params()->fromPost('id');
-            $user = $repository->findOneBy(array('user_id' => $id));
-            if(empty($id) or empty($user)){
-              $this->messages[] ='User Not Found';
+            $Feedback = $repository->findOneBy(array('user_id' => $id));
+            if(empty($id) or empty($Feedback)){
+              $this->messages[] ='Feedback Not Found';
             } else if ($this->validate()) { 
              $postData =$this->params()->fromPost();
-              $user->username = $postData['username'];
-              $user->email_address = $postData['email_address'];
-              $user->twitter_username = $postData['twitter_username'];
-              $user->disable_account = $postData['disable_account'];
+              $Feedback->username = $postData['username'];
+              $Feedback->email_address = $postData['email_address'];
+              $Feedback->twitter_username = $postData['twitter_username'];
 
               // Save the changes
               try {
@@ -104,18 +103,18 @@ $paginator->setItemCountPerPage(5);
                                                          
                             }
               $this->messages[] ='Data Update sucessfully';
-              $user = $repository->findOneBy(array('user_id' => $id));
+              $Feedback = $repository->findOneBy(array('user_id' => $id));
 
             }
             
           }else{
              $id = (int)$this->params()->fromRoute('id');
-             $user = $repository->findOneBy(array('user_id' => $id));
+             $Feedback = $repository->findOneBy(array('user_id' => $id));
 
           }
           
                   $view =  new ViewModel();
-                  $view->setVariable('user',$user );
+                  $view->setVariable('Feedback',$Feedback );
                   $view->setVariable('messages',$this->messages );
                   $view->setVariable('status',$this->status );
 
