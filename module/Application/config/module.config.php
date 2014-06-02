@@ -99,7 +99,9 @@ return array(
 			'Application\Controller\User' => 'Application\Controller\UserController',
 			'Application\Controller\Event' => 'Application\Controller\EventController',
             'Application\Controller\Paypal' => 'Application\Controller\PaypalController',
-            'Application\Controller\Manage' => 'Application\Controller\ManageController'
+            'Application\Controller\Manage' => 'Application\Controller\ManageController',
+            'Application\Controller\Feedback' => 'Application\Controller\FeedbackController'
+
 
         ),
     ),

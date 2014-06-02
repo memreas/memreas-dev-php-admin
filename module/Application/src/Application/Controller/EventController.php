@@ -21,18 +21,13 @@ class EventController extends AbstractActionController {
     
     public function indexAction() {
         $this->db = $this->getServiceLocator()->get ( 'doctrine.entitymanager.orm_default' );
-                $objectRepository = $this->db->getRepository('Application\Entity\Event');
-
-
-
-// Create the adapter
-$adapter = new SelectableAdapter($objectRepository); // An object repository implements Selectable
-
-// Create the paginator itself
-$paginator = new Paginator($adapter);
-    $paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
-
-$paginator->setItemCountPerPage(5);
+        $objectRepository = $this->db->getRepository('Application\Entity\Event');
+        // Create the adapter
+        $adapter = new SelectableAdapter($objectRepository); // An object repository implements Selectable
+        // Create the paginator itself
+        $paginator = new Paginator($adapter);
+        $paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
+        $paginator->setItemCountPerPage(5);
 
                 
                 
