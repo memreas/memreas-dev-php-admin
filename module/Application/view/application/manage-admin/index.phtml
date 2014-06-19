@@ -1,0 +1,49 @@
+  <div class="manage-event"><p>manage admins</p><div class="total"><p>Total Events:<?php echo $admin_total ?></p></div></div>
+            
+            <div class="clr"></div>
+             <table id="eventTbl" class="manageusertable" width="90%" border="1" align="center" cellpadding="0" cellspacing="0">
+                  <thead>
+  <tr>
+    <th>rdp</th>
+    <th>profile_pic</th>
+    <th>username</th>
+    <th>admin level</th>
+    <th>admin recent transactions</th>
+     <th>date added disc</th>
+
+  </tr>
+  </thead>
+   
+<?php 
+ $MemHelper = $this->Mem();
+ foreach ($paginator as $key => $resultset) {
+   
+ ?>
+    <tr>
+        <td> <input type="radio" id="radio"  </td>
+    <td><?php echo '<img src="'. $MemHelper->ProfilePic($resultset -> metadata).'"/>'; ?>  </td>
+    <td><?php echo $resultset -> username ?></td>
+    <td><?php echo $resultset -> role ?></td>
+    <td><a id="button" class="intab " href="/admin/manage_admin/view/<?php echo $resultset -> user_id?>" >recent transactions</a></td>
+    <td><?php echo $resultset -> create_date?></td>
+          
+  </tr>
+
+    
+   
+   <?php  }?>
+   </table>
+
+   <?php // add at the end of the file after the table
+echo $this->paginationControl(
+    // the paginator object
+    $this->paginator,
+    // the scrolling style; see http://zf2.readthedocs.org/en/release-2.1.4/modules/zend.paginator.usage.html#rendering-pages-with-view-scripts
+    'sliding',
+    // the partial to use to render the control
+    'layout/paginator.phtml'
+    ,
+    //the route to link to when a user clicks a control link
+    array()
+);
+?>

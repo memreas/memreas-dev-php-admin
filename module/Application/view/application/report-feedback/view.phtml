@@ -1,0 +1,109 @@
+       <?php 
+if(empty($this->feedback)){
+	echo "no record found";return;
+	}
+       ?>
+
+<div id="tab3" class="hideCls">
+        <div class="span7">
+          
+            <form id="form1" name="form1"  action="/admin/feedback/edit" method="post" enctype="multipart/form-data" name="addfeedbackFrm">
+           <ul id="" class="right scrollClass">
+              <li>
+            <label class="textfield_names1">name :</label>
+            <input name="name" type="text" class="share-txtfield1" value="<?php echo $this->feedback->name?>" >
+            </li>
+              <li>
+            <label class="textfield_names1">message :</label>
+             
+            <textarea name="message" class="share-txtfield1" cols="40" rows="10"><?php echo $this->feedback->message?></textarea>
+            </li>
+
+            <li>
+            <label class="textfield_names1">email :</label>
+            <input name="email" type="text" class="share-txtfield1" value="<?php echo $this->feedback->email?>">
+            </li>
+
+            <li>
+            <label class="textfield_names1">create_time :</label>
+            <input name="create_time" type="text" class="share-txtfield1" value="<?php echo $this->feedback->create_time?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" >
+            </li>
+             
+           
+            </ul>
+                 
+            
+          
+          </form>
+        </div>
+        
+        <div class="clear"></div>
+        <div class="row-fluid">
+          <ul id="carousel" class="elastislide-list">
+            <?php 
+
+$MemHelper = $this->Mem();
+
+    foreach ($this->medias as  $media) {
+                $json_array = json_decode ($media->metadata, true );
+             if(isset($json_array ['S3_files'] ['type'] ['image']))  
+             { $mediaUrl = $MemHelper->EventPic($media->metadata)?>
+        
+               <li data-preview="<?=$mediaUrl?>"><a href="#"><img src="<?=$mediaUrl?>" alt="image01" /></a></li>
+               <img width= '300' src="" alt="">
+        <?php }else{ ?>
+         <a data-video="true" href="/jwplayer/index.html"><img src="<?=$MemHelper->EventPic($media->metadata)?>"></a>
+        
+            
+
+             
+         <?php  
+     }  } 
+ ?>
+           
+              </ul>
+        </div>
+        
+    </div>
+    <script type="text/javascript">
+      
+      // example how to integrate with a previewer
+      var current = 0,
+        $preview = $( '#preview' ),
+        $carouselEl = $( '#carousel' ),
+        $carouselItems = $carouselEl.children(),
+        carousel = $carouselEl.elastislide( {
+          current : current,
+          minItems : 3,
+          onClick : function( el, pos, evt ) {
+
+            changeImage( el, pos );
+            evt.preventDefault();
+
+          },
+          onReady : function() {
+
+            changeImage( $carouselItems.eq( current ), current );
+            
+          }
+        } );
+
+      function changeImage( el, pos ) {
+
+        $preview.attr( 'src', el.data( 'preview' ) );
+        $carouselItems.removeClass( 'current-img' );
+        el.addClass( 'current-img' );
+        carousel.setCurrent( pos );
+
+      }
+
+  </script>
+          
+      
+
+<script type="text/javascript">
+<?php if(!empty($this->messages)){?>
+	jsuccess('<?php echo implode (' ',$this->messages) ?>');
+
+<?php 	}?>
+</script>

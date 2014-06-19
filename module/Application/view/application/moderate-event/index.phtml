@@ -1,0 +1,54 @@
+  <div class="manage-event"><p>moderate events</p><div class="total">
+  <p>Total Events:<?php echo $event_total ?></p></div></div>
+            <div class="username"><p>user</p>
+            
+                  </div>
+            <div class="clr"></div>
+                  <table id="eventTbl" class="manageusertable" width="90%" border="1" align="center" cellpadding="0" cellspacing="0">
+                  <thead>
+  <tr>
+    <th>profile pic</th>
+    <th>username</th>
+    <th>event name</th>
+    <th>event media </th>
+    <th>viewable</th>
+     <th>&nbsp;</th>
+   
+  </tr>
+  </thead>
+   
+    
+              
+<?php 
+ $MemHelper = $this->Mem();
+ foreach ($paginator as $key => $resultset) {
+  
+ ?>
+    <tr>
+    <td><?php echo '<img src="'. $MemHelper->ProfilePic($resultset -> metadata).'"/>'; ?>  </td>
+    <td><?php echo $resultset -> username ?></td>
+    <td><?php echo $resultset -> name ?></td>
+    <td><a id="button" class="intab " href="/admin/moderate_event/media/<?php echo $resultset -> event_id?>" >view media</a></td>
+    <td><?php echo $resultset -> self_destruct?></td>
+    
+
+    
+<td>&nbsp;</td>
+      
+  </tr>
+
+    
+   
+   <?php  }?>
+   </table>
+   <?php // add at the end of the file after the table
+echo $this->paginationControl(
+    // the paginator object
+    $this->paginator,
+    'sliding',
+    // the partial to use to render the control
+    'layout/paginator.phtml',
+    //the route to link to when a user clicks a control link
+    array()
+);
+?>

@@ -100,7 +100,13 @@ return array(
 			'Application\Controller\Event' => 'Application\Controller\EventController',
             'Application\Controller\Paypal' => 'Application\Controller\PaypalController',
             'Application\Controller\Manage' => 'Application\Controller\ManageController',
-            'Application\Controller\Feedback' => 'Application\Controller\FeedbackController'
+            'Application\Controller\ReportFeedback' => 'Application\Controller\ReportFeedbackController',
+            'Application\Controller\Media' => 'Application\Controller\MediaController',
+            'Application\Controller\ModerateEvent' => 'Application\Controller\ModerateEventController',
+            
+            'Application\Controller\ManageAdmin' => 'Application\Controller\ManageAdminController',
+
+
 
 
         ),

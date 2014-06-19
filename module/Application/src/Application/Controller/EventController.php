@@ -12,31 +12,43 @@ use Zend\View\Model\ViewModel;
      use Zend\Form\Annotation;
     use Zend\Form\Annotation\AnnotationBuilder;
 
+      use Zend\Form\Element;
 
 class EventController extends AbstractActionController {
 
     protected $url = "http://test";
     protected $user_id;
+	public $messages = array();
+	public $status ;
+    protected $eventTable;
+
+
        
-    
+     public function getEventTable() {
+        if (!$this->eventTable) {
+            $sm = $this->getServiceLocator();
+            $this->eventTable = $sm->get('Application\Model\EventTable');
+        }
+        return $this->eventTable;
+    }
     public function indexAction() {
-        $this->db = $this->getServiceLocator()->get ( 'doctrine.entitymanager.orm_default' );
-        $objectRepository = $this->db->getRepository('Application\Entity\Event');
-        // Create the adapter
-        $adapter = new SelectableAdapter($objectRepository); // An object repository implements Selectable
-        // Create the paginator itself
-        $paginator = new Paginator($adapter);
-        $paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
-        $paginator->setItemCountPerPage(5);
+        try {
+        $event = $this->getEventTable()->fetchAll();
+        
+            $page = $this->params()->fromQuery('page', 1);
+            $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($event);
+            $paginator = new Paginator($iteratorAdapter);
+            $paginator->setCurrentPageNumber($page);
+            //$paginator->setItemCountPerPage(ADMIN_QUERY_LIMIT);
+                      $paginator->setItemCountPerPage(10);
 
-                
-                
-
-        return new ViewModel(
-            array(
-                'paginator' => $paginator 
-            )
-        );
+        
+        } catch (Exception $exc) {
+            
+            return array();
+        }
+        return array('paginator' => $paginator, 'event_total' => count($event));
+    
   
     }
 	public function addAction() {
@@ -44,6 +56,48 @@ class EventController extends AbstractActionController {
   
     }
 	public function editAction() {
+		
+		
+
+
+		                    
+         $id = $this->params()->fromRoute('id');
+           try {
+        if ($this->request->isPost()) {
+            $id = $this->params()->fromPost('event_id');
+	          $event = $this->getEventTable()->getEvent($id);
+            if(empty($id) or empty($event)){
+              $this->messages[] ='Event Not Found';
+            } else { 
+             $postData =$this->params()->fromPost();
+              
+              // Save the changes
+			
+		$event = $this->getEventTable()->saveEvent($postData);
+                  $this->messages[] ='Data Update sucessfully';
+
+              	
+            
+          }
+                }
+ 		  
+		 $event = $this->getEventTable()->getEvent($id);
+               
+     } catch (Exception $e) {               
+                   $this->messages[] =$e->getMessage();
+     }     
+		
+
+          
+                  $view =  new ViewModel();
+                  $view->setVariable('event',$event );
+                  $view->setVariable('messages',$this->messages );
+                  //$view->setVariable('medias',$medias );
+				          //          $view->setVariable('form',$form );
+
+
+
+        return $view;
 
   
     }
@@ -51,13 +105,14 @@ class EventController extends AbstractActionController {
 
   
     }
+
     public function viewAction() {
-           $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-        $repository = $entityManager->getRepository('Application\Entity\Event');
+          
              $id = $this->params()->fromRoute('id'); 
-              $event = $repository->findOneBy(array('event_id' => $id));
+             $event = $this->getEventTable()->getEvent($id);
+
  
-              $medias = $repository->getEventMedia($id);
+              $medias = $this->getEventMediaTable()->getEventedia($id);;
 
                   $view =  new ViewModel();
                   $view->setVariable('event',$event );
@@ -70,6 +125,10 @@ class EventController extends AbstractActionController {
         return $view;
   
     }
+	function validate(){
+  $result = true ;
+return $result;
+}
    
 
 }

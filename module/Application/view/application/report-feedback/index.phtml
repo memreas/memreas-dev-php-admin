@@ -1,0 +1,51 @@
+  <div class="manage-event"><p>report feedback</p><div class="total"><p>Total feedback:<?php echo $feedback_total ?></p></div></div>
+            
+            <div class="clr"></div>
+             <table id="managefeedbacktable" class="manageusertable" width="90%" border="1" align="center" cellpadding="0" cellspacing="0">
+                  <thead>
+  <tr>
+    <th>prifile pic</th>
+    <th>username</th>
+    <th>feedback summery</th>
+    <th>feedback description</th>
+
+    <th>Date added desc</th>
+
+  </tr>
+  </thead>
+   
+<?php 
+ $MemHelper = $this->Mem();
+
+foreach ($paginator as $key => $resultset) {
+     # code..
+?>
+    <tr>
+    <td><?php echo '<img src="'. $MemHelper->ProfilePic($resultset -> metadata).'"/>'; ?>  </td>
+    <td><?php echo $resultset -> username ?></td>
+    <td><?php echo $resultset -> name ?></td>
+    <td><a id="button" class="intab " href="/admin/report_feedback/view/<?php echo $resultset -> feedback_id?>" >view feedback</a></td>
+        <td><?php echo $resultset -> create_time ?></td>
+
+    <td><?php ?></td>
+    
+  </tr>
+
+    
+   
+   <?php  }?>
+   </table>
+
+   <?php // add at the end of the file after the table
+echo $this->paginationControl(
+    // the paginator object
+    $this->paginator,
+    // the scrolling style; see http://zf2.readthedocs.org/en/release-2.1.4/modules/zend.paginator.usage.html#rendering-pages-with-view-scripts
+    'sliding',
+    // the partial to use to render the control
+    'layout/paginator.phtml'
+    ,
+    //the route to link to when a user clicks a control link
+    array()
+);
+?>

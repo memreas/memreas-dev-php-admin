@@ -7,7 +7,11 @@
 <!--Custom css-->
 <link href="/css/style.css" rel="stylesheet" type="text/css">
 <link href="/css/jquery.mCustomScrollbar.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="/css/elastislide.css" />
+
 <link rel="stylesheet" href="/css/swipebox.css">
+<link href="/css/fotorama.css" rel="stylesheet">
+
 <link href="/css/jquery.akordeon.css" rel="stylesheet" type="text/css" />
 
 <!--Bootstrap Css-->
@@ -20,6 +24,8 @@
 
 <!--Bootstrap jQuery-->
 <script src="/js/bootstrap.min.js"></script>
+<script src="/js/fotorama.js"></script>
+
 <script src="/js/bootstrap-datepicker.js"></script>
 <script src="/js/jNotify.jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/css/jNotify.jquery.css" media="screen" />
@@ -72,68 +78,30 @@ $(document).bgStretcher({
         <ul id="tabs" class="medium_tabs">
             <li><a href="#" title="tab1">manage events</a></li>
             <li><a href="#" title="tab2">manage users</a></li>
-            <li><a href="#" title="tab4">manage feedback</a></li>
-            <li><a href="#" title="tab3">change passwords</a></li>
+            <li><a href="#" title="tab3">manage admins</a></li>
+            <li><a href="#" title="tab4">feedback report</a></li>
+            <li><a href="#" title="tab5">moderate events</a></li>
+            
+
 
         </ul>
         <div id="tab-content">
           <div id="tab1" class="hideCls"></div>
           <div id="tab4" class="hideCls"></div>
-          <div id="tab2" class="hideCls"></div>
-              
-            
-            
-            
-            
-            
-            
-
-            
-            
-            
-            
-            
-        <!--    
-              <div id="tab2" class="hideCls">
-           <div class="manage-event"><p>manage events</p><div class="total"><p>Total Events:67</p></div></div>
-                  
-                <a class="black_btn_skin f-center" href="#">next</a>
-                <a class="black_btn_skin f-middle" href="#">cancel</a>
-                </div>-->
-             <div id="tab3" class="hideCls" style="display: block;">
-            <!-- <div class="manage-event"><p>edit users</p></div>
-            <ul id="content_1" class="share_memreas_details scrollClass mCustomScrollbar _mCS_1"><div class="mCustomScrollBox mCS-light" id="mCSB_1" style="position:relative; height:100%; overflow:hidden; max-width:100%;"><div class="mCSB_container mCS_no_scrollbar" style="position: relative; top: 0px;">
-            <li>
-            <label class="textfield_names1">name :</label>
-            <input name="input" type="text" class="share-txtfield1" value="sample" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
-            </li>
-             <li>
-            <label class="textfield_names1">email :</label>
-            <input name="input" type="text" class="share-txtfield1" value="sample" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
-            </li>
-              <li>
-            <label class="textfield_names1">facebook account :</label>
-            <input name="input" type="text" class="share-txtfield1" value="sample" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
-            </li>
-              <li>
-            <label class="textfield_names1">twitter account :</label>
-            <input name="input" type="text" class="share-txtfield1" value="sample" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
-            </li>
-            
-            <li>
-            <label class="textfield_names1">disable account :</label>
-             <input id="demo_box_1" class="css-checkbox" type="radio" name="sel"> <p style="display:inline-block; margin-left:5px;">yes</p> <input name="sel" id="demo_box_1" class="css-checkbox" type="radio" ><p style="display:inline-block; margin-left:8px">no</p>
-            
-            </li>
-              <li>
-            <label class="textfield_names1">profile photo :</label><p>yes</p>
-            </li>
-           
-           
-            </div><div class="mCSB_scrollTools" style="position: absolute; display: none;"><a class="mCSB_buttonUp" oncontextmenu="return false;"></a><div class="mCSB_draggerContainer"><div class="mCSB_dragger" style="position: absolute; top: 0px;" oncontextmenu="return false;"><div class="mCSB_dragger_bar" style="position:relative;"></div></div><div class="mCSB_draggerRail"></div></div><a class="mCSB_buttonDown" oncontextmenu="return false;"></a></div></div></ul>
-                <a class="black_btn_skin f-center" href="#">save user</a> 
-                <a class="black_btn_skin" href="#">cancel</a>-->
+          <div id="tab2" class="hideCls"></div>      
+          <div id="tab3" class="hideCls" style="display: block;"></div>
+          <div id="tab5" class="hideCls"></div>
+             <div id="forgot" class="popups2">
+                <a id="forgotClose" onClick="disablePopup('forgot')" class='popupClose'>x</a>
+          <div id="tabone" class=""></div>
+                
+                
             </div>
+
+
+
+
+
           <!------------------first-pop-up-------------------->
           		<div id="locationmap" class="popups2">
                   <a id="popupContactClose" onClick="disablePopup('locationmap')" class='popupClose'>x</a>
@@ -142,6 +110,11 @@ $(document).bgStretcher({
                     <div class="clear"></div>
                 	<div class="map_box"></div>
                 </div>
+       
+
+          
+          
+          
                 <div id="bglocationmap" class="backgroundPopup"></div> 
       	</div>
       </div>
@@ -181,13 +154,26 @@ $(document).bgStretcher({
 		(function($){ 
       
 			$(window).load(function(){
-$(document).on("click" , "a.paginate_click, a.intab", function(e){
+$(document).on("click" , "a.paginate_click", function(e){
           e.preventDefault();
           var $this=$(this),
             url=$this.attr("href");
             var target = $(this).parents('div .hideCls');
             $(target).load( url );
  
+ 
+} );
+$(document).on("click" , "a.intab", function(e){
+          e.preventDefault();
+          var $this=$(this),
+          url=$this.attr("href");
+          var target = $('#tabone');
+		  $(target).empty();
+          $(target).load( url );
+                  popup('forgot');
+
+         //$("#tab-content div.hideCls").hide(); //Hide all content
+          //$(target).show();
  
 } );
  
@@ -258,11 +244,39 @@ $(document).on("click" , "a.paginate_click, a.intab", function(e){
  
  $('#tab1').load('/admin/event/index');
   $('#tab2').load('/admin/user');
-    $('#tab4').load('/admin/feedback');
- 
+    $('#tab3').load('/admin/manage-admin');
+    $('#tab4').load('/admin/report-feedback');
+    $('#tab5').load('/admin/moderate-event');
+    
 
 
 
 	</script>
+  <script>
+                    
+  
+ $(document).on("click" , "a.delMediaLi", function(event) {
+        event.preventDefault();
+        var r = confirm('Do You Realy Wat to Delete This Item ! '+ event.target.id.slice(4) );
+        var  delLink = $(this);
+         if(r) {                     $(delLink).closest( "li" ).remove();
+
+            $.post( this.href,function(response){
+               if(response=='success'){
+                    $(delLink).closest( "li" ).remove();
+               }
+
+            });
+        }else{
+
+        }
+       
+      }
+    );
+  
+  
+                    </script>
+                      <script type="text/javascript" src="/js/jquery.elastislide.js"></script>
+  
 </body>
 </html>

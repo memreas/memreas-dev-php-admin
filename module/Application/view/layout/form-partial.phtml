@@ -11,9 +11,27 @@ Event Details</div>
                     <ul id="content_1" class="share_memreas_details">
                     
 <?php foreach ($form as $element) :
+$type = $element->getAttribute('type'); 
+ switch($type){
+	case 'datetime':?>
+		<li>
+            <label class="textfield_names1 <?php if($this->formElementErrors($element)) 
+                                echo "error" ?>"><?php echo $element->getLabel() ?>
+                            </label>
+            <?php echo $this->formElement($element);?>
+            
+        		<?php if($this->formElementErrors($element)) :?>
+                    <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
+    		      <?php endif ?> 
+            </li>
+	
+    <?php
+    break;
+	default:
+	
 ?>
 <li>
-            <label class="textfield_names <?php if($this->formElementErrors($element)) 
+            <label class="textfield_names1 <?php if($this->formElementErrors($element)) 
                                 echo "error" ?>"><?php echo $element->getLabel() ?>
                             </label>
             <?php echo $this->formElement($element);?>
@@ -25,6 +43,9 @@ Event Details</div>
  
 
 <?php
+
+break;
+}
 endforeach;?>
 
 
