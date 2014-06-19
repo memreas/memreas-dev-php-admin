@@ -12,13 +12,27 @@
  */
 
 return array(
-    'db' => array(
-        'driver'         => 'Pdo',
-    	'driver_options' => array(
-            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
+     'db'=> array(
+    'adapters'=>array(
+        'memreasintdb' => array(
+            'driver'         => 'Pdo',
+            'dsn'            => 'mysql:dbname=memreaspaymentsdb;host=memreasdev-db.co0fw2snbu92.us-east-1.rds.amazonaws.com',
+            'username' => 'memreas2013',
+            'password' => ''
         ),
-    ),
+        'memreaspaymentsdb' => array(
+            'driver'         => 'Pdo',
+            'dsn'            => 'mysql:dbname=memreaspaymentsdb;host=memreasdev-db.co0fw2snbu92.us-east-1.rds.amazonaws.com',
+            'username' => 'memreas2013',
+            'password' => ''
+        ),
+    )
+),
     'service_manager' => array(
+        'abstract_factories' => array(
+            'Zend\Db\Adapter\AdapterAbstractServiceFactory',
+    ),
+
         'factories' => array(
             'Zend\Db\Adapter\Adapter'
                     => 'Zend\Db\Adapter\AdapterServiceFactory',

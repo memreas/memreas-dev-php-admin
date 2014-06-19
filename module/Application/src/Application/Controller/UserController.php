@@ -20,45 +20,41 @@ class UserController extends AbstractActionController {
 
 public $messages = array();
 public $status ;
+    protected $userTable;
 
-          
+
+            public function getUserTable() {
+        if (!$this->userTable) {
+            $sm = $this->getServiceLocator();
+            $this->userTable = $sm->get('Application\Model\UserTable');
+        }
+        return $this->userTable;
+    }
     public function indexAction() {
-                $this->db = $this->getServiceLocator()->get ( 'doctrine.entitymanager.orm_default' );
-                $objectRepository = $this->db->getRepository('Application\Entity\User');
+            //$role = $this->security();
+        try {
+        $users = $this->getUserTable()->fetchAll();
+        
+            $page = $this->params()->fromQuery('page', 1);
+            $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($users);
+            $paginator = new Paginator($iteratorAdapter);
+            $paginator->setCurrentPageNumber($page);
+            //$paginator->setItemCountPerPage(ADMIN_QUERY_LIMIT);
+                      $paginator->setItemCountPerPage(5);
 
-
-
-// Create the adapter
-$adapter = new SelectableAdapter($objectRepository); // An object repository implements Selectable
-
-// Create the paginator itself
-$paginator = new Paginator($adapter);
-    $paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
-
-$paginator->setItemCountPerPage(5);
-
-                
-                
-
-        return new ViewModel(
-            array(
-                'paginator' => $paginator 
-            )
-        );
+        
+        } catch (Exception $exc) {
+            
+            return array();
+        }
+        return array('paginator' => $paginator, 'user_total' => count($users));
+    
 
     }
 	public function addAction() {
-      $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-      
+    
       
 
-      $builder = new AnnotationBuilder( $entityManager);
-      $form = $builder->createForm( 'Application\Entity\User' );
-      $form->setHydrator(new DoctrineHydrator($entityManager,false));
-      $user =new \Application\Entity\User();
-      $form->bind($user);
-
-        $request = $this->getRequest();
         if ($request->isPost()){
           //$form->bind($student);
             $form->setData($request->getPost());
@@ -80,39 +76,37 @@ $paginator->setItemCountPerPage(5);
   return $view;
     }
 	public function editAction() {
-        $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-        $repository = $entityManager->getRepository('Application\Entity\User');
-        //$builder    = new AnnotationBuilder();
-        //$form       = $builder->createForm('Application\Entity\User');
-        //$form->bind($user);
+
+         
+
+          
+        
         if ($this->request->isPost()) {
             $id = $this->params()->fromPost('id');
-            $user = $repository->findOneBy(array('user_id' => $id));
+        $user = $this->getUserTable()->getUser($id);
             if(empty($id) or empty($user)){
               $this->messages[] ='User Not Found';
             } else if ($this->validate()) { 
              $postData =$this->params()->fromPost();
               $user->username = $postData['username'];
               $user->email_address = $postData['email_address'];
+              $user->facebook_username = $postData['facebook_username'];
               $user->twitter_username = $postData['twitter_username'];
               $user->disable_account = $postData['disable_account'];
 
               // Save the changes
-              try {
-                    $entityManager->flush();
-                            } catch (Exception $e) {
-                                                         
-                            }
+              $this->getUserTable()->saveUser($user);
+
               $this->messages[] ='Data Update sucessfully';
-              $user = $repository->findOneBy(array('user_id' => $id));
+              $user = $this->getUserTable()->getUser($id);
 
             }
             
           }else{
-             $id = (int)$this->params()->fromRoute('id');
-             $user = $repository->findOneBy(array('user_id' => $id));
-
+              $id = $this->params()->fromRoute('id');
+              $user = $this->getUserTable()->getUser($id);
           }
+            
           
                   $view =  new ViewModel();
                   $view->setVariable('user',$user );

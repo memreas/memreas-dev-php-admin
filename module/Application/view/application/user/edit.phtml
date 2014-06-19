@@ -57,7 +57,11 @@
       
 
 <script type="text/javascript">
-jsuccess('<?php echo implode (' ',$this->messages) ?>');
+<?php if(!empty($this->messages)){?>
+	jsuccess('<?php echo implode (' ',$this->messages) ?>');
+
+<?php 	}?>
+
 function checkdata()
 { 
 
@@ -78,7 +82,7 @@ function checkdata()
     }
 	
   $.post(document.form1.action, $('#form1').serialize(), function( data ) {
-$( "#tab2" ).html( data );
+$( "#tabone" ).html( data );
 });
 	return true;
 	

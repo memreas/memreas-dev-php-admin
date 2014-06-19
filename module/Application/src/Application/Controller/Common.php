@@ -8,6 +8,8 @@ namespace Application\Controller;
 
 class Common{
 	public static  $url = "http://test";
+        
+        
     public static function fetchXML($action='', $xml='') {
 		$guzzle = new Client();
 

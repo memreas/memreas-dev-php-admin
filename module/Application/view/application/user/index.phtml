@@ -1,4 +1,4 @@
-  <div class="manage-event"><p>manage users</p><div class="total"><p>Total Events:67</p></div></div>
+  <div class="manage-event"><p>manage users</p><div class="total"><p>Total Events:<?php echo $user_total ?></p></div></div>
             
             <div class="clr"></div>
              <table id="manageusertable" class="manageusertable" width="90%" border="1" align="center" cellpadding="0" cellspacing="0">
@@ -29,17 +29,17 @@ foreach ($paginator as $key => $user) {
     <td><?php echo $user -> profile_photo ?></td>
     <td><?php echo $user -> facebook_username ?></td>
     <td><?php echo $user -> twitter_username ?></td>
-    <td><?php echo $user -> role ?></td>
+    <td><?php echo $user -> role ==1 ?'admin':'member' ?></td>
     <td><?php
-        if($user ->disable_account == 1)
-
-     echo $user ->disable_account 
+        echo ($user ->disable_account == 0)?'<img src="/img/status.png" />':
+		'<img src="/img/cross.png" />'
+		; 
      ?>
     </td>
     
-<td><a class="intab" href="/admin/user/add"><img src="/img/status.png"></a></td>
-     <td><a class="intab" href="/admin/user/edit/<?php echo $user -> user_id ?>"><img src="/img/edit.png"></a></td>
-    <td><a class="intab" href="/admin/user/view"><img src="/img/eye.png"></a></td>
+<td><a class="intab" href="/admin/user/edit/<?php echo $user -> user_id ?>"><img src="/img/edit.png" /></a><!--<a class="intab" href="/admin/user/view/<?php echo $user -> user_id ?>"><img src="/img/eye.png" /></a>
+<a class="intab" href="/admin/user/view/<?php echo $user -> user_id ?>"><img src="/img/cross.png" /></a>--></td>
+     
   </tr>
 
     

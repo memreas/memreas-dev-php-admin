@@ -1,0 +1,53 @@
+  <div class="manage-event"><p>Transactions</p><div class="total"><p>Total Transactions:</p></div></div>
+            <div class="username"><p>user</p>
+            
+                  </div>
+            <div class="clr"></div>
+                  <table id="eventTbl" class="manageusertable" width="90%" border="1" align="center" cellpadding="0" cellspacing="0">
+                  <thead>
+  <tr>
+    <th>transaction_id</th>
+    <th>account_id</th>
+    <th>transaction_type</th>
+    <th>pass_fail</th>
+    <th>amount</th>
+     <th>currency</th>
+
+
+   
+  </tr>
+  </thead>
+   
+    
+              
+<?php 
+ $MemHelper = $this->Mem();
+ foreach ($paginator as $key => $resultset) {
+  
+ ?>
+    <tr>
+    <td><?php echo $resultset -> transaction_id?>  </td>
+    <td><?php echo $resultset -> account_id ?></td>
+    <td><?php echo $resultset -> transaction_type ?></td>
+    <td><?php echo $resultset -> pass_fail?>  </td>
+    <td><?php echo $resultset -> amount ?></td>
+    <td><?php echo $resultset -> currency ?></td>
+    <td><?php ?></td>
+          
+  </tr>
+
+    
+   
+   <?php  }?>
+   </table>
+   <?php // add at the end of the file after the table
+echo $this->paginationControl(
+    // the paginator object
+    $this->paginator,
+    'sliding',
+    // the partial to use to render the control
+    'layout/paginator.phtml',
+    //the route to link to when a user clicks a control link
+    array()
+);
+?>

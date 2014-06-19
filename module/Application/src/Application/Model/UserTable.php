@@ -27,6 +27,24 @@ class UserTable
         $resultSet->next();
         return $resultSet;
     }
+    
+    public function FetchAdmins()
+    {
+         
+      $select = $this->tableGateway->getSql()->select();
+      
+      $select->where('user.role != 2'); 
+   //  $select->join('account', "user.user_id = account.user_id", array('username', 'account_id'),'left'); 
+     $select->join('media', new \Zend\Db\Sql\Expression('media.user_id = user.user_id AND media.is_profile_pic = 1'), array('metadata'),'left'); 
+          
+          $results = $this->tableGateway->selectWith($select);
+        $results->buffer();
+        return $results;
+        
+         
+       
+        
+    }
 
     public function getUser($id)
     {
@@ -78,7 +96,7 @@ class UserTable
         $rowset = $this->tableGateway->select(array('username' => $username));
         $row = $rowset->current();
         if (!$row) {
-            throw new \Exception("Could not find row $id");
+            throw new \Exception("Could not find row $username");
         }
         return $row;
     }
@@ -98,6 +116,8 @@ class UserTable
         }
         return $row;
     }
+    
+    
     public function isExist($where){
          $select = new Select;
         $select->from($this->tableGateway->getTable())

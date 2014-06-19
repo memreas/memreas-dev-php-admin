@@ -18,6 +18,8 @@ use Application\Form;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Sendmail as SendmailTransport;
 use Guzzle\Http\Client;
+use Zend\Http\ClientStatic;
+
 use Application\View\Helper\S3Service;
 use Application\View\Helper\S3;
 
@@ -282,11 +284,14 @@ header('Location: ' . $targetUrl);
     }
 
     public function loginAction() {
+ini_set('max_execution_time', 300);
 		//Fetch the post data
 		$request = $this->getRequest();
 		$postData = $request->getPost()->toArray();
 		$username = $postData ['username'];
 		$password = $postData ['password'];
+
+ 
 
 		 $this->getAuthService()->getAdapter()->setUsername($username);
         $this->getAuthService()->getAdapter()->setPassword($password);

@@ -1,4 +1,4 @@
-  <div class="manage-event"><p>manage events</p><div class="total"><p>Total Events:67</p></div></div>
+  <div class="manage-event"><p>manage events</p><div class="total"><p>Total Events:<?php echo $event_total ?></p></div></div>
             <div class="username"><p>user</p>
             <div class="styled-select fl width200">
                        <select>
@@ -12,8 +12,9 @@
                   <table id="eventTbl" class="manageusertable" width="90%" border="1" align="center" cellpadding="0" cellspacing="0">
                   <thead>
   <tr>
-    <th>Id</th>
-    <th>Event Name</th>
+    <th>Event Id</th>
+    <th>User Id</th>
+    <th>Name</th>
     <th>Location</th>
     <th>Date</th>
     <th>Friends can post</th>
@@ -30,32 +31,31 @@
     
               
 <?php 
-foreach ($paginator as $key => $row) {
-    # code..
-?>
+foreach ($paginator as $key => $row) {   
+    ?> 
     <tr>
     <td> <?php echo $key+1 ?></td>
+    <td><?php echo $row -> event_id ?></td>
+    <td><?php echo $row -> user_id ?></td>
     <td><?php echo $row -> name ?></td>
     <td><?php echo $row -> location ?></td>
     <td><?php echo $row -> date ?></td>
-    <td><?php echo $row -> friends_can_post ?></td>
-    <td><?php echo $row -> friends_can_share ?></td>
-    <td><?php echo $row -> public ?></td>
+    <td><?php echo $row -> friends_can_post  == 1 ?'yes':'NO'?></td>
+    <td><?php echo $row -> friends_can_share  == 1 ?'yes':'NO' ?></td>
+    <td><?php echo $row ->public == 1 ?'yes':'NO' ?></td>
     <td><?php echo $row ->viewable_from ?></td>
         <td><?php echo $row ->viewable_to ?></td>
                 <td><?php echo $row ->self_destruct ?></td>
 
     
-<td><a class="intab" href="/admin/event/add"><img src="/img/status.png"></a></td>
-     <td><a class="intab" href="/admin/event/edit/<?php echo $row -> event_id ?>"><img src="/img/edit.png"></a></td>
-    <td><a class="intab" href="/admin/event/view/<?php echo $row -> event_id ?>"><img src="/img/eye.png"></a></td>
+<td><a class="intab" href="/admin/event/edit/<?php echo $row -> event_id ?>"><img src="/img/edit.png" /></a><a class="intab" href="/admin/event/view/<?php echo $row -> event_id ?>"><img src="/img/eye.png" /></a></td>
+      
   </tr>
 
     
    
    <?php  }?>
    </table>
-
    <?php // add at the end of the file after the table
 echo $this->paginationControl(
     // the paginator object

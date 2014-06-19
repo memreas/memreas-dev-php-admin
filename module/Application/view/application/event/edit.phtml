@@ -1,0 +1,122 @@
+ <?php
+ 
+			/*		$form = $this->form;
+$form->setAttribute('action', $this->url(
+    'admin/default',
+    array(
+        'action'     => 'edit',
+        'controller' => 'event'
+    )
+));
+$form->prepare();
+ 
+echo $this->form()->openTag($form);
+echo $this->formCollection($form);
+echo $this->form()->closeTag();
+
+echo $this->partial('layout/form-partial', array(
+'form' => $this->form,
+'url' =>  $this->url('admin/default', array('controller' => 'event' ,'action' => 'edit'))));
+*/				?>
+            
+            <script>
+			$(function(){
+				 $(".date-picker").datepicker();
+				
+				});
+           
+            </script>
+             
+<form id="form1" name="form1"  action="/admin/event/edit" method="post" enctype="multipart/form-data" name="addUserFrm">
+            <input id="event_id" name="event_id" value="<?php echo $this->event->event_id?>" type="hidden">
+
+          <div class="manage-event"><p>edit event</p></div>
+
+                    <ul id="content_1" class="share_memreas_details">
+                    <li>
+                    <label class="textfield_names">event id :</label>
+                    <input name="name" type="text" id="txt_name" class="share-txtfield" value="<?=$this->event->name?>" >
+                    </li>
+                    <li>
+                    <label class="textfield_names">date :</label>
+                    <input name="date" type="text" id="dtp_date" class="share-txtfield date-picker hasDatepicker" readonly="" value="<?=$this->event->date?>" >
+                    </li>
+                    <li>
+                    <label class="textfield_names">location :</label>
+                    <input name="location" type="text" id="txt_location" class="share-txtfield" value="<?=$this->event->location?>" >
+                    </li>
+                    <li>
+                     <input name="friends_can_post" type="checkbox" class="css-checkbox" id="ckb_canpost" 
+                     <?php if(!empty($this->event->friends_can_post)){echo 'checked="checked"';}?>>
+                     <label for="ckb_canpost" name="demo_lbl_1" class="css-label margin-none">friends can post pics/videos</label>
+                    </li>
+                    <li>
+                     <input name="friends_can_share" type="checkbox" class="css-checkbox" id="ckb_canadd" 
+                     <?php if(!empty($this->event->friends_can_share)){echo 'checked="checked"';}?>>
+                     <label for="ckb_canadd" name="demo_lbl_2" class="css-label margin-none">friends can add Friends</label>
+                    </li>
+                    <li>
+                     <input name="public" type="checkbox" class="css-checkbox" id="ckb_public" 
+                     <?php if(!empty($this->event->public)){echo 'checked="checked"';}?>>
+                     <label for="ckb_public" name="demo_lbl_3" class="css-label margin-none" onclick="javascript:share_clickCkbPublic();">public (anyone can add or post)</label>
+                    </li>
+                    <li>
+                     <label class="textfield_names">viewable :</label>
+                     
+                     <input name="viewable_from" type="text" id="dtp_from" class="date-picker hasDatepicker" readonly="" value="<?=$this->event->viewable_from?>" >
+                     <input name="viewable_to" type="text" id="dtp_to" class="date-picker hasDatepicker" readonly="" value="<?=$this->event->viewable_to?>" >
+                    </li>
+                    <li>
+                     <label class="textfield_names">self destruct :</label>
+                     <input name="self_destruct" type="text" id="dtp_selfdestruct" class="date-picker hasDatepicker" readonly="" value="<?=$this->event->self_destruct?>" >
+                    </li>
+                    <li>
+                     <a class="black_btn_skin f-center" href="#" onclick="checkdata()" >save user</a> 
+                <a class="black_btn_skin" href="#" >cancel</a>
+            
+            
+          
+          </form>
+                    </li>
+                    <li><div>
+                         <div class="required"> 
+Event Media Details</div>
+ 
+<ul class="personresults">
+    <?php 
+    use Application\Model\MemreasConstants;
+    foreach ($this->medias as  $media) { 
+$json_array = json_decode ( $media['metadata'], true );
+   if (! empty ( $json_array ['S3_files'] ['path'] )){
+        }
+                     $url = MemreasConstants::CLOUDFRONT_DOWNLOAD_HOST . $json_array ['S3_files'] ['path'];
+
+        ?>
+    
+<li><figure class="pro-pics"><img src="<?=$url?>" alt=""></figure>
+    <a  class="delMediaLi" href="/admin/media/delete/<?php echo $media['media_id']  ?>"><img src="/img/cross.png"></a></li>
+
+ <?php } ?>
+
+</ul>
+                    </div>
+                    </li>
+                    </ul>
+                   
+                <script type="text/javascript">
+function checkdata()
+{ 
+
+	
+	
+  $.post(document.form1.action, $('#form1').serialize(), function( data ) {
+$( "#tabone" ).html( data );
+});
+	return true;
+	
+}
+ $("#dtp_date").datepicker();
+</script>
+                    
+                    
+                   

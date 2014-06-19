@@ -39,8 +39,7 @@ Event Details</div>
                      <label class="textfield_names">self destruct :</label>
                      <input name="input" type="text" id="dtp_selfdestruct" class="share-txtfield-2 " readonly="" value="<?=date("d-M-Y",$this->event->self_destruct)?>" >
                     </li>
-                    </ul>
-                    <div>
+                    <li><div>
                          <div class="required"> 
 Event Media Details</div>
  
@@ -56,11 +55,15 @@ $json_array = json_decode ( $media['metadata'], true );
         ?>
     
 <li><figure class="pro-pics"><img src="<?=$url?>" alt=""></figure>
-    <a class="intab" href="/admin/media/delete/<?php echo $media['media_id']  ?>"><img src="/img/eye.png"></a></li>
+</li>
 
  <?php } ?>
 
 </ul>
                     </div>
+                    </li>
+                    </ul>
+                    
+                    
                     
                    

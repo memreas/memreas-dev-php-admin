@@ -26,39 +26,18 @@ return array(
         'db'=> array(
         //mysql --host=aa19n8yspndox3g.co0fw2snbu92.us-east-1.rds.amazonaws.com --user=memreasdbuser --password=memreas2013 memreasbackenddb
             'adapters'=>array(
-                'memreasdevdb' => array(
+              
+
+                'memreasintdb' => array(
                         'dsn'      => 'mysql:dbname=jhon;host=localhost',
                         'username' => 'root',
-                        'password' => '',
-                        'driver'         => 'Pdo',
-                ),
-                'memreasbackenddb' => array(
-                        'dsn'            => 'mysql:dbname=memreasbackenddb;host=aa19n8yspndox3g.co0fw2snbu92.us-east-1.rds.amazonaws.com',
-                        'username' => 'memreasdbuser',
-                        'password' => 'memreas2013'
-                ),
-                'memreasintdb' => array(
-                'driver' => 'Pdo',
-                       'dsn'      => 'mysql:dbname=jhon;host=localhost',
-                        'username' => 'root',
-                        'password' => '',
-                         
-                'driver_options' => array(
-                    PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
-                ),
-            ),
-/*
-                'memreasdevdb' => array(
-                        'dsn'      => 'mysql:dbname=memreasdevdb;host=localhost',
-                        'username' => 'root',
-                        'password' => 'john1016'
+                        'password' => ''
                 ),
                 'memreasbackenddb' => array(
                         'dsn'      => 'mysql:dbname=memreasbackenddb;host=localhost',
                         'username' => 'root',
-                        'password' => 'john1016'
+                        'password' => ''
                 ),
-*/
             )
         ),
     'doctrine' => array(
