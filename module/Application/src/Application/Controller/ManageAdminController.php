@@ -73,42 +73,37 @@ function validate(){
 return $result;
 }
     
-	
-   
-    public function viewAction() {
-          
-             $user_id = $this->params()->fromRoute('id'); 
-             $admin = $this->getUserTable()->getUser($user_id);
-             $account = $this->getAccountTable()->getAccount($user_id);
+	public function detailAction() {
+             $user_id = $this->params()->fromRoute('id');
+	     $user = $this->getUserTable()->getUser($user_id);
+	     $admin = $this->getUserTable()->adminLog($user_id);
+             //echo '<pre>'; print_r($admin); exit;
+	   return array('row' => $admin);
 
-             $transactions = $this->getAccountTable()->getTransaction($account->account_id);
+  
+    }	
+   
+    public function viewAction() {              
+        $user_id = $this->params()->fromRoute('id');
+        $page = $this->params()->fromQuery('page', 1);
+
+
+	$user = $this->getUserTable()->getUser($user_id,0);
+	$admin = $this->getUserTable()->adminLog($user_id);
+             
 
           //echo '<pre>'; print_r($transactions); exit;
-              $page = $this->params()->fromQuery('page', 1);
+                    $users = $this->getUserTable()->adminLog();
 
-             $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($transactions);
+             $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($users);
             $paginator = new Paginator($iteratorAdapter);
             $paginator->setCurrentPageNumber($page);
-            //$paginator->setItemCountPerPage(ADMIN_QUERY_LIMIT);
-                      $paginator->setItemCountPerPage(10);
+            $paginator->setItemCountPerPage(10);
 
         
         
-        return array('paginator' => $paginator, 'admin_total' => count($admin));
-
-
-
-
-
-
-
-
-
-
-
-
-
-                 
+        return array('paginator' => $paginator, 'row' => $admin );
+        
   
     }
 	

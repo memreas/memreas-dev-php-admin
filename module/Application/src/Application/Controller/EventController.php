@@ -61,31 +61,38 @@ class EventController extends AbstractActionController {
 
 
 		                    
-         $id = $this->params()->fromRoute('id');
-           try {
+         
         if ($this->request->isPost()) {
-            $id = $this->params()->fromPost('event_id');
-	          $event = $this->getEventTable()->getEvent($id);
+            $id = $this->params()->fromPost('id');
+	    $event = $this->getEventTable()->getEvent($id);
             if(empty($id) or empty($event)){
               $this->messages[] ='Event Not Found';
-            } else { 
+            } else if ($this->validate()) { 
              $postData =$this->params()->fromPost();
-              
+                            $event->name = $postData['name'];
+              $event->name = $postData['name'];
+              $event->location = $postData['location'];
+              $event->date = $postData['date'];
+              $event->friends_can_post = strtotime($postData['friends_can_post']);
+              $event->public = $postData['public'];
+			       $event->viewable_from = strtotime($postData['viewable_from']);
+			       $event->viewable_to = strtotime($postData['viewable_to']);
+				    $event->self_destruct = strtotime($postData['self_destruct']);
+                                    print_r($event); exit;
               // Save the changes
-			
-		$event = $this->getEventTable()->saveEvent($postData);
-                  $this->messages[] ='Data Update sucessfully';
+				try {
+		$event = $this->getEventTable()->saveEvent($event);
 
-              	
+              	} catch (Exception $e) {               
+                  $this->messages[] ='Data Update sucessfully';
+				}
             
           }
-                }
- 		  
+                }else{
+		  $id = $this->params()->fromRoute('id');
 		 $event = $this->getEventTable()->getEvent($id);
-               
-     } catch (Exception $e) {               
-                   $this->messages[] =$e->getMessage();
-     }     
+                }
+          
 		
 
           
@@ -112,7 +119,7 @@ class EventController extends AbstractActionController {
              $event = $this->getEventTable()->getEvent($id);
 
  
-              $medias = $this->getEventMediaTable()->getEventedia($id);;
+              $medias = $this->getEventTable()->getEventMedia($id);;
 
                   $view =  new ViewModel();
                   $view->setVariable('event',$event );

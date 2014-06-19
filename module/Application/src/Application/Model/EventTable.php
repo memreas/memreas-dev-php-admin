@@ -59,10 +59,10 @@ class EventTable
     {
         $rowset = $this->tableGateway->select(array('event_id' => $id));
        
-        if (empty($row)) {
+        if (empty($rowset)) {
             throw new \Exception("Could not find row $id");
         }
-        return $row;
+        return $rowset->current();
     }
     public function moderateFetchAll()
     {

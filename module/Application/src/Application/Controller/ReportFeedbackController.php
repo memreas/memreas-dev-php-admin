@@ -50,7 +50,7 @@ protected $feedbackTable;
             
             return array();
         }
-        return array('paginator' => $paginator, 'feedback_total' => count($feedback));
+        return array('paginator' => $paginator, 'feedback_total' => count($feedback), 'page' => $page);
 
     }
 	 
@@ -71,14 +71,30 @@ return $result;
         
     }
     public function viewAction() {
-          
+             $feedbacks = $this->getFeedbackTable()->FetchFeedDescAll();
+             $feedback_id = $this->params()->fromRoute('id'); 
+             $feedback = $this->getFeedbackTable()->getFeedback($feedback_id);
+$page = $this->params()->fromQuery('page', 1);
+            $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($feedbacks);
+            $paginator = new Paginator($iteratorAdapter);
+            $paginator->setCurrentPageNumber($page);
+            //$paginator->setItemCountPerPage(ADMIN_QUERY_LIMIT);
+                      $paginator->setItemCountPerPage(10);
+                  $view =  new ViewModel();
+                  $view->setVariable('feedback',$feedback );
+// print_r($feedback); exit;
+      // return $view;
+	   return array('paginator' => $paginator, 'feedback' => $feedback, 'page' => $page);
+
+  
+    }
+	
+	public function detailAction() {
              $feedback_id = $this->params()->fromRoute('id'); 
              $feedback = $this->getFeedbackTable()->getFeedback($feedback_id);
 
-                  $view =  new ViewModel();
-                  $view->setVariable('feedback',$feedback );
- 
-       return $view;
+	   return array('feedback' => $feedback);
+
   
     }
 	

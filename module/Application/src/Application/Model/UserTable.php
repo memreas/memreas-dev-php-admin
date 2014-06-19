@@ -41,6 +41,30 @@ class UserTable
         $results->buffer();
         return $results;
         
+      }
+	  
+	   public function adminLog($log_id =0)
+    {
+         
+      $select = $this->tableGateway->getSql()->select();
+      
+      $select->where('user.role != 2'); 
+	  
+   //  $select->join('account', "user.user_id = account.user_id", array('username', 'account_id'),'left'); 
+     $select->join('admin_log', new \Zend\Db\Sql\Expression('admin_log.admin_id = user.user_id')); 
+     
+     if(!empty($log_id)){
+          $select->where(array('admin_log.log_id = ?'=>$log_id ));
+          
+     }
+          $results = $this->tableGateway->selectWith($select);
+        $results->buffer();
+        if(!empty($log_id)){
+          $select->where(array('admin_log.log_id = ?'=>$log_id ));
+         return $results->current();
+     }
+        return $results;
+        
          
        
         
