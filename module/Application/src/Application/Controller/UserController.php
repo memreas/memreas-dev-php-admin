@@ -30,6 +30,16 @@ public $status ;
         }
         return $this->userTable;
     }
+
+    protected $adminLogTable;
+    public function getAdminLogTable() {
+        if (!$this->adminLogTable) {
+            $sm = $this->getServiceLocator();
+            $this->adminLogTable = $sm->get('Application\Model\AdminLogTable');
+        }
+        return $this->adminLogTable;
+    }
+
     public function indexAction() {
             //$role = $this->security();
         try {
@@ -52,10 +62,8 @@ public $status ;
 
     }
 	public function addAction() {
-    
-      
-
-        if ($request->isPost()){
+         $form = new Form('add');
+         if ($request->isPost()){
           //$form->bind($student);
             $form->setData($request->getPost());
             if ($form->isValid()){
@@ -77,10 +85,6 @@ public $status ;
     }
 	public function editAction() {
 
-         
-
-          
-        
         if ($this->request->isPost()) {
             $id = $this->params()->fromPost('id');
         $user = $this->getUserTable()->getUser($id);
@@ -95,7 +99,10 @@ public $status ;
               $user->disable_account = $postData['disable_account'];
 
               // Save the changes
+
               $this->getUserTable()->saveUser($user);
+              $this->getAdminLogTable()->saveLog(array('log_type'=>'user_update', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$id));
+
 
               $this->messages[] ='Data Update sucessfully';
               $user = $this->getUserTable()->getUser($id);
@@ -122,15 +129,32 @@ function validate(){
 return $result;
 }
     
-	public function deleteAction() {
-
+	public function activeAction() {
+              $id = $this->params()->fromRoute('id');
+              $user = $this->getUserTable()->getUser($id);
+              
+              if($user->disable_account==1){
+                  $disable_account==0;
+                  $user=$user->disable_account=0;
+                  $this->getUserTable()->updateUser(array('disable_account'=>0),$id);
+              }
   
     }
-	
-   public function init()
-    {
+    public function deactiveAction() {
         
+              $id = $this->params()->fromRoute('id');
+              $user = $this->getUserTable()->getUser($id);
+              
+              if($user->disable_account==0){
+                  $disable_account==1;
+                  $user=$user->disable_account=0;
+                  $this->getUserTable()->updateUser(array('disable_account'=>1),$id);
+  
     }
+    }
+    
+	
+   
 	
 }
 

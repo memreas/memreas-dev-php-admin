@@ -33,7 +33,7 @@ class Module {
         
         $eventManager->attach('route', function(MvcEvent $mvcEvent) {
                     $params = $mvcEvent->getRouteMatch()->getParams();                    
-                    $_GET['ADMIN_EMAIL'] = "info@eventapp.com";
+                    $_GET['ADMIN_EMAIL'] = "admin@memreas.com";
                     foreach ($params as $name => $value) {
                         if (!isset($_GET[$name])) {
                             $_GET[$name] = $value;

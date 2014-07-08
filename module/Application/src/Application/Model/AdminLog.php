@@ -7,12 +7,12 @@
 
 namespace Application\Model;
  
-class Account {
+class AdminLog {
 
-    public  $account_id,
-            $user_id,
-            $username,
-            $account_type,
+    public  $log_id,
+            $admin_id,
+            $log_type,
+            $created,
             $balance,
             $create_time,
             $update_time;

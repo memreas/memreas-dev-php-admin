@@ -72,34 +72,11 @@ echo $this->partial('layout/form-partial', array(
                     </li>
                     <li>
                      <a class="black_btn_skin f-center" href="#" onclick="checkdata()" >save user</a> 
-                <a class="black_btn_skin" href="#" >cancel</a>
+                <a class="black_btn_skin" href="#" onclick="disablePopup('forgot')">cancel</a>
             
             
           
           </form>
-                    </li>
-                    <li><div>
-                         <div class="required"> 
-Event Media Details</div>
- 
-<ul class="personresults">
-    <?php 
-    use Application\Model\MemreasConstants;
-    foreach ($this->medias as  $media) { 
-$json_array = json_decode ( $media['metadata'], true );
-   if (! empty ( $json_array ['S3_files'] ['path'] )){
-        }
-                     $url = MemreasConstants::CLOUDFRONT_DOWNLOAD_HOST . $json_array ['S3_files'] ['path'];
-
-        ?>
-    
-<li><figure class="pro-pics"><img src="<?=$url?>" alt=""></figure>
-    <a  class="delMediaLi" href="/admin/media/delete/<?php echo $media['media_id']  ?>"><img src="/img/cross.png"></a></li>
-
- <?php } ?>
-
-</ul>
-                    </div>
                     </li>
                     </ul>
                    

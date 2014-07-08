@@ -31,6 +31,15 @@ class EventController extends AbstractActionController {
         }
         return $this->eventTable;
     }
+
+    protected $adminLogTable;
+    public function getAdminLogTable() {
+        if (!$this->adminLogTable) {
+            $sm = $this->getServiceLocator();
+            $this->adminLogTable = $sm->get('Application\Model\AdminLogTable');
+        }
+        return $this->adminLogTable;
+    }
     public function indexAction() {
         try {
         $event = $this->getEventTable()->fetchAll();
@@ -57,35 +66,37 @@ class EventController extends AbstractActionController {
     }
 	public function editAction() {
 		
-		
-
-
-		                    
-         $id = $this->params()->fromRoute('id');
-           try {
-        if ($this->request->isPost()) {
-            $id = $this->params()->fromPost('event_id');
-	          $event = $this->getEventTable()->getEvent($id);
+            if ($this->request->isPost()) {
+            $id = $this->params()->fromPost('id');
+	    $event = $this->getEventTable()->getEvent($id);
             if(empty($id) or empty($event)){
               $this->messages[] ='Event Not Found';
-            } else { 
+            } else if ($this->validate()) { 
              $postData =$this->params()->fromPost();
-              
-              // Save the changes
-			
-		$event = $this->getEventTable()->saveEvent($postData);
-                  $this->messages[] ='Data Update sucessfully';
+              $event->name = $postData['name'];
+              $event->location = $postData['location'];
+              $event->date = $postData['date'];
+              $event->friends_can_post = strtotime($postData['friends_can_post']);
+              $event->public = $postData['public'];
+			       $event->viewable_from = strtotime($postData['viewable_from']);
+			       $event->viewable_to = strtotime($postData['viewable_to']);
+				    $event->self_destruct = strtotime($postData['self_destruct']);
+               // Save the changes
+				try {
+            $this->getAdminLogTable()->saveLog(array('log_type'=>'event_update', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$id));
 
-              	
+		        $event = $this->getEventTable()->saveEvent($event);
+
+              	} catch (Exception $e) {               
+                  $this->messages[] ='Data Update sucessfully';
+				}
             
           }
-                }
- 		  
+                }else{
+		  $id = $this->params()->fromRoute('id');
 		 $event = $this->getEventTable()->getEvent($id);
-               
-     } catch (Exception $e) {               
-                   $this->messages[] =$e->getMessage();
-     }     
+                }
+          
 		
 
           
@@ -101,18 +112,13 @@ class EventController extends AbstractActionController {
 
   
     }
-	public function deleteAction() {
-
-  
-    }
+	 	
 
     public function viewAction() {
-          
              $id = $this->params()->fromRoute('id'); 
+             $this->getAdminLogTable()->saveLog(array('log_type'=>'event_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$id));
              $event = $this->getEventTable()->getEvent($id);
-
- 
-              $medias = $this->getEventMediaTable()->getEventedia($id);;
+             $medias = $this->getEventTable()->getEventMedia($id);;
 
                   $view =  new ViewModel();
                   $view->setVariable('event',$event );

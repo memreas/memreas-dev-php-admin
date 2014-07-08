@@ -32,6 +32,15 @@ public $status ;
         }
         return $this->eventTable;
     }   
+
+    protected $adminLogTable;
+    public function getAdminLogTable() {
+        if (!$this->adminLogTable) {
+            $sm = $this->getServiceLocator();
+            $this->adminLogTable = $sm->get('Application\Model\AdminLogTable');
+        }
+        return $this->adminLogTable;
+    }
     
     public function indexAction() {
         
@@ -72,7 +81,8 @@ public $status ;
   public function mediaAction() {
        
              $event_id = $this->params()->fromRoute('id');
-             
+            $this->getAdminLogTable()->saveLog(array('log_type'=>'media_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$event_id));
+
              $event= $this->getEventTable()->getEventMedia($event_id);
   
              $view =  new ViewModel();
@@ -90,7 +100,44 @@ return $result;
 
   
     }
-  
+	public function changeStatusAction() {
+		$eventTable = $this->getEventTable();
+		$event_id = $this->params()->fromRoute('id');
+		$event = $eventTable->getEvent($event_id);
+		$date = strtotime(date('d-m-Y'));
+		$eventStatus='inactive';
+		if(($event->viewable_to >= $date || $event->viewable_to =='')
+		 	&&  ($event->viewable_from <=$date || $event->viewable_from =='')
+            &&  ($event->self_destruct >= $date  || $event->self_destruct=='')
+ )		$eventStatus= 'active';
+
+  return array('eventStatus'=> $eventStatus, 'event'=> $event);
+    }
+	
+  public function approveAction() {
+	  	$date1 = strtotime('today + 1year');
+ 		$eventTable = $this->getEventTable();
+		$postData = $this->params()->fromPost();
+  		$eventTable->update(array('event_id' =>$postData['event_id'], 'self_destruct' => $date1 ),$postData['event_id']);
+		$eventStatus='inactive';
+		if(($event->viewable_to >= $date || $event->viewable_to =='')
+		 	&&  ($event->viewable_from <=$date || $event->viewable_from =='')
+            &&  ($event->self_destruct >= $date1  || $event->self_destruct=='')
+ )		$eventStatus= 'active';
+
+  return array('eventStatus'=> $eventStatus, 'event'=> $event);
+    }
+	
+	public function disapproveAction() {
+		echo $date1 = strtotime('today - 1 month');
+		$eventTable = $this->getEventTable();
+		if($this->request->isPost()){
+			$postData = $this->params()->fromPost();
+  		$eventTable->update(array('event_id' =>$postData['event_id'], 'self_destruct' => $date1 ),$postData['event_id']);
+		}
+
+  return array('eventStatus'=> $eventStatus, 'event'=> $event);
+    }
    public function init()
     {
         

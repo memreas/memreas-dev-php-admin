@@ -33,6 +33,15 @@ protected $feedbackTable;
         return $this->feedbackTable;
     }
 
+    protected $adminLogTable;
+    public function getAdminLogTable() {
+        if (!$this->adminLogTable) {
+            $sm = $this->getServiceLocator();
+            $this->adminLogTable = $sm->get('Application\Model\AdminLogTable');
+        }
+        return $this->adminLogTable;
+    }
+
           
     public function indexAction() {
                  try {
@@ -50,7 +59,7 @@ protected $feedbackTable;
             
             return array();
         }
-        return array('paginator' => $paginator, 'feedback_total' => count($feedback));
+        return array('paginator' => $paginator, 'feedback_total' => count($feedback), 'page' => $page);
 
     }
 	 
@@ -71,14 +80,34 @@ return $result;
         
     }
     public function viewAction() {
-          
+             $feedbacks = $this->getFeedbackTable()->FetchFeedDescAll();
              $feedback_id = $this->params()->fromRoute('id'); 
-             $feedback = $this->getFeedbackTable()->getFeedback($feedback_id);
+            $this->getAdminLogTable()->saveLog(array('log_type'=>'feedback_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$feedback_id));
 
+             $feedback = $this->getFeedbackTable()->getFeedback($feedback_id);
+$page = $this->params()->fromQuery('page', 1);
+            $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($feedbacks);
+            $paginator = new Paginator($iteratorAdapter);
+            $paginator->setCurrentPageNumber($page);
+            //$paginator->setItemCountPerPage(ADMIN_QUERY_LIMIT);
+                      $paginator->setItemCountPerPage(10);
                   $view =  new ViewModel();
                   $view->setVariable('feedback',$feedback );
- 
-       return $view;
+// print_r($feedback); exit;
+      // return $view;
+	   return array('paginator' => $paginator, 'feedback' => $feedback, 'page' => $page);
+
+  
+    }
+	
+	public function detailAction() {
+             $feedback_id = $this->params()->fromRoute('id'); 
+        $this->getAdminLogTable()->saveLog(array('log_type'=>'feedback_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$feedback_id));
+
+             $feedback = $this->getFeedbackTable()->getFeedback($feedback_id);
+
+	   return array('feedback' => $feedback);
+
   
     }
 	

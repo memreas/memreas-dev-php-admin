@@ -1,53 +1,109 @@
-  <div class="manage-event"><p>Transactions</p><div class="total"><p>Total Transactions:</p></div></div>
-            <div class="username"><p>user</p>
-            
-                  </div>
-            <div class="clr"></div>
-                  <table id="eventTbl" class="manageusertable" width="90%" border="1" align="center" cellpadding="0" cellspacing="0">
-                  <thead>
-  <tr>
-    <th>transaction_id</th>
-    <th>account_id</th>
-    <th>transaction_type</th>
-    <th>pass_fail</th>
-    <th>amount</th>
-     <th>currency</th>
+       <?php 
+if(empty($row)){
+	echo "no record found";return;
+	}
+       ?>
 
-
-   
-  </tr>
-  </thead>
-   
-    
-              
-<?php 
- $MemHelper = $this->Mem();
- foreach ($paginator as $key => $resultset) {
-  
- ?>
-    <tr>
-    <td><?php echo $resultset -> transaction_id?>  </td>
-    <td><?php echo $resultset -> account_id ?></td>
-    <td><?php echo $resultset -> transaction_type ?></td>
-    <td><?php echo $resultset -> pass_fail?>  </td>
-    <td><?php echo $resultset -> amount ?></td>
-    <td><?php echo $resultset -> currency ?></td>
-    <td><?php ?></td>
+<div id="tab3" class="hideCls">
+        <div class="span6">
           
-  </tr>
+            
+           <ul id="preview" class="right scrollClass">
+              <li>
+            <label class="textfield_names1">log id :</label>
+            
+            <input name="log_id" type="text" class="share-txtfield1" value="<?php echo $row->log_id?>" >
+            </li>
+             <li>
+            <label class="textfield_names1">admin id :</label>
+            
+            <input name="admin_id" type="text" class="share-txtfield1" value="<?php echo $row->admin_id?>" >
+            </li>
 
-    
-   
-   <?php  }?>
-   </table>
-   <?php // add at the end of the file after the table
-echo $this->paginationControl(
-    // the paginator object
-    $this->paginator,
-    'sliding',
-    // the partial to use to render the control
-    'layout/paginator.phtml',
-    //the route to link to when a user clicks a control link
-    array()
-);
-?>
+            <li>
+            <label class="textfield_names1">log type :</label>
+            <input name="log_type" type="text" class="share-txtfield1" value="<?php echo $row->log_type?>" >
+            </li>
+
+            <li>
+            <label class="textfield_names1">created :</label>
+            <input name="created" type="text" class="share-txtfield1" value="<?php echo $row->created?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" >
+            </li>
+            
+            <li>
+            <label class="textfield_names1">entity id :</label>
+            <input name="entity_id" type="text" class="share-txtfield1" value="<?php echo $row->entity_id?>">
+            </li>
+             
+           
+            </ul>
+                 
+            
+          
+        </div>
+        
+        <div class="clear"></div>
+        <div class="row-fluid">
+          <ul id="carousel" class="elastislide-list">
+            <?php 
+
+$MemHelper = $this->Mem();
+
+    foreach ($paginator as $key => $resultset) {?>
+                
+               <li data-preview="/admin/manage_admin/detail/<?php echo $resultset->log_id?>"><a href="#"><p><?php echo $resultset->log_type ?></p></a></li>
+               
+            
+
+             
+         <?php  
+     }  
+ ?>
+           
+              </ul>
+        </div>
+        
+    </div>
+    <script type="text/javascript">
+      
+      // example how to integrate with a previewer
+      var current = 0,
+        $preview = $( '#preview' ),
+        $carouselEl = $( '#carousel' ),
+        $carouselItems = $carouselEl.children(),
+        carousel = $carouselEl.elastislide( {
+          current : current,
+          minItems : 10,
+          onClick : function( el, pos, evt ) {
+
+            changeImage( el, pos );
+            evt.preventDefault();
+
+          },
+          onReady : function() {
+
+            changeImage( $carouselItems.eq( current ), current );
+            
+          }
+        } );
+
+      function changeImage( el, pos ) {
+		  $('#preview').empty();
+$('#preview').load(el.data( 'preview' ));
+       // $preview.attr( 'src', el.data( 'preview' ) );
+        $carouselItems.removeClass( 'current-img' );
+        el.addClass( 'current-img' );
+        carousel.setCurrent( pos );
+
+      }
+
+  </script>
+          
+      
+
+<script type="text/javascript">
+<?php if(!empty($this->messages)){?>
+	jsuccess('<?php echo implode (' ',$this->messages) ?>');
+
+<?php 	}?>
+</script>

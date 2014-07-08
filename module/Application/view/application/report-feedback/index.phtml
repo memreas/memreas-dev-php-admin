@@ -24,8 +24,8 @@ foreach ($paginator as $key => $resultset) {
     <td><?php echo '<img src="'. $MemHelper->ProfilePic($resultset -> metadata).'"/>'; ?>  </td>
     <td><?php echo $resultset -> username ?></td>
     <td><?php echo $resultset -> name ?></td>
-    <td><a id="button" class="intab " href="/admin/report_feedback/view/<?php echo $resultset -> feedback_id?>" >view feedback</a></td>
-        <td><?php echo $resultset -> create_time ?></td>
+    <td><a id="button" class="intab " href="/admin/report_feedback/view/<?php echo $resultset -> feedback_id.'?page='.$page ?>" >view feedback</a></td>
+        <td><?php echo $MemHelper->showDate($resultset -> create_time) ?></td>
 
     <td><?php ?></td>
     

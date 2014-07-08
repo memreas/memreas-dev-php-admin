@@ -26,7 +26,7 @@ use Application\Model\User;
 use Application\Model\UserTable;
 use Application\Model\MyAuthStorage;
 use Application\Model;
-
+ 
 class Module {
 
     public function onBootstrap(MvcEvent $e) {
@@ -44,6 +44,7 @@ class Module {
 
         $this->initAcl($e);
         $eventManager->attach('route', array($this, 'checkAcl'));
+ 
     }
 
     public function initAcl(MvcEvent $e) {
@@ -243,6 +244,19 @@ class Module {
             $table = new Model\AccountTable($tableGateway);
             return $table;
         },
+
+        'Application\Model\AdminLogTable' => function($sm) {
+            $dbAdapter = $sm->get('memreasintdb');
+             
+            $resultSetPrototype = new \Zend\Db\ResultSet\HydratingResultSet();
+            $resultSetPrototype->setHydrator(new ObjectProperty());
+            $resultSetPrototype->setObjectPrototype(new Model\AdminLog());
+            $tableGateway = new TableGateway('admin_log', $dbAdapter, null, $resultSetPrototype);
+
+            $table = new Model\AdminLogTable($tableGateway);
+            return $table;
+        },
+
             )
         );
     }

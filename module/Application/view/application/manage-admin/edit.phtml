@@ -1,0 +1,80 @@
+        
+          <form id="form1" name="form1"  action="/admin/manage_admin/edit" method="post" enctype="multipart/form-data" name="addUserFrm">
+          <div class="manage-event"><p>edit admin</p></div>
+            <ul id="content_1" class="share_memreas_details scrollClass mCustomScrollbar _mCS_1"><div class="mCustomScrollBox mCS-light" id="mCSB_1" style="position:relative; height:100%; overflow:hidden; max-width:100%;"><div class="mCSB_container mCS_no_scrollbar" style="position: relative; top: 0px;">
+            <li>
+            <input id="id" name="id" value="<?php echo $this->user->profile_photo?>" type="hidden">
+            <label class="textfield_names1">profile_photo :</label>
+            <input id="profile_photo" name="profile_photo" type="text" class="share-txtfield1" value="<?php echo $admin->profile_photo?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
+            </li>
+             <li>
+            <label class="textfield_names1">username :</label>
+            <input id="username" name="email_address" type="text" class="share-txtfield1" value="<?php echo $admin->username?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
+            </li>
+            <li>
+            <label class="textfield_names1">email :</label>
+            <input id="email" name="email_address" type="text" class="share-txtfield1" value="<?php echo $admin->email_address?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
+            </li>
+              <li>
+            <label class="textfield_names1">admin level :</label>
+            <input name="facebook_username" type="text" class="share-txtfield1" value="<?php echo $admin->role?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
+            </li>
+              <li>
+            <label class="textfield_names1">date created :</label>
+            <input name="twitter_username" type="text" class="share-txtfield1" value="<?php echo $admin->created?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
+            </li>
+            
+            
+           
+           
+            </div><div class="mCSB_scrollTools" style="position: absolute; display: none;"><a class="mCSB_buttonUp" oncontextmenu="return false;"></a><div class="mCSB_draggerContainer"><div class="mCSB_dragger" style="position: absolute; top: 0px;" oncontextmenu="return false;"><div class="mCSB_dragger_bar" style="position:relative;"></div></div><div class="mCSB_draggerRail"></div></div><a class="mCSB_buttonDown" oncontextmenu="return false;"></a></div></div></ul>
+                  <a class="black_btn_skin f-center" href="#" onclick="checkdata()" >save user</a> 
+                <a class="black_btn_skin" href="#" onclick="disablePopup('forgot')">cancel</a>
+            
+            
+          
+          </form>
+      
+
+<script type="text/javascript">
+<?php if(!empty($this->messages)){?>
+	jsuccess('<?php echo implode (' ',$this->messages) ?>');
+
+<?php 	}?>
+
+function checkdata()
+{ 
+
+	var getnm = trim(document.getElementById("username").value);
+        var email = trim(document.getElementById("email").value);
+	
+	if(getnm == "" || email == "")
+	{
+		alert("Please fill all the value properly.");return false;
+	}
+        var email = document.getElementById('email');
+    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+    if (!filter.test(email.value)) {
+    alert('Please provide a valid email address');
+    email.focus;
+    return false;
+    }
+	
+   $.post($('#form1').attr('action'), $('#form1').serialize(), function( data ) {
+$( "#tabone" ).html( data );
+});
+	return true;
+	
+}
+
+function trim(str) {
+        return str.replace(/^\s+|\s+$/g,"");
+}
+function resetdata()
+{
+    	document.getElementById("username").value="";
+        document.getElementById("email").value="";
+}
+
+</script>
