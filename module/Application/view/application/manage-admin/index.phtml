@@ -1,4 +1,10 @@
   <div class="manage-event"><p>manage admins</p><div class="total"><p>Total Events:<?php echo $admin_total ?></p></div></div>
+  <div align="right">
+  <a class="intab" href="/admin/manage_admin/addadmin"><input type="button" value="add"></a>
+<input id="delete" type="button" onclick= "admindelete()" value="delete"></a> 
+<input type="button" onclick= "adminedit()" value="edit">
+
+</div>
             
             <div class="clr"></div>
              <table id="eventTbl" class="manageusertable" width="90%" border="1" align="center" cellpadding="0" cellspacing="0">
@@ -20,12 +26,12 @@
    
  ?>
     <tr>
-        <td> <input type="radio" id="radio"  </td>
+        <td> <input type="radio" id="radio" name="adminid" value="<?php echo $resultset -> user_id?>" </td>
     <td><?php echo '<img src="'. $MemHelper->ProfilePic($resultset -> metadata).'"/>'; ?>  </td>
     <td><?php echo $resultset -> username ?></td>
     <td><?php echo $resultset -> role ?></td>
     <td><a id="button" class="intab " href="/admin/manage_admin/view/<?php echo $resultset -> user_id?>" >recent transactions</a></td>
-    <td><?php echo $resultset -> create_date?></td>
+    <td><?php echo $MemHelper->showDate($resultset -> create_date)?></td>
           
   </tr>
 
@@ -47,3 +53,45 @@ echo $this->paginationControl(
     array()
 );
 ?>
+<script type="text/javascript">
+function adminedit (argument) {
+  var adminid=getRadioValue ()
+  if (adminid==0) {
+
+alert('please select user');    
+  }else{
+
+    var target = $('#tabone');
+    var url = "/admin/manage_admin/edit/"+adminid;
+      $(target).empty();
+          $(target).load( url );
+                  popup('forgot');
+
+  }
+}
+
+function admindelete (argument) {
+  var adminid=getRadioValue ()
+  if (adminid==0) {
+
+alert('please select user');    
+  }else{
+
+    var target = $('#tabone');
+    var url = "/admin/manage_admin/deactivate/"+adminid;
+      $(target).empty();
+          $(target).load( url );
+                  popup('forgot');
+
+  }
+}
+
+function getRadioValue () {
+    if( $('input[name=adminid]:radio:checked').length > 0 ) {
+        return $('input[name=adminid]:radio:checked').val();
+    }
+    else {
+        return 0;
+    }
+}
+</script>

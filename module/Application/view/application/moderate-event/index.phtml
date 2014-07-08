@@ -12,8 +12,8 @@
     <th>event name</th>
     <th>event media </th>
     <th>viewable</th>
-     <th>&nbsp;</th>
-   
+    <th>Action</th>
+    
   </tr>
   </thead>
    
@@ -29,11 +29,10 @@
     <td><?php echo $resultset -> username ?></td>
     <td><?php echo $resultset -> name ?></td>
     <td><a id="button" class="intab " href="/admin/moderate_event/media/<?php echo $resultset -> event_id?>" >view media</a></td>
-    <td><?php echo $resultset -> self_destruct?></td>
+    <td><?php echo $MemHelper->showDate($resultset -> viewable_from). ' - '. $MemHelper->showDate($resultset -> viewable_to) .'-'.$MemHelper->showDate($resultset -> self_destruct)?> </td>
     
+ <th><a class="intab" href="/admin/moderate_event/changeStatus/<?=$resultset ->event_id?>">Disapprove</a></th>
 
-    
-<td>&nbsp;</td>
       
   </tr>
 
@@ -52,3 +51,9 @@ echo $this->paginationControl(
     array()
 );
 ?>
+<script>
+function changeEventStatus(eventid){
+	alert(eventid);
+	
+	}
+</script>

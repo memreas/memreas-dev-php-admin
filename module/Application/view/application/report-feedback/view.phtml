@@ -46,7 +46,8 @@ $MemHelper = $this->Mem();
 
     foreach ($paginator as $key => $resultset) {?>
                 
-               <li data-preview="/admin/report_feedback/detail/<?php echo $resultset->feedback_id?>"><a href="#"><?php echo $resultset->message ?></a></li>
+               <li data-preview="/admin/report_feedback/detail/<?php echo $resultset->feedback_id?>"><a href="#">
+                <p><?php echo $resultset->message ?></p></a></li>
                
             
 
@@ -68,7 +69,7 @@ $MemHelper = $this->Mem();
         $carouselItems = $carouselEl.children(),
         carousel = $carouselEl.elastislide( {
           current : current,
-          minItems : 3,
+          minItems : 10,
           onClick : function( el, pos, evt ) {
 
             changeImage( el, pos );
@@ -83,8 +84,8 @@ $MemHelper = $this->Mem();
         } );
 
       function changeImage( el, pos ) {
-		  $('#preview').empty();
-$('#preview').load(el.data( 'preview' ));
+		    $('#preview').empty();
+        $('#preview').load(el.data( 'preview' ));
        // $preview.attr( 'src', el.data( 'preview' ) );
         $carouselItems.removeClass( 'current-img' );
         el.addClass( 'current-img' );

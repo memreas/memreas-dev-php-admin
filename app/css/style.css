@@ -1261,6 +1261,7 @@ ul.share_memreas_details li {
 	display: block;
 	cursor: pointer;
 	font-weight: bold;
+	z-index: 10
 }
 .popupClose:hover {
 	text-decoration: none;

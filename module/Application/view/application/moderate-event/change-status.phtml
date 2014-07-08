@@ -1,0 +1,63 @@
+<?php
+	 $action ="/admin/moderate_event/disapprove";
+
+ if($eventStatus == 'inactive') {
+	 $action ="/admin/moderate_event/approve";
+	 
+	 }
+?>
+
+
+
+
+<form action="<?=$action?>" method="post" name="form1" id="form1" >
+  <input name="event_id" type="hidden" value="<?=$event->event_id?>" >
+  <ul id="" class="share_memreas_details">
+  <?php if($eventStatus == 'inactive') {?>
+    <li>
+      <label class="textfield_names">Approve Event :</label>
+      <select id="reason" name="reason">
+        <option value="no reason">Select Reason</option>
+        <option value="admin approved">admin approved</option>
+        <option value="subscription update">subscription update</option>
+      </select>
+    </li>
+    <li>
+    <a class="black_btn_skin f-center" href="#" onclick="checkdata()" >Approve</a> 
+                <a class="black_btn_skin" href="#" onclick="disablePopup('forgot')">cancel</a>
+    </li>
+    <?php }else{?>
+    <li>
+      <label class="textfield_names">Disapprove Event :</label>
+    <select id="reason" name="reason">
+        <option value="0">select reason</option>
+        <option value="admin disapprove">admin disapprove</option>
+        <option value="subscription expired">subscription expired</option>
+        <option value="user objection">user objection</option>
+      </select>
+    </li>
+   
+    <li> <a class="black_btn_skin f-center" href="#" onclick="checkdata()" >Disapprove</a> 
+                <a class="black_btn_skin" href="#" onclick="disablePopup('forgot')">cancel</a>
+    </li>
+     <?php }?>
+   </ul>
+</form>
+      <script type="text/javascript">
+function checkdata()
+{ 
+
+	if($('#reason').val() == 0){
+		alert('please select reson');
+		    return false;
+
+		}
+	
+  $.post($('#form1').attr('action'), $('#form1').serialize(), function( data ) {
+$( "#tabone" ).html( data );
+});
+	return true;
+	
+}
+ $("#dtp_date").datepicker();
+</script>

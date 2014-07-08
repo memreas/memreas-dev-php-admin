@@ -33,6 +33,15 @@ protected $feedbackTable;
         return $this->feedbackTable;
     }
 
+    protected $adminLogTable;
+    public function getAdminLogTable() {
+        if (!$this->adminLogTable) {
+            $sm = $this->getServiceLocator();
+            $this->adminLogTable = $sm->get('Application\Model\AdminLogTable');
+        }
+        return $this->adminLogTable;
+    }
+
           
     public function indexAction() {
                  try {
@@ -73,6 +82,8 @@ return $result;
     public function viewAction() {
              $feedbacks = $this->getFeedbackTable()->FetchFeedDescAll();
              $feedback_id = $this->params()->fromRoute('id'); 
+            $this->getAdminLogTable()->saveLog(array('log_type'=>'feedback_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$feedback_id));
+
              $feedback = $this->getFeedbackTable()->getFeedback($feedback_id);
 $page = $this->params()->fromQuery('page', 1);
             $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($feedbacks);
@@ -91,6 +102,8 @@ $page = $this->params()->fromQuery('page', 1);
 	
 	public function detailAction() {
              $feedback_id = $this->params()->fromRoute('id'); 
+        $this->getAdminLogTable()->saveLog(array('log_type'=>'feedback_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$feedback_id));
+
              $feedback = $this->getFeedbackTable()->getFeedback($feedback_id);
 
 	   return array('feedback' => $feedback);

@@ -31,6 +31,8 @@
     
               
 <?php 
+$MemHelper = $this->Mem();
+
 foreach ($paginator as $key => $row) {   
     ?> 
     <tr>
@@ -43,9 +45,9 @@ foreach ($paginator as $key => $row) {
     <td><?php echo $row -> friends_can_post  == 1 ?'yes':'NO'?></td>
     <td><?php echo $row -> friends_can_share  == 1 ?'yes':'NO' ?></td>
     <td><?php echo $row ->public == 1 ?'yes':'NO' ?></td>
-    <td><?php echo $row ->viewable_from ?></td>
-        <td><?php echo $row ->viewable_to ?></td>
-                <td><?php echo $row ->self_destruct ?></td>
+    <td><?php echo $MemHelper->showDate($row ->viewable_from) ?></td>
+        <td><?php echo $MemHelper->showDate($row ->viewable_to) ?></td>
+                <td><?php echo $MemHelper->showDate($row ->self_destruct) ?></td>
 
     
 <td><a class="intab" href="/admin/event/edit/<?php echo $row -> event_id ?>"><img src="/img/edit.png" /></a><a class="intab" href="/admin/event/view/<?php echo $row -> event_id ?>"><img src="/img/eye.png" /></a></td>

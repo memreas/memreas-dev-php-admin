@@ -11,9 +11,10 @@ use Zend\View\Model\ViewModel;
    // use DoctrineORMModule\Form\Annotation\AnnotationBuilder;
      use Zend\Form\Annotation;
     use Zend\Form\Annotation\AnnotationBuilder;
-
+use Zend\Form\Form;
 
       use Zend\Form\Element;
+      use Application\Model\User;
 
     
 class ManageAdminController extends AbstractActionController {
@@ -39,6 +40,15 @@ protected $accountTable;
             $this->accountTable = $sm->get('Application\Model\AccountTable');
         }
         return $this->accountTable;
+    }
+
+    protected $adminLogTable;
+    public function getAdminLogTable() {
+        if (!$this->adminLogTable) {
+            $sm = $this->getServiceLocator();
+            $this->adminLogTable = $sm->get('Application\Model\AdminLogTable');
+        }
+        return $this->adminLogTable;
     }
 
           
@@ -74,21 +84,118 @@ return $result;
 }
     
 	public function detailAction() {
-             $user_id = $this->params()->fromRoute('id');
-	     $user = $this->getUserTable()->getUser($user_id);
-	     $admin = $this->getUserTable()->adminLog($user_id);
+      $user_id = $this->params()->fromRoute('id');
+try {
+   $user = $this->getUserTable()->getUser($user_id);
+       $admin = $this->getUserTable()->adminLog($user_id);
+             $this->getAdminLogTable()->saveLog(array('log_type'=>'admin_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$user_id));
+
+} catch (\Exception $e) {
+   $admin = null;
+}
+	    
              //echo '<pre>'; print_r($admin); exit;
 	   return array('row' => $admin);
 
   
     }	
+
+    public function addadminAction() {
+        $form = new Form('addUserFrm');
+    $request=$this->getRequest();
+      if ($request->isPost()){
+          $user = new User();
+          //$form->bind($student);
+            $form->setData($request->getPost());
+            if ($form->isValid()){
+                $postData =$this->params()->fromPost();
+              $user->profile_photo = 0;
+              $user->username = $postData['username'];
+              $user->email_address = $postData['email_address'];
+              $user->facebook_username = $postData['facebook_username'];
+              $user->twitter_username = $postData['twitter_username'];
+              $user->disable_account = $postData['disable_account'];
+              $user->create_date = date('Y-m-d');
+              $user->role = $postData['role'];
+
+
+              // Save the changes
+
+              $this->getUserTable()->saveUser($user);
+              $this->getAdminLogTable()->saveLog(array('log_type'=>'user_update', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$id));
+
+
+              $this->messages[] ='Data Added sucessfully';
+              $user = $this->getUserTable()->getUser($id);
+
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+            }
+          }
+
+                  $send = new Element ( 'send' );
+        $send->setValue ( 'Create' ); // submit
+        $send->setAttributes ( array ('type' => 'submit' ) );
+        $form->add ( $send );
+
+                  $view =  new ViewModel();
+                  $view->setVariable('form',$form);
+
+  return $view;
+    }
+    
+    
+    
+
+    public function editAction() {
+
+         if ($this->request->isPost()) {
+            $user_id = $this->params()->fromPost('id');
+        $user = $this->getUserTable()->getUser($user_id,0);
+        $admin = $this->getUserTable()->adminLog($user_id);
+
+            if(empty($id) or empty($admin)){
+              $this->messages[] ='Admin Not Found';
+            } else if ($this->validate()) { 
+             $postData =$this->params()->fromPost();
+              $results->profile_pic = $postData['profile_pic'];
+              $user->username = $postData['username'];
+              $user->roll = $postData['roll'];
+              $user->create_date = $postData['create_date'];
+
+              // Save the changes
+
+              $this->getUserTable()->saveUser($user);
+              $this->getAdminLogTable()->saveLog(array('log_type'=>'user_update', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$id));
+
+
+              $this->messages[] ='Data Update sucessfully';
+              $user = $this->getUserTable()->getUser($id);
+
+            }
+            
+          }else{
+              $id = $this->params()->fromRoute('id');
+              $user = $this->getUserTable()->getUser($id);
+              $admin = $this->getUserTable()->adminLog($id);
+          }
+                  $view =  new ViewModel();
+                  $view->setVariable('admin',$admin );
+                  
+        return array('admin' => $admin );
+    }
+
+
    
     public function viewAction() {              
         $user_id = $this->params()->fromRoute('id');
         $page = $this->params()->fromQuery('page', 1);
+        $this->getAdminLogTable()->saveLog(array('log_type'=>'admin_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$user_id));
 
 
-	$user = $this->getUserTable()->getUser($user_id,0);
+
+	$user = $this->getUserTable()->getUser($user_id);
 	$admin = $this->getUserTable()->adminLog($user_id);
              
 
@@ -106,6 +213,33 @@ return $result;
         
   
     }
+    
+    
+    public function deactivateAction()
+    {
+        $id = $this->params()->fromRoute('id', 0);
+        $user = $this->getUserTable()->getUser($id);
+        //print_r($id); exit;
+        
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $del = $request->getPost('del', 'No');
+        
+            if ($del == 'Yes') {
+                  $this->getUserTable()->updateUser(array('disable_account'=>0),$id);
+            }
+
+            // Redirect to list of albums
+        }
+
+        return array(
+            'id'    => $id,
+            'user' => $user
+        );
+    }
+    
+    
 	
 }
 

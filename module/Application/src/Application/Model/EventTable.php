@@ -64,6 +64,12 @@ class EventTable
         }
         return $rowset->current();
     }
+	 
+	
+	
+	
+	
+	
     public function moderateFetchAll()
     {
          
@@ -100,6 +106,14 @@ class EventTable
                 throw new \Exception('User does not exist');
             }
         }
+    }
+	
+	public function update($data,$id)
+    {
+        
+                $this->tableGateway->update($data, array('event_id' => $id));
+                
+        
     }
 
      public function validate($data)

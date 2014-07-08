@@ -9,6 +9,8 @@ use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Where;
 use Zend\Db\ResultSet;
 use Zend\Db\Sql\Select;
+use Application\Model\MUUID;
+
 
 
 class UserTable
@@ -33,12 +35,11 @@ class UserTable
          
       $select = $this->tableGateway->getSql()->select();
       
+      $select->join('media', new \Zend\Db\Sql\Expression('media.user_id = user.user_id AND media.is_profile_pic = 1'), array('metadata'),'left'); 
       $select->where('user.role != 2'); 
-   //  $select->join('account', "user.user_id = account.user_id", array('username', 'account_id'),'left'); 
-     $select->join('media', new \Zend\Db\Sql\Expression('media.user_id = user.user_id AND media.is_profile_pic = 1'), array('metadata'),'left'); 
-          
-          $results = $this->tableGateway->selectWith($select);
-        $results->buffer();
+    
+      $results = $this->tableGateway->selectWith($select);
+      $results->buffer();
         return $results;
         
       }
@@ -64,11 +65,9 @@ class UserTable
          return $results->current();
      }
         return $results;
+        }
+
         
-         
-       
-        
-    }
 
     public function getUser($id)
     {
@@ -78,6 +77,11 @@ class UserTable
             throw new \Exception("Could not find row $id");
         }
         return $row;
+    }
+    
+    public function addAdmin($data)
+    {
+        $this->tableGateway->insert($data);
     }
 
     public function saveUser(User $user)
@@ -97,7 +101,9 @@ class UserTable
 
         $id = $user->user_id;
         if (empty($id)) {
-            $data['create_date']=strtotime(date(Y-m-d));
+            $uuid = MUUID::fetchUUID ();
+            $data['user_id']=$uuid;
+            $data['create_date']=strtotime(date('Y-m-d'));
             $this->tableGateway->insert($data);
             return true;
         } else {
@@ -139,6 +145,15 @@ class UserTable
             throw new \Exception("Could not find row ");
         }
         return $row;
+    }
+    
+     public function updateUser($data,$id)
+    {
+         if ($this->getUser($id)) {
+                $this->tableGateway->update($data, array('user_id' => $id));
+                return true;
+            } 
+        
     }
     
     

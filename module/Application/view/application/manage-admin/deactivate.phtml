@@ -1,0 +1,18 @@
+<?php
+
+$title = 'deactivate admin';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<p>Are you sure that you want to deactivate
+    '<?php echo $this->escapeHtml($user->username); ?>'
+</p>
+
+<form action="/admin/manage" method="post">
+<div>
+    <input type="hidden" name="id" value="<?php echo (int) $user->id; ?>" />
+    <input type="submit" name="del" value="Yes" />
+    <input type="submit" name="del" value="No" />
+</div>
+</form>
