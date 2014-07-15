@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -19,17 +20,17 @@ use Zend\Mail\Message;
 use Zend\Mail\Transport\Sendmail as SendmailTransport;
 use Guzzle\Http\Client;
 use Zend\Http\ClientStatic;
-
 use Application\View\Helper\S3Service;
 use Application\View\Helper\S3;
+use Aws\S3\S3Client;
+use Application\Controller\AWSManagerSender;
 
-class IndexController extends AbstractActionController
-{
+class IndexController extends AbstractActionController {
 
-	//Updated....
-	//protected $url = "http://memreasdev-ws1.elasticbeanstalk.com/";
-   protected $url = "http://test/";
-	protected $test = "Hope this works!";
+    //Updated....
+    //protected $url = "http://memreasdev-ws1.elasticbeanstalk.com/";
+    protected $url = "http://test/";
+    protected $test = "Hope this works!";
     //protected $url = "http://localhost/memreas-dev-php-ws/app/";
     protected $user_id;
     protected $storage;
@@ -39,45 +40,43 @@ class IndexController extends AbstractActionController
     protected $mediaTable;
     protected $friendmediaTable;
 
-    public function getToken()
-    {
+    public function getToken() {
         $session = $this->getAuthService()->getIdentity();
-        return  empty($session['token'])?'':$session['token']; ;
+        return empty($session['token']) ? '' : $session['token'];
+        ;
     }
-    
-    public function fetchXML($action, $xml) {
-		$guzzle = new Client();
 
-error_log("Inside fetch XML request url ---> " . $this->url . PHP_EOL);
-error_log("Inside fetch XML request action ---> " . $action . PHP_EOL);
-error_log("Inside fetch XML request XML ---> " . $xml . PHP_EOL);
+    public function fetchXML($action, $xml) {
+        $guzzle = new Client();
+
+        error_log("Inside fetch XML request url ---> " . $this->url . PHP_EOL);
+        error_log("Inside fetch XML request action ---> " . $action . PHP_EOL);
+        error_log("Inside fetch XML request XML ---> " . $xml . PHP_EOL);
         $request = $guzzle->post(
-			$this->url,
-			null,
-			array(
-			'action' => $action,
-			//'cache_me' => true,
-    		'xml' => $xml,
+                $this->url, null, array(
+            'action' => $action,
+            //'cache_me' => true,
+            'xml' => $xml,
             'PHPSESSID' => $this->getToken(),
-	    	)
-		);
-		$response = $request->send();
-error_log("Inside fetch XML response ---> " . $response->getBody(true) . PHP_EOL);
-error_log("Exit fetchXML".PHP_EOL);
-		return $data = $response->getBody(true);
-	}
+                )
+        );
+        $response = $request->send();
+        error_log("Inside fetch XML response ---> " . $response->getBody(true) . PHP_EOL);
+        error_log("Exit fetchXML" . PHP_EOL);
+        return $data = $response->getBody(true);
+    }
 
     public function indexAction() {
-error_log("Enter indexAction".PHP_EOL);
- 	    $path = $this->security("application/index/index.phtml");
-		$view = new ViewModel();
-		$view->setTemplate($path); // path to phtml file under view folder
-		return $view;
-error_log("Exit indexAction".PHP_EOL);
+        error_log("Enter indexAction" . PHP_EOL);
+        $path = $this->security("application/index/index.phtml");
+        $view = new ViewModel();
+        $view->setTemplate($path); // path to phtml file under view folder
+        return $view;
+        error_log("Exit indexAction" . PHP_EOL);
     }
 
-    public function ApiServerSideAction(){
-       if (isset($_REQUEST['callback'])) {
+    public function ApiServerSideAction() {
+        if (isset($_REQUEST['callback'])) {
             //Fetch parms
             $callback = $_REQUEST['callback'];
             $json = $_REQUEST['json'];
@@ -97,16 +96,17 @@ error_log("Exit indexAction".PHP_EOL);
             header("Content-type: plain/text");
             echo $callback_json;
             //Need to exit here to avoid ZF2 framework view.
-       }
-       exit;
+        }
+        exit;
     }
-    public function buildvideocacheAction(){
-        if (isset ($_POST['video_url'])){
+
+    public function buildvideocacheAction() {
+        if (isset($_POST['video_url'])) {
             $cache_dir = $_SERVER['DOCUMENT_ROOT'] . '/memreas/js/jwplayer/jwplayer_cache/';
-            $video_name = explode ("/", $_POST['video_url']);
-            $video_name = $video_name[count ($video_name) - 1];
-            $cache_file = $this->generateVideoCacheFile ($cache_dir, $video_name);
-            $file_handle = fopen ($cache_dir . $cache_file, 'w');
+            $video_name = explode("/", $_POST['video_url']);
+            $video_name = $video_name[count($video_name) - 1];
+            $cache_file = $this->generateVideoCacheFile($cache_dir, $video_name);
+            $file_handle = fopen($cache_dir . $cache_file, 'w');
             $content = '<!doctype html>
                             <html>
                             <head>
@@ -134,56 +134,56 @@ error_log("Exit indexAction".PHP_EOL);
                             </script>
                             </body>
                             </html>';
-            fwrite ($file_handle, $content, 5000);
-            fclose ($file_handle);
-            $response = array ('video_link' => $cache_file, 'thumbnail' => $_POST['thumbnail'], 'media_id' => $_POST['media_id']);
-            echo json_encode ($response);
+            fwrite($file_handle, $content, 5000);
+            fclose($file_handle);
+            $response = array('video_link' => $cache_file, 'thumbnail' => $_POST['thumbnail'], 'media_id' => $_POST['media_id']);
+            echo json_encode($response);
         }
         exit();
     }
 
-    private function generateVideoCacheFile($cache_dir, $video_name){
-        $cache_file = uniqid('jwcache_') . substr (md5($video_name), 0, 10) . '.html';
-        if (!file_exists ($cache_file)) return $cache_file;
-        else $this->generateVideoCacheFile ($cache_dir, $video_name);
+    private function generateVideoCacheFile($cache_dir, $video_name) {
+        $cache_file = uniqid('jwcache_') . substr(md5($video_name), 0, 10) . '.html';
+        if (!file_exists($cache_file))
+            return $cache_file;
+        else
+            $this->generateVideoCacheFile($cache_dir, $video_name);
     }
 
     public function sampleAjaxAction() {
 
-	    $path = $this->security("application/index/sample-ajax.phtml");
+        $path = $this->security("application/index/sample-ajax.phtml");
 
-		if (isset($_REQUEST['callback'])) {
-			//Fetch parms
-			$callback = $_REQUEST['callback'];
-			$json = $_REQUEST['json'];
-			$message_data = json_decode($json, true);
-			//Setup the URL and action
-			$ws_action = $message_data['ws_action'];
-			$type = $message_data['type'];
-			$xml = $message_data['json'];
+        if (isset($_REQUEST['callback'])) {
+            //Fetch parms
+            $callback = $_REQUEST['callback'];
+            $json = $_REQUEST['json'];
+            $message_data = json_decode($json, true);
+            //Setup the URL and action
+            $ws_action = $message_data['ws_action'];
+            $type = $message_data['type'];
+            $xml = $message_data['json'];
 
-			//Guzzle the LoginWeb Service
-			$result = $this->fetchXML($ws_action, $xml);
+            //Guzzle the LoginWeb Service
+            $result = $this->fetchXML($ws_action, $xml);
 
-			$json = json_encode($result);
-			//Return the ajax call...
-			$callback_json = $callback . "(" . $json . ")";
-			$output = ob_get_clean();
-			header("Content-type: plain/text");
-			echo $callback_json;
-			//Need to exit here to avoid ZF2 framework view.
-			exit;
-		} else {
-			$view = new ViewModel();
-			$view->setTemplate($path); // path to phtml file under view folder
-		}
+            $json = json_encode($result);
+            //Return the ajax call...
+            $callback_json = $callback . "(" . $json . ")";
+            $output = ob_get_clean();
+            header("Content-type: plain/text");
+            echo $callback_json;
+            //Need to exit here to avoid ZF2 framework view.
+            exit;
+        } else {
+            $view = new ViewModel();
+            $view->setTemplate($path); // path to phtml file under view folder
+        }
 
-		return $view;
+        return $view;
     }
 
-    
-
-    public function s3uploadAction(){
+    public function s3uploadAction() {
         $S3Service = new S3Service();
         $session = new Container('user');
         $data['bucket'] = 'memreasdev';
@@ -191,41 +191,97 @@ error_log("Exit indexAction".PHP_EOL);
         $data['user_id'] = $session->offsetGet('user_id');
         $data['ACCESS_KEY'] = $S3Service::getAccessKey();
         list($data['policy'], $data['signature']) = $S3Service::get_policy_and_signature(array(
-            'bucket'         => $data['bucket'],
-            'folder'        => $data['folder'],
+                    'bucket' => $data['bucket'],
+                    'folder' => $data['folder'],
         ));
         $view = new ViewModel(array('data' => $data));
         $path = $this->security("application/index/s3upload.phtml");
         $view->setTemplate($path);
         return $view;
-    }  
-    public function addmediaAction(){
-        $session = new Container('user');          
-        $s3 = new S3('AKIAJMXGGG4BNFS42LZA', 'xQfYNvfT0Ar+Wm/Gc4m6aacPwdT5Ors9YHE/d38H');                
-        $target_path = '/' .$session->offsetGet('user_id') . '/image/' . $_FILES['upl']['name'];        
+    }
+
+    public function addmediaAction() {
+        $session = new Container('user');
+        $s3 = new S3('AKIAJMXGGG4BNFS42LZA', 'xQfYNvfT0Ar+Wm/Gc4m6aacPwdT5Ors9YHE/d38H');
+        $target_path = '/' . $session->offsetGet('user_id') . '/image/' . $_FILES['upl']['name'];
         $s3->putBucket('memreasdev', S3::ACL_PUBLIC_READ);
         echo '{"status":"success"}';
-        /*if ($s3->putObjectFile($_FILES['upl']['tmp_name'], 'memreasdev', $target_path, S3::ACL_PUBLIC_READ, array(), 'image/jpeg')){
-            $ws_action = "addmediaevent";
-            $xml = "<xml><addmediaevent><s3url>http://s3.amazonaws.com/memreasdev/" . $session->offsetGet('user_id') . '/image/' . $_FILES['upl']['name'] . "</s3url><is_server_image>0</is_server_image><content_type>" . $_FILES['upl']['type'] . "</content_type><s3file_name>" . $_FILES['upl']['name'] . "</s3file_name><device_id></device_id><event_id></event_id><media_id></media_id><user_id>" . $session->offsetGet('user_id') . "</user_id><is_profile_pic>0</is_profile_pic><location></location></addmediaevent></xml>";
-            $result = $this->fetchXML($ws_action, $xml);
-            echo '{"status":"success"}';            
-        }
-        else echo '{"status":"error"}';*/
+        /* if ($s3->putObjectFile($_FILES['upl']['tmp_name'], 'memreasdev', $target_path, S3::ACL_PUBLIC_READ, array(), 'image/jpeg')){
+          $ws_action = "addmediaevent";
+          $xml = "<xml><addmediaevent><s3url>http://s3.amazonaws.com/memreasdev/" . $session->offsetGet('user_id') . '/image/' . $_FILES['upl']['name'] . "</s3url><is_server_image>0</is_server_image><content_type>" . $_FILES['upl']['type'] . "</content_type><s3file_name>" . $_FILES['upl']['name'] . "</s3file_name><device_id></device_id><event_id></event_id><media_id></media_id><user_id>" . $session->offsetGet('user_id') . "</user_id><is_profile_pic>0</is_profile_pic><location></location></addmediaevent></xml>";
+          $result = $this->fetchXML($ws_action, $xml);
+          echo '{"status":"success"}';
+          }
+          else echo '{"status":"error"}'; */
         die();
     }
 
+    public function mediaAction() {
+        $session = new Container('user');
+        $aws = new AWSManagerSender($this->getServiceLocator());
+        $client = $aws->s3;
+        $bucket = 'memreasdev';
+        $user_id = '573487b0-1102-47b6-a41f-b9a0a0cd4a1em';
+        $iterator = $client->getIterator('ListObjects', array(
+            'Bucket' => $bucket,
+            'Prefix' => $user_id
+        ));
+
+        $image = $user_id . '/image/';
+        $media = $user_id . '/media/';
+        $total_used = 0.0;
+        $count_image = 0;
+        $count_vedio = 0;
+        $count_audio = 0;
+        $size_vedio = 0;
+        $size_audio = 0;
+        $size_audio = 0;
+        $size_image = 0;
+
+        $audioExt = array('caf' => '', 'wav' => '', 'mp3' => '', 'm4a' => '');
+
+        foreach ($iterator as $object) {
+            $ext = pathinfo($object['Key'], PATHINFO_EXTENSION);
+            //echo '<pre>';print_r($object);
+
+            $total_used = bcadd($total_used, $object['Size']);
+            if (stripos($object['Key'], $image) === 0) {
+                //echo 'image';
+                $size_image = bcadd($size_image, $object['Size']);
+                ++$count_image;
+            } else if (isset($audioExt[$ext])) {
+                // echo 'audio';
+                $size_audio = bcadd($size_audio, $object['Size']);
+                ++$count_audio;
+            } else {
+                //  echo    'vedio';  
+                $size_vedio = bcadd($size_vedio, $object['Size']);
+                ++$count_vedio;
+            }
+        }
+        $avg_img = empty($count_image) ? $count_image : bcdiv($size_image, $count_image, 0);
+        $avg_audio = empty($count_audio) ? $count_audio : bcdiv($size_audio, $count_audio, 0);
+        $avg_vedio = empty($count_vedio) ? $count_vedio : bcdiv($size_vedio, $count_vedio, 0);
+        echo "$size_image $count_image  $avg_img<br>";
+        echo "$size_audio $count_audio  $avg_audio<br>";
+        echo "$size_vedio $count_vedio $avg_vedio <br>";
+
+        echo $total_used;
+
+        exit;
+    }
+
     public function eventAction() {
-	    $path = $this->security("application/index/event.phtml");
+        $path = $this->security("application/index/event.phtml");
 
-		$action = 'listallmedia';
-		$session = new Container('user');
-		$xml = "<xml><listallmedia><event_id></event_id><user_id>" . $session->offsetGet('user_id') . "</user_id><device_id></device_id><limit>10</limit><page>1</page></listallmedia></xml>";
-		$result = $this->fetchXML($action, $xml);
+        $action = 'listallmedia';
+        $session = new Container('user');
+        $xml = "<xml><listallmedia><event_id></event_id><user_id>" . $session->offsetGet('user_id') . "</user_id><device_id></device_id><limit>10</limit><page>1</page></listallmedia></xml>";
+        $result = $this->fetchXML($action, $xml);
 
-		$view = new ViewModel(array('xml'=>$result));
-		$view->setTemplate($path); // path to phtml file under view folder
-		return $view;
+        $view = new ViewModel(array('xml' => $result));
+        $view->setTemplate($path); // path to phtml file under view folder
+        return $view;
         //return new ViewModel();
     }
 
@@ -236,219 +292,215 @@ error_log("Exit indexAction".PHP_EOL);
 //            $config['oauth_token_secret'] = 'zdIrpUzuIs7llt5KLlx1TU1vWUrq28TkSNFUsschaaE4X';
 //            
 //            $config['output_format'] = 'object';
-             $config = new \Application\OAuth\Config();
-    $config->setConsumerKey('1bqpAfSWfZFuEeY3rbsKrw')
-           ->setConsumerSecret('wM0gGBCzZKl5dLRB8TQydRDfTD5ocf2hGRKSQwag')
-           ->setRequestTokenUrl('https://api.twitter.com/oauth/request_token')
-           ->setAuthorizeUrl('https://api.twitter.com/oauth/authenticate')
-           ->setAccessTokenUrl('https://api.twitter.com/oauth/access_token')
-           ->setCallbackUrl('mem2/index/');
-$requestToken = new \Application\OAuth\Token\Request($config, true);
-session_start();
-$_SESSION['twitter_request_token'] = serialize($requestToken);
+        $config = new \Application\OAuth\Config();
+        $config->setConsumerKey('1bqpAfSWfZFuEeY3rbsKrw')
+                ->setConsumerSecret('wM0gGBCzZKl5dLRB8TQydRDfTD5ocf2hGRKSQwag')
+                ->setRequestTokenUrl('https://api.twitter.com/oauth/request_token')
+                ->setAuthorizeUrl('https://api.twitter.com/oauth/authenticate')
+                ->setAccessTokenUrl('https://api.twitter.com/oauth/access_token')
+                ->setCallbackUrl('mem2/index/');
+        $requestToken = new \Application\OAuth\Token\Request($config, true);
+        session_start();
+        $_SESSION['twitter_request_token'] = serialize($requestToken);
 
 // redirect to Twitter for authentication
-$targetUrl = $config->getAuthorizeUrl($requestToken['oauth_token']);
-echo $targetUrl ;
-header('Location: ' . $targetUrl);
+        $targetUrl = $config->getAuthorizeUrl($requestToken['oauth_token']);
+        echo $targetUrl;
+        header('Location: ' . $targetUrl);
 
-		//return $view;
+        //return $view;
     }
 
     public function shareAction() {
-	    $path = $this->security("application/index/share.phtml");
-		$view = new ViewModel();
-		$view->setTemplate($path); // path to phtml file under view folder
-		return $view;
+        $path = $this->security("application/index/share.phtml");
+        $view = new ViewModel();
+        $view->setTemplate($path); // path to phtml file under view folder
+        return $view;
     }
 
     public function queueAction() {
-	    $path = $this->security("application/index/queue.phtml");
-		$view = new ViewModel();
-		$view->setTemplate($path); // path to phtml file under view folder
-		return $view;
+        $path = $this->security("application/index/queue.phtml");
+        $view = new ViewModel();
+        $view->setTemplate($path); // path to phtml file under view folder
+        return $view;
     }
 
     public function eventGalleryAction() {
-	    $path = $this->security("application/index/event-gallery.phtml");
-		$view = new ViewModel();
-		$view->setTemplate($path); // path to phtml file under view folder
-		return $view;
+        $path = $this->security("application/index/event-gallery.phtml");
+        $view = new ViewModel();
+        $view->setTemplate($path); // path to phtml file under view folder
+        return $view;
     }
 
     public function memreasMeFriendsAction() {
-	    $path = $this->security("application/index/memreas-me-friends.phtml");
-		$view = new ViewModel();
-		$view->setTemplate($path); // path to phtml file under view folder
-		return $view;
+        $path = $this->security("application/index/memreas-me-friends.phtml");
+        $view = new ViewModel();
+        $view->setTemplate($path); // path to phtml file under view folder
+        return $view;
     }
 
     public function loginAction() {
-ini_set('max_execution_time', 300);
-		//Fetch the post data
-		$request = $this->getRequest();
-		$postData = $request->getPost()->toArray();
-		$username = $postData ['username'];
-		$password = $postData ['password'];
+        ini_set('max_execution_time', 300);
+        //Fetch the post data
+        $request = $this->getRequest();
+        $postData = $request->getPost()->toArray();
+        $username = $postData ['username'];
+        $password = $postData ['password'];
 
- 
 
-		 $this->getAuthService()->getAdapter()->setUsername($username);
+
+        $this->getAuthService()->getAdapter()->setUsername($username);
         $this->getAuthService()->getAdapter()->setPassword($password);
-        $token = empty($this->session->token)?'':$this->session->token;
+        $token = empty($this->session->token) ? '' : $this->session->token;
         $this->getAuthService()->getAdapter()->setToken($token);
         $result = $this->getAuthService()->authenticate();
         $data = $result->getIdentity();
-        
- 	       $redirect = 'manage';
-        if ($data ) {
+
+        $redirect = 'manage';
+        if ($data) {
             $this->setSession($username);
-            return $this->redirect()->toRoute('admin/default', array('controller' =>'manage','action' => 'index'));
+            return $this->redirect()->toRoute('admin/default', array('controller' => 'manage', 'action' => 'index'));
         } else {
             error_log("Inside loginresponse else...");
             return $this->redirect()->toRoute('index', array('action' => "index"));
         }
-
-
     }
 
     public function logoutAction() {
-		$this->getSessionStorage()->forgetMe();
+        $this->getSessionStorage()->forgetMe();
         $this->getAuthService()->clearIdentity();
         $session = new Container('user');
         $session->getManager()->destroy();
 
         $view = new ViewModel();
-		$view->setTemplate('application/index/index.phtml'); // path to phtml file under view folder
-		return $view;
+        $view->setTemplate('application/index/index.phtml'); // path to phtml file under view folder
+        return $view;
     }
 
     public function setSession($username) {
-		//Fetch the user's data and store it in the session...
-error_log("Inside setSession ...");
-   	    $user = $this->getUserTable()->findOneBy(array('username' => $username));
+        //Fetch the user's data and store it in the session...
+        error_log("Inside setSession ...");
+        $user = $this->getUserTable()->findOneBy(array('username' => $username));
 
-        $user->password='';
-       	$user->disable_account='';
-   	    $user->create_date='';
-        $user->update_time='';
-		
-		$_SESSION['user']['user_id'] = $user->user_id;
+        $user->password = '';
+        $user->disable_account = '';
+        $user->create_date = '';
+        $user->update_time = '';
+
+        $_SESSION['user']['user_id'] = $user->user_id;
         $_SESSION['user']['username'] = $user->username;
         $_SESSION['user']['role'] = $user->role;
+    }
 
-     }
-
-    public function registrationAction()
-    {
-		//Fetch the post data
-		$postData = $this->getRequest()->getPost()->toArray();
-		$email = $postData ['email'];
-		$username = $postData ['username'];
-		$password = $postData ['password'];
+    public function registrationAction() {
+        //Fetch the post data
+        $postData = $this->getRequest()->getPost()->toArray();
+        $email = $postData ['email'];
+        $username = $postData ['username'];
+        $password = $postData ['password'];
         $invited_by = $postData ['invited_by'];
-		//Setup the URL and action
-		$action = 'registration';
-		$xml = "<xml><registration><email>$email</email><username>$username</username><password>$password</password><invited_by>$invited_by</invited_by></registration></xml>";
-		$redirect = 'event';
+        //Setup the URL and action
+        $action = 'registration';
+        $xml = "<xml><registration><email>$email</email><username>$username</username><password>$password</password><invited_by>$invited_by</invited_by></registration></xml>";
+        $redirect = 'event';
 
-		//Guzzle the Registration Web Service
-		$result = $this->fetchXML($action, $xml);
-
-
-		$data = simplexml_load_string($result);
+        //Guzzle the Registration Web Service
+        $result = $this->fetchXML($action, $xml);
 
 
-		//ZF2 Authenticate
-		if ($data->registrationresponse->status == 'success') {
-			$this->setSession($username);
+        $data = simplexml_load_string($result);
 
-			//If there's a profile pic upload it...
-			if (isset($_FILES['file'])) {
-    	 		$file = $_FILES['file'];
-		     	$fileName = $file['name'];
-    	 		$filetype = $file['type'];
-    		 	$filetmp_name = $file['tmp_name'];
-	     		$filesize = $file['size'];
 
-                $url=  $this->url;
-				$guzzle = new Client();
-				$session = new Container('user');
-				$request = $guzzle->post($url)
-								->addPostFields(
-									array(
-                                        'action' => 'addmediaevent',
-										'user_id' => $session->offsetGet('user_id'),
-										'filename' => $fileName,
-										'event_id' => "",
-										'device_id' => "",
-										'is_profile_pic' => 1,
-										'is_server_image' => 0,
-									)
-								)
-								->addPostFiles(
-									array(
-										'f' => $filetmp_name,
-									)
-								);
-			}
-			$response = $request->send();
-			$data = $response->getBody(true);
-			$xml = simplexml_load_string($result);
-			if ($xml->addmediaeventresponse->status == 'success') {
-				//Do nothing even if it fails...
-			}
+        //ZF2 Authenticate
+        if ($data->registrationresponse->status == 'success') {
+            $this->setSession($username);
+
+            //If there's a profile pic upload it...
+            if (isset($_FILES['file'])) {
+                $file = $_FILES['file'];
+                $fileName = $file['name'];
+                $filetype = $file['type'];
+                $filetmp_name = $file['tmp_name'];
+                $filesize = $file['size'];
+
+                $url = $this->url;
+                $guzzle = new Client();
+                $session = new Container('user');
+                $request = $guzzle->post($url)
+                        ->addPostFields(
+                                array(
+                                    'action' => 'addmediaevent',
+                                    'user_id' => $session->offsetGet('user_id'),
+                                    'filename' => $fileName,
+                                    'event_id' => "",
+                                    'device_id' => "",
+                                    'is_profile_pic' => 1,
+                                    'is_server_image' => 0,
+                                )
+                        )
+                        ->addPostFiles(
+                        array(
+                            'f' => $filetmp_name,
+                        )
+                );
+            }
+            $response = $request->send();
+            $data = $response->getBody(true);
+            $xml = simplexml_load_string($result);
+            if ($xml->addmediaeventresponse->status == 'success') {
+                //Do nothing even if it fails...
+            }
 
             //Redirect here
-			return $this->redirect()->toRoute('index', array('action' => $redirect));
-		} else {
-			return $this->redirect()->toRoute('index', array('action' => "index"));
-		}
+            return $this->redirect()->toRoute('index', array('action' => $redirect));
+        } else {
+            return $this->redirect()->toRoute('index', array('action' => "index"));
+        }
     }
+
     public function getUserTable() {
         if (!$this->userTable) {
             $sm = $this->getServiceLocator();
             $this->dbAdapter = $sm->get('doctrine.entitymanager.orm_default');
-            $this->userTable =  $this->dbAdapter->getRepository('Application\Entity\User');
-         }
+            $this->userTable = $this->dbAdapter->getRepository('Application\Entity\User');
+        }
         return $this->userTable;
     }
 
-        public function forgotpasswordAction() {
-         	$request = $this->getRequest();
-		$postData = $request->getPost()->toArray();
- 		$email = isset($postData ['email'])?$postData ['email']:'';
-	 	//Setup the URL and action
-		$action = 'forgotpassword';
-		$xml = "<xml><forgotpassword><email>$email</email></forgotpassword></xml>";
-		//$redirect = 'gallery';
+    public function forgotpasswordAction() {
+        $request = $this->getRequest();
+        $postData = $request->getPost()->toArray();
+        $email = isset($postData ['email']) ? $postData ['email'] : '';
+        //Setup the URL and action
+        $action = 'forgotpassword';
+        $xml = "<xml><forgotpassword><email>$email</email></forgotpassword></xml>";
+        //$redirect = 'gallery';
+        //Guzzle the LoginWeb Service
+        $result = $this->fetchXML($action, $xml);
 
-		//Guzzle the LoginWeb Service
-		$result = $this->fetchXML($action, $xml);
-        
         $data = simplexml_load_string($result);
         echo json_encode($data);
-         return '';
+        return '';
     }
-	public function changepasswordAction() {
-         	$request = $this->getRequest();
-		$postData = $request->getPost()->toArray();
-		
- 		$new = isset($postData ['new'])?$postData ['new']:'';
-		$retype = isset($postData ['reytpe'])?$postData ['reytpe']:'';
-		$token = isset($postData ['token'])?$postData ['token']:'';
-		
-	 	//Setup the URL and action
-		$action = 'forgotpassword';
-		$xml = "<xml><changepassword><new>$new</new><retype>$retype</retype><token>$token</token></changepassword></xml>";  
-		//$redirect = 'gallery';
 
-		//Guzzle the LoginWeb Service
-		$result = $this->fetchXML($action, $xml);
-        
+    public function changepasswordAction() {
+        $request = $this->getRequest();
+        $postData = $request->getPost()->toArray();
+
+        $new = isset($postData ['new']) ? $postData ['new'] : '';
+        $retype = isset($postData ['reytpe']) ? $postData ['reytpe'] : '';
+        $token = isset($postData ['token']) ? $postData ['token'] : '';
+
+        //Setup the URL and action
+        $action = 'forgotpassword';
+        $xml = "<xml><changepassword><new>$new</new><retype>$retype</retype><token>$token</token></changepassword></xml>";
+        //$redirect = 'gallery';
+        //Guzzle the LoginWeb Service
+        $result = $this->fetchXML($action, $xml);
+
         $data = simplexml_load_string($result);
         echo json_encode($data);
-         return '';
+        return '';
     }
 
     public function getAuthService() {
@@ -470,16 +522,17 @@ error_log("Inside setSession ...");
     }
 
     public function security($path) {
-    	//if already login do nothing
-		//$session = new Container("user");
-	    //if(!$session->offsetExists('user_id')){
-		//	error_log("Not there so logout");
-	    //	$this->logoutAction();
-    	//  return "application/index/index.phtml";
-	    //}
-		return $path;
+        //if already login do nothing
+        //$session = new Container("user");
+        //if(!$session->offsetExists('user_id')){
+        //	error_log("Not there so logout");
+        //	$this->logoutAction();
+        //  return "application/index/index.phtml";
+        //}
+        return $path;
         //return $this->redirect()->toRoute('index', array('action' => 'login'));
     }
 
+}
 
-} // end class IndexController
+// end class IndexController
