@@ -44,9 +44,18 @@ protected $feedbackTable;
 
           
     public function indexAction() {
+
+      $order_by = $this->params()->fromQuery('order_by', 0);
+            $order    = $this->params()->fromQuery('order', 'DESC');
+            $q    = $this->params()->fromQuery('q', 0);
+            $where =array();
+             $column = array('username','create_time');
+             $url_order = 'DESC';
+  if (in_array($order_by, $column))
+    $url_order = $order == 'DESC' ? 'ASC' : 'DESC';
                  try {
                  
-        $feedback = $this->getFeedbackTable()->FetchFeedDescAll();
+        $feedback = $this->getFeedbackTable()->FetchFeedDescAll($where, $order_by, $order);
             $page = $this->params()->fromQuery('page', 1);
             $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($feedback);
             $paginator = new Paginator($iteratorAdapter);
@@ -59,7 +68,8 @@ protected $feedbackTable;
             
             return array();
         }
-        return array('paginator' => $paginator, 'feedback_total' => count($feedback), 'page' => $page);
+        return array('paginator' => $paginator, 'feedback_total' => count($feedback),
+                      'order_by'=>$order_by,'order' => $order,'q'=>$q,'page' => $page, 'url_order'=>$url_order);
 
     }
 	 

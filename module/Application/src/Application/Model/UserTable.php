@@ -22,22 +22,27 @@ class UserTable
         $this->tableGateway = $tableGateway;
     }
 
-    public function fetchAll($where=null)
+    public function fetchAll($where=null, $order_by=null, $order=null)
     { 
-        $resultSet = $this->tableGateway->select();
+     $select = $this->tableGateway->getSql()->select();
+         if(!empty($order_by))  $select->order($order_by . ' ' . $order);
+         if(!empty($where))  $select->where($where);
+    $resultSet = $this->tableGateway->selectWith($select);
+
         $resultSet->buffer();
         $resultSet->next();
         return $resultSet;
     }
     
-    public function FetchAdmins()
+    public function FetchAdmins($where, $order_by, $order)
     {
          
       $select = $this->tableGateway->getSql()->select();
-      
-      $select->join('media', new \Zend\Db\Sql\Expression('media.user_id = user.user_id AND media.is_profile_pic = 1'), array('metadata'),'left'); 
+             $select->join('media', new \Zend\Db\Sql\Expression('media.user_id = user.user_id AND media.is_profile_pic = 1'), array('metadata'),'left'); 
       $select->where('user.role != 2'); 
-    
+      if(!empty($order_by))  $select->order($order_by . ' ' . $order);
+         if(!empty($where))  $select->where($where);
+    //echo $select->getSqlString();
       $results = $this->tableGateway->selectWith($select);
       $results->buffer();
         return $results;
@@ -155,7 +160,47 @@ class UserTable
             } 
         
     }
+
     
+     
+    public function getUserRegisterCount($time='')
+    {
+        
+        
+        $totalRegisterUser = 0;
+                 $select = new Select;
+        $select->from($this->tableGateway->getTable());
+        $select->where("create_date >= $time");
+        $select->columns(array('num' => new \Zend\Db\Sql\Expression('COUNT(user_id)')));
+        
+        $results = $this->tableGateway->selectWith($select);
+        //print_r($results); exit;
+      //print_r($select->getSqlString());
+          $t=$results->current()->num;
+        $totalInvite = 0;
+        return $t;
+    }
+    
+     
+
+    public function planUsage($value='')
+    {
+        $pastDay = date('Y-m-d', strtotime(' -1 day'));
+        $pastWeek = date('Y-m-d', strtotime(' -1 week'));
+        $pastMonth = date('Y-m-d', strtotime(' +1 month'));
+        $totalRegisterUser = 0;
+        $totalInvite = 0;
+    }
+    public function InviteSummary($value='')
+    {
+
+        $pastDay = date('Y-m-d', strtotime(' -1 day'));
+        $pastWeek = date('Y-m-d', strtotime(' -1 week'));
+        $pastMonth = date('Y-m-d', strtotime(' +1 month'));
+        $totalRegisterUser = 0;
+
+        $totalInvite = 0;
+    }
     
     public function isExist($where){
          $select = new Select;
@@ -178,4 +223,6 @@ class UserTable
         else
             return false;
     }
+    
+    
 }

@@ -35,13 +35,10 @@ class Module {
         $serviceManager = $e->getApplication()->getServiceManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
-
-
         $session = $e->getApplication()
                 ->getServiceManager()
                 ->get('Zend\Session\SessionManager');
         $session->start();
-
         $this->initAcl($e);
         $eventManager->attach('route', array($this, 'checkAcl'));
  
@@ -211,6 +208,16 @@ class Module {
             $tableGateway = new TableGateway('user', $dbAdapter, null, $resultSetPrototype);
 
             $table = new Model\UserTable($tableGateway);
+            return $table;
+        },
+        'Application\Model\UserInfoTable' => function($sm) {
+            $dbAdapter = $sm->get('memreasintdb');
+            $resultSetPrototype = new \Zend\Db\ResultSet\HydratingResultSet();
+            $resultSetPrototype->setHydrator(new ObjectProperty());
+            $resultSetPrototype->setObjectPrototype(new Model\UserInfo());
+            $tableGateway = new TableGateway('user_info', $dbAdapter, null, $resultSetPrototype);
+
+            $table = new Model\UserInfoTable($tableGateway);
             return $table;
         },
                 'Application\Model\EventTable' => function($sm) {

@@ -1,3 +1,17 @@
+ <?php 
+ $sm = $this->getHelperPluginManager()->getServiceLocator();
+ 
+$router=$sm->get('Router');
+$request=$sm->get('Request');
+$routeMatch=$router->match($request);
+
+//get an array of the route params and their values
+$routeparams=$routeMatch->getParams();
+  
+
+
+?>  
+
   <div class="manage-event"><p>report feedback</p><div class="total"><p>Total feedback:<?php echo $feedback_total ?></p></div></div>
             
             <div class="clr"></div>
@@ -5,11 +19,11 @@
                   <thead>
   <tr>
     <th>prifile pic</th>
-    <th>username</th>
+    <th><a class="paginate_click" href="<?php echo $this->url('admin/default',$routeparams,array('query' => array('page' => $page, 'order_by' => 'username', 'order' => $url_order)));?>">username</th>
     <th>feedback summery</th>
     <th>feedback description</th>
 
-    <th>Date added desc</th>
+    <th><a class="paginate_click" href="<?php echo $this->url('admin/default',$routeparams,array('query' => array('page' => $page, 'order_by' => 'create_time', 'order' => $url_order)));?>">Date added desc</th>
 
   </tr>
   </thead>
@@ -46,6 +60,7 @@ echo $this->paginationControl(
     'layout/paginator.phtml'
     ,
     //the route to link to when a user clicks a control link
-    array()
+    array(                'order_by'=>$order_by,'order' => $order,'q'=>$q
+          )
 );
 ?>

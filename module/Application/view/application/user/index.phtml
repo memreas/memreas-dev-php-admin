@@ -1,17 +1,28 @@
-  <div class="manage-event"><p>manage users</p><div class="total"><p>Total Events:<?php echo $user_total ?></p></div></div>
-            
+ <?php 
+ $sm = $this->getHelperPluginManager()->getServiceLocator();
+ 
+$router=$sm->get('Router');
+$request=$sm->get('Request');
+$routeMatch=$router->match($request);
+
+//get an array of the route params and their values
+$routeparams=$routeMatch->getParams();
+  
+
+
+?>           
             <div class="clr"></div>
-             <table id="manageusertable" class="manageusertable" width="90%" border="1" align="center" cellpadding="0" cellspacing="0">
+             <table id="manageusertable" class="manageusertable" width="90%" border="1" align="center" cellpadding="0" cellspacing="0"><a href="<?php echo $this->url('admin/default',$routeparams,array('query' => array('page' => $page, 'order_by' => 'username', 'order' => $url_order)));?>">
                   <thead>
   <tr>
     <th>Id</th>
-    <th>User Name</th>
-    <th>Email</th>
+    <th><a class="paginate_click" href="<?php echo $this->url('admin/default',$routeparams,array('query' => array('page' => $page, 'order_by' => 'username', 'order' => $url_order)));?>">User Name </a></th>
+    <th><a class="paginate_click" href="<?php echo $this->url('admin/default',$routeparams,array('query' => array('page' => $page, 'order_by' => 'email_address', 'order' => $url_order)));?>">Email</a></th>
     <th>Profile Photo</th>
     <th>Facebook User Name</th>
     <th>Twitter Usern Name</th>
-    <th>Role</th>
-    <th>Status</th>
+    <th><a class="paginate_click" href="<?php echo $this->url('admin/default',$routeparams,array('query' => array('page' => $page, 'order_by' => 'role', 'order' => $url_order)));?>">Role</th>
+    <th><a class="paginate_click" href="<?php echo $this->url('admin/default',$routeparams,array('query' => array('page' => $page, 'order_by' => 'disable_account', 'order' => $url_order)));?>">Status</th>
     
     <th>Action</th>
  
@@ -57,6 +68,7 @@ echo $this->paginationControl(
     'layout/paginator.phtml'
     ,
     //the route to link to when a user clicks a control link
-    array()
+    array(                'order_by'=>$order_by,'order' => $order,'q'=>$q
+          )
 );
 ?>

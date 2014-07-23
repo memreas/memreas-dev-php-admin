@@ -42,8 +42,18 @@ public $status ;
 
     public function indexAction() {
             //$role = $this->security();
+        $order_by = $this->params()->fromQuery('order_by', 0);
+            $order    = $this->params()->fromQuery('order', 'DESC');
+            $q    = $this->params()->fromQuery('q', 0);
+            $where =array();
+             $column = array('username','email_address','role','disable_account');
+             $url_order = 'DESC';
+  if (in_array($order_by, $column))
+    $url_order = $order == 'DESC' ? 'ASC' : 'DESC';
+     
+            
         try {
-        $users = $this->getUserTable()->fetchAll();
+        $users = $this->getUserTable()->fetchAll($where, $order_by, $order);
         
             $page = $this->params()->fromQuery('page', 1);
             $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($users);
@@ -57,7 +67,10 @@ public $status ;
             
             return array();
         }
-        return array('paginator' => $paginator, 'user_total' => count($users));
+        return array('paginator' => $paginator, 'user_total' => count($users),
+                      'order_by'=>$order_by,'order' => $order,'q'=>$q,'page' => $page, 'url_order'=>$url_order
+
+          );
     
 
     }

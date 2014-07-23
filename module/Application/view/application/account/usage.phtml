@@ -1,0 +1,70 @@
+<?php 
+$sm = $this->getHelperPluginManager()->getServiceLocator();
+$router=$sm->get('Router');
+$request=$sm->get('Request');
+$routeMatch=$router->match($request);
+//get an array of the route params and their values
+$routeparams=$routeMatch->getParams();
+ 
+?> 
+                <table>
+                  <tbody>
+                    <tr class="head-table">
+                      <td >&nbsp;</td>
+                      <td >&nbsp;</td>
+                      <td >&nbsp;</td>
+                      <td >&nbsp;</td>
+                      <td >&nbsp;</td>
+                      <td colspan="2"># of video</td>
+                    </tr>
+                    <tr class="head-table">
+                      <td ><a class="paginate_click" href="<?php echo $this->url('admin/default',$routeparams,array('query' => array('page' => $page, 'order_by' => 'username', 'order' => $url_order)));?>">user</td>
+                      <td>plan</td>
+                      <td><a class="paginate_click" href="<?php echo $this->url('admin/default',$routeparams,array('query' => array('page' => $page, 'order_by' => 'data_usage', 'order' => $url_order)));?>">data usage (GB)</td>
+                      <td># of image</td>
+                      <td>avg. image size</td>
+                      <td># of video</td>
+                      <td>avg. video size</td>
+                      <td># of audio comments</td>
+                      <td>avg. audio comment</td>
+                      <td>total % used</td>
+                    </tr>
+                    <?php 
+foreach ($paginator as $key => $user) {
+
+  ?>
+                    <tr class="frst-row drk">
+                      <td><?php echo $user -> username ?></td>
+                      <td><?php echo $user -> plan ?></td>
+                      <td><?php echo $user -> data_usage ?></td>
+                      <td><?php echo $user -> total_image ?></td>
+                      <td><?php echo $user -> average_image ?></td>
+                      <td><?php echo $user -> total_vedio ?></td>
+                      <td><?php echo $user -> average_vedio ?></td>
+                      <td><?php echo $user -> total_audio ?></td>
+                      <td><?php echo $user -> average_audio ?></td>
+                      <td><?php echo $user -> data_usage ?> <span>%</span> </td>
+                    </tr>
+
+                   
+                    <?php  } ?>
+
+                     <tr> <td align ="right"><a href="http://memadmin/admin/account/csv"><input type="button" value="Export to Excel"></a></td></tr>
+                  </tbody>
+
+                </table>
+
+                <?php // add at the end of the file after the table
+echo $this->paginationControl(
+    // the paginator object
+    $this->paginator,
+    // the scrolling style; see http://zf2.readthedocs.org/en/release-2.1.4/modules/zend.paginator.usage.html#rendering-pages-with-view-scripts
+    'sliding',
+    // the partial to use to render the control
+    'layout/paginator.phtml'
+    ,
+    //the route to link to when a user clicks a control link
+    array('order_by'=>$order_by,'order' => $order,'q'=>$q)
+);
+?>
+          

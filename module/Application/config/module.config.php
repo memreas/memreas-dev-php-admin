@@ -105,6 +105,7 @@ return array(
             'Application\Controller\ModerateEvent' => 'Application\Controller\ModerateEventController',
             
             'Application\Controller\ManageAdmin' => 'Application\Controller\ManageAdminController',
+            'Application\Controller\Account' => 'Application\Controller\AccountController',
 
 
 
@@ -129,6 +130,11 @@ return array(
         'strategies' => array(
             'ViewJsonStrategy',
         ),
+        'template_map' => array(
+        'download/download-csv' => 
+            __DIR__ . 
+            '/../view/application/download/download-csv.phtml',
+    ),
     ),
     'doctrine' => array(
         'driver' => array(

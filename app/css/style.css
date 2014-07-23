@@ -2622,3 +2622,134 @@ ul.memreas_results{
 }
 
 }
+/*****Mark styles****/
+#tab4 > table {
+    margin: 20px auto;
+}
+table tbody td, div, h3{
+
+    color: #d5d9de;
+}
+.head-table {
+    background-color: #272727;
+    display: block;
+}
+.head-table > td {
+    display: inline-block;
+    padding: 20px 10px;
+    text-align: center;
+}
+.head-table > td {
+    display: inline-block;
+    padding: 10px;
+    text-align: center;
+    width: 100px;
+}
+.frst-row > td {
+    color: #fff;
+    display: inline-block;
+    padding: 10px;
+    text-align: center;
+    width: 100px;
+}
+.scnd-row > td {
+    color: #fff;
+    display: inline-block;
+    padding: 10px;
+    text-align: center;
+    width: 100px;
+}
+.drk {
+    background-color: #333;
+}
+.blue {
+	background-color: #156fa2;
+}
+#tab4 table tbody td {
+    border-left: 1px solid #4a4949;
+    margin: 0 -2px;
+}
+#tab4 table tbody td:last-child {
+    border-right: 1px solid #4a4949;
+
+}
+#tab5 {
+    margin: 30px auto;
+}
+#tab5 strong {
+    display: block;
+    margin: 0 0 20px;
+}
+.accnt-left {
+	float: left;
+	margin-left: 5%;
+	width: 40%
+}
+#tab5 .accnt-right > div, #tab5  .accnt-left > div {
+	border-right: none!important
+}
+.accnt-right {
+	float: right;
+	width: 40%;
+	margin-right: 5%;
+}
+
+#tab5 .col-1 {
+    border-right: 1px solid #4a4949;
+    float: left;
+    padding: 10px;
+    text-align: left;
+    width: 63%;
+}
+#tab5 .col-2 {
+    float: right;
+    padding: 3px 5px;
+    text-align: center;
+    width: 30%;
+}
+#tab5 .drk.clearfix, #tab5 .blue.clearfix {
+    margin: -3px 0;
+    width: 100%;
+}
+#tab5 .blue.clearfix.total {
+    display: block;
+    margin: 20px 0  30px!important;
+}
+.col-6 {
+	width: 50%;
+	float:left;
+	text-align: center;
+	box-sizing:border-box;
+}
+.col-4 {
+	width: 33.33%;
+	text-align: center;
+	float:left;
+	box-sizing:border-box;
+}
+.col-3 {
+	width: 25%;
+	text-align: center;
+	float:left;
+	box-sizing:border-box;
+}
+.accnt-right .clearfix div {
+	padding: 10px;
+}
+.clearfix div:first-child {
+	border-right: 1px solid #4a4a4a ;
+}
+
+.top div > .col-4:last-child {
+    border-left: 1px solid #4a4a4a;
+}
+.bottom .col-3 {
+    border-right: 1px solid #4a4a4a!important;
+} 
+.mb-10 {
+	margin-bottom: 10px!important;
+}
+.accnt-left.clearfix {
+    border: medium none !important;
+}
+

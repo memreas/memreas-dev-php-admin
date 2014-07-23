@@ -39,11 +39,8 @@ class AccountTable
             $select->limit($count);
         if($offset!=null)
         $select->offset($offset);
-        $statement = $this->tableGateway->getAdapter()->createStatement();
-        $select->prepareStatement($this->tableGateway->getAdapter(), $statement);
-         $resultSet = new ResultSet\ResultSet();
-        $resultSet->initialize($statement->execute());
-
+        
+ 		$resultSet = $this->tableGateway->selectWith($select);
 //        echo $select->getSqlString()."\n <pre>";        print_r($resultSet);
         $resultSet->buffer();
 //        $resultSet->next();

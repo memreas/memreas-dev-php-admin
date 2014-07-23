@@ -24,7 +24,7 @@ class EventTable
         $this->tableGateway = $tableGateway;
     }
 
-    public function fetchAllCondition($where=null, $order=null, $count=null, $offset=null)
+    public function fetchAllCondition($where=null, $order=null,$order_by=null, $count=null, $offset=null)
     {
         
 //        $resultSet = $this->tableGateway->select($where);
@@ -41,6 +41,8 @@ class EventTable
         $select->offset($offset);
         $statement = $this->tableGateway->getAdapter()->createStatement();
         $select->prepareStatement($this->tableGateway->getAdapter(), $statement);
+         if(!empty($order_by))  $select->order($order_by . ' ' . $order);
+         if(!empty($where))  $select->where($where);
          $resultSet = new ResultSet\ResultSet();
         $resultSet->initialize($statement->execute());
 
@@ -49,8 +51,11 @@ class EventTable
 //        $resultSet->next();
         return $resultSet;
     }
-    public function fetchAll(){
-        $resultSet = $this->tableGateway->select();
+    public function fetchAll($where=null, $order_by=null, $order=null){
+      $select = $this->tableGateway->getSql()->select();
+       if(!empty($order_by))  $select->order($order_by . ' ' . $order);
+         if(!empty($where))  $select->where($where);
+        $resultSet = $this->tableGateway->selectWith($select);
         $resultSet->buffer();
         $resultSet->next();
           return $resultSet;
@@ -70,7 +75,7 @@ class EventTable
 	
 	
 	
-    public function moderateFetchAll()
+    public function moderateFetchAll($where=null, $order_by=null, $order=null)
     {
          
       $select = $this->tableGateway->getSql()->select();
@@ -78,7 +83,8 @@ class EventTable
         //$select->columns(array('event_id')); 
         $select->join('user', "user.user_id = event.user_id", array('username', 'profile_photo')); 
         $select->join('media', new \Zend\Db\Sql\Expression('media.user_id = user.user_id AND media.is_profile_pic = 1'), array('metadata'),'left'); 
-                
+          if(!empty($order_by))  $select->order($order_by . ' ' . $order);
+         if(!empty($where))  $select->where($where);       
                
          $results = $this->tableGateway->selectWith($select);
         $results->buffer();

@@ -16,9 +16,11 @@ class AdminLogTable
         $this->tableGateway = $tableGateway;
     }
 
-    public function fetchAll($where=null, $order=null, $count=null, $offset=null)
+    public function fetchAll($where=null, $order=null, $count=null,$order_by=null, $offset=null)
     {
-        
+         $select = $this->tableGateway->getSql()->select();
+       if(!empty($order_by))  $select->order($order_by . ' ' . $order);
+         if(!empty($where))  $select->where($where);
         $resultSet = $this->tableGateway->select($where);
        
         return $resultSet;

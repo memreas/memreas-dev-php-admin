@@ -69,15 +69,17 @@ class ModerateEventTable
         $this->tableGateway->delete(array('event_id' => $id));
     }
     
-     public function moderateFetchAll()
+     public function moderateFetchAll($where=null, $order_by=null, $order=null)
     {
         $select = new \Zend\Db\Sql\Select() ; 
         $select = $sql->select();
         $select->from('event'); 
         $select->columns(array('event_id')); 
         $select->join('user', "user.user_id = event.user_id", array('username')); 
-        
-        
+         if(!empty($order_by))  $select->order($order_by . ' ' . $order);
+         if(!empty($where))  $select->where($where);
+
+        echo $select->getSqlString();
         $statement = $sql->prepareStatementForSqlObject($select);
         $resultSet = new ResultSet\ResultSet();
         $resultSet->initialize($statement->execute());

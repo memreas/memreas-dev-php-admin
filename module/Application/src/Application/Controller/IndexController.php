@@ -40,6 +40,15 @@ class IndexController extends AbstractActionController {
     protected $mediaTable;
     protected $friendmediaTable;
 
+    protected $userinfoTable;
+     public function getUserInfoTable() {
+        if (!$this->userinfoTable) {
+            $sm = $this->getServiceLocator();
+            $this->userinfoTable = $sm->get('Application\Model\UserInfoTable');
+        }
+        return $this->userinfoTable;
+    }
+
     public function getToken() {
         $session = $this->getAuthService()->getIdentity();
         return empty($session['token']) ? '' : $session['token'];
@@ -221,7 +230,7 @@ class IndexController extends AbstractActionController {
         $aws = new AWSManagerSender($this->getServiceLocator());
         $client = $aws->s3;
         $bucket = 'memreasdev';
-        $user_id = '573487b0-1102-47b6-a41f-b9a0a0cd4a1em';
+        $user_id = '573487b0-1102-47b6-a41f-b9a0a0cd4a1e';
         $iterator = $client->getIterator('ListObjects', array(
             'Bucket' => $bucket,
             'Prefix' => $user_id
@@ -230,7 +239,7 @@ class IndexController extends AbstractActionController {
         $image = $user_id . '/image/';
         $media = $user_id . '/media/';
         $total_used = 0.0;
-        $count_image = 0;
+        $count_image = 1;
         $count_vedio = 0;
         $count_audio = 0;
         $size_vedio = 0;
@@ -267,7 +276,18 @@ class IndexController extends AbstractActionController {
         echo "$size_vedio $count_vedio $avg_vedio <br>";
 
         echo $total_used;
+        $data = array('user_id' => $user_id, 
+                        'data_usage' => $total_used,
+                        'total_image' => $count_image,
+                        'total_vedio' => $count_vedio,
+                        'total_audio' => $count_audio,
+                        'average_image' => $avg_img,
+                        'average_vedio' => $avg_vedio,
+                        'average_audio' => $avg_audio,
+                        'plan' => 'free',
+                        );
 
+        $this->getUserInfoTable()->saveUserInfo($data);
         exit;
     }
 

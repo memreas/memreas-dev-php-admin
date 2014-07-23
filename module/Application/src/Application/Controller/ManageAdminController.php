@@ -53,12 +53,23 @@ protected $accountTable;
 
           
     public function indexAction() {
+                  $order_by = $this->params()->fromQuery('order_by', 0);
+            $order    = $this->params()->fromQuery('order', 'DESC');
+            $q    = $this->params()->fromQuery('q', 0);
+            $where =array();
+             $column = array('username','role','create_date');
+             $url_order = 'DESC';
+  if (in_array($order_by, $column))
+    $url_order = $order == 'DESC' ? 'ASC' : 'DESC';
+
                  try {
         //$account = $this->getAccountTable()->getAccount(array('user_id'=>$id));
 
         // $account_id =   $account;
          //echo '<pre>'; print_r($account->account_id); exit;
-        $admin = $this->getUserTable()->FetchAdmins();
+
+
+        $admin = $this->getUserTable()->FetchAdmins($where, $order_by, $order);
         
             $page = $this->params()->fromQuery('page', 1);
             $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($admin);
@@ -72,7 +83,8 @@ protected $accountTable;
             
             return array();
         }
-        return array('paginator' => $paginator, 'admin_total' => count($admin));
+        return array('paginator' => $paginator, 'admin_total' => count($admin),
+          'order_by'=>$order_by,'order' => $order,'q'=>$q,'page' => $page, 'url_order'=>$url_order);
 
     }
 	 
