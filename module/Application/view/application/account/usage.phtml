@@ -7,16 +7,9 @@ $routeMatch=$router->match($request);
 $routeparams=$routeMatch->getParams();
  
 ?> 
-                <table>
+                <table class="manageusertable ">
                   <tbody>
-                    <tr class="head-table">
-                      <td >&nbsp;</td>
-                      <td >&nbsp;</td>
-                      <td >&nbsp;</td>
-                      <td >&nbsp;</td>
-                      <td >&nbsp;</td>
-                      <td colspan="2"># of video</td>
-                    </tr>
+                    
                     <tr class="head-table">
                       <td ><a class="paginate_click" href="<?php echo $this->url('admin/default',$routeparams,array('query' => array('page' => $page, 'order_by' => 'username', 'order' => $url_order)));?>">user</td>
                       <td>plan</td>
@@ -30,20 +23,21 @@ $routeparams=$routeMatch->getParams();
                       <td>total % used</td>
                     </tr>
                     <?php 
-foreach ($paginator as $key => $user) {
+                    $MemHelper = $this->Mem();
 
-  ?>
+foreach ($paginator as $key => $user) {
+   ?>
                     <tr class="frst-row drk">
                       <td><?php echo $user -> username ?></td>
                       <td><?php echo $user -> plan ?></td>
-                      <td><?php echo $user -> data_usage ?></td>
+                      <td><?php echo $MemHelper->toByteString($user -> data_usage) ?></td>
                       <td><?php echo $user -> total_image ?></td>
-                      <td><?php echo $user -> average_image ?></td>
+                      <td><?php echo $MemHelper->toByteString($user -> average_image) ?></td>
                       <td><?php echo $user -> total_vedio ?></td>
-                      <td><?php echo $user -> average_vedio ?></td>
+                      <td><?php echo $MemHelper->toByteString($user -> average_vedio) ?></td>
                       <td><?php echo $user -> total_audio ?></td>
-                      <td><?php echo $user -> average_audio ?></td>
-                      <td><?php echo $user -> data_usage ?> <span>%</span> </td>
+                      <td><?php echo $MemHelper->toByteString($user -> average_audio) ?></td>
+                      <td><?php echo $MemHelper->calPercentge($user -> data_usage,$user -> allowed_size)?> <span>%</span> </td>
                     </tr>
 
                    

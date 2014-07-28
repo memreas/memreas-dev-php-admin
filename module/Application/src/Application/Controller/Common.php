@@ -7,7 +7,7 @@ namespace Application\Controller;
 
 
 class Common{
-	public static  $url = "http://test";
+	public static  $url = "http://ws";
         
         
     public static function fetchXML($action='', $xml='') {
@@ -31,7 +31,8 @@ error_log("Inside fetch XML response ---> " . $response->getBody(true) . PHP_EOL
 error_log("Exit fetchXML".PHP_EOL);
 		return $data = $response->getBody(true);
 	}
-	
+
+
 }
 
 // end class IndexController

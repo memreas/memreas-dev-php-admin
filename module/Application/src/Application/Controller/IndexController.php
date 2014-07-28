@@ -225,71 +225,7 @@ class IndexController extends AbstractActionController {
         die();
     }
 
-    public function mediaAction() {
-        $session = new Container('user');
-        $aws = new AWSManagerSender($this->getServiceLocator());
-        $client = $aws->s3;
-        $bucket = 'memreasdev';
-        $user_id = '573487b0-1102-47b6-a41f-b9a0a0cd4a1e';
-        $iterator = $client->getIterator('ListObjects', array(
-            'Bucket' => $bucket,
-            'Prefix' => $user_id
-        ));
-
-        $image = $user_id . '/image/';
-        $media = $user_id . '/media/';
-        $total_used = 0.0;
-        $count_image = 1;
-        $count_vedio = 0;
-        $count_audio = 0;
-        $size_vedio = 0;
-        $size_audio = 0;
-        $size_audio = 0;
-        $size_image = 0;
-
-        $audioExt = array('caf' => '', 'wav' => '', 'mp3' => '', 'm4a' => '');
-
-        foreach ($iterator as $object) {
-            $ext = pathinfo($object['Key'], PATHINFO_EXTENSION);
-            //echo '<pre>';print_r($object);
-
-            $total_used = bcadd($total_used, $object['Size']);
-            if (stripos($object['Key'], $image) === 0) {
-                //echo 'image';
-                $size_image = bcadd($size_image, $object['Size']);
-                ++$count_image;
-            } else if (isset($audioExt[$ext])) {
-                // echo 'audio';
-                $size_audio = bcadd($size_audio, $object['Size']);
-                ++$count_audio;
-            } else {
-                //  echo    'vedio';  
-                $size_vedio = bcadd($size_vedio, $object['Size']);
-                ++$count_vedio;
-            }
-        }
-        $avg_img = empty($count_image) ? $count_image : bcdiv($size_image, $count_image, 0);
-        $avg_audio = empty($count_audio) ? $count_audio : bcdiv($size_audio, $count_audio, 0);
-        $avg_vedio = empty($count_vedio) ? $count_vedio : bcdiv($size_vedio, $count_vedio, 0);
-        echo "$size_image $count_image  $avg_img<br>";
-        echo "$size_audio $count_audio  $avg_audio<br>";
-        echo "$size_vedio $count_vedio $avg_vedio <br>";
-
-        echo $total_used;
-        $data = array('user_id' => $user_id, 
-                        'data_usage' => $total_used,
-                        'total_image' => $count_image,
-                        'total_vedio' => $count_vedio,
-                        'total_audio' => $count_audio,
-                        'average_image' => $avg_img,
-                        'average_vedio' => $avg_vedio,
-                        'average_audio' => $avg_audio,
-                        'plan' => 'free',
-                        );
-
-        $this->getUserInfoTable()->saveUserInfo($data);
-        exit;
-    }
+   
 
     public function eventAction() {
         $path = $this->security("application/index/event.phtml");

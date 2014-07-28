@@ -1,4 +1,7 @@
- 
+ <?php 
+                     $MemHelper = $this->Mem();
+
+ ?> 
               <div class="accnt-left clearfix">
                 <div class="top">
 
@@ -49,24 +52,24 @@
 
                 <div class="top">
 
-                  <strong>total  data on S3: <span>500gb</span></strong>
+                  <strong>total  data on S3: <span><?=$MemHelper->toByteString($s3Total->data_usage)?></span></strong>
                   <div class="drk clearfix">
                       <div class="col-6">total of images</div>
                       <div class="col-6">average image size</div>
                   </div>
                   <div class="blue clearfix mb-10">
-                      <div class="col-6">1,111,111</div>
-                      <div class="col-6">10mb</div>
+                      <div class="col-6"><?php echo $s3Total->total_image?></div>
+                      <div class="col-6"><?php echo $MemHelper->toByteString($s3Total->average_image);?></div>
                   </div>
 
                   <div class="drk clearfix">
                       <div class="col-4">total # of video</div>
-                      <div class="col-4">average image size</div>
+                      <div class="col-4">average video size</div>
                       <div class="col-4">average duration</div>
                   </div>
                   <div class="blue clearfix mb-10">
-                      <div class="col-4">1,111,111</div>
-                      <div class="col-4">10 mb</div>
+                      <div class="col-4"><?php echo $s3Total->total_vedio?></div>
+                      <div class="col-4"><?php echo $MemHelper->toByteString($s3Total->average_vedio);?></div>
                       <div class="col-4">10 minutes</div>
                   </div>
 
@@ -76,8 +79,8 @@
                       <div class="col-4">average duration</div>
                   </div>
                   <div class="blue clearfix mb-10">
-                      <div class="col-4">5,000,000</div>
-                      <div class="col-4">10 mb</div>
+                      <div class="col-4"><?php echo $s3Total->total_audio?></div>
+                      <div class="col-4"><?php echo $MemHelper->toByteString($s3Total->average_audio)?></div>
                       <div class="col-4">10 seconds</div>
                   </div>
 

@@ -32,6 +32,30 @@ class Mem extends AbstractHelper
         return empty($date)?'-':date('Y-m-d H:i:s',$date);
     }
    
+	 /**
+     * Returns the formatted size
+     *
+     * @param  int $size
+     * @return string
+     */
+    public function toByteString($size)
+    {
+        $sizes = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+        for ($i=0; $size >= 1024 && $i < 9; $i++) {
+            $size /= 1024;
+        }
 
+        return round($size, 2) . $sizes[$i];
+    }
+     public function calPercentge($n=1, $d=1)
+    {$r=0;
+        if($n!=0 && $d!= 0 ){
+            $r = $n/$d;
+            $r = $r*100;
+            $r= ceil($r);
+        }
+
+        return $r;
+    }
     
 }

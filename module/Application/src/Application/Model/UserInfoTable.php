@@ -67,7 +67,7 @@ public function userInfoAll($where=null, $order_by=null, $order=null)
    public function saveUserInfo($data)
     {
          $id = $data['user_id'];
-        
+  
             if ($this->getUserInfo($id)) {
                 $data['updated']=strtotime(date('Y-m-d'));
                 $this->tableGateway->update($data, array('user_id' => $id));
@@ -80,7 +80,6 @@ public function userInfoAll($where=null, $order_by=null, $order=null)
         
             }
         }
-    
-
+  
     
 }

@@ -30,7 +30,7 @@ class UserTable
     $resultSet = $this->tableGateway->selectWith($select);
 
         $resultSet->buffer();
-        $resultSet->next();
+        //$resultSet->next();
         return $resultSet;
     }
     
