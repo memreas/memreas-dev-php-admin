@@ -304,15 +304,16 @@ class IndexController extends AbstractActionController {
 
 
 
+error_log("Inside loginresponse setting...");
         $this->getAuthService()->getAdapter()->setUsername($username);
         $this->getAuthService()->getAdapter()->setPassword($password);
         $token = empty($this->session->token) ? '' : $this->session->token;
         $this->getAuthService()->getAdapter()->setToken($token);
+error_log("Inside loginresponse have session token...");
         $result = $this->getAuthService()->authenticate();
-//error_log("Inside loginresponse authenticate response --> ... ".print_r($result,true).PHP_EOL);
+error_log("Inside loginresponse authenticate response --> ... ".print_r($result,true).PHP_EOL);
         $data = $result->getIdentity();
 
-error_log("Inside loginresponse...");
         $redirect = 'manage';
         if ($data) {
             $this->setSession($username);
