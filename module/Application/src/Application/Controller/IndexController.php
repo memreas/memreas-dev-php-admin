@@ -24,11 +24,13 @@ use Application\View\Helper\S3Service;
 use Application\View\Helper\S3;
 use Aws\S3\S3Client;
 use Application\Controller\AWSManagerSender;
+use Application\Model\MemreasConstants;
+
 
 class IndexController extends AbstractActionController {
 
     //Updated....
-    protected $url = "http://memreasdev-wsu.elasticbeanstalk.com/";
+    protected $url;
     protected $user_id;
     protected $storage;
     protected $authservice;
@@ -309,9 +311,11 @@ class IndexController extends AbstractActionController {
         $result = $this->getAuthService()->authenticate();
         $data = $result->getIdentity();
 
+error_log("Inside loginresponse...");
         $redirect = 'manage';
         if ($data) {
             $this->setSession($username);
+error_log("Inside loginresponse sending to admin/default...");
             return $this->redirect()->toRoute('admin/default', array('controller' => 'manage', 'action' => 'index'));
         } else {
             error_log("Inside loginresponse else...");
@@ -376,7 +380,7 @@ class IndexController extends AbstractActionController {
                 $filetmp_name = $file['tmp_name'];
                 $filesize = $file['size'];
 
-                $url = $this->url;
+                $url = MemreasConstants::ORIGINAL_URL;
                 $guzzle = new Client();
                 $session = new Container('user');
                 $request = $guzzle->post($url)
