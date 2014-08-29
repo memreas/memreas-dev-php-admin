@@ -106,6 +106,7 @@ class Module {
        // $customResource =  $routeParams['controller'];
         //you set your role
         $userRole = 'guest';
+error_log("_SESSION['user']['role']-----> ".$_SESSION['user']['role'].PHP_EOL);        
         if (isset($_SESSION['user']['role']) ) {
             switch ($_SESSION['user']['role']) {
                 default:  $userRole = 'guest'; break;
