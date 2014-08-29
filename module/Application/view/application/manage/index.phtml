@@ -83,6 +83,7 @@ $(document).bgStretcher({
             <li><a href="#" title="tab6">moderate events</a></li>
             <li><a href="#" title="tab5">Account Summary </a></li>
             <li><a href="#" title="tab4">Account Usage</a></li>
+            <li><a href="#" title="tab4">Order History</a></li>
             
 
 
@@ -95,6 +96,7 @@ $(document).bgStretcher({
           <div id="tab5" class="hideCls clearfix"></div>
           <div id="tab6" class="hideCls"></div>
           <div id="tab7" class="hideCls"></div>
+          <div id="tab8" class="hideCls"></div>
              <div id="forgot" class="popups2">
                 <a id="forgotClose" onClick="disablePopup('forgot')" class='popupClose'>x</a>
           <div id="tabone" class=""></div>
@@ -248,12 +250,13 @@ $(document).on("click" , "a.intab", function(e){
  
  $('#tab1').load('/admin/event/index');
   $('#tab2').load('/admin/user');
-    $('#tab3').load('/admin/manage-admin');
+    $('#tab3').load('/admin/manageadmin');
     $('#tab7').load('/admin/report-feedback');
     $('#tab6').load('/admin/moderate-event');
      $('#tab5').load('/admin/account/account-summary');
       $('#tab4').load('/admin/account/usage');
-    
+          $('#tab8').load('/admin/order-history');
+
 
 
 

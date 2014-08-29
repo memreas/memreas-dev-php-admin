@@ -50,13 +50,23 @@ class Module {
         // $roles = include __DIR__ . '/config/module.acl.roles.php';
         $roles = array(
             'guest' => array(
-                'home',
-                'index'
+                    'Application\Controller\Index'
             ),
+           
+            
             'admin' => array(
-                'admin',
-                'admin/default',
+                'Application\Controller\Manage',
+                'Application\Controller\Event',
+                'Application\Controller\User',
+                'Application\Controller\ReportFeedback',
+                'Application\Controller\ModerateEvent',
+                'Application\Controller\Account',
+
+            
             ),
+            'superadmin' =>  array(
+                'Application\Controller\Manageadmin'
+             ),
         );
         $allResources = array();
         foreach ($roles as $role => $resources) {
@@ -72,8 +82,10 @@ class Module {
                 if (!$acl->hasResource($resource))
                     $acl->addResource(new \Zend\Permissions\Acl\Resource\GenericResource($resource));
             }
+           //echo '<pre>'; print_r($allResources);
             //adding restrictions
             foreach ($allResources as $resource) {
+               // echo "$role allowed $resource <br>";
                 $acl->allow($role, $resource);
             }
         }
@@ -85,27 +97,41 @@ class Module {
     }
 
     public function checkAcl(MvcEvent $e) {
-        $route = $e->getRouteMatch()->getMatchedRouteName();
-
+      // '<pre>';  print_r($e->getRouteMatch());
+      $routeName = $e->getRouteMatch()->getMatchedRouteName();
+      //  $routeParams = $e->getRouteMatch()-getParams();
+      $route = $e->getRouteMatch()->getParam('controller');
+       // $params = $e->getRouteMatch()->getParams();
+       // $route = $params['controller']."\\".$params['action'];
+       // $customResource =  $routeParams['controller'];
         //you set your role
         $userRole = 'guest';
-        if (isset($_SESSION['user']['role']) && $_SESSION['user']['role'] == 1) {
-            $userRole = 'admin';
+        if (isset($_SESSION['user']['role']) ) {
+            switch ($_SESSION['user']['role']) {
+                default:  $userRole = 'guest'; break;
+                case '1': $userRole = 'admin'; break;
+                case '3': $userRole = 'superadmin'; break;
+                
+            }
+            
         }
-        error_log('checking acess ->' . $userRole . '->' . $route);
-        if (!$e->getViewModel()->acl->isAllowed($userRole, $route)) {
+        //error_log('checking acess ->' . $userRole . '->' . $route);
+        try {
+            if (!$e->getViewModel()->acl->isAllowed($userRole, $route)) {
             error_log('access deny');
 
             $response = $e->getResponse();
             //location to page or what ever
-            /*  $response -> getHeaders() -> addHeaderLine('Location', $e -> getRequest() -> getBaseUrl() . '/');
-              $response -> setStatusCode(404); */
             $response->getHeaders()->clearHeaders()->addHeaderLine('Location', '/');
             // Set the status code to redirect
             return $response->setStatusCode(302)->sendHeaders();
             // Don't forget to exit
             exit;
         }
+        } catch (\Exception $e) {
+            
+        }
+        
     }
 
     public function getConfig() {
