@@ -309,7 +309,7 @@ class IndexController extends AbstractActionController {
         $token = empty($this->session->token) ? '' : $this->session->token;
         $this->getAuthService()->getAdapter()->setToken($token);
         $result = $this->getAuthService()->authenticate();
-error_log("Inside loginresponse authenticate response --> ... ".print_r($result,true).PHP_EOL);
+//error_log("Inside loginresponse authenticate response --> ... ".print_r($result,true).PHP_EOL);
         $data = $result->getIdentity();
 
 error_log("Inside loginresponse...");

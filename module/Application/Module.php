@@ -118,16 +118,16 @@ class Module {
         //error_log('checking acess ->' . $userRole . '->' . $route);
         try {
             if (!$e->getViewModel()->acl->isAllowed($userRole, $route)) {
-            error_log('access deny');
-
-            $response = $e->getResponse();
-            //location to page or what ever
-            $response->getHeaders()->clearHeaders()->addHeaderLine('Location', '/');
-            // Set the status code to redirect
-            return $response->setStatusCode(302)->sendHeaders();
-            // Don't forget to exit
-            exit;
-        }
+	            error_log('access deny');
+	
+	            $response = $e->getResponse();
+	            //location to page or what ever
+	            $response->getHeaders()->clearHeaders()->addHeaderLine('Location', '/');
+	            // Set the status code to redirect
+	            return $response->setStatusCode(302)->sendHeaders();
+	            // Don't forget to exit
+	            exit;
+        	}
         } catch (\Exception $e) {
             
         }
