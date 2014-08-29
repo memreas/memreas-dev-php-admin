@@ -28,10 +28,7 @@ use Application\Controller\AWSManagerSender;
 class IndexController extends AbstractActionController {
 
     //Updated....
-    //protected $url = "http://memreasdev-ws1.elasticbeanstalk.com/";
-    protected $url = "http://test/";
-    protected $test = "Hope this works!";
-    //protected $url = "http://localhost/memreas-dev-php-ws/app/";
+    protected $url = "http://memreasdev-wsu.elasticbeanstalk.com/";
     protected $user_id;
     protected $storage;
     protected $authservice;
