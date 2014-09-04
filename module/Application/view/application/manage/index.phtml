@@ -76,9 +76,14 @@ $(document).bgStretcher({
       <div class="span12 fixed">
       	<div class="row-fluid">
         <ul id="tabs" class="medium_tabs">
-            <li><a href="#" title="tab1">manage events</a></li>
-            <li><a href="#" title="tab2">manage users</a></li>
-            <li><a href="#" title="tab3">manage admins</a></li>
+<!--             <li><a href="#" title="tab1">manage events</a></li>
+ -->            <li><a href="#" title="tab2">manage users</a></li>
+           <?php
+                if($_SESSION['user']['role'] == 3){
+                  echo '<li><a href="#" title="tab3">manage admins</a></li>';
+                }
+           ?>
+            
             <li><a href="#" title="tab7">feedback report</a></li>
             <li><a href="#" title="tab6">moderate events</a></li>
             <li><a href="#" title="tab5">Account Summary </a></li>
@@ -248,14 +253,19 @@ $(document).on("click" , "a.intab", function(e){
        
  
  
- $('#tab1').load('/admin/event/index');
+// $('#tab1').load('/admin/event/index');
   $('#tab2').load('/admin/user');
-    $('#tab3').load('/admin/manageadmin');
+  <?php
+  if($_SESSION['user']['role'] ==3){
+    echo "$('#tab3').load('/admin/manageadmin');";
+  }
+     
+  ?>
     $('#tab7').load('/admin/report-feedback');
     $('#tab6').load('/admin/moderate-event');
-     $('#tab5').load('/admin/account/account-summary');
-      $('#tab4').load('/admin/account/usage');
-          $('#tab8').load('/admin/order-history');
+    $('#tab5').load('/admin/account/account-summary');
+    $('#tab4').load('/admin/account/usage');
+    $('#tab8').load('/admin/order-history');
 
 
 

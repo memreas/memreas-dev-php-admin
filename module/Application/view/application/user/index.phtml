@@ -1,5 +1,6 @@
  <?php 
- $sm = $this->getHelperPluginManager()->getServiceLocator();
+use Application\Model\user;
+  $sm = $this->getHelperPluginManager()->getServiceLocator();
  
 $router=$sm->get('Router');
 $request=$sm->get('Request');
@@ -40,7 +41,7 @@ foreach ($paginator as $key => $user) {
     <td><?php echo $user -> profile_photo ?></td>
     <td><?php echo $user -> facebook_username ?></td>
     <td><?php echo $user -> twitter_username ?></td>
-    <td><?php echo $user -> role ==1 ?'admin':'member' ?></td>
+    <td><?php echo user::$role_name[$user -> role]  ?></td>
     <td><?php
         echo ($user ->disable_account == 0)?'<img src="/img/status.png" />':
 		'<img src="/img/cross.png" />'

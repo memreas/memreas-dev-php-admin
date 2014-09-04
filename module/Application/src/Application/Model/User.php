@@ -25,7 +25,9 @@ class User {
             $disable_account,
             $create_date,
             $update_time;
-      protected $inputFilter;   
+      protected $inputFilter;  
+            public static $role_name = array(1=>'admin',2=>'member',3=>'superadmin');   
+ 
 
     
 

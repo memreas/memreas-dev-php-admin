@@ -106,8 +106,8 @@ class Module {
        // $customResource =  $routeParams['controller'];
         //you set your role
         $userRole = 'guest';
-error_log("_SESSION['user']-----> ".print_r($_SESSION['user'],true).PHP_EOL);        
-error_log("_SESSION['user']['role']-----> ".$_SESSION['user']['role'].PHP_EOL);        
+//error_log("_SESSION['user']-----> ".print_r($_SESSION['user'],true).PHP_EOL);        
+//error_log("_SESSION['user']['role']-----> ".$_SESSION['user']['role'].PHP_EOL);        
         if (isset($_SESSION['user']['role']) ) {
             switch ($_SESSION['user']['role']) {
                 default:  $userRole = 'guest'; break;
@@ -117,6 +117,7 @@ error_log("_SESSION['user']['role']-----> ".$_SESSION['user']['role'].PHP_EOL);
             }
             
         }
+ 
         //error_log('checking acess ->' . $userRole . '->' . $route);
         try {
             if (!$e->getViewModel()->acl->isAllowed($userRole, $route)) {

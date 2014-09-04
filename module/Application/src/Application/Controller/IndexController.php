@@ -339,7 +339,8 @@ error_log("Inside loginresponse sending to admin/default...");
     public function setSession($username) {
         //Fetch the user's data and store it in the session...
         error_log("Inside setSession ...");
-        $user = $this->getUserTable()->findOneBy(array('username' => $username));
+        $user = $this->getUserTable()->fetchAll(array('username' => $username));
+        $user = $user->current();
 
         $user->password = '';
         $user->disable_account = '';
@@ -420,8 +421,7 @@ error_log("Inside loginresponse sending to admin/default...");
     public function getUserTable() {
         if (!$this->userTable) {
             $sm = $this->getServiceLocator();
-            $this->dbAdapter = $sm->get('doctrine.entitymanager.orm_default');
-            $this->userTable = $this->dbAdapter->getRepository('Application\Entity\User');
+            $this->userTable = $sm->get('Application\Model\UserTable');;
         }
         return $this->userTable;
     }
