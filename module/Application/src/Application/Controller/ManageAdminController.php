@@ -164,38 +164,36 @@ try {
 
          if ($this->request->isPost()) {
             $user_id = $this->params()->fromPost('id');
-        $user = $this->getUserTable()->getUser($user_id,0);
-        $admin = $this->getUserTable()->adminLog($user_id);
+            $user = $this->getUserTable()->getUser($user_id);
 
-            if(empty($id) or empty($admin)){
+
+            if(empty($user_id) or empty($user)){
               $this->messages[] ='Admin Not Found';
             } else if ($this->validate()) { 
-             $postData =$this->params()->fromPost();
-              $results->profile_pic = $postData['profile_pic'];
-              $user->username = $postData['username'];
-              $user->roll = $postData['roll'];
-              $user->create_date = $postData['create_date'];
-
+              $postData =$this->params()->fromPost();
+              // $user->profile_pic = $postData['profile_photo'];
+              //$user->username = $postData['username'];
+              $user->roll = $postData['role'];
+              $user->updated_date = time();
+              $user->disable_account = $postData['disable_account'];
               // Save the changes
 
               $this->getUserTable()->saveUser($user);
-              $this->getAdminLogTable()->saveLog(array('log_type'=>'user_update', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$id));
+              $this->getAdminLogTable()->saveLog(array('log_type'=>'user_update', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$user_id));
 
 
               $this->messages[] ='Data Update sucessfully';
-              $user = $this->getUserTable()->getUser($id);
+              $user = $this->getUserTable()->getUser($user_id);
 
             }
             
           }else{
               $id = $this->params()->fromRoute('id');
               $user = $this->getUserTable()->getUser($id);
-              $admin = $this->getUserTable()->adminLog($id);
-          }
-                  $view =  new ViewModel();
-                  $view->setVariable('admin',$admin );
+           }
+
                   
-        return array('admin' => $admin );
+        return array('admin' => $user );
     }
 
 
@@ -204,9 +202,6 @@ try {
         $user_id = $this->params()->fromRoute('id');
         $page = $this->params()->fromQuery('page', 1);
         $this->getAdminLogTable()->saveLog(array('log_type'=>'admin_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$user_id));
-
-
-
 	$user = $this->getUserTable()->getUser($user_id);
 	$admin = $this->getUserTable()->adminLog($user_id);
              

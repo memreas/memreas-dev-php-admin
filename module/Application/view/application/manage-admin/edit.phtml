@@ -1,11 +1,16 @@
-        
+        <?php $MemHelper = $this->Mem(); ?>
           <form id="form1" name="form1"  action="/admin/manage_admin/edit" method="post" enctype="multipart/form-data" name="addUserFrm">
           <div class="manage-event"><p>edit admin</p></div>
             <ul id="content_1" class="share_memreas_details scrollClass mCustomScrollbar _mCS_1"><div class="mCustomScrollBox mCS-light" id="mCSB_1" style="position:relative; height:100%; overflow:hidden; max-width:100%;"><div class="mCSB_container mCS_no_scrollbar" style="position: relative; top: 0px;">
             <li>
-            <input id="id" name="id" value="<?php echo $this->user->profile_photo?>" type="hidden">
+            <input id="id" name="id" value="<?php  echo $admin->user_id?>" type="hidden">
             <label class="textfield_names1">profile_photo :</label>
-            <input id="profile_photo" name="profile_photo" type="text" class="share-txtfield1" value="<?php echo $admin->profile_photo?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
+            <?php if ($admin->profile_photo == 1) {
+              echo '<p>yes</p>';
+            } else {
+              echo '<p>no</p>';
+            }
+            ?>
             </li>
              <li>
             <label class="textfield_names1">username :</label>
@@ -16,12 +21,31 @@
             <input id="email" name="email_address" type="text" class="share-txtfield1" value="<?php echo $admin->email_address?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
             </li>
               <li>
-            <label class="textfield_names1">admin level :</label>
-            <input name="facebook_username" type="text" class="share-txtfield1" value="<?php echo $admin->role?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
+                <label class="textfield_names1">admin level :</label>
+                <select name="role">
+                  <option value="">Select...</option>
+                  <option value="1" <?php if($admin->role == 1) echo 'selected' ?>   >Admin</option>
+                  <option value="2" <?php if($admin->role == 2) echo 'selected' ?> >Member</option>
+                                    <option value="3" <?php if($admin->role == 3) echo 'selected' ?> >SuperAdmin</option>
+
+                </select>
+            </li>
+            <li>
+            <label class="textfield_names1">disable account :</label>
+             <input name="disable_account" type="radio" class="css-checkbox" id="demo_box_1" value="1"
+             <?php if($admin->disable_account == 1) echo 'checked' ?>
+             > 
+             <p style="display:inline-block; margin-left:5px;">yes</p> 
+             <input name="disable_account" type="radio" class="css-checkbox" id="demo_box_1" value="0"
+             <?php if($admin->disable_account == 0) echo 'checked' ?>
+             >
+             <p style="display:inline-block; margin-left:8px">no</p>
+            
             </li>
               <li>
             <label class="textfield_names1">date created :</label>
-            <input name="twitter_username" type="text" class="share-txtfield1" value="<?php echo $admin->created?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
+            <input name="" type="text" class="share-txtfield1" 
+            value="<?php echo $MemHelper->showDate($admin -> create_date)?>" >
             </li>
             
             
