@@ -75,12 +75,13 @@ class IndexController extends AbstractActionController {
     }
 
     public function indexAction() {
-        error_log("Enter indexAction" . PHP_EOL);
-        $path = $this->security("application/index/index.phtml");
+error_log("Enter admin " . __FUNCTION__ . PHP_EOL);
+        //$path = $this->security("application/index/index.phtml");
+        $path = "application/index/index.phtml";
         $view = new ViewModel();
         $view->setTemplate($path); // path to phtml file under view folder
         return $view;
-        error_log("Exit indexAction" . PHP_EOL);
+error_log("Exit admin " . __FUNCTION__ . PHP_EOL);
     }
 
     public function ApiServerSideAction() {
@@ -238,60 +239,6 @@ class IndexController extends AbstractActionController {
         $view->setTemplate($path); // path to phtml file under view folder
         return $view;
         //return new ViewModel();
-    }
-
-    public function twitterAction() {
-//            $config['consumer_key'] = '1bqpAfSWfZFuEeY3rbsKrw';
-//            $config['consumer_secret'] = 'wM0gGBCzZKl5dLRB8TQydRDfTD5ocf2hGRKSQwag';
-//            //$config['oauth_token'] = '74094832-mnJlYPt02qpy1jhEYAYPMKAzrLF2jTeMiJue65Zn7';
-//            $config['oauth_token_secret'] = 'zdIrpUzuIs7llt5KLlx1TU1vWUrq28TkSNFUsschaaE4X';
-//            
-//            $config['output_format'] = 'object';
-        $config = new \Application\OAuth\Config();
-        $config->setConsumerKey('1bqpAfSWfZFuEeY3rbsKrw')
-                ->setConsumerSecret('wM0gGBCzZKl5dLRB8TQydRDfTD5ocf2hGRKSQwag')
-                ->setRequestTokenUrl('https://api.twitter.com/oauth/request_token')
-                ->setAuthorizeUrl('https://api.twitter.com/oauth/authenticate')
-                ->setAccessTokenUrl('https://api.twitter.com/oauth/access_token')
-                ->setCallbackUrl('mem2/index/');
-        $requestToken = new \Application\OAuth\Token\Request($config, true);
-        session_start();
-        $_SESSION['twitter_request_token'] = serialize($requestToken);
-
-// redirect to Twitter for authentication
-        $targetUrl = $config->getAuthorizeUrl($requestToken['oauth_token']);
-        echo $targetUrl;
-        header('Location: ' . $targetUrl);
-
-        //return $view;
-    }
-
-    public function shareAction() {
-        $path = $this->security("application/index/share.phtml");
-        $view = new ViewModel();
-        $view->setTemplate($path); // path to phtml file under view folder
-        return $view;
-    }
-
-    public function queueAction() {
-        $path = $this->security("application/index/queue.phtml");
-        $view = new ViewModel();
-        $view->setTemplate($path); // path to phtml file under view folder
-        return $view;
-    }
-
-    public function eventGalleryAction() {
-        $path = $this->security("application/index/event-gallery.phtml");
-        $view = new ViewModel();
-        $view->setTemplate($path); // path to phtml file under view folder
-        return $view;
-    }
-
-    public function memreasMeFriendsAction() {
-        $path = $this->security("application/index/memreas-me-friends.phtml");
-        $view = new ViewModel();
-        $view->setTemplate($path); // path to phtml file under view folder
-        return $view;
     }
 
     public function loginAction() {

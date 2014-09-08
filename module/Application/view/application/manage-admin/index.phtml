@@ -40,7 +40,7 @@ $routeparams=$routeMatch->getParams();
    
  ?>
     <tr>
-        <td> <input type="radio" id="radio" name="adminid" value="<?php echo $resultset -> user_id?>" </td>
+        <td> <input type="radio" id="radio" name="adminid" value="<?php echo $resultset->user_id ?>"> </td>
     <td><?php echo '<img src="'. $MemHelper->ProfilePic($resultset -> metadata).'"/>'; ?>  </td>
     <td><?php echo $resultset -> username ?></td>
     <td><?php echo $resultset -> role ?></td>
