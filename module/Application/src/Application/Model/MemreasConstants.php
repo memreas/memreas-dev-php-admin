@@ -7,7 +7,7 @@ namespace Application\Model;
 
 class MemreasConstants {
 	
-const MEMREAS_WS = "https://memreasdev-wsu.elasticbeanstalk.com/";
+const MEMREAS_WS = "https://memreasdev-wsu.memreas.com/";
   //const MEMREAS_WS = "http://ws/";
 
 	const CLOUDFRONT_DOWNLOAD_HOST = 'http://d1ckv7o9k6o3x9.cloudfront.net/';
