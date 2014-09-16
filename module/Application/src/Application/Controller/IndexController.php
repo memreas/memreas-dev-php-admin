@@ -288,7 +288,6 @@ error_log("Inside loginresponse sending to admin/default...");
         error_log("Inside setSession ...");
         $user = $this->getUserTable()->fetchAll(array('username' => $username));
         $user = $user->current();
-
         $user->password = '';
         $user->disable_account = '';
         $user->create_date = '';
@@ -438,7 +437,18 @@ error_log("Inside loginresponse sending to admin/default...");
         return $path;
         //return $this->redirect()->toRoute('index', array('action' => 'login'));
     }
+public function showlogAction() {
+     echo '<pre>' . file_get_contents(getcwd() . '/php_errors.log');
+                exit();
 
+}
+public function clearlogAction() {
+     unlink(getcwd().'/php_errors.log');
+                error_log("Log has been cleared!");
+                echo '<pre>' . file_get_contents(getcwd() . '/php_errors.log');
+                exit();
+
+}
 }
 
 // end class IndexController
