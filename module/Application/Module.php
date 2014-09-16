@@ -41,6 +41,12 @@ class Module {
         $session->start();
         $this->initAcl($e);
         $eventManager->attach('route', array($this, 'checkAcl'));
+        $eventManager->attach('dispatch.error', function($event){
+            $exception = $event->getResult()->exception;
+            if ($exception) {
+               error_log($exception);
+            }
+        });
  
     }
 
@@ -97,8 +103,7 @@ class Module {
     }
 
     public function checkAcl(MvcEvent $e) {
-      // '<pre>';  print_r($e->getRouteMatch());
-      $routeName = $e->getRouteMatch()->getMatchedRouteName();
+       $routeName = $e->getRouteMatch()->getMatchedRouteName();
       //  $routeParams = $e->getRouteMatch()-getParams();
       $route = $e->getRouteMatch()->getParam('controller');
        // $params = $e->getRouteMatch()->getParams();
@@ -118,7 +123,7 @@ class Module {
             
         }
  
-        //error_log('checking acess ->' . $userRole . '->' . $route);
+        error_log('checking acess ->' . $userRole . '->' . $route);
         try {
             if (!$e->getViewModel()->acl->isAllowed($userRole, $route)) {
 	            error_log('access deny');
