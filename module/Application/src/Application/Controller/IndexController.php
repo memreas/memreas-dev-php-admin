@@ -30,7 +30,7 @@ use Application\Model\MemreasConstants;
 class IndexController extends AbstractActionController {
 
     //Updated....
-    protected $url;
+    protected $url = MemreasConstants::MEMREAS_WS;
     protected $user_id;
     protected $storage;
     protected $authservice;
@@ -250,7 +250,7 @@ error_log("Exit admin " . __FUNCTION__ . PHP_EOL);
         $password = $postData ['password'];
 
 
-
+/*
 error_log("Inside loginresponse setting...".print_r($postData,true).PHP_EOL);
         $this->getAuthService()->getAdapter()->setUsername($username);
         $this->getAuthService()->getAdapter()->setPassword($password);
@@ -260,9 +260,18 @@ error_log("Inside loginresponse have session token...");
         $result = $this->getAuthService()->authenticate();
 error_log("Inside loginresponse authenticate response --> ... ".print_r($result,true).PHP_EOL);
         $data = $result->getIdentity();
+        */
+        $action = 'login';
+        $xml = '<xml><login><username>'.$username.'</username><password>'. $password.'</password></login></xml>';
+        $redirect = 'memreas';
+        $result = $this->fetchXML($action, $xml);
+
+        $data = simplexml_load_string($result);
+         $status = trim($data->loginresponse->status) ;
+
 
         $redirect = 'manage';
-        if ($data) {
+        if ($status == 'success') {
             $this->setSession($username);
 error_log("Inside loginresponse sending to admin/default...");
             return $this->redirect()->toRoute('admin/default', array('controller' => 'manage', 'action' => 'index'));
