@@ -49,11 +49,7 @@ class Module {
             }
         });
  */
-$e->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH, function($e) {
-                    echo '<pre>';print_r($e->getRouteMatch());
-
-                }
-        );
+ 
     }
 
     public function initAcl(MvcEvent $e) {

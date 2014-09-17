@@ -242,13 +242,12 @@ error_log("Exit admin " . __FUNCTION__ . PHP_EOL);
     }
 
     public function loginAction() {
-        return ('kamlesh');
          //Fetch the post data
         $request = $this->getRequest();
         $postData = $request->getPost()->toArray();
         $username = $postData ['username'];
         $password = $postData ['password'];
-
+        error_log('in login ..');
 
 /*
 error_log("Inside loginresponse setting...".print_r($postData,true).PHP_EOL);
@@ -260,7 +259,7 @@ error_log("Inside loginresponse have session token...");
         $result = $this->getAuthService()->authenticate();
 error_log("Inside loginresponse authenticate response --> ... ".print_r($result,true).PHP_EOL);
         $data = $result->getIdentity();
-        */
+       
         $action = 'login';
         $xml = '<xml><login><username>'.$username.'</username><password>'. $password.'</password></login></xml>';
         $redirect = 'memreas';
@@ -279,8 +278,9 @@ error_log("Inside loginresponse sending to admin/default...");
             error_log("Inside loginresponse else...");
             return $this->redirect()->toRoute('index', array('action' => "index"));
         }
+        */
     }
-
+ 
     public function logoutAction() {
         $this->getSessionStorage()->forgetMe();
         $this->getAuthService()->clearIdentity();
