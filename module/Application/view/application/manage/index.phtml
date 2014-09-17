@@ -33,6 +33,18 @@
 
 
 <script type="text/javascript">
+    var UI ={
+    'current_tab':'',
+    'url':'',
+    'tabs7':'/admin/report-feedback',
+    'tabs6':'/admin/moderate-event',
+    'tabs5':'/admin/account/account-summary',
+    'tabs4':'/admin/account/usage',
+    'tabs8':'/admin/order-history',
+    'tab2':'/admin/user',
+    'tab3':'/admin/manageadmin'
+    
+};
 $(function() {
 $( "#datepicker" ).datepicker();
 $( "#datepicker-1" ).datepicker();
@@ -167,10 +179,10 @@ $(document).bgStretcher({
 			$(window).load(function(){
 $(document).on("click" , "a.paginate_click", function(e){
           e.preventDefault();
-          var $this=$(this),
-            url=$this.attr("href");
+          var $this=$(this);
+            UI.url=$this.attr("href");
             var target = $(this).parents('div .hideCls');
-            $(target).load( url );
+            $(target).load( UI.url );
  
  
 } );
@@ -207,6 +219,7 @@ $(document).on("click" , "a.intab", function(e){
 				$("#tab-content div.hideCls").hide(); //Hide all content
 				$("#tabs li").attr("id",""); //Reset id's
 				$(this).parent().attr("id","current"); // Activate this
+                                UI.current_tab = $(this).attr('title');
 				$('#' + $(this).attr('title')).fadeIn(); // Show content for current tab
 				
 			});
@@ -261,13 +274,14 @@ $(document).on("click" , "a.intab", function(e){
   }
      
   ?>
-    $('#tab7').load('/admin/report-feedback');
-    $('#tab6').load('/admin/moderate-event');
-    $('#tab5').load('/admin/account/account-summary');
-    $('#tab4').load('/admin/account/usage');
-    $('#tab8').load('/admin/order-history');
+   
 
 
+    $('#tab7').load(UI.tabs7);
+    $('#tab6').load(UI.tabs6);
+    $('#tab5').load(UI.tabs5);
+    $('#tab4').load(UI.tabs4);
+    $('#tab8').load(UI.tabs8);
 
 
 	</script>
@@ -278,24 +292,19 @@ $(document).on("click" , "a.intab", function(e){
         event.preventDefault();
         var r = confirm('Do You Realy Wat to Delete This Item ! '+ event.target.id.slice(4) );
         var  delLink = $(this);
-         if(r) {                     $(delLink).closest( "li" ).remove();
-
-            $.post( this.href,function(response){
-               if(response=='success'){
-                    $(delLink).closest( "li" ).remove();
-               }
-
-            });
-        }else{
-
-        }
-       
+        if(r) { 
+          $(delLink).closest( "li" ).remove();
+          $.post( this.href,function(response){
+            if(response=='success'){
+              $(delLink).closest( "li" ).remove();
+            }
+          });
+        }        
       }
     );
   
-  
-                    </script>
-                      <script type="text/javascript" src="/js/jquery.elastislide.js"></script>
+  </script>
+  <script type="text/javascript" src="/js/jquery.elastislide.js"></script>
   
 </body>
 </html>

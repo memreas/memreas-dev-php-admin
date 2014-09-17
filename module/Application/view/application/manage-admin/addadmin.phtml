@@ -10,14 +10,10 @@
             <input  id="email" name="email_address" type="text" class="share-txtfield1" value="" placeholder="Email">
             </li>
               <li>
-            <label class="textfield_names1">facebook account :</label>
-            <input name= "facebook_username" type="text" class="share-txtfield1" value="" placeholder="Facebook account">
+            <label class="textfield_names1">Password :</label>
+            <input name= "password" type="text" class="share-txtfield1" value="" placeholder="Password">
             </li>
-              <li>
-            <label class="textfield_names1">twitter account :</label>
-            <input name="twitter_username" type="text" class="share-txtfield1" value="" placeholder="Twitter Account">
-            </li>
-            
+                        
             <li>
             <label class="textfield_names1">disable account :</label>
              <input name="disable_account" type="radio" class="css-checkbox" id="demo_box_1" value="1"> 
@@ -36,7 +32,7 @@
               </select>
             </li>
               <li>
-            <label class="textfield_names1">profile photo :</label><p>yes</p>
+            <label class="textfield_names1">profile photo :</label><p>no</p>
             </li>
            
            
@@ -48,8 +44,8 @@
           </form>
         
 <script type="text/javascript">
-<?php if(!empty($this->messages)){?>
-	jsuccess('<?php echo implode (' ',$this->messages) ?>');
+<?php if(!empty($messages)){?>
+	jsuccess('<?php echo implode (' ',$messages) ?>');
 
 <?php 	}?>
 

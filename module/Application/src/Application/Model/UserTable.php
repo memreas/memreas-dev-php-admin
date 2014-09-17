@@ -109,8 +109,11 @@ class UserTable
             $uuid = MUUID::fetchUUID ();
             $data['user_id']=$uuid;
             $data['create_date']=strtotime(date('Y-m-d'));
-            $this->tableGateway->insert($data);
-            return true;
+            $x = $this->tableGateway->insert($data);
+             if($x){
+                return $uuid;
+            }
+            return false;
         } else {
             if ($this->getUser($id)) {
                 $this->tableGateway->update($data, array('user_id' => $id));
@@ -154,8 +157,9 @@ class UserTable
     
      public function updateUser($data,$id)
     {
-         if ($this->getUser($id)) {
-                $this->tableGateway->update($data, array('user_id' => $id));
+         if ($user = $this->getUser($id)) {
+             $user->disable_account = 1;
+                $this->saveUser($user);
                 return true;
             } 
         
@@ -206,7 +210,7 @@ class UserTable
          $select = new Select;
         $select->from($this->tableGateway->getTable())
         ->where->NEST->like('username', $where['username'])->or->like('email_address',$where['email_address'])
-                ->UNNEST->and->notEqualTo('user_id', $where['user_id']);
+                ->UNNEST;
         
        $statement = $this->tableGateway->getAdapter()->createStatement();
         $select->prepareStatement($this->tableGateway->getAdapter(), $statement);

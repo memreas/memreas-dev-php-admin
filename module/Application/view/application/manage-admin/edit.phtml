@@ -14,11 +14,11 @@
             </li>
              <li>
             <label class="textfield_names1">username :</label>
-            <input id="username" name="email_address" type="text" class="share-txtfield1" value="<?php echo $admin->username?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
+            <input id="username" name="username" type="text" class="share-txtfield1" value="<?php echo $status=='error'? $post['username']:   $admin->username?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
             </li>
             <li>
             <label class="textfield_names1">email :</label>
-            <input id="email" name="email_address" type="text" class="share-txtfield1" value="<?php echo $admin->email_address?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
+            <input id="email" name="email_address" type="text" class="share-txtfield1" value="<?php echo $status=='error'? $post['email_address']:$admin->email_address?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
             </li>
               <li>
                 <label class="textfield_names1">admin level :</label>
@@ -61,10 +61,17 @@
       
 
 <script type="text/javascript">
-<?php if(!empty($this->messages)){?>
-	jsuccess('<?php echo implode (' ',$this->messages) ?>');
-
-<?php 	}?>
+<?php if(!empty($messages)){
+    
+    if($status == 'error'){?> 
+        jerror('<?php echo implode (' ',$this->messages) ?>');
+	
+    <?php }else {?>
+       jsuccess('<?php echo implode (' ',$this->messages) ?>');
+    <?php }
+    
+    
+    }?>
 
 function checkdata()
 { 
@@ -84,9 +91,11 @@ function checkdata()
     email.focus;
     return false;
     }
-	
-   $.post($('#form1').attr('action'), $('#form1').serialize(), function( data ) {
-$( "#tabone" ).html( data );
+     $( "#tabone" ).addClass("loading");
+    $.post($('#form1').attr('action'), $('#form1').serialize(), function( data ) {
+         $( "#tabone" ).removeClass("loading");
+         //show in pop up
+        $( "#tabone" ).html( data );
 });
 	return true;
 	

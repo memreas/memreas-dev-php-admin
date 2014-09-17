@@ -92,6 +92,7 @@ protected $accountTable;
 
 function validate(){
   $result = true ;
+  
 return $result;
 }
     
@@ -121,47 +122,36 @@ try {
             $form->setData($request->getPost());
             if ($form->isValid()){
                 $postData =$this->params()->fromPost();
-              $user->profile_photo = 0;
-              $user->username = $postData['username'];
-              $user->email_address = $postData['email_address'];
-              $user->facebook_username = $postData['facebook_username'];
-              $user->twitter_username = $postData['twitter_username'];
-              $user->disable_account = $postData['disable_account'];
-              $user->create_date = date('Y-m-d');
-              $user->role = $postData['role'];
+                $xml ="<xml><registration><email>".$postData['email_address']."</email><username>".$postData['username']."</username><password>".$postData['password']."</password><device_token></device_token><device_type></device_type><invited_by></invited_by></registration></xml>";
+                $result = Common::fetchXML('registration', $xml);
+                 $data = simplexml_load_string($result);
 
+                  if (strtolower($data->registrationresponse->status) == 'success') {
+                   $user->user_id = trim($data->registrationresponse->userid);
+                   $user->role = $postData['role'];
+                        $this->getUserTable()->saveUser($user);
+                }
+             
 
-              // Save the changes
-
-              $this->getUserTable()->saveUser($user);
-              $this->getAdminLogTable()->saveLog(array('log_type'=>'user_update', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$id));
+              
+              $this->getAdminLogTable()->saveLog(array('log_type'=>'new_user_added', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=> $user->user_id));
 
 
               $this->messages[] ='Data Added sucessfully';
-              $user = $this->getUserTable()->getUser($id);
-
-                $entityManager->persist($user);
-                $entityManager->flush();
+              
 
             }
           }
 
-                  $send = new Element ( 'send' );
-        $send->setValue ( 'Create' ); // submit
-        $send->setAttributes ( array ('type' => 'submit' ) );
-        $form->add ( $send );
-
+                
                   $view =  new ViewModel();
                   $view->setVariable('form',$form);
 
   return $view;
     }
-    
-    
-    
 
     public function editAction() {
-
+$postData=array();
          if ($this->request->isPost()) {
             $user_id = $this->params()->fromPost('id');
             $user = $this->getUserTable()->getUser($user_id);
@@ -169,21 +159,37 @@ try {
 
             if(empty($user_id) or empty($user)){
               $this->messages[] ='Admin Not Found';
-            } else if ($this->validate()) { 
-              $postData =$this->params()->fromPost();
-              // $user->profile_pic = $postData['profile_photo'];
-              //$user->username = $postData['username'];
-              $user->roll = $postData['role'];
+            } else  {
+                $postData =$this->params()->fromPost();
+                if($user->username != $postData['username'] || $user->email_address != $postData['email_address']){
+                    $where['email_address'] = $postData['email_address'];
+                    $where['username'] = $postData['username'];
+                    $userExist  = $this->getUserTable()-> isExist($where);
+                    
+                    if($userExist){
+                        $this->messages[] ='User Name or email already exist';
+                        $this->status = 'error';
+
+                    }else{
+                        
+                        $user->username= $postData['username'];
+                        $user->email_address =  $postData['email_address'];
+                        
+                    }
+                }
+              if(!empty($postData['role'])){
+                  $user->role = $postData['role'];
+              }
+              
               $user->updated_date = time();
               $user->disable_account = $postData['disable_account'];
               // Save the changes
-
-              $this->getUserTable()->saveUser($user);
-              $this->getAdminLogTable()->saveLog(array('log_type'=>'user_update', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$user_id));
-
-
-              $this->messages[] ='Data Update sucessfully';
-              $user = $this->getUserTable()->getUser($user_id);
+              if($this->status != 'error'){
+                  $this->getUserTable()->saveUser($user);
+                  $this->getAdminLogTable()->saveLog(array('log_type'=>'user_update', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$user_id));
+                  $this->messages[] ='Data Update sucessfully';
+                  $user = $this->getUserTable()->getUser($user_id);
+              }    
 
             }
             
@@ -192,8 +198,9 @@ try {
               $user = $this->getUserTable()->getUser($id);
            }
 
-                  
-        return array('admin' => $user );
+                 
+
+        return array('admin' => $user,'messages'=>$this->messages,'status'=>$this->status,'post' => $postData );
     }
 
 
@@ -226,15 +233,15 @@ try {
     {
         $id = $this->params()->fromRoute('id', 0);
         $user = $this->getUserTable()->getUser($id);
-        //print_r($id); exit;
-        
+         
 
         $request = $this->getRequest();
         if ($request->isPost()) {
             $del = $request->getPost('del', 'No');
         
             if ($del == 'Yes') {
-                  $this->getUserTable()->updateUser(array('disable_account'=>0),$id);
+                  $this->getUserTable()->updateUser(array('disable_account'=> '0'),$id);
+                   $this->messages[] ='User Dactivated';
             }
 
             // Redirect to list of albums
@@ -242,7 +249,9 @@ try {
 
         return array(
             'id'    => $id,
-            'user' => $user
+            'user' => $user,
+            'message'=>$this->messages,
+            'status' => $this->status
         );
     }
     

@@ -269,7 +269,7 @@ error_log("Inside loginresponse authenticate response --> ... ".print_r($result,
         $data = simplexml_load_string($result);
          $status = trim($data->loginresponse->status) ;
 
-print_r($status)exit;
+print_r($status);exit;
         $redirect = 'manage';
         if ($status == 'success') {
             $this->setSession($username);

@@ -9,10 +9,34 @@ $this->headTitle($title);
     '<?php echo $this->escapeHtml($user->username); ?>'
 </p>
 
-<form action="/admin/manage" method="post">
+<form  id="form1" action="/admin/manage_admin/deactivate" method="post">
 <div>
-    <input type="hidden" name="id" value="<?php echo (int) $user->id; ?>" />
-    <input type="submit" name="del" value="Yes" />
+    <input type="hidden" name="id" value="<?php echo (int) $user->user_id; ?>" />
+    <input type="submit" name="del" value="Yes" onclick="checkdata()" />
     <input type="submit" name="del" value="No" />
 </div>
 </form>
+<script>
+    <?php if(!empty($messages)){
+    
+    if($status == 'error'){?> 
+        jerror('<?php echo implode (' ',$this->messages) ?>');
+	
+    <?php }else {?>
+       jsuccess('<?php echo implode (' ',$this->messages) ?>');
+    <?php }
+    
+    
+    }?>
+    
+function checkdata()
+{ 
+    $.post($('#form1').attr('action'), $('#form1').serialize(), function( data ) {
+         //show in pop up
+        $( "#tabone" ).html( data );
+});
+	return true;
+	
+}
+
+</script>

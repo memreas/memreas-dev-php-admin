@@ -39,6 +39,7 @@ class AccountController extends AbstractActionController {
 
     public function UsageAction() {
         // $role = $this->security();
+
         $order_by = $this->params()->fromQuery('order_by', 0);
         $order = $this->params()->fromQuery('order', 'DESC');
         $q = $this->params()->fromQuery('q', 0);
@@ -142,6 +143,7 @@ class AccountController extends AbstractActionController {
 
     public function updateMediaInfoAction() {
         //$session = new Container ( 'user' );
+        ini_set('max_execution_time', 500);
         $aws = new AWSManagerSender($this->getServiceLocator());
         $client = $aws->s3;
         $bucket = 'memreasdev';
@@ -173,7 +175,6 @@ class AccountController extends AbstractActionController {
 
             $userid = stristr($object ['Key'], '/', true);
             $ext = pathinfo($object ['Key'], PATHINFO_EXTENSION);
-
             if (isset($userids [$userid])) {
                 
             } else {
@@ -239,8 +240,7 @@ class AccountController extends AbstractActionController {
                 'average_audio' => $row ['avg_audio'],
                 'plan' => ''
             );
-
-            $this->getUserInfoTable()->saveUserInfo($data);
+             $this->getUserInfoTable()->saveUserInfo($data);
         }
         $data = array(
             'user_id' => 'total-s3',

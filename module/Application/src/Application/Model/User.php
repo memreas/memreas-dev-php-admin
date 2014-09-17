@@ -14,14 +14,14 @@ use Zend\InputFilter\InputFilterInterface;
 class User {
 
     public $user_id,
-            $database_id,
+            $database_id=0,
             $username,
             $password,
             $email_address,
             $role,
             $profile_photo,
-            $facebook_username,
-            $twitter_username,
+            $facebook_username='',
+            $twitter_username='',
             $disable_account,
             $create_date,
             $update_time;
