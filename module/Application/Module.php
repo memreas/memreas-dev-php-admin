@@ -39,15 +39,16 @@ class Module {
                 ->getServiceManager()
                 ->get('Zend\Session\SessionManager');
         $session->start();
-        $this->initAcl($e);
-        $eventManager->attach('route', array($this, 'checkAcl'));
-        $eventManager->attach('dispatch.error', function($event){
+      //  $this->initAcl($e);
+       // $eventManager->attach('route', array($this, 'checkAcl'));
+     /*   $eventManager->attach('dispatch.error', function($event){
+            error_log();
             $exception = $event->getResult()->exception;
             if ($exception) {
                error_log($exception);
             }
         });
- 
+ */
     }
 
     public function initAcl(MvcEvent $e) {
@@ -137,8 +138,7 @@ class Module {
 	            exit;
         	}
         } catch (\Exception $e) {
-            
-        }
+            }
         
     }
 
