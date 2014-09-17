@@ -53,6 +53,7 @@ class MyAuthAdapter implements AdapterInterface
         );
         $response = $request->send();
         $response_body = $response->getBody(true);
+        error_log('response login from ws ....'.print_r($response_body,true));
         $data = \simplexml_load_string($response_body);
         if ($data->loginresponse->status == 'success') {
            

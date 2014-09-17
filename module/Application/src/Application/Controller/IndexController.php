@@ -251,7 +251,7 @@ error_log("Exit admin " . __FUNCTION__ . PHP_EOL);
 
 
 
-error_log("Inside loginresponse setting...");
+error_log("Inside loginresponse setting...",.print_r($postData,true).PHP_EOL);
         $this->getAuthService()->getAdapter()->setUsername($username);
         $this->getAuthService()->getAdapter()->setPassword($password);
         $token = empty($this->session->token) ? '' : $this->session->token;
