@@ -242,8 +242,8 @@ error_log("Exit admin " . __FUNCTION__ . PHP_EOL);
     }
 
     public function loginAction() {
-        ini_set('max_execution_time', 300);
-        //Fetch the post data
+        return ('kamlesh');
+         //Fetch the post data
         $request = $this->getRequest();
         $postData = $request->getPost()->toArray();
         $username = $postData ['username'];
