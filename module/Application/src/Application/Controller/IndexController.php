@@ -244,11 +244,21 @@ error_log("Exit admin " . __FUNCTION__ . PHP_EOL);
     public function loginAction() {
          //Fetch the post data
         $request = $this->getRequest();
+
+        
+  if($request->isPost() ){
+    
         $postData = $request->getPost()->toArray();
         $username = $postData ['username'];
         $password = $postData ['password'];
-        error_log('in login ..');
+        if($this->setSession($username,$password) ){
+        return $this->redirect()->toRoute('admin/default', array('controller' => 'manage', 'action' => 'index'));
 
+        }
+  }
+
+     return $this->redirect()->toRoute('index', array('action' => "index"));
+ 
 /*
 error_log("Inside loginresponse setting...".print_r($postData,true).PHP_EOL);
         $this->getAuthService()->getAdapter()->setUsername($username);
@@ -292,11 +302,14 @@ error_log("Inside loginresponse sending to admin/default...");
         return $view;
     }
 
-    public function setSession($username) {
+    public function setSession($username,$password) {
         //Fetch the user's data and store it in the session...
         error_log("Inside setSession ...");
-        $user = $this->getUserTable()->fetchAll(array('username' => $username));
+        $user = $this->getUserTable()->fetchAll(array('username' => $username,'password' => md5($password)));
         $user = $user->current();
+        if(empty($user->user_id) || $user->role == 2 ){
+            return false;
+        }
         $user->password = '';
         $user->disable_account = '';
         $user->create_date = '';
@@ -305,6 +318,7 @@ error_log("Inside loginresponse sending to admin/default...");
         $_SESSION['user']['user_id'] = $user->user_id;
         $_SESSION['user']['username'] = $user->username;
         $_SESSION['user']['role'] = $user->role;
+        return true;
     }
 
     public function registrationAction() {
