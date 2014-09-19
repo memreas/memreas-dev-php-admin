@@ -17,7 +17,9 @@ class Mem extends AbstractHelper
         if (! empty ( $json_array ['S3_files']['path'])){
             $url = MemreasConstants::CLOUDFRONT_DOWNLOAD_HOST . $json_array ['S3_files']['path'];
             $url = json_decode($this->signer->signArrayOfUrls($url));
+            error_log("profile -".print_r($url));
             $url = $url[0];
+
         }
         return $url ;
     }
