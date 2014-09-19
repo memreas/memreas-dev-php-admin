@@ -15,7 +15,7 @@ class Mem extends AbstractHelper
         $json_array = json_decode ( $metadata, true );
         $url = '/img/profile-pic.jpg';
         if (! empty ( $json_array ['S3_files']['path'])){
-            $url = MemreasConstants::CLOUDFRONT_DOWNLOAD_HOST . $json_array ['S3_files']['thumbnails']['79x80'];
+            $url = $json_array ['S3_files']['thumbnails']['79x80'];
             $url = json_decode($this->signer->signArrayOfUrls($url));
 
 
@@ -26,7 +26,7 @@ class Mem extends AbstractHelper
         $json_array = json_decode ( $metadata, true );
         $url = '/img/small-pic-3.jpg';
         if (! empty ( $json_array ['S3_files'] ['path'] )){
-            $url = MemreasConstants::CLOUDFRONT_DOWNLOAD_HOST .  $json_array ['S3_files']['thumbnails']['79x80'];
+            $url = $json_array ['S3_files']['thumbnails']['79x80'];
 			$url = json_decode($this->signer->signArrayOfUrls($url));
              
  } 
