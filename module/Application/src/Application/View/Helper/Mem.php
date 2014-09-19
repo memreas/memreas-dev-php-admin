@@ -14,7 +14,7 @@ class Mem extends AbstractHelper
     public function ProfilePic($metadata="") {
         $json_array = json_decode ( $metadata, true );
         $url = '/img/profile-pic.jpg';
-        if (! empty ( $json_array ['S3_files']['path'])){
+        if (! empty ( $json_array ['S3_files']['thumbnails']['79x80'][0])){
             $url = $json_array ['S3_files']['thumbnails']['79x80'];
             $url = json_decode($this->signer->signArrayOfUrls($url));
 
@@ -25,7 +25,7 @@ class Mem extends AbstractHelper
     public function EventPic($metadata="") {
         $json_array = json_decode ( $metadata, true );
         $url = '/img/small-pic-3.jpg';
-        if (! empty ( $json_array ['S3_files'] ['path'] )){
+        if (! empty ( $json_array ['S3_files']['thumbnails']['79x80'][0])){
             $url = $json_array ['S3_files']['thumbnails']['79x80'];
 			$url = json_decode($this->signer->signArrayOfUrls($url));
              
