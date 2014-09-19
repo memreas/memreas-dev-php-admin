@@ -17,11 +17,10 @@ class Mem extends AbstractHelper
         if (! empty ( $json_array ['S3_files']['path'])){
             $url = MemreasConstants::CLOUDFRONT_DOWNLOAD_HOST . $json_array ['S3_files']['path'];
             $url = json_decode($this->signer->signArrayOfUrls($url));
-            error_log("profile -".print_r($url));
-            $url = $url[0];
+
 
         }
-        return $url ;
+        return is_array($url)?$url[0]:$url ;
     }
     public function EventPic($metadata="") {
         $json_array = json_decode ( $metadata, true );
@@ -29,9 +28,9 @@ class Mem extends AbstractHelper
         if (! empty ( $json_array ['S3_files'] ['path'] )){
             $url = MemreasConstants::CLOUDFRONT_DOWNLOAD_HOST .  $json_array ['S3_files']['path'];
 			$url = json_decode($this->signer->signArrayOfUrls($url));
-            $url = $url[0];
+             
  } 
-        return $url;
+        return is_array($url)?$url[0]:$url ;
     }
     public function showDate($date="") {
         return empty($date)?'-':date('m-d-Y',$date);
