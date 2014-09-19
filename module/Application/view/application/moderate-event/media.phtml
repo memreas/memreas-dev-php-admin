@@ -20,12 +20,16 @@ $MemHelper = $this->Mem();
     foreach ($this->medias as  $media) {
                 $json_array = json_decode ($media->metadata, true );
              if(isset($json_array ['S3_files'] ['type'] ['image']))  
-             { $mediaUrl = $MemHelper->EventPic($media->metadata)?>
+             { 
+              $mediaUrl = $MemHelper->EventPic($media->metadata);
+
+ 
+              ?>
         
                <li data-preview="<?=$mediaUrl?>"><a href="#"><img src="<?=$mediaUrl?>" alt="image01" /></a></li>
                <img width= '300' src="" alt="">
         <?php }else{ ?>
-         <a data-video="true" href="/jwplayer/index.html"><img src="<?=$MemHelper->EventPic($media->metadata)?>"></a>
+         <a data-video="true" href="/jwplayer/index.html"><img src="<?=$mediaUrl?>"></a>
         
             
 
