@@ -2753,3 +2753,25 @@ table tbody td, div, h3{
     border: medium none !important;
 }
 
+/******************* KHAN styles *****************************/
+form.change-status h2{
+	width: auto;
+	float: none;
+	text-align: center;
+}
+form.change-status .textfield_names{
+	width: auto;
+}
+
+form.change-status label{
+	display: inline-block;
+
+}
+form.change-status input[type="radio"]{
+	margin: 0 5px 0 0;
+}
+
+form.change-status textarea{
+	width: 50%;
+	height: 100px;
+}

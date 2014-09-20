@@ -10,7 +10,7 @@
 
 
 
-<form action="<?=$action?>" method="post" name="form1" id="form1" >
+<form action="<?=$action?>" method="post" class="change-status" name="form1" id="form1" >
   <input name="event_id" type="hidden" value="<?=$event->event_id?>" >
   <ul id="" class="share_memreas_details">
   <?php if($eventStatus == 'inactive') {?>
@@ -27,15 +27,34 @@
                 <a class="black_btn_skin" href="#" onclick="disablePopup('forgot')">cancel</a>
     </li>
     <?php }else{?>
-    <li>
+    <li style="display:none">
       <label class="textfield_names">Disapprove Event :</label>
-    <select id="reason" name="reason">
+      <select id="reason" name="reason">
         <option value="0">select reason</option>
         <option value="admin disapprove">admin disapprove</option>
         <option value="subscription expired">subscription expired</option>
         <option value="user objection">user objection</option>
       </select>
     </li>
+    
+    <li>
+      <h2>Disapprove Event</h2>
+      <label class="textfield_names">Select Reason :</label><li>
+        <li>
+          <input type="radio" name="reason" value="inappropriate-language" id="il"><label for="il">Inappropriate Language</label></option>
+        </li>
+        <li>
+          <input type="radio" name="reason" value="sexual-content" id="sc"><label for="sc">sexual content</label></option>
+        </li>
+        <li>
+          <input type="radio" name="reason" id="um" value="unauthorized-material"><label for="um">unauthorized material</label></option>
+        </li>
+        <li>
+          <input type="radio" name="reason" id="other" value="other"><label for="other">other</label></option>
+        </li>
+        <li>
+          <textarea name="reason" id="reason_other" cols="30" rows="10"></textarea>
+        </li>
    
     <li> <a class="black_btn_skin f-center" href="#" onclick="checkdata()" >Disapprove</a> 
                 <a class="black_btn_skin" href="#" onclick="disablePopup('forgot')">cancel</a>
@@ -44,20 +63,23 @@
    </ul>
 </form>
       <script type="text/javascript">
+      $('#reason_other').on('focus',function () {
+        $('input#other').attr('checked','true');
+      });
 function checkdata()
-{ 
+  { 
 
-	if($('#reason').val() == 0){
-		alert('please select reson');
-		    return false;
+  	if($('#reason').val() == 0){
+  		alert('please select reson');
+  		    return false;
 
-		}
-	
-  $.post($('#form1').attr('action'), $('#form1').serialize(), function( data ) {
-$( "#tabone" ).html( data );
-});
-	return true;
-	
-}
- $("#dtp_date").datepicker();
+  		}
+  	
+    $.post($('#form1').attr('action'), $('#form1').serialize(), function( data ) {
+  $( "#tabone" ).html( data );
+  });
+  	return true;
+  	
+  }
+   $("#dtp_date").datepicker();
 </script>
