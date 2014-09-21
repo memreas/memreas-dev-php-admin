@@ -1434,7 +1434,7 @@ color: #FFF;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
-	top: 20% !important;
+	top: 7% !important; /* Khan Changes */
 }
 .popups2 h2 {
 	color: #FFF;
