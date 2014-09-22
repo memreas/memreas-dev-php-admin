@@ -302,7 +302,14 @@ $(document).on("click" , "a.intab", function(e){
         }        
       }
     );
-  
+  function getRadioValue (x) {
+    if( $('input[name=x]:radio:checked').length > 0 ) {
+        return $('input[name=x]:radio:checked').val();
+    }
+    else {
+        return 0;
+    }
+}
   </script>
   <script type="text/javascript" src="/js/jquery.elastislide.js"></script>
   

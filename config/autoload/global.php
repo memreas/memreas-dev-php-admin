@@ -26,6 +26,12 @@ return array(
             'username' => 'memreas2013',
             'password' => ''
         ),
+        'memreasadmindb' => array(
+            'driver'         => 'Pdo',
+            'dsn'            => 'mysql:dbname=memreasadmin;host=memreasdev-db.co0fw2snbu92.us-east-1.rds.amazonaws.com',
+            'username' => 'memreas2013',
+            'password' => ''
+        ),
     )
 ),
     'service_manager' => array(

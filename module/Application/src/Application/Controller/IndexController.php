@@ -292,8 +292,8 @@ error_log("Inside loginresponse sending to admin/default...");
     }
  
     public function logoutAction() {
-        $this->getSessionStorage()->forgetMe();
-        $this->getAuthService()->clearIdentity();
+        //$this->getSessionStorage()->forgetMe();
+        //$this->getAuthService()->clearIdentity();
         $session = new Container('user');
         $session->getManager()->destroy();
 
@@ -305,7 +305,7 @@ error_log("Inside loginresponse sending to admin/default...");
     public function setSession($username,$password) {
         //Fetch the user's data and store it in the session...
         error_log("Inside setSession ...");
-        $user = $this->getUserTable()->fetchAll(array('username' => $username,'password' => md5($password)));
+        $user = $this->getAminUserTable()->fetchAll(array('username' => $username,'password' => md5($password)));
         $user = $user->current();
         if(empty($user->user_id) || $user->role == 2 ){
             return false;
@@ -391,6 +391,13 @@ error_log("Inside loginresponse sending to admin/default...");
         if (!$this->userTable) {
             $sm = $this->getServiceLocator();
             $this->userTable = $sm->get('Application\Model\UserTable');;
+        }
+        return $this->userTable;
+    }
+     public function getAminUserTable() {
+        if (!$this->userTable) {
+            $sm = $this->getServiceLocator();
+            $this->userTable = $sm->get('Application\Model\AdminUserTable');;
         }
         return $this->userTable;
     }

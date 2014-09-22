@@ -14,11 +14,13 @@
             </li>
              <li>
             <label class="textfield_names1">username :</label>
+ 
             <input id="username" name="username" type="text" class="share-txtfield1" value="<?php echo $status=='error'? $post['username']:   $admin['username']?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
             </li>
             <li>
             <label class="textfield_names1">email :</label>
             <input id="email" name="email_address" type="text" class="share-txtfield1" value="<?php echo $status=='error'? $post['email_address']:$admin['email_address']?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
+ 
             </li>
               <li>
                 <label class="textfield_names1">admin level :</label>
@@ -32,9 +34,10 @@
             </li>
             <li>
             <label class="textfield_names1">disable account :</label>
-             <input id="delete" type="button" onclick= "admindelete()" value="delete"></a> 
+              <input id="delete" type="button" onclick= "admindelete()" value="delete"></a> 
              
             
+ 
             </li>
             
               <li>

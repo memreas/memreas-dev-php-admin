@@ -147,7 +147,7 @@ class AccountController extends AbstractActionController {
         $aws = new AWSManagerSender($this->getServiceLocator());
         $client = $aws->s3;
         $bucket = 'memreasdevsec';
-        $user_id = '';
+        $user_id = '027ae498-231d-4ee2-9f1e-8eec3e508313';
         $iterator = $client->getIterator('ListObjects', array(
             'Bucket' => $bucket,
             'Prefix' => $user_id
@@ -172,7 +172,6 @@ class AccountController extends AbstractActionController {
         );
         $userids = array();
         foreach ($iterator as $object) {
-            print_r($object); exit;
             $userid = stristr($object ['Key'], '/', true);
             $ext = pathinfo($object ['Key'], PATHINFO_EXTENSION);
             if (isset($userids [$userid])) {

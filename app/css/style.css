@@ -266,13 +266,15 @@ nav ul li a:hover, nav ul li a.active {
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
-	overflow: hidden;
-	text-align: center;
-	height: 280px;
+	padding: 10px 0;
+	overflow: auto;
+	min-height: 280px;
+	max-height: 366px;
 	background: #03172F;
 }
 .event img{
-	height: 300px;
+	/*height: 300px;*/
+	margin-bottom: 5px;
 }
 ul.right {
 	overflow: auto;
@@ -1432,7 +1434,7 @@ color: #FFF;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
-	top: 20% !important;
+	top: 7% !important; /* Khan Changes */
 }
 .popups2 h2 {
 	color: #FFF;
@@ -2753,3 +2755,25 @@ table tbody td, div, h3{
     border: medium none !important;
 }
 
+/******************* KHAN styles *****************************/
+form.change-status h2{
+	width: auto;
+	float: none;
+	text-align: center;
+}
+form.change-status .textfield_names{
+	width: auto;
+}
+
+form.change-status label{
+	display: inline-block;
+
+}
+form.change-status input[type="radio"]{
+	margin: 0 5px 0 0;
+}
+
+form.change-status textarea{
+	width: 50%;
+	height: 100px;
+}

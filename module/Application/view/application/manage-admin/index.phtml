@@ -86,7 +86,7 @@ alert('please select user');
 }
 
 function admindelete (argument) {
-  var adminid=getRadioValue ()
+  var adminid=getRadioValue ('adminid');
   if (adminid==0) {
 
 alert('please select user');    
@@ -101,12 +101,5 @@ alert('please select user');
   }
 }
 
-function getRadioValue () {
-    if( $('input[name=adminid]:radio:checked').length > 0 ) {
-        return $('input[name=adminid]:radio:checked').val();
-    }
-    else {
-        return 0;
-    }
-}
+
 </script>

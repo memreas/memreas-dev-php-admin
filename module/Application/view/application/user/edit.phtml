@@ -6,6 +6,7 @@
             <li>
             <input id="id" name="id" value="<?php echo $this->user->user_id?>" type="hidden">
             <label class="textfield_names1">name :</label>
+
             <input readonly id="username" name="username" type="text" class="share-txtfield1" value="<?php echo $this->user->username?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
             </li>
              <li>
@@ -13,14 +14,15 @@
             <input  readonly  id="email" name="email_address" type="text" class="share-txtfield1" value="<?php echo $this->user->email_address?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
             </li>
                
+ 
             
             <li>
             <label class="textfield_names1">disable account :</label>
-             <input name="disable_account" type="radio" class="css-checkbox" id="demo_box_1" value="1" <?php if ($this->user->disable_account == 1) {
+             <input disabled name="disable_account" type="radio" class="css-checkbox" id="demo_box_1" value="1" <?php if ($this->user->disable_account == 1) {
               echo 'checked';
              }?>
              > <p style="display:inline-block; margin-left:5px;">yes</p> 
-             <input name="disable_account" type="radio" class="css-checkbox" id="demo_box_1" value="0" 
+             <input disabled name="disable_account" type="radio" class="css-checkbox" id="demo_box_1" value="0" 
              <?php if ($this->user->disable_account == 0) {
               echo 'checked';
              }?>
