@@ -1,26 +1,18 @@
        <?php
-
-       ?>
+        ?>
           <form id="form1" name="form1"  action="/admin/user/edit" method="post" enctype="multipart/form-data" name="addUserFrm">
           <div class="manage-event"><p>edit users</p></div>
             <ul id="content_1" class="share_memreas_details scrollClass mCustomScrollbar _mCS_1"><div class="mCustomScrollBox mCS-light" id="mCSB_1" style="position:relative; height:100%; overflow:hidden; max-width:100%;"><div class="mCSB_container mCS_no_scrollbar" style="position: relative; top: 0px;">
             <li>
             <input id="id" name="id" value="<?php echo $this->user->user_id?>" type="hidden">
             <label class="textfield_names1">name :</label>
-            <input id="username" name="username" type="text" class="share-txtfield1" value="<?php echo $this->user->username?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
+            <input readonly id="username" name="username" type="text" class="share-txtfield1" value="<?php echo $this->user->username?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
             </li>
              <li>
             <label class="textfield_names1">email :</label>
-            <input id="email" name="email_address" type="text" class="share-txtfield1" value="<?php echo $this->user->email_address?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
+            <input  readonly  id="email" name="email_address" type="text" class="share-txtfield1" value="<?php echo $this->user->email_address?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
             </li>
-              <li>
-            <label class="textfield_names1">facebook account :</label>
-            <input name="facebook_username" type="text" class="share-txtfield1" value="<?php echo $this->user->facebook_username?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
-            </li>
-              <li>
-            <label class="textfield_names1">twitter account :</label>
-            <input name="twitter_username" type="text" class="share-txtfield1" value="<?php echo $this->user->twitter_username?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
-            </li>
+               
             
             <li>
             <label class="textfield_names1">disable account :</label>
@@ -38,12 +30,12 @@
             </li>
               <li>
             <label class="textfield_names1">profile photo :</label>
-            <?php if ($this->user->profile_photo == 1) {
-              echo '<p>yes</p>';
-            } else {
-              echo '<p>no</p>';
-            }
+            <?php
+            $MemHelper = $this->Mem();
+                
+            echo '<img src="'. $MemHelper->ProfilePic($this->user -> metadata).'"/>'; 
             ?>
+            
             </li>
            
            
@@ -58,7 +50,7 @@
 
 <script type="text/javascript">
 <?php if(!empty($this->messages)){?>
-	jsuccess('<?php echo implode (' ',$this->messages) ?>');
+	jsuccessAndRefresh('<?php echo implode (' ',$this->messages) ?>');
 
 <?php 	}?>
 

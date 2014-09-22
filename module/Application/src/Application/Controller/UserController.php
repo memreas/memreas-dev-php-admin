@@ -21,6 +21,8 @@ class UserController extends AbstractActionController {
 public $messages = array();
 public $status ;
     protected $userTable;
+        protected $mediaTable;
+
 
 
             public function getUserTable() {
@@ -29,6 +31,13 @@ public $status ;
             $this->userTable = $sm->get('Application\Model\UserTable');
         }
         return $this->userTable;
+    }
+     public function getMediaTable() {
+        if (!$this->mediaTable) {
+            $sm = $this->getServiceLocator();
+            $this->mediaTable = $sm->get('Application\Model\MediaTable');
+        }
+        return $this->mediaTable;
     }
 
     protected $adminLogTable;
@@ -107,8 +116,8 @@ public $status ;
              $postData =$this->params()->fromPost();
               $user->username = $postData['username'];
               $user->email_address = $postData['email_address'];
-              $user->facebook_username = $postData['facebook_username'];
-              $user->twitter_username = $postData['twitter_username'];
+             // $user->facebook_username = $postData['facebook_username'];
+             // $user->twitter_username = $postData['twitter_username'];
               $user->disable_account = $postData['disable_account'];
 
               // Save the changes
@@ -124,7 +133,10 @@ public $status ;
             
           }else{
               $id = $this->params()->fromRoute('id');
-              $user = $this->getUserTable()->getUser($id);
+              //$user = $this->getUserTable()->getUser($id);
+                             $user = $this->getUserTable()->getUserData(array('user.user_id' =>$id ));
+                          //   echo '<pre>';print_r($userProfile);
+
           }
             
           

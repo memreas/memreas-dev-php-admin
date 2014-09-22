@@ -126,28 +126,59 @@ return $result;
     }
 	
   public function approveAction() {
+      
 	  	$date1 = strtotime('today + 1year');
+                $date=  strtotime('NOW');
  		$eventTable = $this->getEventTable();
-		$postData = $this->params()->fromPost();
-  		$eventTable->update(array('event_id' =>$postData['event_id'], 'self_destruct' => $date1 ),$postData['event_id']);
+                if($this->request->isPost()){
+                    $postData = $this->params()->fromPost();
+                    if(empty($postdata['reason'])){
+              $status='error';
+            } 
+                    
+                    $event=$eventTable->getEvent($postData['event_id']);
+  		
 		$eventStatus='inactive';
 		if(($event->viewable_to >= $date || $event->viewable_to =='')
 		 	&&  ($event->viewable_from <=$date || $event->viewable_from =='')
-            &&  ($event->self_destruct >= $date1  || $event->self_destruct=='')
- )		$eventStatus= 'active';
+            &&  ($event->self_destruct >= $date  || $event->self_destruct=='')
+                    )
+                $eventStatus= 'active';
+                $this->getAdminLogTable()->saveLog(array('log_type'=>'event_disable', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$postData['event_id']));
+                $messages[] ='Event approve succesfully';
+                $status='success';
+                }
+                if($status!='error'){
+                  $eventTable->update(array('event_id' =>$postData['event_id'], 'self_destruct' => $date1 ),$postData['event_id']);
+                }
+                	
+                
 
-  return array('eventStatus'=> $eventStatus, 'event'=> $event);
+  return array('eventStatus'=> $eventStatus, 'event'=> $event,'messages'=>$messages, 'status'=> $status);
     }
-	
+  	
 	public function disapproveAction() {
-		echo $date1 = strtotime('today - 1 month');
+            
+		$date1 = strtotime('today - 1 month');
 		$eventTable = $this->getEventTable();
 		if($this->request->isPost()){
 			$postData = $this->params()->fromPost();
+                        if(empty($postdata['reason'])){
+              $status='error';
+            }   
+                $event=$eventTable->getEvent($postData['event_id']);
   		$eventTable->update(array('event_id' =>$postData['event_id'], 'self_destruct' => $date1 ),$postData['event_id']);
-		}
+		$eventStatus='inactive';
+                $this->getAdminLogTable()->saveLog(array('log_type'=>'event_disable', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$postData['event_id']));
+                $messages[] ='Event disapprove succesfully';
+                $status='success';
+                }
+                if($status!='error'){
+                  $eventTable->update(array('event_id' =>$postData['event_id'], 'self_destruct' => $date1 ),$postData['event_id']);
+                }
+                
 
-  return array('eventStatus'=> $eventStatus, 'event'=> $event);
+  return array('eventStatus'=> $eventStatus, 'event'=> $event, 'messages'=>$messages,'status'=> $status);
     }
    public function init()
     {

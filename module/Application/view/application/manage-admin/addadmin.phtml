@@ -14,14 +14,7 @@
             <input name= "password" type="text" class="share-txtfield1" value="" placeholder="Password">
             </li>
                         
-            <li>
-            <label class="textfield_names1">disable account :</label>
-             <input name="disable_account" type="radio" class="css-checkbox" id="demo_box_1" value="1"> 
-             <p style="display:inline-block; margin-left:5px;">yes</p> 
-             <input name="disable_account" type="radio" class="css-checkbox" id="demo_box_1" value="0">
-             <p style="display:inline-block; margin-left:8px">no</p>
             
-            </li>
             <li>
             <label class="textfield_names1">account type:</label>
               <select name="role">
@@ -45,7 +38,7 @@
         
 <script type="text/javascript">
 <?php if(!empty($messages)){?>
-	jsuccess('<?php echo implode (' ',$messages) ?>');
+	jsuccessAndRefresh('<?php echo implode (' ',$messages) ?>');
 
 <?php 	}?>
 

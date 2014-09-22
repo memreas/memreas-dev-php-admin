@@ -13,7 +13,7 @@ use Application\Model\MUUID;
 
 
 
-class UserTable
+class AdminUserTable
 {
     protected $tableGateway;
 
@@ -38,7 +38,7 @@ class UserTable
     {
          
       $select = $this->tableGateway->getSql()->select();
-             $select->join('media', new \Zend\Db\Sql\Expression('media.user_id = user.user_id AND media.is_profile_pic = 1'), array('metadata'),'left'); 
+           //  $select->join('media', new \Zend\Db\Sql\Expression('media.user_id = user.user_id AND media.is_profile_pic = 1'), array('metadata'),'left'); 
       $select->where('user.role != 2'); 
       if(!empty($order_by))  $select->order($order_by . ' ' . $order);
          if(!empty($where))  $select->where($where);
@@ -78,11 +78,11 @@ class UserTable
     {
         
         $rowset = $this->tableGateway->select(array('user_id' => $id));
-        $row = $rowset->current();
-        if (!$row) {
+        $row = $rowset->toArray();
+        if (empty($row[0])) {
             throw new \Exception("Could not find row $id");
         }
-        return $row;
+        return $row[0];
     }
     
     
@@ -91,25 +91,15 @@ class UserTable
         $this->tableGateway->insert($data);
     }
 
-    public function saveUser(User $user)
+    public function saveUser($data)
     {
-//        (isset($user->user_id)) ? $data['user_id']= $user->user_id : null;
-        (isset($user->database_id)) ? $data['database_id']= $user->database_id : null;
-        (isset($user->username)) ? $data['username']= $user->username : null;
-        (isset($user->password)) ? $data['password']= $user->password : null;
-        (isset($user->email_address)) ? $data['email_address']= $user->email_address : null;
-        (isset($user->role)) ? $data['role']= $user->role : null;
-        (isset($user->profile_photo)) ? $data['profile_photo']= $user->profile_photo : null;
-        (isset($user->facebook_username)) ? $data['facebook_username']= $user->facebook_username : null;
-        (isset($user->twitter_username)) ? $data['twitter_username']= $user->twitter_username : null;
-        (isset($user->disable_account)) ? $data['disable_account']= $user->disable_account : null;
-        (isset($user->create_date)) ? $data['create_date']= $user->create_date : null;
-        (isset($user->update_time)) ? $data['update_time']= strtotime(date('Y-m-d')) : strtotime(date('Y-m-d'));
-
-        $id = $user->user_id;
+            $data['update_time']=strtotime(date('Y-m-d'));
+ 
+        $id = $data['user_id'];
         if (empty($id)) {
             $uuid = MUUID::fetchUUID ();
             $data['user_id']=$uuid;
+            $data['profile_photo']=0;
             $data['create_date']=strtotime(date('Y-m-d'));
             $x = $this->tableGateway->insert($data);
              if($x){

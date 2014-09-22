@@ -3,9 +3,9 @@
           <div class="manage-event"><p>edit admin</p></div>
             <ul id="content_1" class="share_memreas_details scrollClass mCustomScrollbar _mCS_1"><div class="mCustomScrollBox mCS-light" id="mCSB_1" style="position:relative; height:100%; overflow:hidden; max-width:100%;"><div class="mCSB_container mCS_no_scrollbar" style="position: relative; top: 0px;">
             <li>
-            <input id="id" name="id" value="<?php  echo $admin->user_id?>" type="hidden">
+            <input id="id" name="id" value="<?php  echo $admin['user_id']?>" type="hidden">
             <label class="textfield_names1">profile_photo :</label>
-            <?php if ($admin->profile_photo == 1) {
+            <?php if ($admin['profile_photo'] == 1) {
               echo '<p>yes</p>';
             } else {
               echo '<p>no</p>';
@@ -14,38 +14,33 @@
             </li>
              <li>
             <label class="textfield_names1">username :</label>
-            <input id="username" name="username" type="text" class="share-txtfield1" value="<?php echo $status=='error'? $post['username']:   $admin->username?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
+            <input id="username" name="username" type="text" class="share-txtfield1" value="<?php echo $status=='error'? $post['username']:   $admin['username']?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
             </li>
             <li>
             <label class="textfield_names1">email :</label>
-            <input id="email" name="email_address" type="text" class="share-txtfield1" value="<?php echo $status=='error'? $post['email_address']:$admin->email_address?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
+            <input id="email" name="email_address" type="text" class="share-txtfield1" value="<?php echo $status=='error'? $post['email_address']:$admin['email_address']?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
             </li>
               <li>
                 <label class="textfield_names1">admin level :</label>
                 <select name="role">
                   <option value="">Select...</option>
-                  <option value="1" <?php if($admin->role == 1) echo 'selected' ?>   >Admin</option>
-                  <option value="2" <?php if($admin->role == 2) echo 'selected' ?> >Member</option>
-                                    <option value="3" <?php if($admin->role == 3) echo 'selected' ?> >SuperAdmin</option>
+                  <option value="1" <?php if($admin['role'] == 1) echo 'selected' ?>   >Admin</option>
+                  <option value="2" <?php if($admin['role'] == 2) echo 'selected' ?> >Member</option>
+                                    <option value="3" <?php if($admin['role'] == 3) echo 'selected' ?> >SuperAdmin</option>
 
                 </select>
             </li>
             <li>
             <label class="textfield_names1">disable account :</label>
-             <input name="disable_account" type="radio" class="css-checkbox" id="demo_box_1" value="1"
-             <?php if($admin->disable_account == 1) echo 'checked' ?>
-             > 
-             <p style="display:inline-block; margin-left:5px;">yes</p> 
-             <input name="disable_account" type="radio" class="css-checkbox" id="demo_box_1" value="0"
-             <?php if($admin->disable_account == 0) echo 'checked' ?>
-             >
-             <p style="display:inline-block; margin-left:8px">no</p>
+             <input id="delete" type="button" onclick= "admindelete()" value="delete"></a> 
+             
             
             </li>
+            
               <li>
             <label class="textfield_names1">date created :</label>
             <input name="" type="text" class="share-txtfield1" 
-            value="<?php echo $MemHelper->showDate($admin -> create_date)?>" >
+            value="<?php echo $MemHelper->showDate($admin['create_date'])?>" >
             </li>
             
             
@@ -67,7 +62,7 @@
         jerror('<?php echo implode (' ',$this->messages) ?>');
 	
     <?php }else {?>
-       jsuccess('<?php echo implode (' ',$this->messages) ?>');
+       jsuccessAndRefresh('<?php echo implode (' ',$this->messages) ?>');
     <?php }
     
     
@@ -99,6 +94,21 @@ function checkdata()
 });
 	return true;
 	
+}
+function admindelete (argument) {
+  var adminid=getRadioValue ()
+  if (adminid==0) {
+
+alert('please select user');    
+  }else{
+
+    var target = $('#tabone');
+    var url = "/admin/manage_admin/deactivate/"+adminid;
+      $(target).empty();
+          $(target).load( url );
+                  popup('forgot');
+
+  }
 }
 
 function trim(str) {

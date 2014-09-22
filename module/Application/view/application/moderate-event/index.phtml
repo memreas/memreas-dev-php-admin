@@ -45,7 +45,8 @@ $routeparams=$routeMatch->getParams();
     <td><a id="button" class="intab " href="/admin/moderate_event/media/<?php echo $resultset -> event_id?>" >view media</a></td>
     <td><?php echo $MemHelper->showDate($resultset -> viewable_from). ' - '. $MemHelper->showDate($resultset -> viewable_to) .'-'.$MemHelper->showDate($resultset -> self_destruct)?> </td>
     
- <th><a class="intab" href="/admin/moderate_event/changeStatus/<?=$resultset ->event_id?>">Disapprove</a></th>
+ <th><a class="intab" href="/admin/moderate_event/changeStatus/<?=$resultset ->event_id?>">change status
+     </a></th>
 
       
   </tr>

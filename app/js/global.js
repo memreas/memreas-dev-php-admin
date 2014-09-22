@@ -106,4 +106,5 @@ function jsuccessAndRefresh(str_msg){
 
   jsuccess(str_msg);
   $('#'+UI.current_tab).load(UI[UI.current_tab]);
+  disablePopup('forgot');
 }

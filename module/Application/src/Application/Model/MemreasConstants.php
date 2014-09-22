@@ -13,7 +13,7 @@ const MEMREAS_WS = "https://memreasdev-wsu.memreas.com/";
 	
 	const CLOUDFRONT_DOWNLOAD_HOST = 'https://d3sisat5gdssl6.cloudfront.net/';
     const S3HOST = 'https://s3.amazonaws.com/';
-	const S3BUCKET = "memreasdev";
+	const S3BUCKET = "memreasdevsec";
 	const TOPICARN = "arn:aws:sns:us-east-1:004184890641:us-east-upload-transcode-worker-int";
 	const SIGNURLS = true;
 	const EXPIRES = 36000;

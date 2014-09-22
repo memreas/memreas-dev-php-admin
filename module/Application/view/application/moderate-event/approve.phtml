@@ -1,0 +1,15 @@
+
+    <script type="text/javascript">
+      
+      <?php if(!empty($messages)){
+    
+    if($status == 'error'){?> 
+        jerror('<?php echo implode (' ',$messages) ?>');
+	
+    <?php }else {?>
+       jsuccessAndRefresh('<?php echo implode (' ',$messages) ?>');
+    <?php }
+    
+    
+    }?>
+  </script>

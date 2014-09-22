@@ -246,7 +246,7 @@ class Module {
             return $table;
         },
         'Application\Model\UserInfoTable' => function($sm) {
-            $dbAdapter = $sm->get('memreasintdb');
+            $dbAdapter = $sm->get('memreasadmindb');
             $resultSetPrototype = new \Zend\Db\ResultSet\HydratingResultSet();
             $resultSetPrototype->setHydrator(new ObjectProperty());
             $resultSetPrototype->setObjectPrototype(new Model\UserInfo());
@@ -288,7 +288,7 @@ class Module {
         },
 
         'Application\Model\AdminLogTable' => function($sm) {
-            $dbAdapter = $sm->get('memreasintdb');
+            $dbAdapter = $sm->get('memreasadmindb');
              
             $resultSetPrototype = new \Zend\Db\ResultSet\HydratingResultSet();
             $resultSetPrototype->setHydrator(new ObjectProperty());
@@ -296,6 +296,16 @@ class Module {
             $tableGateway = new TableGateway('admin_log', $dbAdapter, null, $resultSetPrototype);
 
             $table = new Model\AdminLogTable($tableGateway);
+            return $table;
+        },
+                   'Application\Model\AdminUserTable' => function($sm) {
+            $dbAdapter = $sm->get('memreasadmindb');
+             $resultSetPrototype = new \Zend\Db\ResultSet\HydratingResultSet();
+            $resultSetPrototype->setHydrator(new ObjectProperty());
+            $resultSetPrototype->setObjectPrototype(new Model\User());
+            $tableGateway = new TableGateway('user', $dbAdapter, null, $resultSetPrototype);
+
+            $table = new Model\AdminUserTable($tableGateway);
             return $table;
         },
 
