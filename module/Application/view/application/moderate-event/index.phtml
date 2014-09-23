@@ -39,7 +39,7 @@ $routeparams=$routeMatch->getParams();
   $img = $MemHelper->ProfilePic($resultset -> metadata);
  ?>
     <tr>
-    <td><?php echo '<img src="'. $img.'"/>'; ?>  </td>
+    <td><?php echo '<img width="56px" src="'. $img.'"/>'; ?>  </td>
     <td><?php echo $resultset -> username ?></td>
     <td><?php echo $resultset -> name ?></td>
     <td><a id="button" class="intab " href="/admin/moderate_event/media/<?php echo $resultset -> event_id?>" >view media</a></td>

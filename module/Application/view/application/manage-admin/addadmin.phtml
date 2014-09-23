@@ -37,10 +37,17 @@
           </form>
         
 <script type="text/javascript">
-<?php if(!empty($messages)){?>
-	jsuccessAndRefresh('<?php echo implode (' ',$messages) ?>');
-
-<?php 	}?>
+<?php if(!empty($messages)){
+    
+    if($status == 'error'){?> 
+        jerror('<?php echo implode (' ',$this->messages) ?>');
+	
+    <?php }else {?>
+       jsuccessAndRefresh('<?php echo implode (' ',$this->messages) ?>');
+    <?php }
+    
+    
+    }?>
 
 function checkdata()
 { 

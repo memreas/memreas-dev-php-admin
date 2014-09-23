@@ -35,7 +35,7 @@ foreach ($paginator as $key => $resultset) {
      # code..
 ?>
     <tr>
-    <td><?php echo '<img src="'. $MemHelper->ProfilePic($resultset -> metadata).'"/>'; ?>  </td>
+    <td><?php echo '<img width="56px" src="'. $MemHelper->ProfilePic($resultset -> metadata).'"/>'; ?>  </td>
     <td><?php echo $resultset -> username ?></td>
     <td><?php echo $resultset -> name ?></td>
     <td><a id="button" class="intab " href="/admin/report_feedback/view/<?php echo $resultset -> feedback_id.'?page='.$page ?>" >view feedback</a></td>
