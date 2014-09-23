@@ -159,11 +159,12 @@ class UserTable
     
      public function updateUser($data,$id)
     {
-         if ($user = $this->getUser($id)) {
-             $user->disable_account = 1;
-                $this->saveUser($user);
+         
+          if ($this->getUser($id)) {
+                $this->tableGateway->update($data, array('user_id' => $id));
                 return true;
-            } 
+            }   
+                
         
     }
 

@@ -57,14 +57,15 @@ class FeedbackTable
     }
     public function getFeedback($id)
     {
-        $row = $this->tableGateway->select(array('feedback_id' => $id));
+        $select = $this->tableGateway->getSql()->select();
+        $select->join('media', new \Zend\Db\Sql\Expression('media.user_id = feedback.user_id AND media.is_profile_pic = 1'), array('metadata'),'left');
+        $select->where(array('feedback_id' =>$id)); 
+        
        
-        if (!$row) {
-            throw new \Exception("Could not find row $id");
-        }
-        
-        
-        return $row->current();
+       
+        $results = $this->tableGateway->selectWith($select);
+        $results->buffer();
+        return $results->current();
     }
     public function FetchFeedDescAll($where=null, $order_by=null, $order=null)
     {

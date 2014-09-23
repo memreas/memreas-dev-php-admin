@@ -147,7 +147,7 @@ class AccountController extends AbstractActionController {
         $aws = new AWSManagerSender($this->getServiceLocator());
         $client = $aws->s3;
         $bucket = 'memreasdevsec';
-        $user_id = '027ae498-231d-4ee2-9f1e-8eec3e508313';
+        $user_id = '';
         $iterator = $client->getIterator('ListObjects', array(
             'Bucket' => $bucket,
             'Prefix' => $user_id

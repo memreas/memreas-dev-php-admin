@@ -154,29 +154,69 @@ function validate(){
 return $result;
 }
     
-	public function activeAction() {
-              $id = $this->params()->fromRoute('id');
-              $user = $this->getUserTable()->getUser($id);
-              
-              if($user->disable_account==1){
-                  $disable_account==0;
-                  $user=$user->disable_account=0;
-                  $this->getUserTable()->updateUser(array('disable_account'=>0),$id);
-              }
-  
-    }
+	
     public function deactiveAction() {
         
-              $id = $this->params()->fromRoute('id');
-              $user = $this->getUserTable()->getUser($id);
               
-              if($user->disable_account==0){
-                  $disable_account==1;
-                  $user=$user->disable_account=0;
-                  $this->getUserTable()->updateUser(array('disable_account'=>1),$id);
-  
+      $vdata=array();
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+             $id = $this->params()->fromPost('id');
+             if(empty($postdata['reason'])){
+              $status='error';
+            }
+
+                
+                $this->getUserTable()->updateUser(array('disable_account' => '1'), $id);
+                $this->getAdminLogTable()->saveLog(array('log_type' => 'user_deactivated', 'admin_id' => $_SESSION['user']['user_id'], 'entity_id' => $id));
+               
+                $this->messages[] = 'User Dactivated';
+                $this->status = 'success';
+ 
+            // Redirect to list of albums
+        }else{
+            $id = $this->params()->fromRoute('id', 0);
+             
+        }
+$user = $this->getUserTable()->getUser($id);
+             $vdata['user'] = $user;
+            $vdata['messages']= $this->messages;
+            $vdata['status'] = $this->status;
+        return $vdata;
+    
     }
+    
+    public function activeAction() {
+        
+              
+      $vdata=array();
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+             $id = $this->params()->fromPost('id');
+             if(empty($postdata['reason'])){
+              $status='error';
+            }
+                
+                
+                $this->getUserTable()->updateUser(array('disable_account' => 0), $id);
+                $this->getAdminLogTable()->saveLog(array('log_type' => 'user_activated', 'admin_id' => $_SESSION['user']['user_id'], 'entity_id' => $id));
+               
+                $this->messages[] = 'User activated';
+                $this->status = 'success';
+ 
+            // Redirect to list of albums
+        }else{
+            $id = $this->params()->fromRoute('id', 0);
+             
+        }
+$user = $this->getUserTable()->getUser($id);
+             $vdata['user'] = $user;
+            $vdata['messages']= $this->messages;
+            $vdata['status'] = $this->status;
+        return $vdata;
+    
     }
+    
     
 	
    

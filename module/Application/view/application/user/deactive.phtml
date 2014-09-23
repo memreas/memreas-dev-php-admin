@@ -1,8 +1,8 @@
-<form  id="form1" action="/admin/manage_admin/deactivate" class="change-status" method="post">
-    <input type="hidden" name="id" value="<?php echo $user['user_id']; ?>" />
+<form  id="form1" action="/admin/user/deactive" class="change-status" method="post">
+    <input type="hidden" name="id" value="<?php echo $user->user_id; ?>" />
 <ul id="" class="share_memreas_details"> 
         <li>
-          <h2>Deactivate Admin user </h2>
+          <h2>Deactivate User </h2>
           <label class="textfield_names">Select Reason :</label>
         </li>
         <li>

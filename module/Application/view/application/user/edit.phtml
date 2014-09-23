@@ -16,26 +16,26 @@
                
  
             
-            <li>
-            <label class="textfield_names1">disable account :</label>
-             <input disabled name="disable_account" type="radio" class="css-checkbox" id="demo_box_1" value="1" <?php if ($this->user->disable_account == 1) {
-              echo 'checked';
-             }?>
-             > <p style="display:inline-block; margin-left:5px;">yes</p> 
-             <input disabled name="disable_account" type="radio" class="css-checkbox" id="demo_box_1" value="0" 
-             <?php if ($this->user->disable_account == 0) {
-              echo 'checked';
-             }?>
-             >
-             <p style="display:inline-block; margin-left:8px">no</p>
+             <li>
+                 <?php if($this->user->disable_account=='0'){ ?>
+                  <label class="textfield_names1">disable account :</label>
             
+              <input id="delete" type="button" onclick= "userdisable('<?php echo $this->user->user_id?>')" value="disable"></a> 
+                
+             <?php    }else{ ?>
+            <label class="textfield_names1">active account :</label>
+            
+              <input id="delete" type="button" onclick= "useractive('<?php echo $this->user->user_id?>')" value="active"></a> 
+                 <?php } ?>
+            
+ 
             </li>
               <li>
             <label class="textfield_names1">profile photo :</label>
             <?php
             $MemHelper = $this->Mem();
                 
-            echo '<img src="'. $MemHelper->ProfilePic($this->user -> metadata).'"/>'; 
+            echo '<img width="56px" src="'. $MemHelper->ProfilePic($this->user -> metadata).'"/>'; 
             ?>
             
             </li>
@@ -89,6 +89,29 @@ function resetdata()
 {
     	document.getElementById("username").value="";
         document.getElementById("email").value="";
+}
+function userdisable (user_id) {
+  
+
+    var target = $('#tabone');
+    var url = "/admin/user/deactive/"+user_id;
+      $(target).empty();
+          $(target).load( url );
+                  popup('forgot');
+
+  
+}
+
+function useractive (user_id) {
+  
+
+    var target = $('#tabone');
+    var url = "/admin/user/active/"+user_id;
+      $(target).empty();
+          $(target).load( url );
+                  popup('forgot');
+
+  
 }
 
 </script>

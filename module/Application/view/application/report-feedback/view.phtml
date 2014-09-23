@@ -8,14 +8,23 @@ if(empty($this->feedback)){
         <div class="span7">
           
             
-           <ul id="preview" class="right scrollClass">
+           <ul id="preview" class="right scrollClass change-status">
+               <li>
+            <label class="textfield_names1">profile photo :</label>
+            <?php
+            $MemHelper = $this->Mem();
+                
+            echo '<img src="'. $MemHelper->ProfilePic($feedback-> metadata).'" width="56px"/>'; 
+            ?>
+            
+            </li>
               <li>
             <label class="textfield_names1">name :</label>
             
             <input name="name" type="text" class="share-txtfield1" value="<?php echo $feedback->name?>" >
             </li>
               <li>
-            <label class="textfield_names1">message :</label>
+            
              
             <textarea name="message" class="share-txtfield1" cols="40" rows="10"><?php echo $feedback->message?></textarea>
             </li>

@@ -1,12 +1,12 @@
-<form  id="form1" action="/admin/manage_admin/deactivate" class="change-status" method="post">
-    <input type="hidden" name="id" value="<?php echo $user['user_id']; ?>" />
+<form  id="form1" action="/admin/user/active" class="change-status" method="post">
+    <input type="hidden" name="id" value="<?php echo $user->user_id; ?>" />
 <ul id="" class="share_memreas_details"> 
         <li>
-          <h2>Deactivate Admin user </h2>
+          <h2>activate User </h2>
           <label class="textfield_names">Select Reason :</label>
         </li>
         <li>
-          <input type="radio" name="reason" value="unavailable" id="il"><label for="il">unavailable</label></option>
+          <input type="radio" name="reason" value="available" id="il"><label for="il">available</label></option>
         </li>
         <li>
           <input type="radio" name="reason" id="other" value="other"><label for="other">other</label></option>

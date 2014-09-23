@@ -15,11 +15,11 @@
              <li>
             <label class="textfield_names1">username :</label>
  
-            <input id="username" name="username" type="text" class="share-txtfield1" value="<?php echo $status=='error'? $post['username']:   $admin['username']?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
+            <input readonly id="username" name="username" type="text" class="share-txtfield1" value="<?php echo $status=='error'? $post['username']:   $admin['username']?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
             </li>
             <li>
             <label class="textfield_names1">email :</label>
-            <input id="email" name="email_address" type="text" class="share-txtfield1" value="<?php echo $status=='error'? $post['email_address']:$admin['email_address']?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
+            <input readonly id="email" name="email_address" type="text" class="share-txtfield1" value="<?php echo $status=='error'? $post['email_address']:$admin['email_address']?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'sample')this.value = '';">
  
             </li>
               <li>
@@ -33,9 +33,13 @@
                 </select>
             </li>
             <li>
+                 <?php if($admin['disable_account']=='0'){ ?>
             <label class="textfield_names1">disable account :</label>
-              <input id="delete" type="button" onclick= "admindelete()" value="delete"></a> 
-             
+              <input id="delete" type="button" onclick= "admindelete('<?php echo $admin['user_id']?>')" value="delete"></a> 
+              <?php    }else{ ?>
+               <label class="textfield_names1">active account :</label>
+              <input id="delete" type="button" onclick= "adminActive('<?php echo $admin['user_id']?>')" value="activate"></a> 
+               <?php  }?>
             
  
             </li>
@@ -98,7 +102,7 @@ function checkdata()
 	return true;
 	
 }
-function admindelete (argument) {
+function admindelete (adminid) {
   var adminid=getRadioValue ()
   if (adminid==0) {
 
@@ -112,6 +116,18 @@ alert('please select user');
                   popup('forgot');
 
   }
+}
+
+function adminActive (adminid) {
+  
+
+    var target = $('#tabone');
+    var url = "/admin/manage_admin/activate/"+adminid;
+      $(target).empty();
+          $(target).load( url );
+                  popup('forgot');
+
+  
 }
 
 function trim(str) {

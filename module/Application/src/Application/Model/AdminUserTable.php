@@ -65,9 +65,9 @@ class AdminUserTable
      }
           $results = $this->tableGateway->selectWith($select);
         $results->buffer();
+        //echo $select->getSqlString();
         if(!empty($log_id)){
-          $select->where(array('admin_log.log_id = ?'=>$log_id ));
-         return $results->current();
+          return $results->current();
      }
         return $results;
         }
@@ -79,6 +79,7 @@ class AdminUserTable
         
         $rowset = $this->tableGateway->select(array('user_id' => $id));
         $row = $rowset->toArray();
+         
         if (empty($row[0])) {
             throw new \Exception("Could not find row $id");
         }
@@ -95,7 +96,7 @@ class AdminUserTable
     {
             $data['update_time']=strtotime(date('Y-m-d'));
  
-        $id = $data['user_id'];
+        $id = empty($data['user_id'])?0:$data['user_id'];
         if (empty($id)) {
             $uuid = MUUID::fetchUUID ();
             $data['user_id']=$uuid;
@@ -149,12 +150,10 @@ class AdminUserTable
     
      public function updateUser($data,$id)
     {
-         if ($user = $this->getUser($id)) {
-             $user->disable_account = 1;
-                $this->saveUser($user);
-                return true;
-            } 
-        
+          if ($this->getUser($id)) {
+                $this->tableGateway->update($data, array('user_id' => $id));
+                return true;        
+             }
     }
 
       public function getUserData($where, $order_by =null,  $order=null)

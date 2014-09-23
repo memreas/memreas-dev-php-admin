@@ -12,7 +12,7 @@ $routeparams=$routeMatch->getParams();
 
 ?>
 
-  <div class="manage-event"><p>manage admins</p><div class="total"><p>Total Events:<?php echo $admin_total ?></p></div></div>
+  <div class="manage-event"><p>manage admins</p><div class="total"><p>Total Admin user:<?php echo $admin_total ?></p></div></div>
   <div align="right">
   <a class="intab" href="/admin/manage_admin/addadmin"><input type="button" value="add"></a>
 <input id="delete" type="button" onclick= "admindelete()" value="delete"></a> 
@@ -30,10 +30,10 @@ $routeparams=$routeMatch->getParams();
     <th><a class="paginate_click" href="<?php echo $this->url('admin/default',$routeparams,array('query' => array('page' => $page, 'order_by' => 'role', 'order' => $url_order)));?>">admin level</th>
     <th>admin recent transactions</th>
      <th><a class="paginate_click" href="<?php echo $this->url('admin/default',$routeparams,array('query' => array('page' => $page, 'order_by' => 'create_date', 'order' => $url_order)));?>">date added disc</th>
+  <th><a class="paginate_click" href="<?php echo $this->url('admin/default',$routeparams,array('query' => array('page' => $page, 'order_by' => 'disable_account', 'order' => $url_order)));?>">Status</th>
 
   </tr>
   </thead>
-   
 <?php 
  $MemHelper = $this->Mem();
  foreach ($paginator as $key => $resultset) {
@@ -41,11 +41,17 @@ $routeparams=$routeMatch->getParams();
  ?>
     <tr>
         <td> <input type="radio" id="radio" name="adminid" value="<?php echo $resultset->user_id ?>"> </td>
-    <td><?php echo '<img src="'. $MemHelper->ProfilePic($resultset -> metadata).'"/>'; ?>  </td>
+    <td><?php echo '<img width="56px" src="'. $MemHelper->ProfilePic($resultset -> metadata).'"/>'; ?>  </td>
     <td><?php echo $resultset -> username ?></td>
     <td><?php echo $resultset -> role ?></td>
     <td><a id="button" class="intab " href="/admin/manage_admin/view/<?php echo $resultset -> user_id?>" >recent transactions</a></td>
     <td><?php echo $MemHelper->showDate($resultset -> create_date)?></td>
+    <td><?php
+        echo ($resultset ->disable_account == 0)?'<img src="/img/status.png" />':
+		'<img src="/img/cross.png" />'
+		; 
+     ?>
+    </td>
           
   </tr>
 

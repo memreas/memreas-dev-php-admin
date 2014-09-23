@@ -1,0 +1,13 @@
+<script type="text/javascript">
+<?php if(!empty($this->messages)){
+    
+    if($this->status == 'error'){?> 
+        jerror('<?php echo implode (' ',$this->messages) ?>');
+    
+    <?php }else {?>
+       jsuccessAndRefresh('<?php echo implode (' ',$this->messages) ?>');
+    <?php }
+    
+    
+    }?>
+    </script>
