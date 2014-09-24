@@ -8,7 +8,7 @@ class Mem extends AbstractHelper
 {
     public $sm;
     public function __construct($sm) {
-        $this->sm;
+        $this->sm =$sm;
         $this->signer = new MemreasSignedURL();
     }
     public function ProfilePic($metadata="") {
@@ -63,6 +63,11 @@ class Mem extends AbstractHelper
         }
 
         return $r;
+    }
+     public function getUserTable()
+    { 
+
+        return $this->sm->get('Application\Model\UserTable');
     }
     
 }

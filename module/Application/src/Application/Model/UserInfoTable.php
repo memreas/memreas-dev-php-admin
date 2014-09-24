@@ -32,12 +32,13 @@ public function userInfoAll($where=null, $order_by=null, $order=null)
      $select = $this->tableGateway->getSql()->select();
         // $select->from('event'); 
         //$select->columns(array('event_id')); 
-        $select->join('user', "user.user_id = user_info.user_id", array('username', 'profile_photo'),'left'); 
+      //  $select->join('memreasintdb.user', "user.user_id = user_info.user_id", array('username', 'profile_photo'),'left'); 
         //$select->join('media', new \Zend\Db\Sql\Expression('media.user_id = user.user_id AND media.is_profile_pic = 1'), array('metadata'),'left'); 
          if(!empty($order_by))  $select->order($order_by . ' ' . $order);
+         $select->where('user_id !="total-s3"');
          if(!empty($where))  $select->where($where);
 
-      //print_r($select->getSqlString());
+      //print_r($select->getSqlString());exit;
          $results = $this->tableGateway->selectWith($select);
         $results->buffer();
          return $results;

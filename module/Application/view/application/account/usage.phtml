@@ -24,11 +24,14 @@ $routeparams=$routeMatch->getParams();
                     </tr>
                     <?php 
                     $MemHelper = $this->Mem();
-
+                    $userTable = $MemHelper->getUserTable();
+ 
 foreach ($paginator as $key => $user) {
+   $userData =  $userTable->getUser($user->user_id);
+   
    ?>
                     <tr class="frst-row drk">
-                      <td><?php echo $user -> username ?></td>
+                      <td><?php echo $userData -> username ?></td>
                       <td><?php echo $user -> plan ?></td>
                       <td><?php echo $MemHelper->toByteString($user -> data_usage) ?></td>
                       <td><?php echo $user -> total_image ?></td>

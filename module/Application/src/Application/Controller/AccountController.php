@@ -265,7 +265,8 @@ class AccountController extends AbstractActionController {
         );
          $this->getUserInfoTable()->saveUserInfo($data);
 
-       exit;
+               die('done');
+
     }
 
     public function updateUserPlanAction() {
@@ -273,6 +274,7 @@ class AccountController extends AbstractActionController {
         foreach ($userRec as $user) {
             $this->getPlan($user->user_id);
         }
+        die('done');
     }
 
     public function getPlan($userid = '') {
@@ -297,7 +299,13 @@ class AccountController extends AbstractActionController {
             $row['plan'] = $plan;
             $row['user_id'] = $userid;
             $this->getUserInfoTable()->saveUserInfo($row);
+        }else{
+             $row['allowed_size'] = $planSize['PLAN_A_2GB_MONTHLY'];
+            $row['plan'] = 'PLAN_A_2GB_MONTHLY';
+            $row['user_id'] = $userid;
+            $this->getUserInfoTable()->saveUserInfo($row);
         }
+        
     }
 
 }
