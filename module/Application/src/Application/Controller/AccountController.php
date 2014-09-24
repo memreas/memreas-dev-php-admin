@@ -147,15 +147,7 @@ class AccountController extends AbstractActionController {
         $aws = new AWSManagerSender($this->getServiceLocator());
         $client = $aws->s3;
         $bucket = 'memreasdevsec';
-        $user_id = '';
-        $iterator = $client->getIterator('ListObjects', array(
-            'Bucket' => $bucket,
-            'Prefix' => $user_id
-                ));
-
-        $image = $user_id . '/image/';
-        $media = $user_id . '/media/';
-        $total_used = 0.0;
+         $total_used = 0.0;
         $count_image = 0;
         $count_vedio = 0;
         $count_audio = 0;
@@ -170,10 +162,25 @@ class AccountController extends AbstractActionController {
             'mp3' => '',
             'm4a' => ''
         );
+        $users = $this->getUserTable()->fetchall(array('disable_account'=>0));
+        
+        
+        
+        foreach($users as $user){
+        $user_id = $user->user_id;
+        $iterator = $client->getIterator('ListObjects', array(
+            'Bucket' => $bucket,
+            'Prefix' => $user_id
+                ));
+
+        
+       
         $userids = array();
         foreach ($iterator as $object) {
             $userid = stristr($object ['Key'], '/', true);
             $ext = pathinfo($object ['Key'], PATHINFO_EXTENSION);
+            $image = $user_id . '/image/';
+            $media = $user_id . '/media/';
             if (isset($userids [$userid])) {
                 
             } else {
@@ -215,7 +222,7 @@ class AccountController extends AbstractActionController {
                 ++$count_vedio;
                 ++$userids [$userid] ['count_vedio'];
             }
-        }
+         }
         $avg_img = empty($count_image) ? $count_image : bcdiv($size_image, $count_image, 0);
         $userids [$userid] ['avg_img'] = empty($userids [$userid] ['count_image']) ? $userids [$userid] ['count_image'] : bcdiv($userids [$userid] ['size_image'], $userids [$userid] ['count_image'], 0);
         $avg_audio = empty($count_audio) ? $count_audio : bcdiv($size_audio, $count_audio, 0);
@@ -228,6 +235,7 @@ class AccountController extends AbstractActionController {
 
 
         foreach ($userids as $key => $row) {
+            if(empty($key))continue;
             $data = array(
                 'user_id' => $key,
                 'data_usage' => $row ['total_used'],
@@ -241,6 +249,9 @@ class AccountController extends AbstractActionController {
             );
              $this->getUserInfoTable()->saveUserInfo($data);
         }
+                  //break;
+  
+    }
         $data = array(
             'user_id' => 'total-s3',
             'data_usage' => $total_used,
@@ -252,10 +263,9 @@ class AccountController extends AbstractActionController {
             'average_audio' => $avg_audio,
             'plan' => ''
         );
+         $this->getUserInfoTable()->saveUserInfo($data);
 
-        $this->getUserInfoTable()->saveUserInfo($data);
-
-        exit();
+       exit;
     }
 
     public function updateUserPlanAction() {

@@ -69,9 +69,11 @@ public function userInfoAll($where=null, $order_by=null, $order=null)
  
           $id = $data['user_id'];
   
-            if ($this->getUserInfo($id)) {
+            if ($this->getUserInfo($id)) { 
                  $data['updated']=strtotime(date('Y-m-d'));
-                 $this->tableGateway->update($data, array('user_id' => "'$id'"));
+                 $this->tableGateway->update($data, array('user_id' => "$id"));
+ 
+                 
                 return true;
             } else {
 
