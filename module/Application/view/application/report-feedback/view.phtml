@@ -18,15 +18,20 @@ if(empty($this->feedback)){
             ?>
             
             </li>
-              <li>
-            <label class="textfield_names1">name :</label>
-            
-            <input name="name" type="text" class="share-txtfield1" value="<?php echo $feedback->name?>" >
+
+            <li class="clearfix">
+              <label class="textfield_names1">name :</label> 
+              <input name="name" type="text" class="share-txtfield1" value="<?php echo $feedback->name?>" >
             </li>
-              <li>
+
+            <li class="clearfix">
+              <label class="textfield_names1">create_time :</label>
+              <input name="create_time" type="text" class="share-txtfield1" value="<?php echo $feedback->create_time?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" >
+            </li>
             
-             
-            <textarea name="message" class="share-txtfield1" cols="40" rows="10"><?php echo $feedback->message?></textarea>
+            <li class="clearfix">
+              <label class="textfield_names1">feedback :</label>
+              <textarea name="message" class="share-txtfield1" cols="40" rows="10"><?php echo $feedback->message?></textarea>
             </li>
 
             <!-- <li>
@@ -34,10 +39,6 @@ if(empty($this->feedback)){
             <input name="email" type="text" class="share-txtfield1" value="<?php echo $feedback->email?>">
             </li> -->
 
-            <li>
-            <label class="textfield_names1">create_time :</label>
-            <input name="create_time" type="text" class="share-txtfield1" value="<?php echo $feedback->create_time?>" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" >
-            </li>
              
            
             </ul>
