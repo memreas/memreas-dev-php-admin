@@ -188,17 +188,15 @@ class UserTable
     {
         
         
-        $totalRegisterUser = 0;
-                 $select = new Select;
+        $select = new Select;
         $select->from($this->tableGateway->getTable());
         $select->where("create_date >= $time");
         $select->columns(array('num' => new \Zend\Db\Sql\Expression('COUNT(user_id)')));
         
         $results = $this->tableGateway->selectWith($select);
         //print_r($results); exit;
-      //print_r($select->getSqlString());
-          $t=$results->current()->num;
-        $totalInvite = 0;
+        //print_r($select->getSqlString());
+        $t=$results->current()->num;
         return $t;
     }
     

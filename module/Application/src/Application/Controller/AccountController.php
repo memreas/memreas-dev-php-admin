@@ -36,6 +36,25 @@ class AccountController extends AbstractActionController {
         }
         return $this->userTable;
     }
+    protected $notifcationTable;
+
+    public function getNotificationTable() {
+        if (!$this->notifcationTable) {
+            $sm = $this->getServiceLocator();
+            $this->notifcationTable = $sm->get('Application\Model\NotficationTable');
+        }
+        return $this->notifcationTable;
+    }
+
+    protected $friendTable;
+
+    public function getFriendTable() {
+        if (!$this->friendTable) {
+            $sm = $this->getServiceLocator();
+            $this->friendTable = $sm->get('Application\Model\FriendTable');
+        }
+        return $this->friendTable;
+    }
 
     public function UsageAction() {
         // $role = $this->security();
@@ -86,24 +105,49 @@ class AccountController extends AbstractActionController {
             $pastweek = $this->getUserTable()->getUserRegisterCount(strtotime(' -1 week'));
             $pastmonth = $this->getUserTable()->getUserRegisterCount(strtotime('-1 month'));
             // print_r($total); exit;
+            /*
             $i = $this->getUserInfoTable()->fetchAll();
             $page = $this->params()->fromQuery('page', 1);
             $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($i);
             $paginator = new Paginator($iteratorAdapter);
             $paginator->setCurrentPageNumber($page);
             $paginator->setItemCountPerPage(5);
+            */
             $s3Total =  $this->getUserInfoTable()->getUserInfo('total-s3');
-        } catch (Exception $exc) {
+            $totalfriendsinvites = $this->getNotificationTable()->getInviteCount(strtotime('01-12-2010'));
+            $totaleventfriendsinvites = $this->getNotificationTable()->getInviteCount(strtotime('01-12-2010'), 1);
+            $fbpastday = $this->getFriendTable()->getOtherInviteCount(strtotime(' -1 day'),'facebook');
+            $fbpastweek = $this->getFriendTable()->getOtherInviteCount(strtotime(' -1 week'),'facebook');
+            $fbpastmonth = $this->getFriendTable()->getOtherInviteCount(strtotime('-1 month'),'facebook');
+            $twpastday = $this->getFriendTable()->getOtherInviteCount(strtotime(' -1 day'),'twitter');
+            $twpastweek = $this->getFriendTable()->getOtherInviteCount(strtotime(' -1 week'),'twitter');
+            $twpastmonth = $this->getFriendTable()->getOtherInviteCount(strtotime('-1 month'),'twitter');
+            $emailpastday = $this->getNotificationTable()->getEmailInviteCount(strtotime('-1 day'));
+            $emailpastweek = $this->getNotificationTable()->getEmailInviteCount(strtotime('-1 week'));
+            $emailpastmonth = $this->getNotificationTable()->getEmailInviteCount(strtotime('-1 month'));
+
+         } catch (Exception $exc) {
 
             return array();
         }
         return array(
-            'paginator' => $paginator,
+            //'paginator' => $paginator,
             'total' => $total,
             'pastday' => $pastday,
             'pastweek' => $pastweek,
             'pastmonth' => $pastmonth,
-                's3Total'=> $s3Total
+            's3Total'=> $s3Total,
+            'fbpastday' => $fbpastday,
+            'fbpastweek' => $fbpastweek,
+            'fbpastmonth' => $fbpastmonth,
+            'twpastday' => $twpastday,
+            'twpastweek' => $twpastweek,
+            'twpastmonth' => $twpastmonth,
+            'emailpastday' => $emailpastday,
+            'emailpastweek' => $emailpastweek,
+            'emailpastmonth' => $emailpastmonth,
+            'totaleventfriendsinvites' => $totaleventfriendsinvites,
+            'totalfriendsinvites' => $totalfriendsinvites,
         );
     }
 
@@ -168,6 +212,8 @@ class AccountController extends AbstractActionController {
         
         foreach($users as $user){
         $user_id = $user->user_id;
+                 //   $user_id="c96f0282-8f3a-414b-bd7a-ead57b1bfa4e";
+
         $iterator = $client->getIterator('ListObjects', array(
             'Bucket' => $bucket,
             'Prefix' => $user_id
@@ -178,6 +224,7 @@ class AccountController extends AbstractActionController {
         $userids = array();
         foreach ($iterator as $object) {
             $userid = stristr($object ['Key'], '/', true);
+            echo $object ['Key'] ,'-------------',$object ['Size'],'<br>';
             $ext = pathinfo($object ['Key'], PATHINFO_EXTENSION);
             $image = $user_id . '/image/';
             $media = $user_id . '/media/';
@@ -249,7 +296,7 @@ class AccountController extends AbstractActionController {
             );
              $this->getUserInfoTable()->saveUserInfo($data);
         }
-                  //break;
+                 // break;
   
     }
         $data = array(
@@ -270,9 +317,22 @@ class AccountController extends AbstractActionController {
     }
 
     public function updateUserPlanAction() {
+        $action = "login";
+        $xml = "<xml><login><username>kamlesh</username><password>123456</password><devicetype></devicetype><devicetoken></devicetoken></login></xml>";
+        // $xml ="<xml><getplans><user_id>d37c751e-54a3-4eb9-88c9-472261e59629</user_id></getplans></xml>";
+        //$userid=1;
+        $result = Common::fetchXML($action, $xml);
+        $data = simplexml_load_string($result);
+         $status = trim($data->loginresponse->status);
+
+        if('success' == strtolower($status)){
+                            Common::$sid = trim($data->loginresponse->sid);
+    
+        }
         $userRec = $this->getUserTable()->fetchAll();
         foreach ($userRec as $user) {
             $this->getPlan($user->user_id);
+            break;
         }
         die('done');
     }

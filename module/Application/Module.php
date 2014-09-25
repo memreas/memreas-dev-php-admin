@@ -308,6 +308,27 @@ class Module {
             $table = new Model\AdminUserTable($tableGateway);
             return $table;
         },
+        'Application\Model\NotficationTable' => function($sm) {
+            $dbAdapter = $sm->get('memreasintdb');
+             $resultSetPrototype = new \Zend\Db\ResultSet\HydratingResultSet();
+            $resultSetPrototype->setHydrator(new ObjectProperty());
+            $resultSetPrototype->setObjectPrototype(new Model\Notification());
+            $tableGateway = new TableGateway('notifications', $dbAdapter, null, $resultSetPrototype);
+
+            $table = new Model\NotificationTable($tableGateway);
+            return $table;
+        },
+
+        'Application\Model\FriendTable' => function($sm) {
+            $dbAdapter = $sm->get('memreasintdb');
+             $resultSetPrototype = new \Zend\Db\ResultSet\HydratingResultSet();
+            $resultSetPrototype->setHydrator(new ObjectProperty());
+            $resultSetPrototype->setObjectPrototype(new Model\Frienda());
+            $tableGateway = new TableGateway('friend', $dbAdapter, null, $resultSetPrototype);
+
+            $table = new Model\FriendTable($tableGateway);
+            return $table;
+        },
 
             )
         );

@@ -3,13 +3,15 @@
 namespace Application\Controller;
 
  use Guzzle\Http\Client;
+use Application\Model\MemreasConstants;
 
 
 
 class Common{
-	public static  $url = "http://ws";
-        
-        
+	public static  $url = MemreasConstants::MEMREAS_WS;	
+		public static  $sid = '';	
+
+
     public static function fetchXML($action='', $xml='') {
 		$guzzle = new Client();
 
@@ -23,7 +25,7 @@ error_log("Inside fetch XML request XML ---> " . $xml . PHP_EOL);
 			'action' => $action,
 			//'cache_me' => true,
     		'xml' => $xml,
-            'PHPSESSID' => empty($_COOKIE[session_name()])?'':$_COOKIE[session_name()],
+            'sid' => self::$sid,
 	    	)
 		);
 		$response = $request->send();
