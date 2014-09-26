@@ -1,18 +1,14 @@
 
-<div id="tab3" class="hideCls">
+
         <div class="span12">
-          <aside id="left">
-            <figure class="event">
+          
+             
               <div class="image-preview">
-                <a href="img/large/1.jpg" class="swipebox" title="photo-2"><img id="preview" data-preview="img/large/1.jpg" alt="" /></a>
+                <a href="img/large/1.jpg" class="swipebox" title="photo-2"><img id="preview" data-preview="img/large/1.jpg" 
+                  style="min-width: 280px;" alt="" /></a>
               </div>
-            </figure>
-          </aside>
-        </div>
-        
-        <div class="clear"></div>
-        <div class="row-fluid">
-          <ul id="carousel" class="elastislide-list">
+            
+            <ul id="carousel" class="elastislide-list">
             <?php 
 
 $MemHelper = $this->Mem();
@@ -27,8 +23,7 @@ $MemHelper = $this->Mem();
               ?>
         
                <li data-preview="<?=$mediaUrl?>"><a href="#"><img src="<?=$mediaUrl?>" alt="image01" /></a></li>
-               <img width= '300' src="" alt="">
-               
+                
         <?php }else{ 
 $mediaUrl = $MemHelper->EventPic($media->metadata);
 
@@ -43,39 +38,14 @@ $mediaUrl = $MemHelper->EventPic($media->metadata);
  ?>
            
               </ul>
+    
         </div>
         
-    </div>
+        <div class="clear"></div>
+         
+          
+       
+    
     <script type="text/javascript">
-      
-      // example how to integrate with a previewer
-      var current = 0,
-        $preview = $( '#preview' ),
-        $carouselEl = $( '#carousel' ),
-        $carouselItems = $carouselEl.children(),
-        carousel = $carouselEl.elastislide( {
-          current : current,
-          minItems : 10,
-          onClick : function( el, pos, evt ) {
-
-            changeImage( el, pos );
-            evt.preventDefault();
-
-          },
-          onReady : function() {
-
-            changeImage( $carouselItems.eq( current ), current );
-            
-          }
-        } );
-
-      function changeImage( el, pos ) {
-
-        $preview.attr( 'src', el.data( 'preview' ) );
-        $carouselItems.removeClass( 'current-img' );
-        el.addClass( 'current-img' );
-        carousel.setCurrent( pos );
-
-      }
-
-  </script>
+intiElastic();
+    </script>
