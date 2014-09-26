@@ -12,6 +12,7 @@ use Zend\Form\Annotation;
 use Zend\Form\Annotation\AnnotationBuilder;
 use Zend\Form\Element;
 use Application\Controller\Container;
+use Application\Model\MemreasConstants;
 
 class AccountController extends AbstractActionController {
 
@@ -77,7 +78,7 @@ class AccountController extends AbstractActionController {
             $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($info);
             $paginator = new Paginator($iteratorAdapter);
             $paginator->setCurrentPageNumber($page);
-            $paginator->setItemCountPerPage(5);
+            $paginator->setItemCountPerPage(MemreasConstants::NUMBER_OF_ROWS);
 
             // $totalused = $this->getUserInfoTable()->totalPercentUsed();
             /*

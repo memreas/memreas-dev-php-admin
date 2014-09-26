@@ -58,9 +58,10 @@ $routeparams=$routeMatch->getParams();
     
    
    <?php  }?>
-   </table>
-
-   <?php // add at the end of the file after the table
+<tr>
+<td>
+  <td colspan="7" align="left">
+ <?php // add at the end of the file after the table
 echo $this->paginationControl(
     // the paginator object
     $this->paginator,
@@ -74,6 +75,11 @@ echo $this->paginationControl(
           )
 );
 ?>
+</tr>
+
+   </table>
+
+  
 <script type="text/javascript">
 function adminedit (argument) {
   var adminid=getRadioValue ()

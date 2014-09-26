@@ -54,8 +54,8 @@ $routeparams=$routeMatch->getParams();
     
    
    <?php  }?>
-   </table>
-   <?php // add at the end of the file after the table
+   <tr><td colspan="6" align="left">
+    <?php // add at the end of the file after the table
 echo $this->paginationControl(
     // the paginator object
     $this->paginator,
@@ -67,6 +67,9 @@ echo $this->paginationControl(
           )
 );
 ?>
+   </td></tr>
+   </table>
+   
 <script>
 function changeEventStatus(eventid){
 	alert(eventid);

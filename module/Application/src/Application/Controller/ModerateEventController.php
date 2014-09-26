@@ -7,6 +7,7 @@ use Application\Controller\Common;
 use DoctrineModule\Paginator\Adapter\Selectable as SelectableAdapter;
 use Zend\Paginator\Paginator;
 use Zend\View\Model\ViewModel;
+use Application\Model\MemreasConstants;
 
 class ModerateEventController extends AbstractActionController {
 
@@ -50,7 +51,7 @@ class ModerateEventController extends AbstractActionController {
             $paginator = new Paginator($iteratorAdapter);
             $paginator->setCurrentPageNumber($page);
             //$paginator->setItemCountPerPage(ADMIN_QUERY_LIMIT);
-            $paginator->setItemCountPerPage(10);
+            $paginator->setItemCountPerPage(MemreasConstants::NUMBER_OF_ROWS);
         } catch (Exception $exc) {
 
             return array();

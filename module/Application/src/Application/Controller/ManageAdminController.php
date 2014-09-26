@@ -14,6 +14,7 @@ use Zend\Form\Annotation\AnnotationBuilder;
 use Zend\Form\Form;
 use Zend\Form\Element;
 use Application\Model\User;
+use Application\Model\MemreasConstants;
 
 class ManageAdminController extends AbstractActionController {
 
@@ -72,7 +73,7 @@ class ManageAdminController extends AbstractActionController {
             $paginator = new Paginator($iteratorAdapter);
             $paginator->setCurrentPageNumber($page);
             //$paginator->setItemCountPerPage(ADMIN_QUERY_LIMIT);
-            $paginator->setItemCountPerPage(10);
+            $paginator->setItemCountPerPage(MemreasConstants::NUMBER_OF_ROWS);
         } catch (Exception $exc) {
 
             return array();

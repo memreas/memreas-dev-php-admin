@@ -19,6 +19,8 @@ const ORIGINAL_URL = "https://memreasdev-wsg.memreas.com/";
 	const SIGNURLS = true;
 	const EXPIRES = 36000;
 	const ADMIN_EMAIL ='admin@memreas.com';
+	const NUMBER_OF_ROWS ='15';
+
 
 
 	

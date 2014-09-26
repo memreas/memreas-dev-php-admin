@@ -11,6 +11,7 @@ use Zend\View\Model\ViewModel;
    // use DoctrineORMModule\Form\Annotation\AnnotationBuilder;
      use Zend\Form\Annotation;
     use Zend\Form\Annotation\AnnotationBuilder;
+    use Application\Model\MemreasConstants;
 
 
       use Zend\Form\Element;
@@ -61,7 +62,7 @@ protected $feedbackTable;
             $paginator = new Paginator($iteratorAdapter);
             $paginator->setCurrentPageNumber($page);
             //$paginator->setItemCountPerPage(ADMIN_QUERY_LIMIT);
-                      $paginator->setItemCountPerPage(10);
+                      $paginator->setItemCountPerPage(MemreasConstants::NUMBER_OF_ROWS);
 
         
         } catch (Exception $exc) {

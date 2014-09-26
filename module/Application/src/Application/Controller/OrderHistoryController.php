@@ -7,6 +7,7 @@ use Application\Controller\Common;
 use DoctrineModule\Paginator\Adapter\Selectable as SelectableAdapter;
 use Zend\Paginator\Paginator;
 use Zend\View\Model\ViewModel;
+use Application\Model\MemreasConstants;
      use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
    // use DoctrineORMModule\Form\Annotation\AnnotationBuilder;
      use Zend\Form\Annotation;
@@ -35,7 +36,7 @@ $adapter = new SelectableAdapter($objectRepository); // An object repository imp
 $paginator = new Paginator($adapter);
     $paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
 
-$paginator->setItemCountPerPage(5);
+$paginator->setItemCountPerPage(MemreasConstants::NUMBER_OF_ROWS);
 
                 
                 

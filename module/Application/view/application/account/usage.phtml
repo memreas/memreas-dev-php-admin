@@ -7,10 +7,10 @@ $routeMatch=$router->match($request);
 $routeparams=$routeMatch->getParams();
  
 ?> 
-                <table class="manageusertable ">
-                  <tbody>
+                 <table id="eventTbl" class="manageusertable" width="90%" border="1" align="center" cellpadding="0" cellspacing="0">
+                  <thead>
                     
-                    <tr class="head-table">
+                    <tr >
                       <td ><a class="paginate_click" href="<?php echo $this->url('admin/default',$routeparams,array('query' => array('page' => $page, 'order_by' => 'username', 'order' => $url_order)));?>">user</td>
                       <td>plan</td>
                       <td><a class="paginate_click" href="<?php echo $this->url('admin/default',$routeparams,array('query' => array('page' => $page, 'order_by' => 'data_usage', 'order' => $url_order)));?>">data usage (GB)</td>
@@ -22,6 +22,7 @@ $routeparams=$routeMatch->getParams();
                       <td>avg. audio comment</td>
                       <td>total % used</td>
                     </tr>
+                  </thead>
                     <?php 
                     $MemHelper = $this->Mem();
                     $userTable = $MemHelper->getUserTable();
@@ -30,7 +31,7 @@ foreach ($paginator as $key => $user) {
    $userData =  $userTable->getUser($user->user_id);
    
    ?>
-                    <tr class="frst-row drk">
+                    <tr>
                       <td><?php echo $userData -> username ?></td>
                       <td><?php echo $user -> plan ?></td>
                       <td><?php echo $MemHelper->toByteString($user -> data_usage) ?></td>
@@ -46,12 +47,9 @@ foreach ($paginator as $key => $user) {
                    
                     <?php  } ?>
 
-                     <tr> <td align ="right"><a href="http://memadmin/admin/account/csv"><input type="button" value="Export to Excel"></a></td></tr>
-                  </tbody>
-
-                </table>
-
-                <?php // add at the end of the file after the table
+                    <tr class="">
+                      <td colspan="9" align="left">
+<?php // add at the end of the file after the table
 echo $this->paginationControl(
     // the paginator object
     $this->paginator,
@@ -64,4 +62,13 @@ echo $this->paginationControl(
     array('order_by'=>$order_by,'order' => $order,'q'=>$q)
 );
 ?>
+</td>
+                      <td align="right"><a href="http://memadmin/admin/account/csv"><input type="button" value="Export to Excel"></a></td>
+
+
+                    </tr>
+                  </tbody>
+                </table>
+
+                
           
