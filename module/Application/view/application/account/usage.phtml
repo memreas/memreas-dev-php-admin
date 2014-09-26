@@ -11,7 +11,7 @@ $routeparams=$routeMatch->getParams();
                   <thead>
                     
                     <tr >
-                      <td ><a class="paginate_click" href="<?php echo $this->url('admin/default',$routeparams,array('query' => array('page' => $page, 'order_by' => 'username', 'order' => $url_order)));?>">user</td>
+                      <td width="10%"><a class="paginate_click" href="<?php echo $this->url('admin/default',$routeparams,array('query' => array('page' => $page, 'order_by' => 'username', 'order' => $url_order)));?>">user</td>
                       <td>plan</td>
                       <td><a class="paginate_click" href="<?php echo $this->url('admin/default',$routeparams,array('query' => array('page' => $page, 'order_by' => 'data_usage', 'order' => $url_order)));?>">data usage (GB)</td>
                       <td># of image</td>
