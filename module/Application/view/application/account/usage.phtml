@@ -32,7 +32,7 @@ foreach ($paginator as $key => $user) {
    
    ?>
                     <tr>
-                      <td><?php echo $userData -> username ?></td>
+                      <td><?php echo empty($userData)?$user->user_id:$userData -> username ?></td>
                       <td><?php echo $user -> plan ?></td>
                       <td><?php echo $MemHelper->toByteString($user -> data_usage) ?></td>
                       <td><?php echo $user -> total_image ?></td>
