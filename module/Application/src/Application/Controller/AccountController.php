@@ -325,7 +325,7 @@ class AccountController extends AbstractActionController {
         $result = Common::fetchXML($action, $xml);
         $data = simplexml_load_string($result);
          $status = trim($data->loginresponse->status);
-
+error_log('response from server---'.print_r($status,true));
         if('success' == strtolower($status)){
                             Common::$sid = trim($data->loginresponse->sid);
     

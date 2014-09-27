@@ -39,8 +39,8 @@ class Module {
                 ->getServiceManager()
                 ->get('Zend\Session\SessionManager');
         $session->start();
-        $this->initAcl($e);
-        $eventManager->attach('route', array($this, 'checkAcl'));
+       // $this->initAcl($e);
+       // $eventManager->attach('route', array($this, 'checkAcl'));
      /*   $eventManager->attach('dispatch.error', function($event){
             error_log();
             $exception = $event->getResult()->exception;
