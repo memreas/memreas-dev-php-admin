@@ -333,7 +333,7 @@ class AccountController extends AbstractActionController {
         $userRec = $this->getUserTable()->fetchAll();
         foreach ($userRec as $user) {
             $this->getPlan($user->user_id);
-            break;
+           
         }
         die('done');
     }
