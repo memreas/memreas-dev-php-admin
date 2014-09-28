@@ -10,3 +10,4 @@ nbproject
 composer.lock
 !vendor/composer/autoload_psr4.php
 vendor/
+data/
