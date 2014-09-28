@@ -25,6 +25,7 @@ use Application\View\Helper\S3;
 use Aws\S3\S3Client;
 use Application\Controller\AWSManagerSender;
 use Application\Model\MemreasConstants;
+use GuzzleHttp\Exception\RequestException;
 
 
 class IndexController extends AbstractActionController {
@@ -60,7 +61,9 @@ class IndexController extends AbstractActionController {
         error_log("Inside fetch XML request url ---> " . $this->url . PHP_EOL);
         error_log("Inside fetch XML request action ---> " . $action . PHP_EOL);
         error_log("Inside fetch XML request XML ---> " . $xml . PHP_EOL);
-        $request = $guzzle->post(
+       
+        try {
+             $request = $guzzle->post(
                 $this->url, null, array(
             'action' => $action,
             //'cache_me' => true,
@@ -68,6 +71,13 @@ class IndexController extends AbstractActionController {
             'PHPSESSID' => $this->getToken(),
                 )
         );
+} catch (RequestException $e) {
+    echo $e->getRequest() . "\n";
+    if ($e->hasResponse()) {
+        echo $e->getResponse() . "\n";
+    }
+}
+        echo $request->getScheme();
         $response = $request->send();
         error_log("Inside fetch XML response ---> " . $response->getBody(true) . PHP_EOL);
         error_log("Exit fetchXML" . PHP_EOL);
@@ -395,6 +405,7 @@ public function getUserTable() {
         return $this->userTable;
     }
     public function testWsAction() {
+
         $action = 'login';
         $xml = '<xml><login><username>kamlesh</username><password>123456</password></login></xml>';
     
