@@ -41,14 +41,14 @@ class Module {
         $session->start();
        // $this->initAcl($e);
        // $eventManager->attach('route', array($this, 'checkAcl'));
-     /*   $eventManager->attach('dispatch.error', function($event){
-            error_log();
+     $eventManager->attach('dispatch.error', function($event){
+            
             $exception = $event->getResult()->exception;
             if ($exception) {
                error_log($exception);
             }
         });
- */
+ 
  
     }
 
