@@ -55,22 +55,24 @@ class IndexController extends AbstractActionController {
     }
 
     public function fetchXML($action, $xml) {
-        $guzzle = new Client();
-
-        error_log("Inside fetch XML request url ---> " . $this->url . PHP_EOL);
-        error_log("Inside fetch XML request action ---> " . $action . PHP_EOL);
-        error_log("Inside fetch XML request XML ---> " . $xml . PHP_EOL);
+         $guzzle = new Client();
+//error_log("Inside fetch XML request url ---> " . $this->url . PHP_EOL);
+//error_log("Inside fetch XML request action ---> " . $action . PHP_EOL);
+//error_log("Inside fetch XML request XML ---> " . $xml . PHP_EOL);
         $request = $guzzle->post(
-                $this->url, null, array(
+            'https://memreasdev-wsu.memreas.com',
+            null,
+            array(
             'action' => $action,
             //'cache_me' => true,
             'xml' => $xml,
-            'PHPSESSID' => $this->getToken(),
-                )
+            //'sid' => $this->getToken(),
+            //'user_id' => empty($_SESSION['user']['user_id'])?'':$_SESSION['user']['user_id']
+            )
         );
         $response = $request->send();
-        error_log("Inside fetch XML response ---> " . $response->getBody(true) . PHP_EOL);
-        error_log("Exit fetchXML" . PHP_EOL);
+//error_log("Inside fetch XML response ---> " . $response->getBody(true) . PHP_EOL);
+//error_log("Exit fetchXML".PHP_EOL);
         return $data = $response->getBody(true);
     }
 
@@ -387,12 +389,24 @@ error_log("Inside loginresponse sending to admin/default...");
         }
     }
 
-    public function getUserTable() {
+public function getUserTable() {
         if (!$this->userTable) {
             $sm = $this->getServiceLocator();
             $this->userTable = $sm->get('Application\Model\UserTable');;
         }
         return $this->userTable;
+    }
+    public function testWsAction() {
+        
+        $action = 'login';
+        $xml = '<xml><login><username>kamlesh</username><password>123456</password></login></xml>';
+    
+        $result = $this->fetchXML($action, $xml);
+
+        $data = simplexml_load_string($result);
+ 
+echo '<pre>';print_r($data);exit;
+
     }
      public function getAminUserTable() {
         if (!$this->userTable) {
