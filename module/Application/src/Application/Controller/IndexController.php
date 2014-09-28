@@ -57,7 +57,7 @@ class IndexController extends AbstractActionController {
 
     public function fetchXML($action, $xml) {
         $guzzle = new Client();
-$this->url = "google.com";
+
         error_log("Inside fetch XML request url ---> " . $this->url . PHP_EOL);
         error_log("Inside fetch XML request action ---> " . $action . PHP_EOL);
         error_log("Inside fetch XML request XML ---> " . $xml . PHP_EOL);
@@ -71,7 +71,7 @@ $this->url = "google.com";
             'PHPSESSID' => $this->getToken(),
                 )
         );
-} catch (RequestException $e) {
+} catch (\Exception $e) {
     echo $e->getRequest() . "\n";
     if ($e->hasResponse()) {
         echo $e->getResponse() . "\n";
