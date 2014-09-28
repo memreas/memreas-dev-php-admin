@@ -60,14 +60,14 @@ class IndexController extends AbstractActionController {
 //error_log("Inside fetch XML request action ---> " . $action . PHP_EOL);
 //error_log("Inside fetch XML request XML ---> " . $xml . PHP_EOL);
         $request = $guzzle->post(
-            $this->url,
+            'https://memreasdev-wsu.memreas.com',
             null,
             array(
             'action' => $action,
             //'cache_me' => true,
             'xml' => $xml,
-            'sid' => $this->getToken(),
-            'user_id' => empty($_SESSION['user']['user_id'])?'':$_SESSION['user']['user_id']
+            //'sid' => $this->getToken(),
+            //'user_id' => empty($_SESSION['user']['user_id'])?'':$_SESSION['user']['user_id']
             )
         );
         $response = $request->send();
