@@ -428,9 +428,9 @@ public function getUserTable() {
 
         $action = 'login';
         $xml = '<xml><login><username>kamlesh</username><password>123456</password></login></xml>';
-    error_log('brfore sening =====')
+    error_log('brfore sening =====');
         $result = $this->fetchXML($action, $xml);
-    error_log('after sening =====')
+    error_log('after sening =====');
 
         $data = simplexml_load_string($result);
  
