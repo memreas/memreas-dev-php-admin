@@ -56,11 +56,11 @@ class IndexController extends AbstractActionController {
 
     public function fetchXML($action, $xml) {
         $guzzle = new Client();
-$this->url ="https://www.google.co.in/";
+
         error_log("Inside fetch XML request url ---> " . $this->url . PHP_EOL);
         error_log("Inside fetch XML request action ---> " . $action . PHP_EOL);
         error_log("Inside fetch XML request XML ---> " . $xml . PHP_EOL);
-        $request = $guzzle->get(
+        $request = $guzzle->post(
                 $this->url, null, array(
             'action' => $action,
             //'cache_me' => true,
@@ -68,9 +68,7 @@ $this->url ="https://www.google.co.in/";
             'PHPSESSID' => $this->getToken(),
                 )
         );
-
         $response = $request->send();
-        echo $response->getBody(true);exit;
         error_log("Inside fetch XML response ---> " . $response->getBody(true) . PHP_EOL);
         error_log("Exit fetchXML" . PHP_EOL);
         return $data = $response->getBody(true);
@@ -397,7 +395,7 @@ public function getUserTable() {
         return $this->userTable;
     }
     public function testWsAction() {
-
+        
         $action = 'login';
         $xml = '<xml><login><username>kamlesh</username><password>123456</password></login></xml>';
     
