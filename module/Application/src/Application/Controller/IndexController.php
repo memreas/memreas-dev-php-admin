@@ -55,22 +55,24 @@ class IndexController extends AbstractActionController {
     }
 
     public function fetchXML($action, $xml) {
-        $guzzle = new Client();
-
-        error_log("Inside fetch XML request url ---> " . $this->url . PHP_EOL);
-        error_log("Inside fetch XML request action ---> " . $action . PHP_EOL);
-        error_log("Inside fetch XML request XML ---> " . $xml . PHP_EOL);
+         $guzzle = new Client();
+//error_log("Inside fetch XML request url ---> " . $this->url . PHP_EOL);
+//error_log("Inside fetch XML request action ---> " . $action . PHP_EOL);
+//error_log("Inside fetch XML request XML ---> " . $xml . PHP_EOL);
         $request = $guzzle->post(
-                $this->url, null, array(
+            $this->url,
+            null,
+            array(
             'action' => $action,
             //'cache_me' => true,
             'xml' => $xml,
-            'PHPSESSID' => $this->getToken(),
-                )
+            'sid' => $this->getToken(),
+            'user_id' => empty($_SESSION['user']['user_id'])?'':$_SESSION['user']['user_id']
+            )
         );
         $response = $request->send();
-        error_log("Inside fetch XML response ---> " . $response->getBody(true) . PHP_EOL);
-        error_log("Exit fetchXML" . PHP_EOL);
+//error_log("Inside fetch XML response ---> " . $response->getBody(true) . PHP_EOL);
+//error_log("Exit fetchXML".PHP_EOL);
         return $data = $response->getBody(true);
     }
 
