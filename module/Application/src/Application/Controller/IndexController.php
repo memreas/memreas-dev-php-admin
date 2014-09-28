@@ -59,7 +59,7 @@ class IndexController extends AbstractActionController {
     public function fetchXML($action, $xml) {
          error_log("Inside fetch XML request url ---> " . $this->url . PHP_EOL);
 
-$client = new Client($this->url, array(
+$client = new Client('http://google.com', array(
    'adapter' => 'Zend\Http\Client\Adapter\Curl',
    'curloptions' => array(CURLOPT_FOLLOWLOCATION => true,
     CURLOPT_RETURNTRANSFER => 1,
@@ -67,11 +67,11 @@ $client = new Client($this->url, array(
       //  CURLOPT_SSL_VERIFYHOST => FALSE,
         ),
 ));
-$client->setMethod('POST');
-$client->setParameterPost(array(
+//$client->setMethod('POST');
+/*$client->setParameterPost(array(
    'action' => 'login',
    'xml'=>$xml,
-));
+));*/
 error_log('before-sending');
 $response = $client->send();
         error_log("Inside fetch XML response ---> " . print_r($response->getBody(true),true) . PHP_EOL);
