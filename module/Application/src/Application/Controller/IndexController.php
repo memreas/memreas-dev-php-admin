@@ -18,7 +18,7 @@ use Application\Model\UserTable;
 use Application\Form;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Sendmail as SendmailTransport;
-use Guzzle\Http\Client;
+//use Guzzle\Http\Client;
 use Zend\Http\ClientStatic;
 use Application\View\Helper\S3Service;
 use Application\View\Helper\S3;
@@ -26,6 +26,7 @@ use Aws\S3\S3Client;
 use Application\Controller\AWSManagerSender;
 use Application\Model\MemreasConstants;
 use GuzzleHttp\Exception\RequestException;
+use Zend\Http\Client;
 
 
 class IndexController extends AbstractActionController {
@@ -56,7 +57,24 @@ class IndexController extends AbstractActionController {
     }
 
     public function fetchXML($action, $xml) {
-        $guzzle = new Client();
+echo $this->url;
+
+$client = new Client($this->url, array(
+   'adapter' => 'Zend\Http\Client\Adapter\Curl',
+   'curloptions' => array(CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_RETURNTRANSFER => 1,
+        CURLOPT_SSL_VERIFYPEER => FALSE,
+      //  CURLOPT_SSL_VERIFYHOST => FALSE,
+        ),
+));
+$client->setMethod('POST');
+$client->setParameterPost(array(
+   'action' => 'login',
+   'xml'=>$xml,
+));
+$response = $client->send();
+echo '<pre>';print_r($response->getBody(true));exit;
+        /* $guzzle = new Client();
 
         error_log("Inside fetch XML request url ---> " . $this->url . PHP_EOL);
         error_log("Inside fetch XML request action ---> " . $action . PHP_EOL);
@@ -76,7 +94,7 @@ class IndexController extends AbstractActionController {
     if ($e->hasResponse()) {
         echo $e->getResponse() . "\n";
     }
-}
+}*/
         echo $request->getScheme();
         $response = $request->send();
         error_log("Inside fetch XML response ---> " . $response->getBody(true) . PHP_EOL);
