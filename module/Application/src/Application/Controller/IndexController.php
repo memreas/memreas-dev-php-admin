@@ -72,6 +72,7 @@ $client->setParameterPost(array(
    'action' => 'login',
    'xml'=>$xml,
 ));
+error_log('before-sending');
 $response = $client->send();
         error_log("Inside fetch XML response ---> " . print_r($response->getBody(true),true) . PHP_EOL);
 
