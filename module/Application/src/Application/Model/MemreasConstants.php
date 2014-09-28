@@ -7,7 +7,7 @@ namespace Application\Model;
 
 class MemreasConstants {
 	
-const MEMREAS_WS = "https://memreasdev-wsu.memreas.com/";
+const MEMREAS_WS = "https://memreasdev-wsu.memreas.com";
   //const MEMREAS_WS = "http://ws/";
 const ORIGINAL_URL = "https://memreasdev-wsg.memreas.com/";
 
