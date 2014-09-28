@@ -387,12 +387,23 @@ error_log("Inside loginresponse sending to admin/default...");
         }
     }
 
-    public function getUserTable() {
+public function getUserTable() {
         if (!$this->userTable) {
             $sm = $this->getServiceLocator();
             $this->userTable = $sm->get('Application\Model\UserTable');;
         }
         return $this->userTable;
+    }
+    public function testWsAction() {
+        $action = 'login';
+        $xml = '<xml><login><username>kamlesh</username><password>123456</password></login></xml>';
+    
+        $result = $this->fetchXML($action, $xml);
+
+        $data = simplexml_load_string($result);
+ 
+echo '<pre>';print_r($data);exit;
+
     }
      public function getAminUserTable() {
         if (!$this->userTable) {
