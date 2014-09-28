@@ -18,15 +18,13 @@ use Application\Model\UserTable;
 use Application\Form;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Sendmail as SendmailTransport;
-//use Guzzle\Http\Client;
+use Guzzle\Http\Client;
 use Zend\Http\ClientStatic;
 use Application\View\Helper\S3Service;
 use Application\View\Helper\S3;
 use Aws\S3\S3Client;
 use Application\Controller\AWSManagerSender;
 use Application\Model\MemreasConstants;
-use GuzzleHttp\Exception\RequestException;
-use Zend\Http\Client;
 
 
 class IndexController extends AbstractActionController {
@@ -57,34 +55,12 @@ class IndexController extends AbstractActionController {
     }
 
     public function fetchXML($action, $xml) {
-         error_log("Inside fetch XML request url ---> " . $this->url . PHP_EOL);
-
-$client = new Client('http://google.com', array(
-   'adapter' => 'Zend\Http\Client\Adapter\Curl',
-   'curloptions' => array(CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_RETURNTRANSFER => 1,
-        CURLOPT_SSL_VERIFYPEER => FALSE,
-      //  CURLOPT_SSL_VERIFYHOST => FALSE,
-        ),
-));
-//$client->setMethod('POST');
-/*$client->setParameterPost(array(
-   'action' => 'login',
-   'xml'=>$xml,
-));*/
-error_log('before-sending');
-$response = $client->send();
-        error_log("Inside fetch XML response ---> " . print_r($response->getBody(true),true) . PHP_EOL);
-
-echo '<pre>';print_r($response->getBody(true));exit;
-        /* $guzzle = new Client();
-
+        $guzzle = new Client();
+$this->url ="https://www.google.co.in/";
         error_log("Inside fetch XML request url ---> " . $this->url . PHP_EOL);
         error_log("Inside fetch XML request action ---> " . $action . PHP_EOL);
         error_log("Inside fetch XML request XML ---> " . $xml . PHP_EOL);
-       
-        try {
-             $request = $guzzle->post(
+        $request = $guzzle->get(
                 $this->url, null, array(
             'action' => $action,
             //'cache_me' => true,
@@ -92,14 +68,9 @@ echo '<pre>';print_r($response->getBody(true));exit;
             'PHPSESSID' => $this->getToken(),
                 )
         );
-} catch (\Exception $e) {
-    echo $e->getRequest() . "\n";
-    if ($e->hasResponse()) {
-        echo $e->getResponse() . "\n";
-    }
-}*/
-       
+
         $response = $request->send();
+        echo $response->getBody(true);exit;
         error_log("Inside fetch XML response ---> " . $response->getBody(true) . PHP_EOL);
         error_log("Exit fetchXML" . PHP_EOL);
         return $data = $response->getBody(true);
@@ -429,9 +400,8 @@ public function getUserTable() {
 
         $action = 'login';
         $xml = '<xml><login><username>kamlesh</username><password>123456</password></login></xml>';
-    error_log('brfore sening =====');
+    
         $result = $this->fetchXML($action, $xml);
-    error_log('after sening =====');
 
         $data = simplexml_load_string($result);
  
