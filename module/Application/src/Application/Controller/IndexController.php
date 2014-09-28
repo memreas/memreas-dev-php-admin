@@ -57,7 +57,7 @@ class IndexController extends AbstractActionController {
     }
 
     public function fetchXML($action, $xml) {
-echo $this->url;
+         error_log("Inside fetch XML request url ---> " . $this->url . PHP_EOL);
 
 $client = new Client($this->url, array(
    'adapter' => 'Zend\Http\Client\Adapter\Curl',
@@ -73,6 +73,8 @@ $client->setParameterPost(array(
    'xml'=>$xml,
 ));
 $response = $client->send();
+        error_log("Inside fetch XML response ---> " . print_r($response->getBody(true),true) . PHP_EOL);
+
 echo '<pre>';print_r($response->getBody(true));exit;
         /* $guzzle = new Client();
 
@@ -95,7 +97,7 @@ echo '<pre>';print_r($response->getBody(true));exit;
         echo $e->getResponse() . "\n";
     }
 }*/
-        echo $request->getScheme();
+       
         $response = $request->send();
         error_log("Inside fetch XML response ---> " . $response->getBody(true) . PHP_EOL);
         error_log("Exit fetchXML" . PHP_EOL);
@@ -426,8 +428,9 @@ public function getUserTable() {
 
         $action = 'login';
         $xml = '<xml><login><username>kamlesh</username><password>123456</password></login></xml>';
-    
+    error_log('brfore sening =====')
         $result = $this->fetchXML($action, $xml);
+    error_log('after sening =====')
 
         $data = simplexml_load_string($result);
  
