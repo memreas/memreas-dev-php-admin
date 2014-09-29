@@ -407,11 +407,11 @@ $client = new Client();
 try {
     $response = $client->get('https://memreasdev-wsu.memreas.com?view=1')->send();
 } catch (Guzzle\Http\Exception\BadResponseException $e) {
-    echo 'Uh oh! ' . $e->getMessage();
-    echo 'HTTP request URL: ' . $e->getRequest()->getUrl() . "\n";
-    echo 'HTTP request: ' . $e->getRequest() . "\n";
-    echo 'HTTP response status: ' . $e->getResponse()->getStatusCode() . "\n";
-    echo 'HTTP response: ' . $e->getResponse() . "\n";
+    error_log('Uh oh! ' . $e->getMessage());
+    error_log('HTTP request URL: ' . $e->getRequest()->getUrl() . "\n");
+    error_log( 'HTTP request: ' . $e->getRequest() . "\n");
+    error_log( 'HTTP response status: ' . $e->getResponse()->getStatusCode() . "\n");
+    error_log( 'HTTP response: ' . $e->getResponse() . "\n");
 }
 
 $data = $response->getBody();
@@ -422,11 +422,11 @@ try {
 $response = $request->send();
   
 } catch (Guzzle\Http\Exception\BadResponseException $e) {
-    echo 'Uh oh! ' . $e->getMessage();
-    echo 'HTTP request URL: ' . $e->getRequest()->getUrl() . "\n";
-    echo 'HTTP request: ' . $e->getRequest() . "\n";
-    echo 'HTTP response status: ' . $e->getResponse()->getStatusCode() . "\n";
-    echo 'HTTP response: ' . $e->getResponse() . "\n";
+    error_log( 'Uh oh! ' . $e->getMessage());
+    error_log( 'HTTP request URL: ' . $e->getRequest()->getUrl() . "\n");
+    error_log( 'HTTP request: ' . $e->getRequest() . "\n");
+    error_log( 'HTTP response status: ' . $e->getResponse()->getStatusCode() . "\n");
+    error_log( 'HTTP response: ' . $e->getResponse() . "\n");
 }
  
 $data = $response->getBody();
