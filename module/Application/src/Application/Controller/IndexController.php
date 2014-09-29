@@ -401,6 +401,16 @@ public function getUserTable() {
         error_reporting(E_ALL);
 ini_set('display_errors', '1');
  $url = 'https://memreasdev-wsu.memreas.com';
+ $ch = curl_init('http://404.php.net/');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+ 
+     error_log('Curl error:'.print_r(curl_error($ch),true));
+
+
+ 
+// Close handle
+curl_close($ch);
  $handle = curl_init($url);
 curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
 
@@ -412,9 +422,9 @@ $httpCode = curl_getinfo($handle);
 if($httpCode == 404) {
     /* Handle 404 here. */
 }
-
+error_log('curl ibfo'.print_r($httpCode,true));
 curl_close($handle);
-print_r($httpCode);
+
   
 $client = new Client();
 $request = $client->post('https://memreasdev-wsu.memreas.com', [    'debug'           => true,], array('action' => 'login'));
