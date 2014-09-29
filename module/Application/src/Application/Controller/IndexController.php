@@ -401,10 +401,19 @@ public function getUserTable() {
         error_reporting(E_ALL);
 ini_set('display_errors', '1');
  $url = 'https://memreasdev-wsu.memreas.com';
- $ch = curl_init('http://404.php.net/');
+ $ch = curl_init($url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch,CURLOPT_FAILONERROR,true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+ if(curl_exec($ch) === false)
+{
+    echo 'Curl error: ' . curl_error($ch);
+}
+else
+{
+    echo 'Operation completed without any errors';
+}
 
- 
      error_log('Curl error:'.print_r(curl_error($ch),true));
 
 
