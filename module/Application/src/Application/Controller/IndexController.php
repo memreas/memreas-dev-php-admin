@@ -398,14 +398,25 @@ public function getUserTable() {
     }
     public function testWsAction() {
         
-        $action = 'login';
-        $xml = '<xml><login><username>kamlesh</username><password>123456</password></login></xml>';
-    
-        $result = $this->fetchXML($action, $xml);
-
-        $data = simplexml_load_string($result);
+        error_reporting(E_ALL);
+ini_set('display_errors', '1');
  
-echo '<pre>';print_r($data);exit;
+  
+$client = new Client();
+$request = $client->post('https://memreasdev-wsu.memreas.com', [    'debug'           => true,], array('action' => 'login'));
+$response = $request->send();
+$data = $response->getBody();
+
+echo $data,'<br> get request:';
+
+$request = $client->get('https://memreasdev-wsu.memreas.com?view=1');
+$response = $request->send();
+$data = $response->getBody();
+
+echo $data;
+
+
+exit;
 
     }
      public function getAminUserTable() {
