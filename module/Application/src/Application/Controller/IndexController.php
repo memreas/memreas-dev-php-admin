@@ -400,7 +400,21 @@ public function getUserTable() {
         
         error_reporting(E_ALL);
 ini_set('display_errors', '1');
- 
+ $url = 'https://memreasdev-wsu.memreas.com';
+ $handle = curl_init($url);
+curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
+
+/* Get the HTML or whatever is linked in $url. */
+$response = curl_exec($handle);
+
+/* Check for 404 (file not found). */
+$httpCode = curl_getinfo($handle);
+if($httpCode == 404) {
+    /* Handle 404 here. */
+}
+
+curl_close($handle);
+print_r($httpCode);
   
 $client = new Client();
 $request = $client->post('https://memreasdev-wsu.memreas.com', [    'debug'           => true,], array('action' => 'login'));
