@@ -400,56 +400,38 @@ public function getUserTable() {
         
         error_reporting(E_ALL);
 ini_set('display_errors', '1');
- $url = 'https://memreasdev-wsu.memreas.com?view=1';
- $homepage = file_get_contents($url);
-error_log('file get content'.print_r($homepage,true));
- error_log('headers:'.print_r(get_headers($url),true));
- $ch = curl_init($url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch,CURLOPT_FAILONERROR,true);
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
- if(curl_exec($ch) === false)
-{
-    echo 'Curl error: ' . curl_error($ch);
-}
-else
-{
-    echo 'Operation completed without any errors';
-}
-
-     error_log('Curl error:'.print_r(curl_error($ch),true));
-
-
+ $url = 'https://memreasdev-wsu.memreas.com';
  
-// Close handle
-curl_close($ch);
- $handle = curl_init($url);
-curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
 
-/* Get the HTML or whatever is linked in $url. */
-$response = curl_exec($handle);
-
-/* Check for 404 (file not found). */
-$httpCode = curl_getinfo($handle);
-if($httpCode == 404) {
-    /* Handle 404 here. */
-}
-error_log('curl ibfo'.print_r($httpCode,true));
-curl_close($handle);
-
-  
 $client = new Client();
-$request = $client->post('https://memreasdev-wsu.memreas.com', [    'debug'           => true,], array('action' => 'login'));
-$response = $request->send();
+try {
+    $response = $client->get('https://memreasdev-wsu.memreas.com?view=1')->send();
+} catch (Guzzle\Http\Exception\BadResponseException $e) {
+    echo 'Uh oh! ' . $e->getMessage();
+    echo 'HTTP request URL: ' . $e->getRequest()->getUrl() . "\n";
+    echo 'HTTP request: ' . $e->getRequest() . "\n";
+    echo 'HTTP response status: ' . $e->getResponse()->getStatusCode() . "\n";
+    echo 'HTTP response: ' . $e->getResponse() . "\n";
+}
+
 $data = $response->getBody();
 
-echo $data,'<br> get request:';
-
-$request = $client->get('https://memreasdev-wsu.memreas.com?view=1');
+error_log('get:'.$data);
+try {
+    $request = $client->post('https://memreasdev-wsu.memreas.com',array(), array('action' => 'login'));
 $response = $request->send();
+  
+} catch (Guzzle\Http\Exception\BadResponseException $e) {
+    echo 'Uh oh! ' . $e->getMessage();
+    echo 'HTTP request URL: ' . $e->getRequest()->getUrl() . "\n";
+    echo 'HTTP request: ' . $e->getRequest() . "\n";
+    echo 'HTTP response status: ' . $e->getResponse()->getStatusCode() . "\n";
+    echo 'HTTP response: ' . $e->getResponse() . "\n";
+}
+ 
 $data = $response->getBody();
 
-echo $data;
+error_log('post:'.$data);
 
 
 exit;
