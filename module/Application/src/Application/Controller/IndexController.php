@@ -404,8 +404,11 @@ ini_set('display_errors', '1');
  
 
 $client = new Client();
+
 try {
-    $response = $client->get('https://memreasdev-wsu.memreas.com?view=1')->send();
+  $response = $client->get('https://memreasdev-wsu.memreas.com?view=1', array(), array(
+     'ssl_key' => getcwd().'/key/memreas.crt'
+))->send();
 } catch (Guzzle\Http\Exception\BadResponseException $e) {
     error_log('Uh oh! ' . $e->getMessage());
     error_log('HTTP request URL: ' . $e->getRequest()->getUrl() . "\n");
@@ -415,7 +418,7 @@ try {
 }
 
 $data = $response->getBody();
-
+echo $data;exit;
 error_log('get:'.$data);
 try {
     $request = $client->post('https://memreasdev-wsu.memreas.com',array(), array('action' => 'login'));
