@@ -401,6 +401,7 @@ public function getUserTable() {
         error_reporting(E_ALL);
 ini_set('display_errors', '1');
  $url = 'https://memreasdev-wsu.memreas.com';
+ print_r(get_headers($url));
  $ch = curl_init($url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch,CURLOPT_FAILONERROR,true);
