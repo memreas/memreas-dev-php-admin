@@ -406,9 +406,12 @@ ini_set('display_errors', '1');
 $client = new Client();
 
 try {
-  $response = $client->get('https://memreasdev-wsu.memreas.com?view=1', array(), array(
-     'ssl_key' => getcwd().'/key/memreas.crt'
-))->send();
+  $response = $client->get('https://memreasdev-wsu.memreas.com?view=1', array('debug' => true))->send();
+  echo $response->getStatusCode();      // >>> 200
+echo $response->getReasonPhrase();    // >>> OK
+echo $response->getProtocol();        // >>> HTTP
+echo $response->getProtocolVersion(); // >>> 1.1
+echo $response;
 } catch (Guzzle\Http\Exception\BadResponseException $e) {
     error_log('Uh oh! ' . $e->getMessage());
     error_log('HTTP request URL: ' . $e->getRequest()->getUrl() . "\n");

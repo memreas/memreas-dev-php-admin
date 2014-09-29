@@ -1,17 +1,15 @@
 {
     "name": "zendframework/skeleton-application",
-    "description": "Skeleton Application for ZF2",
-    "license": "BSD-3-Clause",
-    "keywords": [
+    "description": "Amin application",
+     "keywords": [
         "framework",
         "zf2",
-        "paypal", 
-        "php", 
+         "php", 
         "sdk"
     ],
-    "homepage": "http://framework.zend.com/",
+    "homepage": "http://memreas.com/",
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.4",
         "zendframework/zendframework": "2.*",
         "ext-curl": "*",
         "ext-json": "*",
