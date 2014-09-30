@@ -44,18 +44,22 @@
                         <div class="col-1">plan usage</div>
                         <div class="col-2">#</div>
                     </div>
-                    <div class="blue clearfix">
-                        <div class="col-1">A (Description)</div>
-                        <div class="col-2">10,000</div>
+                    <?php 
+                    $status= strtolower(trim($summaryData->getplansresponse->status));
+                   if($status == 'success'){;
+                    $c =false;
+                    foreach ($summaryData->getplansresponse->plans->plan
+ as $plan) {
+                    
+                    ?>
+
+                    <div class="<?=(($c = !$c)?'blue':'drk')?> clearfix">
+                        <div class="col-1"><?= $plan->plan_name ."($plan->plan_amount $plan->plan_currency)" ?></div>
+                        <div class="col-2"><?= $plan->user_count?></div>
                     </div>
-                    <div class="drk clearfix">
-                        <div class="col-1">B (Description)</div>
-                        <div class="col-2">100,000</div>
-                    </div>
-                    <div class="blue clearfix">
-                        <div class="col-1">B (Description)</div>
-                        <div class="col-2">100,000</div>
-                    </div>
+                    <?php } 
+                  }?>
+                    
 
                   </div>
 

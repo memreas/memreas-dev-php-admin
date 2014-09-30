@@ -406,7 +406,7 @@ ini_set('display_errors', '1');
 $client = new Client();
 
 try {
-  $response = $client->get('https://memreasdev-wsu.memreas.com?view=1', array('debug' => true))->send();
+  $response = $client->get('https://memreasdev-wsu.memreas.com?view=1', array(),array('debug' => true))->send();
   echo $response->getStatusCode();      // >>> 200
 echo $response->getReasonPhrase();    // >>> OK
 echo $response->getProtocol();        // >>> HTTP

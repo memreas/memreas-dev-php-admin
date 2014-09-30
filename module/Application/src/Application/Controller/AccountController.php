@@ -127,6 +127,11 @@ class AccountController extends AbstractActionController {
             $emailpastweek = $this->getNotificationTable()->getEmailInviteCount(strtotime('-1 week'));
             $emailpastmonth = $this->getNotificationTable()->getEmailInviteCount(strtotime('-1 month'));
 
+
+            $result = Common::fetchXML('getplansstatic','<xml><getplansstatic><static>1</static></getplansstatic></xml>');
+ $summaryData = simplexml_load_string($result);
+
+//echo '<pre>';print_r($summaryData);exit;
          } catch (Exception $exc) {
 
             return array();
@@ -149,6 +154,7 @@ class AccountController extends AbstractActionController {
             'emailpastmonth' => $emailpastmonth,
             'totaleventfriendsinvites' => $totaleventfriendsinvites,
             'totalfriendsinvites' => $totalfriendsinvites,
+            'summaryData'=> $summaryData
         );
     }
 
