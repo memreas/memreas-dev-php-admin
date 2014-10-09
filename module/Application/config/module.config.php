@@ -106,6 +106,8 @@ return array(
             
             'Application\Controller\ManageAdmin' => 'Application\Controller\ManageAdminController',
             'Application\Controller\Account' => 'Application\Controller\AccountController',
+            'Application\Controller\OrderHistory' => 'Application\Controller\OrderHistoryController',
+
 
 
 

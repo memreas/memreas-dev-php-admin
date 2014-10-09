@@ -8,15 +8,7 @@ use DoctrineModule\Paginator\Adapter\Selectable as SelectableAdapter;
 use Zend\Paginator\Paginator;
 use Zend\View\Model\ViewModel;
 use Application\Model\MemreasConstants;
-     use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
-   // use DoctrineORMModule\Form\Annotation\AnnotationBuilder;
-     use Zend\Form\Annotation;
-    use Zend\Form\Annotation\AnnotationBuilder;
-
-
-      use Zend\Form\Element;
-
-    
+     
 class OrderHistoryController extends AbstractActionController {
 
 public $messages = array();
@@ -24,48 +16,37 @@ public $status ;
 
           
     public function indexAction() {
-                $this->db = $this->getServiceLocator()->get ( 'doctrine.entitymanager.orm_default' );
-                $objectRepository = $this->db->getRepository('Application\Entity\Feedback');
+         //  $id = $this->params()->fromRoute('id'); 
+       // $this->getAdminLogTable()->saveLog(array('log_type'=>'feedback_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$id));
+            $page = $this->params()->fromQuery('page', 1);
 
-
-
-// Create the adapter
-$adapter = new SelectableAdapter($objectRepository); // An object repository implements Selectable
-
-// Create the paginator itself
-$paginator = new Paginator($adapter);
-    $paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
-
-$paginator->setItemCountPerPage(MemreasConstants::NUMBER_OF_ROWS);
-
-                
-                
-
-        return new ViewModel(
-            array(
-                'paginator' => $paginator 
-            )
-        );
+         
+            $result = Common::fetchXML('getorderhistory',"<xml><getorderhistory><user_id>0</user_id><page>$page</page><limit>15</limit></getorderhistory></xml>");
+ $orderData = simplexml_load_string($result);
+//echo '<pre>';print_r($orderData); 
+     return array('orderData' => $orderData,'page' => $page);
 
     }
    
   public function viewAction() {
-        $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-        $repository = $entityManager->getRepository('Application\Entity\Feedback');
-        //$builder    = new AnnotationBuilder();
-        //$form       = $builder->createForm('Application\Entity\Feedback');
-        //$form->bind($Feedback);
-     
-             $id = $this->params()->fromRoute('id');
-             $Feedback = $repository->findOneBy(array('feedback_id' => $id));
-
-          
-          
+         
+            $feedbacks = $this->getFeedbackTable()->FetchFeedDescAll();
+            $feedback_id = $this->params()->fromRoute('id'); 
+            $this->getAdminLogTable()->saveLog(array('log_type'=>'feedback_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$feedback_id));
+            $feedback = $this->getFeedbackTable()->getFeedback($feedback_id);
+            $page = $this->params()->fromQuery('page', 1);
+            $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($feedbacks);
+            $paginator = new Paginator($iteratorAdapter);
+            $paginator->setCurrentPageNumber($page);
+            //$paginator->setItemCountPerPage(ADMIN_QUERY_LIMIT);
+                      $paginator->setItemCountPerPage(10);
                   $view =  new ViewModel();
-                  $view->setVariable('Feedback',$Feedback );
-                  $view->setVariable('messages',$this->messages );
-                  $view->setVariable('status',$this->status );
-        return $view;
+                  $view->setVariable('feedback',$feedback );
+// print_r($feedback); exit;
+      // return $view;
+     return array('paginator' => $paginator, 'feedback' => $feedback, 'page' => $page);
+
+  
     }
 
 function validate(){
@@ -78,10 +59,25 @@ return $result;
   
     }
   
-   public function init()
-    {
-        
+    public function detailAction() {
+        $transaction_id = $this->params()->fromRoute('id'); 
+        $this->getAdminLogTable()->saveLog(array('log_type'=>'feedback_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$transaction_id));
+        $result = Common::fetchXML('getorder',"<xml><getorder><transaction_id>$transaction_id</transaction_id></getorder></xml>");
+        $orderData = simplexml_load_string($result);
+        //echo '<pre>';print_r($orderData);exit;
+        return array('orderData' => $orderData);
+
+  
     }
+      protected $adminLogTable;
+    public function getAdminLogTable() {
+        if (!$this->adminLogTable) {
+            $sm = $this->getServiceLocator();
+            $this->adminLogTable = $sm->get('Application\Model\AdminLogTable');
+        }
+        return $this->adminLogTable;
+    }
+
   
 }
 

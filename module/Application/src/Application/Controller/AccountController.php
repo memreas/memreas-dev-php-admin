@@ -231,7 +231,7 @@ class AccountController extends AbstractActionController {
         $userids = array();
         foreach ($iterator as $object) {
             $userid = stristr($object ['Key'], '/', true);
-            echo $object ['Key'] ,'-------------',$object ['Size'],'<br>';
+         //   echo $object ['Key'] ,'-------------',$object ['Size'],'<br>';
             $ext = pathinfo($object ['Key'], PATHINFO_EXTENSION);
             $image = $user_id . '/image/';
             $media = $user_id . '/media/';
@@ -374,6 +374,7 @@ error_log('response from server---'.print_r($status,true));
         }
         
     }
+    
 
 }
 

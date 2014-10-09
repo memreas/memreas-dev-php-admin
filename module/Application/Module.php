@@ -69,6 +69,7 @@ class Module {
                 'Application\Controller\ReportFeedback',
                 'Application\Controller\ModerateEvent',
                 'Application\Controller\Account',
+                'Application\Controller\OrderHistory',
 
             
             ),
