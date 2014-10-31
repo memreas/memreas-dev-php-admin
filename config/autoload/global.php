@@ -16,19 +16,19 @@ return array(
     'adapters'=>array(
         'memreasintdb' => array(
             'driver'         => 'Pdo',
-            'dsn'            => 'mysql:dbname=memreaspaymentsdb;host=memreasdev-db.co0fw2snbu92.us-east-1.rds.amazonaws.com',
+            'dsn'            => 'mysql:dbname=memreaspaymentsdb;host=memreasdevdb.co0fw2snbu92.us-east-1.rds.amazonaws.com',
             'username' => 'memreas2013',
             'password' => ''
         ),
         'memreaspaymentsdb' => array(
             'driver'         => 'Pdo',
-            'dsn'            => 'mysql:dbname=memreaspaymentsdb;host=memreasdev-db.co0fw2snbu92.us-east-1.rds.amazonaws.com',
+            'dsn'            => 'mysql:dbname=memreaspaymentsdb;host=memreasdevdb.co0fw2snbu92.us-east-1.rds.amazonaws.com',
             'username' => 'memreas2013',
             'password' => ''
         ),
         'memreasadmindb' => array(
             'driver'         => 'Pdo',
-            'dsn'            => 'mysql:dbname=memreasadmin;host=memreasdev-db.co0fw2snbu92.us-east-1.rds.amazonaws.com',
+            'dsn'            => 'mysql:dbname=memreasadmin;host=memreasdevdb.co0fw2snbu92.us-east-1.rds.amazonaws.com',
             'username' => 'memreasdbuser',
             'password' => 'memreas2013'
         ),
