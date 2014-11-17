@@ -22,6 +22,8 @@ class AdminLogTable
        if(!empty($order_by))  $select->order($order_by . ' ' . $order);
          if(!empty($where))  $select->where($where);
         $resultSet = $this->tableGateway->select($where);
+                $resultSet->buffer();
+
        
         return $resultSet;
     }
@@ -29,20 +31,13 @@ class AdminLogTable
     public function saveLog($data)
     {
         //print_r($data);
-        $result = $this->tableGateway->select(array('log_type'=>$data['log_type'],'entity_id' => $data['entity_id']));
-        $rec= $result->current();
-        if (empty($rec->log_id)) {
+        
                         $uuid = MUUID::fetchUUID ();
             $data['log_id']=$uuid;
             $data['created']=strtotime(date('Y-m-d H:i:s'));
             $this->tableGateway->insert($data);
             return true;
-        } else {
-                $data['created']=strtotime(date('Y-m-d H:i:s'));
-                $this->tableGateway->update($data, array('log_id' => $rec->log_id));
-                return true;
-  
-        }
+        
     }
     
 

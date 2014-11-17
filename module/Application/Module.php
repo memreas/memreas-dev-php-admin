@@ -63,18 +63,18 @@ class Module {
            
             
             'admin' => array(
-                'Application\Controller\Manage',
-                'Application\Controller\Event',
-                'Application\Controller\User',
-                'Application\Controller\ReportFeedback',
-                'Application\Controller\ModerateEvent',
-                'Application\Controller\Account',
-                'Application\Controller\OrderHistory',
+                'Application\Manage',
+                'Application\Event',
+                'Application\User',
+                'Application\ReportFeedback',
+                'Application\ModerateEvent',
+                'Application\Account',
+                'Application\OrderHistory',
 
             
             ),
             'superadmin' =>  array(
-                'Application\Controller\Manageadmin'
+                'Application\Manageadmin'
              ),
         );
         $allResources = array();

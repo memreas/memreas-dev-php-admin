@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><?php $sm = $this->getHelperPluginManager()->getServiceLocator();
+ 
+$router=$sm->get('Router');
+$request=$sm->get('Request');
+$routeMatch=$router->match($request);
+
+//get an array of the route params and their values
+$routeparams=$routeMatch->getParams();
+  
+ $MemHelper = $this->Mem();
+
+
+?></head><body><div class="tabinnercontent">
+                <div id="no-more-tables">
+                  <form method="post" class="formstyle">
+                  <table class="col-md-12 table-bordered table-striped table-condensed cf nopadding">
+                    <thead class="cf">
+                      <tr>
+                        <th><a href="#">profile picture</a></th>
+                            <th><a class="paginate_click" href="<?php echo $this->url('index',$routeparams,array('query' => array('page' => $page, 'order_by' => 'username', 'order' => $url_order)));?>">username</th>
+
+                        <th><a href="#">feedback summary</a></th>
+                        <th><a href="#">feedback description</a></th>
+                           <th><a class="paginate_click" href="<?php echo $this->url('index',$routeparams,array('query' => array('page' => $page, 'order_by' => 'create_time', 'order' => $url_order)));?>">Date added desc</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php foreach ($paginator as $key => $resultset) {
+     # code..
+?>
+    
+    
+   
+  
+                      <tr>
+                        <td class="numeric" data-title="profile picture"><?php echo '<img width="56px" src="'. $MemHelper->ProfilePic($resultset -> metadata).'"/>'; ?></td>
+                        
+                        <td data-title="feedback summary"><?php echo $resultset -> username ?></td>
+                         <td><?php echo $resultset -> name ?></td>
+                        <td data-title="feedback description"><a data-target="#popup" data-toggle="modal" class="" href="/index/feedback-view/<?php echo $resultset -> feedback_id?>">view feedback</a></td>
+                        <td data-title="date added disc"><?php echo $MemHelper->showDate($resultset -> create_time) ?></td>
+                      </tr>
+                       <?php }?>
+                    </tbody>
+                  </table>
+                  </form>
+                  <div class="clear"></div>
+                  <div style="text-align: left;" class="blur">
+                          <div class="pagination pagination-toolbar">
+                            <?php // add at the end of the file after the table
+                              echo $this->paginationControl(
+                              // the paginator object
+                              $this->paginator,
+                              // the scrolling style; see http://zf2.readthedocs.org/en/release-2.1.4/modules/zend.paginator.usage.html#rendering-pages-with-view-scripts
+                              'sliding',
+                              // the partial to use to render the control
+                              'layout/paginator.phtml'
+                              ,
+                              //the route to link to when a user clicks a control link
+                              array(                'order_by'=>$order_by,'order' => $order,'q'=>$q
+                                    )
+                          );
+                          ?>
+                          </div>
+                  </div>
+                </div>
+              </div>
+ 
+             
+          
+   
+ </body></html>

@@ -1,350 +1,663 @@
-<!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Memreas</title>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="assets/img/favicon.png">
 
-<!--Custom css-->
-<link href="/css/style.css" rel="stylesheet" type="text/css">
-<link href="/css/jquery.mCustomScrollbar.css" rel="stylesheet" />
-<link rel="stylesheet" type="text/css" href="/css/elastislide.css" />
-
-<link rel="stylesheet" href="/css/swipebox.css">
-<link href="/css/fotorama.css" rel="stylesheet">
-
-<link href="/css/jquery.akordeon.css" rel="stylesheet" type="text/css" />
-
-<!--Bootstrap Css-->
-<link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="/css/datepicker.css" rel="stylesheet" type="text/css">
-
-<!--jQuery Lybrary-->
-<script src="/js/jquery.js"></script>
-<script src="/js/modernizr.custom.17475.js"></script>
-
-<!--Bootstrap jQuery-->
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/fotorama.js"></script>
-
-<script src="/js/bootstrap-datepicker.js"></script>
-<script src="/js/jNotify.jquery.min.js"></script>
+    <title>MEM - Transaction History</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" >
+  <link type="text/css" rel="stylesheet" href="/css/easy-responsive-tabs.css" />
+  <link type="text/css" rel="stylesheet" href="/css/uniform.css" />  
 <link rel="stylesheet" type="text/css" href="/css/jNotify.jquery.css" media="screen" />
-<script src="/js/global.js"></script>
 
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+  
+  </head>
 
-<script type="text/javascript">
-    var UI ={
-    'current_tab':'',
-    'url':'',
-    'tab7':'/admin/report-feedback',
-    'tab6':'/admin/moderate-event',
-    'tab5':'/admin/account/account-summary',
-    'tab4':'/admin/account/usage',
-    'tab8':'/admin/order-history',
-    'tab2':'/admin/user',
-    'tab3':'/admin/manageadmin'
-    
-};
-$(function() {
-$( "#datepicker" ).datepicker();
-$( "#datepicker-1" ).datepicker();
-$( "#datepicker-2" ).datepicker();
-$( "#datepicker-3" ).datepicker();
-});
-</script>
-
-<!--Backgound Strecher-->
-<script type="text/javascript" src="/js/bgstretcher.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-$(document).bgStretcher({
-			images: ['/img/bg.jpg'],
-			imageWidth: 1366, imageHeight: 700
-		});
-	});
-</script>
-
-</head>
-
-<body>
-<!-- Begin : Container -->
-<div class="container">
-  <!-- Begin : Header -->
-  <div class="row-fluid">
-  	<header>
-      <h1 id="logo"><a href="index.html">memreas</a></h1>
-      <input name="input" type="text" class="search_bar" value="@person, #discover" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == '@person, #discover')this.value = '';"/>
-      <a href="notifications.html" class="notification_icon"></a>
-      <div class="pro-info">
-      	<figure class="pro-pic"><img src="/img/profile-pic.jpg" alt=""></figure>
-        <div class="pro-name"><?=$_SESSION['user']['username']?></div>
+  <body viewsource="no">
+  <header>  
+    <div class="row">
+      <div class="col-lg-3 col-md-3 col-sm-4 col-sm1-6  col-sm2-6 text-right">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <img src="/images/notification.png"/>
+        </button>
+        <h1 id="logo">
+          <a href="index.html">memreas</a>
+        </h1>
       </div>
-    </header>
-  </div>
-  <!-- End : Header -->
-  <!-- Begin : Content -->
-  	<div class="row-fluid content">
-    
-      <div class="span12 fixed">
-      	<div class="row-fluid">
-        <ul id="tabs" class="medium_tabs">
-<!--             <li><a href="#" title="tab1">manage events</a></li>
- -->            <li><a href="#" title="tab2">manage users</a></li>
-           <?php
-                if($_SESSION['user']['role'] == 3){
-                  echo '<li><a href="#" title="tab3">manage admins</a></li>';
-                }
-           ?>
-            
-            <li><a href="#" title="tab7">feedback report</a></li>
-            <li><a href="#" title="tab6">moderate events</a></li>
-            <li><a href="#" title="tab5">Account Summary </a></li>
-            <li><a href="#" title="tab4">Account Usage</a></li>
-            <li><a href="#" title="tab8">Order History</a></li>
-            
-
-
-        </ul>
-        <div id="tab-content">
-          <div id="tab1" class="hideCls"></div>
-          <div id="tab4" class="hideCls"></div>
-          <div id="tab2" class="hideCls"></div>      
-          <div id="tab3" class="hideCls" style="display: block;"></div>
-          <div id="tab5" class="hideCls clearfix"></div>
-          <div id="tab6" class="hideCls"></div>
-          <div id="tab7" class="hideCls"></div>
-          <div id="tab8" class="hideCls"></div>
-             <div id="forgot" class="popups2">
-                <a id="forgotClose" onClick="disablePopup('forgot')" class='popupClose'>x</a>
-          <div id="tabone" class=""></div>
-                
-                
-            </div>
-
-
-
-
-
-          <!------------------first-pop-up-------------------->
-          		<div id="locationmap" class="popups2">
-                  <a id="popupContactClose" onClick="disablePopup('locationmap')" class='popupClose'>x</a>
-                    <h2>location</h2>
-                    <input name="input"type="text" class="search_bar" value="Search your location" onBlur="if(!/\S/.test(this.value))this.value=this.defaultValue" onFocus="if(this.value == 'Search your location')this.value = '';"/>
-                    <div class="clear"></div>
-                	<div class="map_box"></div>
-                </div>
-       
-
-          
-          
-          
-                <div id="bglocationmap" class="backgroundPopup"></div> 
-      	</div>
+      <div class="col-lg-6 col-md-6 col-sm-5 nopadleft navbar-collapse collapse">
+        <div class="searchdiv">
+          <input name="input" class="search_bar pull-left" value="@person, #discover" onblur="if(!/\S/.test(this.value))this.value=this.defaultValue" onfocus="if(this.value == '@person, #discover')this.value = '';" type="text">
+          <input type="image" src="/images/search-icon.png" class="putsubmit pull-right"/>
+          <div class="clear"></div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-sm1-5  col-sm2-5 nopadleft marrightmob text-right">
+        <div class="pro-info">
+          <figure class="pro-pic">
+            <img src="/images/profile-pic.png" alt="">
+          </figure>
+          <div class="pro-name">kamlesh</div>
+          <div class="clear"></div>
+        </div>
       </div>
     </div>
-  <!-- End : Content -->
-</div>
-<!-- Begin : Footer -->
-<footer>&copy; 2013 memreas, llc. All rights reserved.</footer>
-<!-- End : Footer -->
-<!-- End : Container -->
+  </header>
+  <div id="contentwrap"><!-- contentwrap -->
+    <div class="container">
+      <div class="row">
 
-<script src="/js/jquery.akordeon.js" type="text/javascript"></script>
-<script type="text/javascript">
-     $(document).ready(function () {
-     $('#buttons').akordeon();
-       $('#button-less').akordeon({ buttons: false, toggle: true, itemsOrder: [2, 0, 1] });
-	 $('#buttons2').akordeon();
-       $('#button-less').akordeon({ buttons: false, toggle: true, itemsOrder: [2, 0, 1] });
-	 $('#buttons3').akordeon();
-       $('#button-less').akordeon({ buttons: false, toggle: true, itemsOrder: [2, 0, 1] });
-	 $('#buttons4').akordeon();
-       $('#button-less').akordeon({ buttons: false, toggle: true, itemsOrder: [2, 0, 1] });
-	 $('#buttons5').akordeon();
-       $('#button-less').akordeon({ buttons: false, toggle: true, itemsOrder: [2, 0, 1] });
-    });
-	
-</script>
+        <div id="horizontalTab" class="padtop19">
+          <ul class="resp-tabs-list smalltabs">
+            <li>
+              <a href="javascript:void(0)">manage user</a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">manage admin</a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">feedback report</a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">moderate events</a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">account summary</a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">account usage</a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">order history</a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">Account</a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">Payout</a>
+            </li>
+          </ul>
+          <div class="resp-tabs-container">
+            <div class="tabcontent" id="tab0"></div>
+            <div class="tabcontent" id="tab1"></div>
+            <div class="tabcontent" id="tab2"></div>
+            <div class="tabcontent" id="tab3"></div>
+            <div class="tabcontent" id="tab4"></div>
+            <div class="tabcontent" id="tab5"></div>
+            <div class="tabcontent" id="tab6"></div>
+            <div class="tabcontent" id="tab7"></div>
+            <div class="tabcontent" id="tab8"></div>
 
-
-<!--pop-up-->
-<script src="/js/popup.js" type="text/javascript"></script>
-
-<!-- custom scrollbars plugin -->
-	<script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
-	<script>
-	
-		(function($){ 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 footerdiv">
+          &copy; 2014 memreas, llc. All rights reserved.
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!--Disable modal-->
+  <div class="modal fade" id="disableUserModal" tabindex="-1" role="dialog" aria-labelledby="disableUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Deactive user</h4>
+          </div>
+        <form class="form-horizontal formstyle" role="form">
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group padleftright30">
+                  <label for="inputName" >select reason :</label>
+                  <div class="radioboxs">
+                    <div class="line">
+                      <input value="1" id="unavailable" name="disbaler" class="unistyle" type="radio" />&nbsp;unavailable
+                    </div>
+                    <div class="line">
+                      <input value="2" id="other" name="disbaler" class="unistyle" type="radio" />&nbsp;other
+                    </div>
+                    <div class="line padtop10">
+                      <textarea cols="1" rows="1" class="input-group-lg" style="width:100%;height:100px;"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary">save user</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">cancle</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!--Edit user modal-->
+  
+  <div class="modal fade" id="popup" tabindex="-1" role="dialog" aria-labelledby="popup" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="listpopup" tabindex="-1" role="dialog" aria-labelledby="listpopup" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        
+      </div>
+    </div>
+  </div>
+  <!--Feedback modal-->
+  <div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form class="form-horizontal" role="form">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">View Feedback</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputLogin" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">profile photo</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <img src="/images/admin-u-profile.png"/>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Name</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputName" type="text" value="chetnafe22"/>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputCreatetime" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Create time</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputCreatetime" value="1411260694" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputAdminName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">admin name</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputAdminName" value="kamlesh" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputCreated" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">feedback</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <textarea cols="1" rows="1" class="form-control"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary">save user</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">cancle</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade" id="adminModal" tabindex="-1" role="dialog" aria-labelledby="adminModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form class="form-horizontal" role="form">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Recent Transactions</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputLogin" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">log in</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputLogin" value="04b733b6-e1c1-4a6f-81b1-d8519ef6fb02" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputLogtype" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">log type</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputLogtype" type="text" value="feedback_view"/>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputEntityid" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">entity id</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputEntityid" value="f847019b-f7b0-4a24-9344-cd74b6ffb179" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputAdminName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">admin name</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputAdminName" value="kamlesh" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputCreated" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">created</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputCreated" value="1414548480" type="text" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!--Store Credit Card-->
+  <div class="modal fade" id="creditCardModal" tabindex="-1" role="dialog" aria-labelledby="creditCardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form class="form-horizontal" role="form">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Store Credit Card</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Name</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputName" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputAddress" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Address</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputAddress" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputCard" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Reason</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputCard" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputCardNum" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">City</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputCardNum" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputState" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">State</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputState" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputCity" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Balance</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputCity" type="text" />
+                  </div>
+                </div>
+              </div>
+              
+              
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputZip" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Zip</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputZip" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputAmount" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputAmount" type="text" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!--Buy Subscription-->
+  <div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="buyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form class="form-horizontal" role="form">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Buy Subscription</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Name</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputName" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputAddress" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Address</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputAddress" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputCard" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Card Type</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputCard" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputCardNum" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Card number</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputCardNum" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputExpire" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Expire on</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputExpire" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputCity" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">City</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputCity" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputState" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">State</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputState" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputAmount" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputAmount" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputZip" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Zip</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputZip" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputCapture" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Capture</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputCapture" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputPaid" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Paid</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputPaid" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputAmount" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputAmount" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputCreated" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Created</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputCreated" type="text" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!--Add Value To Account-->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form class="form-horizontal" role="form">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Add Value To Account</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Name</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputName" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputAddress" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Address</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputAddress" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputCard" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Card Type</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputCard" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputCardNum" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Card number</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputCardNum" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputExpire" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Expire on</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputExpire" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputCity" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">City</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputCity" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputState" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">State</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputState" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputAmount" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputAmount" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputZip" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Zip</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputZip" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputCapture" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Capture</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputCapture" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputPaid" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Paid</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputPaid" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputAmount" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputAmount" type="text" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputCreated" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Created</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <input class="form-control" id="inputCreated" type="text" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+  <script src="/js/easyResponsiveTabs.js" type="text/javascript"></script>
+  <script src="/js/blocksit.js"></script>
+  <script src="/js/jquery.uniform.js"></script>
       
-			$(window).load(function(){
-$(document).on("click" , "a.paginate_click", function(e){
-          e.preventDefault();
-          var $this=$(this);
-            UI.url=$this.attr("href");
-            var target = $(this).parents('div .hideCls');
-            $(target).load( UI.url );
- 
- 
-} );
-$(document).on("click" , "a.intab", function(e){
-          e.preventDefault();
-          var $this=$(this),
-          url=$this.attr("href");
-          var target = $('#tabone');
-		  $(target).empty();
-          $(target).load( url );
-                  popup('forgot');
-
-         //$("#tab-content div.hideCls").hide(); //Hide all content
-          //$(target).show();
- 
-} );
- 
-			
-			$("ul.scrollClass").mCustomScrollbar({
-					scrollButtons:{
-						enable:true
-					}
-				});
-				
-				
-				
-				
-			$("#tab-content div.hideCls").hide(); // Initially hide all content
-			$("#tabs li:first").attr("id","current"); // Activate first tab
-			$("#tab-content div:first").fadeIn(); // Show first tab content*/
-			
-			$('#tabs a').click(function(e) {
- 				e.preventDefault();        
-				$("#tab-content div.hideCls").hide(); //Hide all content
-				$("#tabs li").attr("id",""); //Reset id's
-				$(this).parent().attr("id","current"); // Activate this
-                                UI.current_tab = $(this).attr('title');
-				$('#' + $(this).attr('title')).fadeIn(); // Show content for current tab
-				
-			});
-
-			
-				
-				
-				//ajax demo fn
-				$("a[rel='load-content']").click(function(e){
-					
-					e.preventDefault();
-					var $this=$(this),
-						url=$this.attr("href");
-					$this.addClass("loading");
-					$.get(url,function(data){
-						$this.removeClass("loading");
-						$("ul.scrollClass .mCSB_container").html(data); //load new content inside .mCSB_container
-						$("ul.scrollClass").mCustomScrollbar("update"); //update scrollbar according to newly loaded content
-						$("ul.scrollClass").mCustomScrollbar("scrollTo","top",{scrollInertia:200}); //scroll to top
-					});
-				});
-				$("a[rel='append-content']").click(function(e){
-					e.preventDefault();
-					var $this=$(this),
-						url=$this.attr("href");
-					$this.addClass("loading");
-					$.get(url,function(data){
-						$this.removeClass("loading");
-						$("ul.scrollClass .mCSB_container").append(data); //append new content inside .mCSB_container
-						$("ul.scrollClass").mCustomScrollbar("update"); //update scrollbar according to newly appended content
-						$("ul.scrollClass").mCustomScrollbar("scrollTo","h2:last",{scrollInertia:2500,scrollEasing:"easeInOutQuad"}); //scroll to appended content
-					});
-				});
-			});
-		})(jQuery);
-	</script>
-    
-    <!-- custom swipebox plugin -->    
-	<script src="/js/jquery.swipebox.min.js"></script>
-	<script type="text/javascript">
-		jQuery(function($) {
-			$(".swipebox").swipebox();
-		});
-       
- 
- 
-// $('#tab1').load('/admin/event/index');
-  $('#tab2').load('/admin/user');
-  <?php
-  if($_SESSION['user']['role'] ==3){
-    echo "$('#tab3').load('/admin/manageadmin');";
-  }
-     
-  ?>
-   
+        <script src="/js/jNotify.jquery.min.js"></script>
+<script src="/js/admin.js"></script>
+  <script src="/js/fotorama.js"></script>
 
 
-    $('#tab7').load(UI.tab7);
-    $('#tab6').load(UI.tab6);
-    $('#tab5').load(UI.tab5);
-    $('#tab4').load(UI.tab4);
-    $('#tab8').load(UI.tab8);
-
-
-	</script>
   <script>
-                    
-  
- $(document).on("click" , "a.delMediaLi", function(event) {
-        event.preventDefault();
-        var r = confirm('Do You Realy Wat to Delete This Item ! '+ event.target.id.slice(4) );
-        var  delLink = $(this);
-        if(r) { 
-          $(delLink).closest( "li" ).remove();
-          $.post( this.href,function(response){
-            if(response=='success'){
-              $(delLink).closest( "li" ).remove();
-            }
-          });
-        }        
-      }
-    );
-  function getRadioValue () {
-    if( $('input[name="adminid"]:radio:checked').length > 0 ) {
-        return $('input[name="adminid"]:radio:checked').val();
-    }
-    else {
-        return 0;
-    }
-}
+    $(document).ready(function(){
+      $('#horizontalTab').easyResponsiveTabs({
+        type: 'default', //Types: default, vertical, accordion           
+        width: 'auto', //auto or any width like 600px
+        fit: true,   // 100% fit in a container
+        closed: 'accordion', // Start closed if in accordion view
+        activate: function(event) { // Callback function if tab is switched
+          var $tab = $(this);
+          var $info = $('#tabInfo');
+          var $name = $('span', $info);
+          $name.text($tab.text());
+          $info.show();
+        }
+      });
+      $uniformed = $(".formstyle").find("input.unistyle, textarea, select, a.uniformTest");
+      $uniformed.uniform();
+    });
   </script>
-  <script type="text/javascript">
- function intiElastic(){    
-      // example how to integrate with a previewer
-      var current = 0,
-        $preview = $( '#preview' ),
-        $carouselEl = $( '#carousel' ),
-        $carouselItems = $carouselEl.children(),
-        carousel = $carouselEl.elastislide( {
-          current : current,
-          minItems : 10,
-          onClick : function( el, pos, evt ) {
-             
-            changeImage( el, pos );
-            evt.preventDefault();
-
-          },
-          onReady : function() {
-
-            changeImage( $carouselItems.eq( current ), current );
-            
-          }
-        } );
-
-      function changeImage( el, pos ) {
-
-        $preview.attr( 'src', el.data( 'preview' ) );
-        $carouselItems.removeClass( 'current-img' );
-        el.addClass( 'current-img' );
-        carousel.setCurrent( pos );
-
-      }
-}
-  </script>
-  <script type="text/javascript" src="/js/jquery.elastislide.js"></script>
-  
-</body>
+  </body>
 </html>

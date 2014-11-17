@@ -1,0 +1,262 @@
+<?php 
+       $MemHelper = $this->Mem();
+
+?> <div class="tabinnercontent">
+	<div class="row">
+		<div class="col-lg-6 col-md-6 col-sm6">
+			<div class="boxsum">
+				<div class="boxtitle">
+					<label>total registered user:</label> <?php echo $total ?>
+				</div>
+				
+				<div class="boxcontents">
+					<div class="boxitem">
+						<div class="grey">
+							<div class="pull-left">
+							user registered in past day
+							</div>
+							<div class="pull-right">
+							<?php echo $pastday ?>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="blue">
+							<div class="pull-left">
+							user registered in past week
+							</div>
+							<div class="pull-right">
+							<?php echo $pastweek ?>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="grey">
+							<div class="pull-left">
+							user registered in past month
+							</div>
+							<div class="pull-right">
+							<?php echo $pastmonth ?>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+					
+					<div class="boxitem">
+						<div class="blue">
+							<div class="pull-left">
+							total event friends to date
+							</div>
+							<div class="pull-right">
+							<?php echo $totaleventfriendsinvites ?>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="grey">
+							<div class="pull-left">
+							total friends to date
+							</div>
+							<div class="pull-right">
+							<?php echo $totalfriendsinvites ?>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+					
+					<div class="boxitem">
+						<div class="blue">
+							<div class="pull-left">
+							plan usage
+							</div>
+							<div class="pull-right">
+							#
+							</div>
+							<div class="clear"></div>
+						</div>
+						<?php 
+      $status= strtolower(trim($summaryData->getplansresponse->status));
+     if($status == 'success'){;
+      $c =false;
+      foreach ($summaryData->getplansresponse->plans->plan
+as $plan) {
+      
+      ?>
+						<div class="<?=(($c = !$c)?'grey':'blue')?>">
+							<div class="pull-left">
+							<?= $plan->plan_name ."($plan->plan_amount $plan->plan_currency)" ?>
+							</div>
+							<div class="pull-right">
+							<?= $plan->user_count?>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<?php } 
+    }?>
+						
+						
+						
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm6">
+			<div class="boxsum">
+				<div class="boxtitle">
+					<label>total data on S3:</label> <?=$MemHelper->toByteString($s3Total->data_usage)?>
+				</div>
+				
+				<div class="boxcontents">
+					<div class="boxitem">
+						<div class="grey">
+							<div class="row">
+								<div class="col-xs-6 text-center">
+									total of images
+								</div>
+								<div class="col-xs-6 text-center">
+								average image size
+								</div>
+							</div>
+						</div>
+						<div class="blue">
+							<div class="row">
+								<div class="col-xs-6 text-center">
+									<?php echo $s3Total->total_image?>
+								</div>
+								<div class="col-xs-6 text-center">
+									<?php echo $MemHelper->toByteString($s3Total->average_image);?>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="boxitem">
+						<div class="grey">
+							<div class="row">
+								<div class="col-xs-4 text-center">
+									total # of video
+								</div>
+								<div class="col-xs-4 text-center">
+									average video size
+								</div>
+								<div class="col-xs-4 text-center">
+									average duration
+								</div>
+							</div>
+						</div>
+						<div class="blue">
+							<div class="row">
+								<div class="col-xs-4 text-center">
+									<?php echo $s3Total->total_vedio?>
+								</div>
+								<div class="col-xs-4 text-center">
+									<?php echo $MemHelper->toByteString($s3Total->average_vedio);?>
+								</div>
+								<div class="col-xs-4 text-center">
+									10 minutes
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="boxitem">
+						<div class="grey">
+							<div class="row">
+								<div class="col-xs-4 text-center">
+									total # of audio
+								</div>
+								<div class="col-xs-4 text-center">
+									average audio size
+								</div>
+								<div class="col-xs-4 text-center">
+									average duration
+								</div>
+							</div>
+						</div>
+						<div class="blue">
+							<div class="row">
+								<div class="col-xs-4 text-center">
+									<?php echo $s3Total->total_audio?>
+								</div>
+								<div class="col-xs-4 text-center">
+									<?php echo $MemHelper->toByteString($s3Total->average_audio)?>
+								</div>
+								<div class="col-xs-4 text-center">
+									10 seconds
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="boxitem">
+						<div class="grey">
+							<div class="row">
+								<div class="col-xs-3 text-center">
+									invite sent
+								</div>
+								<div class="col-xs-3 text-center">
+									day
+								</div>
+								<div class="col-xs-3 text-center">
+									week
+								</div>
+								<div class="col-xs-3 text-center">
+									month
+								</div>
+							</div>
+						</div>
+						<div class="blue">
+							<div class="row">
+								<div class="col-xs-3 text-center">
+									facebook
+								</div>
+								<div class="col-xs-3 text-center">
+									<?php echo $fbpastday ?>
+								</div>
+								<div class="col-xs-3 text-center">
+									<?php echo $fbpastweek ?>
+								</div>
+								<div class="col-xs-3 text-center">
+									<?php echo $fbpastmonth ?>
+								</div>
+							</div>
+						</div>
+						
+						<div class="grey">
+							<div class="row">
+								<div class="col-xs-3 text-center">
+									twitter
+								</div>
+								<div class="col-xs-3 text-center">
+									<?php echo $twpastday ?>
+								</div>
+								<div class="col-xs-3 text-center">
+									<?php echo $twpastweek ?>
+								</div>
+								<div class="col-xs-3 text-center">
+									<?php echo $twpastmonth ?>
+								</div>
+							</div>
+						</div>
+						
+						<div class="grey">
+							<div class="row">
+								<div class="col-xs-3 text-center">
+									email
+								</div>
+								<div class="col-xs-3 text-center">
+									<?php echo $emailpastday ?>
+								</div>
+								<div class="col-xs-3 text-center">
+									<?php echo $emailpastweek ?>
+								</div>
+								<div class="col-xs-3 text-center">
+									<?php echo $emailpastmonth ?>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

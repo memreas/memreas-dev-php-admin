@@ -25,12 +25,17 @@ use Application\View\Helper\S3;
 use Aws\S3\S3Client;
 use Application\Controller\AWSManagerSender;
 use Application\Model\MemreasConstants;
+use Application\Memreas\User;
+use Application\Controller\Common;
+use DoctrineModule\Paginator\Adapter\Selectable as SelectableAdapter;
+use Zend\Paginator\Paginator;
 
 
 class IndexController extends AbstractActionController {
 
     //Updated....
     protected $url = MemreasConstants::MEMREAS_WS;
+    public   $sid = '';   
     protected $user_id;
     protected $storage;
     protected $authservice;
@@ -38,8 +43,26 @@ class IndexController extends AbstractActionController {
     protected $eventTable;
     protected $mediaTable;
     protected $friendmediaTable;
+    public $messages = array();
+public $status ;
 
     protected $userinfoTable;
+     protected $adminLogTable;
+    public function getAdminLogTable() {
+        if (!$this->adminLogTable) {
+            $sm = $this->getServiceLocator();
+            $this->adminLogTable = $sm->get('Application\Model\AdminLogTable');
+        }
+        return $this->adminLogTable;
+    }
+    protected $feedbackTable;
+    public function getFeedbackTable() {
+        if (!$this->feedbackTable) {
+            $sm = $this->getServiceLocator();
+            $this->feedbackTable = $sm->get('Application\Model\FeedbackTable');
+        }
+        return $this->feedbackTable;
+    }
      public function getUserInfoTable() {
         if (!$this->userinfoTable) {
             $sm = $this->getServiceLocator();
@@ -66,7 +89,7 @@ class IndexController extends AbstractActionController {
             'action' => $action,
             //'cache_me' => true,
             'xml' => $xml,
-            //'sid' => $this->getToken(),
+            'sid' =>empty($_SESSION['user']['sid'])?'':$_SESSION['user']['sid'],
             //'user_id' => empty($_SESSION['user']['user_id'])?'':$_SESSION['user']['user_id']
             )
         );
@@ -229,19 +252,7 @@ error_log("Exit admin " . __FUNCTION__ . PHP_EOL);
 
    
 
-    public function eventAction() {
-        $path = $this->security("application/index/event.phtml");
-
-        $action = 'listallmedia';
-        $session = new Container('user');
-        $xml = "<xml><listallmedia><event_id></event_id><user_id>" . $session->offsetGet('user_id') . "</user_id><device_id></device_id><limit>10</limit><page>1</page></listallmedia></xml>";
-        $result = $this->fetchXML($action, $xml);
-
-        $view = new ViewModel(array('xml' => $result));
-        $view->setTemplate($path); // path to phtml file under view folder
-        return $view;
-        //return new ViewModel();
-    }
+     
 
     public function loginAction() {
          //Fetch the post data
@@ -254,44 +265,14 @@ error_log("Exit admin " . __FUNCTION__ . PHP_EOL);
         $username = $postData ['username'];
         $password = $postData ['password'];
         if($this->setSession($username,$password) ){
-        return $this->redirect()->toRoute('admin/default', array('controller' => 'manage', 'action' => 'index'));
+        return $this->redirect()->toRoute('index', array('controller' => 'index', 'action' => 'manage'));
 
         }
   }
 
      return $this->redirect()->toRoute('index', array('action' => "index"));
  
-/*
-error_log("Inside loginresponse setting...".print_r($postData,true).PHP_EOL);
-        $this->getAuthService()->getAdapter()->setUsername($username);
-        $this->getAuthService()->getAdapter()->setPassword($password);
-        $token = empty($this->session->token) ? '' : $this->session->token;
-        $this->getAuthService()->getAdapter()->setToken($token);
-error_log("Inside loginresponse have session token...");
-        $result = $this->getAuthService()->authenticate();
-error_log("Inside loginresponse authenticate response --> ... ".print_r($result,true).PHP_EOL);
-        $data = $result->getIdentity();
-       
-        $action = 'login';
-        $xml = '<xml><login><username>'.$username.'</username><password>'. $password.'</password></login></xml>';
-        $redirect = 'memreas';
-        $result = $this->fetchXML($action, $xml);
-
-        $data = simplexml_load_string($result);
-         $status = trim($data->loginresponse->status) ;
-
-print_r($status);exit;
-        $redirect = 'manage';
-        if ($status == 'success') {
-            $this->setSession($username);
-error_log("Inside loginresponse sending to admin/default...");
-            return $this->redirect()->toRoute('admin/default', array('controller' => 'manage', 'action' => 'index'));
-        } else {
-            error_log("Inside loginresponse else...");
-            return $this->redirect()->toRoute('index', array('action' => "index"));
-        }
-        */
-    }
+ }
  
     public function logoutAction() {
         //$this->getSessionStorage()->forgetMe();
@@ -396,54 +377,7 @@ public function getUserTable() {
         }
         return $this->userTable;
     }
-    public function testWsAction() {
-        
-        error_reporting(E_ALL);
-ini_set('display_errors', '1');
- $url = 'https://memreasdev-wsu.memreas.com';
- 
-
-$client = new Client();
-
-try {
-  $response = $client->get('https://memreasdev-wsu.memreas.com?view=1', array(),array('debug' => true))->send();
-  echo $response->getStatusCode();      // >>> 200
-echo $response->getReasonPhrase();    // >>> OK
-echo $response->getProtocol();        // >>> HTTP
-echo $response->getProtocolVersion(); // >>> 1.1
-echo $response;
-} catch (Guzzle\Http\Exception\BadResponseException $e) {
-    error_log('Uh oh! ' . $e->getMessage());
-    error_log('HTTP request URL: ' . $e->getRequest()->getUrl() . "\n");
-    error_log( 'HTTP request: ' . $e->getRequest() . "\n");
-    error_log( 'HTTP response status: ' . $e->getResponse()->getStatusCode() . "\n");
-    error_log( 'HTTP response: ' . $e->getResponse() . "\n");
-}
-
-$data = $response->getBody();
-echo $data;exit;
-error_log('get:'.$data);
-try {
-    $request = $client->post('https://memreasdev-wsu.memreas.com',array(), array('action' => 'login'));
-$response = $request->send();
-  
-} catch (Guzzle\Http\Exception\BadResponseException $e) {
-    error_log( 'Uh oh! ' . $e->getMessage());
-    error_log( 'HTTP request URL: ' . $e->getRequest()->getUrl() . "\n");
-    error_log( 'HTTP request: ' . $e->getRequest() . "\n");
-    error_log( 'HTTP response status: ' . $e->getResponse()->getStatusCode() . "\n");
-    error_log( 'HTTP response: ' . $e->getResponse() . "\n");
-}
- 
-$data = $response->getBody();
-
-error_log('post:'.$data);
-
-
-exit;
-
-    }
-     public function getAminUserTable() {
+      public function getAminUserTable() {
         if (!$this->userTable) {
             $sm = $this->getServiceLocator();
             $this->userTable = $sm->get('Application\Model\AdminUserTable');;
@@ -528,6 +462,785 @@ public function clearlogAction() {
                 exit();
 
 }
+public function manageAction() {
+error_log("Enter admin " . __FUNCTION__ . PHP_EOL);
+        //$path = $this->security("application/index/index.phtml");
+        $path = "application/manage/index.phtml";
+        $view = new ViewModel();
+        $view->setTemplate($path); // path to phtml file under view folder
+        return $view;
+error_log("Exit admin " . __FUNCTION__ . PHP_EOL);
+    }
+
+
+     public function userAction() {
+            //$role = $this->security();
+        $order_by = $this->params()->fromQuery('order_by', 0);
+            $order    = $this->params()->fromQuery('order', 'DESC');
+            $q    = $this->params()->fromQuery('q', 0);
+            $where =array();
+             $column = array('username','email_address','role','disable_account');
+             $url_order = 'DESC';
+  if (in_array($order_by, $column))
+    $url_order = $order == 'DESC' ? 'ASC' : 'DESC';
+     
+            
+        try {
+        $users = $this->getUserTable()->fetchAll($where, $order_by, $order);
+        
+            $page = $this->params()->fromQuery('page', 1);
+            $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($users);
+            $paginator = new Paginator($iteratorAdapter);
+            $paginator->setCurrentPageNumber($page);
+            //$paginator->setItemCountPerPage(ADMIN_QUERY_LIMIT);
+                      $paginator->setItemCountPerPage(MemreasConstants::NUMBER_OF_ROWS);
+
+        
+        } catch (Exception $exc) {
+            
+            return array();
+        }
+        return array('paginator' => $paginator, 'user_total' => count($users),
+                      'order_by'=>$order_by,'order' => $order,'q'=>$q,'page' => $page, 'url_order'=>$url_order
+
+          );
+    
+
+    }
+
+     
+    public function userViewAction() {
+
+        if ($this->request->isPost()) {
+            $id = $this->params()->fromPost('id');
+        $user = $this->getUserTable()->getUser($id);
+            if(empty($id) or empty($user)){
+              $this->messages[] ='User Not Found';
+            } else if ($this->validate()) { 
+             $postData =$this->params()->fromPost();
+              $user->username = $postData['username'];
+              $user->email_address = $postData['email_address'];
+             // $user->facebook_username = $postData['facebook_username'];
+             // $user->twitter_username = $postData['twitter_username'];
+              $user->disable_account = $postData['disable_account'];
+
+              // Save the changes
+
+             // $this->getUserTable()->saveUser($user);
+              $this->getAdminLogTable()->saveLog(array('log_type'=>'user_update', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$id));
+
+
+              $this->messages[] ='Data Update sucessfully';
+              $user = $this->getUserTable()->getUser($id);
+
+            }
+            
+          }else{
+              $id = $this->params()->fromRoute('id');
+              //$user = $this->getUserTable()->getUser($id);
+                             $user = $this->getUserTable()->getUserData(array('user.user_id' =>$id ));
+                          //   echo '<pre>';print_r($userProfile);
+
+          }
+            
+          
+                  $view =  new ViewModel();
+                  $view->setVariable('user',$user );
+                  $view->setVariable('messages',$this->messages );
+                  $view->setVariable('status',$this->status );
+
+
+        return $view;
+    }
+
+function validate(){
+  $result = true ;
+return $result;
+}
+    
+    
+    public function userDeactiveAction() {
+        
+              
+      $vdata=array();
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+             $id = $this->params()->fromPost('id');
+                             $postData = $this->params()->fromPost();
+
+             if(empty($postdata['reason'])){
+              $this->status='error';
+            }else{
+                $this->getUserTable()->updateUser(array('disable_account' => '1'), $id);
+                $this->getAdminLogTable()->saveLog(array('log_type' => 'user_deactivated', 'admin_id' => $_SESSION['user']['user_id'], 'entity_id' => $id));
+               
+                $this->messages[] = 'User Dactivated';
+                $this->status = 'success';
+            }
+
+                
+                
+ 
+            // Redirect to list of albums
+        }else{
+            $id = $this->params()->fromRoute('id', 0);
+             
+        }
+$user = $this->getUserTable()->getUser($id);
+             $vdata['user'] = $user;
+            $vdata['messages']= $this->messages;
+            $vdata['status'] = $this->status;
+        return $vdata;
+    
+    }
+    
+    public function userActiveAction() {
+        
+              
+      $vdata=array();
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $id = $this->params()->fromPost('id');
+            $postData = $this->params()->fromPost();
+
+            if(empty($postdata['reason'])){
+              $this->status='error';
+            }else{
+               $this->getUserTable()->updateUser(array('disable_account' => 0), $id);
+                $this->getAdminLogTable()->saveLog(array('log_type' => 'user_activated', 'admin_id' => $_SESSION['user']['user_id'], 'entity_id' => $id));
+               
+                $this->messages[] = 'User activated';
+                $this->status = 'success'; 
+            }
+                
+                
+                
+ 
+            // Redirect to list of albums
+        }else{
+            $id = $this->params()->fromRoute('id', 0);
+             
+        }
+$user = $this->getUserTable()->getUser($id);
+             $vdata['user'] = $user;
+            $vdata['messages']= $this->messages;
+            $vdata['status'] = $this->status;
+        return $vdata;
+    
+    }
+    
+    public function feedbackAction() {
+
+      $order_by = $this->params()->fromQuery('order_by', 0);
+            $order    = $this->params()->fromQuery('order', 'DESC');
+            $q    = $this->params()->fromQuery('q', 0);
+            $where =array();
+             $column = array('username','create_time');
+             $url_order = 'DESC';
+  if (in_array($order_by, $column))
+    $url_order = $order == 'DESC' ? 'ASC' : 'DESC';
+                 try {
+                 
+        $feedback = $this->getFeedbackTable()->FetchFeedDescAll($where, $order_by, $order);
+            $page = $this->params()->fromQuery('page', 1);
+            $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($feedback);
+            $paginator = new Paginator($iteratorAdapter);
+            $paginator->setCurrentPageNumber($page);
+            //$paginator->setItemCountPerPage(ADMIN_QUERY_LIMIT);
+                      $paginator->setItemCountPerPage(MemreasConstants::NUMBER_OF_ROWS);
+
+        
+        } catch (Exception $exc) {
+            
+            return array();
+        }
+        return array('paginator' => $paginator, 'feedback_total' => count($feedback),
+                      'order_by'=>$order_by,'order' => $order,'q'=>$q,'page' => $page, 'url_order'=>$url_order);
+
+    }
+
+    public function feedbackViewAction() {
+             $feedback_id = $this->params()->fromRoute('id'); 
+        $this->getAdminLogTable()->saveLog(array('log_type'=>'feedback_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$feedback_id));
+
+             $feedback = $this->getFeedbackTable()->getFeedback($feedback_id);
+
+       return array('feedback' => $feedback);
+
+  
+    }
+    
+    protected $AdminUserTable;
+
+     public function getAdminUserTable() {
+        if (!$this->AdminUserTable) {
+            $sm = $this->getServiceLocator();
+            $this->AdminUserTable = $sm->get('Application\Model\AdminUserTable');
+        }
+        return $this->AdminUserTable;
+    }
+
+    public function adminAction() {
+        $order_by = $this->params()->fromQuery('order_by', 0);
+        $order = $this->params()->fromQuery('order', 'DESC');
+        $q = $this->params()->fromQuery('q', 0);
+        $where = array();
+        $column = array('username', 'role', 'create_date');
+        $url_order = 'DESC';
+        if (in_array($order_by, $column))
+            $url_order = $order == 'DESC' ? 'ASC' : 'DESC';
+
+        try {
+            //$account = $this->getAccountTable()->getAccount(array('user_id'=>$id));
+            // $account_id =   $account;
+            //echo '<pre>'; print_r($account->account_id); exit;
+
+
+            $admin = $this->getAdminUserTable()->FetchAdmins($where, $order_by, $order);
+
+            $page = $this->params()->fromQuery('page', 1);
+            $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($admin);
+            $paginator = new Paginator($iteratorAdapter);
+            $paginator->setCurrentPageNumber($page);
+            //$paginator->setItemCountPerPage(ADMIN_QUERY_LIMIT);
+            $paginator->setItemCountPerPage(MemreasConstants::NUMBER_OF_ROWS);
+        } catch (Exception $exc) {
+
+            return array();
+        }
+        return array('paginator' => $paginator, 'admin_total' => count($admin),
+            'order_by' => $order_by, 'order' => $order, 'q' => $q, 'page' => $page, 'url_order' => $url_order);
+    }
+
+    public function adminTranAction() {              
+        $user_id = $this->params()->fromRoute('id');
+        $page = $this->params()->fromQuery('page', 1);
+        $order_by = $this->params()->fromQuery('order_by', 0);
+            $order    = $this->params()->fromQuery('order', 'DESC');
+            $q    = $this->params()->fromQuery('q', 0);
+            $where =array();
+             $column = array('username','create_time');
+             $url_order = 'DESC';
+
+        $users_log =  $this->getAdminLogTable()->fetchAll(array('admin_id' =>$user_id));
+        //$this->getAdminLogTable()->saveLog(array('log_type'=>'admin_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$user_id));
+    //$admin = $this->getAdminUserTable()->adminLog($user_id);
+             
+
+         // echo '<pre>'; print_r($users_log); exit;
+                  //  $users = $this->getAdminUserTable()->adminLog();
+
+             $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($users_log);
+            $paginator = new Paginator($iteratorAdapter);
+            $paginator->setCurrentPageNumber($page);
+            $paginator->setItemCountPerPage(10);
+
+        
+        
+        return array('paginator' => $paginator, 'row' => $users_log,
+
+       'order_by' => $order_by, 'order' => $order, 'q' => $q, 'page' => $page, 'url_order' => $url_order);
+        
+  
+    }
+     public function adminAddAction() {
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $postData = $this->params()->fromPost();
+            $where['email_address'] = $postData['email_address'];
+                    $where['username'] = $postData['username'];
+                    $userExist = $this->getAdminUserTable()->isExist($where);
+
+                   if ($userExist) {
+                        $this->messages[] = 'User Name or email already exist';
+                        $this->status = 'error';
+                    } else {
+
+                        $user['username'] = $postData['username'];
+            $user['email_address'] = $postData['email_address'];
+            $user['password'] = $postData['password'];
+            $user['disable_account'] = 1;
+            $user['role'] = $postData['role'];
+
+            $user_id=$this->getAdminUserTable()->saveUser($user);
+
+            $this->getAdminLogTable()->saveLog(array('log_type' => 'admin_user_added', 'admin_id' => $_SESSION['user']['user_id'], 'entity_id' => $user_id));
+
+
+            $this->messages[] = 'Data Added sucessfully';
+            $to[] = $postData['email_address'];
+                        $viewVar = array (
+                                'email'    => $postData['email_address'],
+                                'username' => $postData['username'],
+                                'passwrd'  => $postData['password']
+                        );
+                        $viewModel = new ViewModel ( $viewVar );
+                        $viewModel->setTemplate ( 'email/register' );
+                        $viewRender = $this->getServiceLocator()->get ( 'ViewRenderer' );
+                        $html = $viewRender->render ( $viewModel );
+                        $subject = 'Welcome to Event App';
+                        if (empty ( $aws_manager ))
+                            $aws_manager = new AWSManagerSender ( $this->getServiceLocator() );
+                        $aws_manager->sendSeSMail ( $to, $subject, $html ); //Active this line when app go live
+                        $this->status = $status = 'Success';
+                        $message = "Welcome to Event App. Your profile has been created.";
+                    }
+            
+        }
+
+        return array('status'=>$this->status,'messages'=>$this->messages);
+    }
+
+    public function adminEditAction() {
+        $postData = array();
+        if ($this->request->isPost()) {
+            $user_id = $this->params()->fromPost('id');
+            $user = $this->getAdminUserTable()->getUser($user_id);
+
+
+            if (empty($user_id) or empty($user)) {
+                $this->messages[] = 'Admin Not Found';
+            } else {
+                $postData = $this->params()->fromPost();
+                if ($user['username'] != $postData['username'] || $user['email_address'] != $postData['email_address']) {
+                    //$where['email_address'] = $postData['email_address'];
+                    //$where['username'] = $postData['username'];
+                    //$userExist = $this->getAdminUserTable()->isExist($where);
+
+                  /*  if ($userExist) {
+                        $this->messages[] = 'User Name or email already exist';
+                        $this->status = 'error';
+                    } else {
+
+                        $user['username'] = $postData['username'];
+                        $user['email_address'] = $postData['email_address'];
+                    }*/
+                }
+                if (!empty($postData['role'])) {
+                    $user['role'] = $postData['role'];
+                }
+
+                $user['update_time'] = time();
+                //$user['disable_account'] = $postData['disable_account'];
+                
+                // Save the changes
+                if ($this->status != 'error') {
+                    $this->getAdminUserTable()->saveUser($user);
+                    $this->getAdminLogTable()->saveLog(array('log_type' => 'admin_info_updated', 'admin_id' => $_SESSION['user']['user_id'], 'entity_id' => $user_id));
+                    $this->messages[] = 'Data Update sucessfully';
+                    $user = $this->getAdminUserTable()->getUser($user_id);
+                }
+            }
+        } else {
+            $id = $this->params()->fromRoute('id');
+            $user = $this->getAdminUserTable()->getUser($id);
+         }
+
+
+
+        return array('admin' => $user, 'messages' => $this->messages, 'status' => $this->status, 'post' => $postData);
+    }
+    
+    
+
+    
+
+    public function adminDeactivateAction() {
+      $vdata=array();
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+             $id = $this->params()->fromPost('aid');
+                             $postdata = $this->params()->fromPost();
+//echo '<pre>';print_r($postData);exit;
+             if(empty($postdata['reason'])){
+             $this->status='error';
+            }elseif ( $postdata['reason'] == 'other' && empty($postdata['other_reason'])){
+                             $this->status='error';
+
+            } 
+
+
+            else{
+
+
+                $description = $postdata['reason'];
+                if( $postdata['reason'] == 'other'){
+                    $description = $postdata['other_reason'];
+
+                }
+                $this->getAdminUserTable()->updateUser(array('disable_account' => '1'), $id);
+                $this->getAdminLogTable()->saveLog(array('log_type' => 'admin_deactivated', 'admin_id' => $_SESSION['user']['user_id'], 'entity_id' => $id, 'description' => $description));
+               
+                $this->messages[] = ' Admin User Dactivated';
+                $this->status = 'success';
+            }
+
+                
+                
+ 
+            // Redirect to list of albums
+        }else{
+            $id = $this->params()->fromRoute('id', 0);
+             
+        }
+        error_log('user-id---'.$id);
+         $user = $this->getAdminUserTable()->getUser($id);
+            $vdata['user'] = $user;
+            $vdata['messages']= $this->messages;
+            $vdata['status'] = $this->status;
+            print_r($vdata);
+                  return $vdata;
+    }
+    
+    public function adminActivateAction() {
+      $vdata=array();
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+             $id = $this->params()->fromPost('aid');
+                             $postdata = $this->params()->fromPost();
+
+             if(empty($postdata['reason']) ){
+              $this->status='error';
+            }elseif ( $postdata['reason'] == 'other' && empty($postdata['other_reason'])){
+                             $this->status='error';
+
+            } 
+
+
+            else{
+
+
+                $description = $postdata['reason'];
+                if( $postdata['reason'] == 'other'){
+                    $description = $postdata['other_reason'];
+
+                }
+
+             
+                $this->getAdminUserTable()->updateUser(array('disable_account' => '0'), $id);
+                $this->getAdminLogTable()->saveLog(array('log_type' => 'admin_activate', 'admin_id' => $_SESSION['user']['user_id'], 'entity_id' => $id));
+                
+                $this->messages[] = 'Admin User activated';
+                $this->status = 'success';
+            }
+
+                
+ 
+        }else{
+            $id = $this->params()->fromRoute('id', 0);
+        }
+         $user = $this->getAdminUserTable()->getUser($id);
+            $vdata['user'] = $user;
+            $vdata['messages']= $this->messages;
+            $vdata['status'] = $this->status;
+         return $vdata;
+    }
+    protected $notifcationTable;
+
+    public function getNotificationTable() {
+        if (!$this->notifcationTable) {
+            $sm = $this->getServiceLocator();
+            $this->notifcationTable = $sm->get('Application\Model\NotficationTable');
+        }
+        return $this->notifcationTable;
+    }
+     protected $friendTable;
+
+    public function getFriendTable() {
+        if (!$this->friendTable) {
+            $sm = $this->getServiceLocator();
+            $this->friendTable = $sm->get('Application\Model\FriendTable');
+        }
+        return $this->friendTable;
+    }
+public function accountSummaryAction() {
+        try {
+            $total = $this->getUserTable()->getUserRegisterCount(strtotime('01-12-2010'));
+            $pastday = $this->getUserTable()->getUserRegisterCount(strtotime(' -1 day'));
+            $pastweek = $this->getUserTable()->getUserRegisterCount(strtotime(' -1 week'));
+            $pastmonth = $this->getUserTable()->getUserRegisterCount(strtotime('-1 month'));
+            // print_r($total); exit;
+            /*
+            $i = $this->getUserInfoTable()->fetchAll();
+            $page = $this->params()->fromQuery('page', 1);
+            $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($i);
+            $paginator = new Paginator($iteratorAdapter);
+            $paginator->setCurrentPageNumber($page);
+            $paginator->setItemCountPerPage(5);
+            */
+            $s3Total =  $this->getUserInfoTable()->getUserInfo('total-s3');
+            $totalfriendsinvites = $this->getNotificationTable()->getInviteCount(strtotime('01-12-2010'));
+            $totaleventfriendsinvites = $this->getNotificationTable()->getInviteCount(strtotime('01-12-2010'), 1);
+            $fbpastday = $this->getFriendTable()->getOtherInviteCount(strtotime(' -1 day'),'facebook');
+            $fbpastweek = $this->getFriendTable()->getOtherInviteCount(strtotime(' -1 week'),'facebook');
+            $fbpastmonth = $this->getFriendTable()->getOtherInviteCount(strtotime('-1 month'),'facebook');
+            $twpastday = $this->getFriendTable()->getOtherInviteCount(strtotime(' -1 day'),'twitter');
+            $twpastweek = $this->getFriendTable()->getOtherInviteCount(strtotime(' -1 week'),'twitter');
+            $twpastmonth = $this->getFriendTable()->getOtherInviteCount(strtotime('-1 month'),'twitter');
+            $emailpastday = $this->getNotificationTable()->getEmailInviteCount(strtotime('-1 day'));
+            $emailpastweek = $this->getNotificationTable()->getEmailInviteCount(strtotime('-1 week'));
+            $emailpastmonth = $this->getNotificationTable()->getEmailInviteCount(strtotime('-1 month'));
+
+
+            $result = $this->fetchXML('getplansstatic','<xml><getplansstatic><static>1</static></getplansstatic></xml>');
+ $summaryData = simplexml_load_string($result);
+
+//echo '<pre>';print_r($summaryData);exit;
+         } catch (Exception $exc) {
+
+            return array();
+        }
+        return array(
+            //'paginator' => $paginator,
+            'total' => $total,
+            'pastday' => $pastday,
+            'pastweek' => $pastweek,
+            'pastmonth' => $pastmonth,
+            's3Total'=> $s3Total,
+            'fbpastday' => $fbpastday,
+            'fbpastweek' => $fbpastweek,
+            'fbpastmonth' => $fbpastmonth,
+            'twpastday' => $twpastday,
+            'twpastweek' => $twpastweek,
+            'twpastmonth' => $twpastmonth,
+            'emailpastday' => $emailpastday,
+            'emailpastweek' => $emailpastweek,
+            'emailpastmonth' => $emailpastmonth,
+            'totaleventfriendsinvites' => $totaleventfriendsinvites,
+            'totalfriendsinvites' => $totalfriendsinvites,
+            'summaryData'=> $summaryData
+        );
+    }
+      public function accountUsageAction() {
+        // $role = $this->security();
+
+        $order_by = $this->params()->fromQuery('order_by', 0);
+        $order = $this->params()->fromQuery('order', 'DESC');
+        $q = $this->params()->fromQuery('q', 0);
+        $where = array();
+        $column = array(
+            'username',
+            'data_usage'
+        );
+        $url_order = 'DESC';
+        if (in_array($order_by, $column))
+            $url_order = $order == 'DESC' ? 'ASC' : 'DESC';
+
+        try {
+            $info = $this->getUserInfoTable()->userInfoAll($where, $order_by, $order);
+            $page = $this->params()->fromQuery('page', 1);
+            $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($info);
+            $paginator = new Paginator($iteratorAdapter);
+            $paginator->setCurrentPageNumber($page);
+            $paginator->setItemCountPerPage(MemreasConstants::NUMBER_OF_ROWS);
+
+            // $totalused = $this->getUserInfoTable()->totalPercentUsed();
+            /*
+             * $rec = $this->getUserInfoTable()->fetchAll(); print_r($rec); $allowed_size = $rec-> allowed_size; $data_usage=$rec-> data_usage; $totalused = $data_usage*100/allowed_size; print_r($totalused);
+             */
+        } catch (Exception $exc) {
+
+            // return array();
+        }
+        return array(
+            'paginator' => $paginator,
+            'user_total' => count($info),
+            'order_by' => $order_by,
+            'order' => $order,
+            'q' => $q,
+            'page' => $page,
+            'url_order' => $url_order
+        );
+    }
+    public function orderHistoryAction() {
+         //  $id = $this->params()->fromRoute('id'); 
+       // $this->getAdminLogTable()->saveLog(array('log_type'=>'feedback_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$id));
+            $page = $this->params()->fromQuery('page', 1);
+
+         
+            $result = $this->fetchXML('getorderhistory',"<xml><getorderhistory><user_id>0</user_id><page>$page</page><limit>15</limit></getorderhistory></xml>");
+ $orderData = simplexml_load_string($result);
+//echo '<pre>';print_r($orderData); 
+     return array('orderData' => $orderData,'page' => $page);
+
+    }
+    public function orderHistoryDetailAction() {
+        $transaction_id = $this->params()->fromRoute('id'); 
+        $this->getAdminLogTable()->saveLog(array('log_type'=>'feedback_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$transaction_id));
+        $result = $this->fetchXML('getorder',"<xml><getorder><transaction_id>$transaction_id</transaction_id></getorder></xml>");
+        $orderData = simplexml_load_string($result);
+        //echo '<pre>';print_r($orderData);exit;
+        return array('orderData' => $orderData);
+
+  
+    }
+
+    public function eventAction() {
+
+         $order_by = $this->params()->fromQuery('order_by', 0);
+        $order = $this->params()->fromQuery('order', 'DESC');
+        $q = $this->params()->fromQuery('q', 0);
+        $where = array('public' => 1);
+        $column = array('username', 'name');
+        $url_order = 'DESC';
+        if (in_array($order_by, $column))
+            $url_order = $order == 'DESC' ? 'ASC' : 'DESC';
+
+        try {
+
+            $event = $this->getEventTable()->moderateFetchAll($where, $order_by, $order);
+            $page = $this->params()->fromQuery('page', 1);
+            $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($event);
+            $paginator = new Paginator($iteratorAdapter);
+            $paginator->setCurrentPageNumber($page);
+            //$paginator->setItemCountPerPage(ADMIN_QUERY_LIMIT);
+            $paginator->setItemCountPerPage(MemreasConstants::NUMBER_OF_ROWS);
+        } catch (Exception $exc) {
+
+            return array();
+        }
+        return array('paginator' => $paginator, 'event_total' => count($event),
+            'order_by' => $order_by, 'order' => $order, 'q' => $q, 'page' => $page, 'url_order' => $url_order
+        );
+    }
+
+
+       
+     public function getEventTable() {
+        if (!$this->eventTable) {
+            $sm = $this->getServiceLocator();
+            $this->eventTable = $sm->get('Application\Model\EventTable');
+        }
+        return $this->eventTable;
+    }
+
+   public function eventMediaAction() {
+
+        $event_id = $this->params()->fromRoute('id');
+        $this->getAdminLogTable()->saveLog(array('log_type' => 'media_view', 'admin_id' => $_SESSION['user']['user_id'], 'entity_id' => $event_id));
+
+        $event = $this->getEventTable()->getEventMedia($event_id);
+
+        $view = new ViewModel();
+        $view->setVariable('medias', $event);
+
+        return $view;
+    }
+ public function eventChangeStatusAction() {
+        $eventTable = $this->getEventTable();
+        $event_id = $this->params()->fromRoute('id');
+        $event = $eventTable->getEvent($event_id);
+        $date = strtotime(date('d-m-Y'));
+        $eventStatus = 'inactive';
+        if (($event->viewable_to >= $date || $event->viewable_to == '') && ($event->viewable_from <= $date || $event->viewable_from == '') && ($event->self_destruct >= $date || $event->self_destruct == '')
+        )
+            $eventStatus = 'active';
+
+        return array('eventStatus' => $eventStatus, 'event' => $event);
+    }
+     public function eventApproveAction() {
+
+        $date1 = strtotime('today + 1year');
+        $date = strtotime('NOW');
+        $eventTable = $this->getEventTable();
+        if ($this->request->isPost()) {
+            $postdata = $this->params()->fromPost();
+            if(empty($postdata['reason']) ){
+                $messages[] = 'Please give reason';
+              $this->status='error';
+            }elseif ( $postdata['reason'] == 'other' && empty($postdata['other_reason'])){
+                $messages[] = 'Please give reason';
+              $this->status='error';
+
+            } 
+            else{
+
+
+                $description = $postdata['reason'];
+                    if( $postdata['reason'] == 'other'){
+                        $description = $postdata['other_reason'];
+
+                    }
+                    $event = $eventTable->getEvent($postData['event_id']);
+
+                    $eventStatus = 'inactive';
+                    if (($event->viewable_to >= $date || $event->viewable_to == '') && ($event->viewable_from <= $date || $event->viewable_from == '') && ($event->self_destruct >= $date || $event->self_destruct == '')
+                    )
+                        $eventStatus = 'active';
+                    $this->getAdminLogTable()->saveLog(array('log_type' => 'event_disable', 'admin_id' => $_SESSION['user']['user_id'], 'entity_id' => $postdata['event_id'], 'description' => $description));
+                    $messages[] = 'Event approve succesfully';
+                    $status = 'success';
+               
+                 
+                    $eventTable->update(array('event_id' => $postdata['event_id'], 'self_destruct' => $date1), $postdata['event_id']);
+                    return array('eventStatus' => $eventStatus, 'event' => $event, 'messages' => $messages, 'status' => $status);
+            }
+        }
+ }
+
+    public function eventDisapproveAction() {
+
+        $date1 = strtotime('today - 1 month');
+        $eventTable = $this->getEventTable();
+        if ($this->request->isPost()) {
+            $postdata = $this->params()->fromPost();
+            if(empty($postdata['reason']) ){
+                $messages[] = 'Please give reason';
+              $this->status='error';
+            }elseif ( $postdata['reason'] == 'other' && empty($postdata['other_reason'])){
+                $messages[] = 'Please give reason';
+              $this->status='error';
+
+            } 
+            else{
+
+
+                $description = $postdata['reason'];
+                if( $postdata['reason'] == 'other'){
+                    $description = $postdata['other_reason'];
+
+                }
+                $event = $eventTable->getEvent($postData['event_id']);
+                $eventTable->update(array('event_id' => $postdata['event_id'], 'self_destruct' => $date1), $postdata['event_id']);
+                $this->getAdminLogTable()->saveLog(array('log_type' => 'event_disable', 'admin_id' => $_SESSION['user']['user_id'], 'entity_id' => $postdata['event_id'],'description' => $description));
+                $this->messages[] = 'Event disapprove succesfully';
+                $this->status= 'success';    
+         
+
+            }
+        return array( 'messages' => $this->messages, 'status' => $this->status);
+        }
+    }
+    public function payoutAction() {
+        $action = "listpayees";
+                    $page = $this->params()->fromQuery('page', 1);
+
+        $xml = "<xml><listpayees><page>$page</page><limit>10</limit></listpayees></xml>";
+        $result = $this->fetchXML($action, $xml);
+         $data = simplexml_load_string($result);
+        
+     return array('listpayees' => $data,'page' => $page);
+     }
+public function doPayoutAction() {
+        $action = "makepayout";
+                    $page = $this->params()->fromQuery('page', 1);
+
+        $xml = "<xml><listpayees><page>$page</page><limit>10</limit></listpayees></xml>";
+        $result = $this->fetchXML($action, $xml);
+         $data = simplexml_load_string($result);
+        
+     return array('listpayees' => $data,'page' => $page);
+     }
+
+     public function accountAction() {
+        $page = $this->params()->fromQuery('page', 1);
+        $result = $this->fetchXML('getorderhistory',"<xml><getorderhistory><user_id>0</user_id><page>$page</page><limit>15</limit></getorderhistory></xml>");
+        $result ="<xml><getorderhistoryresponse><status>Success</status><message></message><orders><order><username>kamlesh</username><transaction_id>04c8f946-01b9-4da8-b7b5-2f4dac612b0d</transaction_id><transaction_type>add_seller</transaction_type><transaction_detail></transaction_detail><amount></amount><transaction_sent>2014-11-15 03:50:50</transaction_sent></order><order><username>kamlesh</username><transaction_id>ff7905ed-4cc4-4266-9827-59949c6f8f9f</transaction_id><transaction_type>add_value_to_account</transaction_type><transaction_detail></transaction_detail><amount>5.00</amount><transaction_sent>2014-11-15 03:48:15</transaction_sent></order><order><username>kamlesh</username><transaction_id>9b8a9f5a-0ed7-4f71-8f6a-05be7e329d57</transaction_id><transaction_type>buy_subscription</transaction_type><transaction_detail></transaction_detail><amount>2.00</amount><transaction_sent>2014-11-15 03:46:48</transaction_sent></order><order><username>kamlesh</username><transaction_id>6d5798a2-8de2-4fa0-982d-e74ce9d2d2f6</transaction_id><transaction_type>store_credit_card</transaction_type><transaction_detail></transaction_detail><amount></amount><transaction_sent>2014-11-15 03:44:04</transaction_sent></order><order><username>tranit2</username><transaction_id>95c70af2-3f94-417a-ac71-ae0b153172c1</transaction_id><transaction_type>buy_subscription</transaction_type><transaction_detail></transaction_detail><amount>4.00</amount><transaction_sent>2014-11-15 03:19:44</transaction_sent></order><order><username>tranit2</username><transaction_id>eaad02cd-84be-40fb-8128-3b064caa0c98</transaction_id><transaction_type>buy_subscription</transaction_type><transaction_detail></transaction_detail><amount>2.00</amount><transaction_sent>2014-11-15 03:15:43</transaction_sent></order><order><username>tranit2</username><transaction_id>d3702e78-9d21-453d-8033-167047a5897e</transaction_id><transaction_type>buy_subscription</transaction_type><transaction_detail></transaction_detail><amount>4.00</amount><transaction_sent>2014-11-15 03:06:49</transaction_sent></order><order><username>tranit2</username><transaction_id>a423732b-1e0d-462d-a53e-fccec35fe4b0</transaction_id><transaction_type>buy_subscription</transaction_type><transaction_detail></transaction_detail><amount>9.00</amount><transaction_sent>2014-11-15 03:04:44</transaction_sent></order><order><username>tranit2</username><transaction_id>1a110480-cbf4-451a-b4a1-d95a2cb01499</transaction_id><transaction_type>buy_subscription</transaction_type><transaction_detail></transaction_detail><amount>4.00</amount><transaction_sent>2014-11-15 02:57:40</transaction_sent></order><order><username>tranit2</username><transaction_id>f83244b8-c904-46df-a1c6-832c4cd6e650</transaction_id><transaction_type>buy_subscription</transaction_type><transaction_detail></transaction_detail><amount>9.00</amount><transaction_sent>2014-11-15 02:55:24</transaction_sent></order></orders></getorderhistoryresponse></xml>";
+        $orderData = simplexml_load_string($result);
+      return array('orderData' => $orderData,'page' => $page);
+      
+     }
+
 }
 
 // end class IndexController

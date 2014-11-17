@@ -1,0 +1,68 @@
+<?php 
+$sm = $this->getHelperPluginManager()->getServiceLocator();
+$router=$sm->get('Router');
+$request=$sm->get('Request');
+$routeMatch=$router->match($request);
+//get an array of the route params and their values
+$routeparams=$routeMatch->getParams();
+
+?> 
+
+<div class="tabinnercontent">
+	<div id="no-more-tables">
+		<table class="col-md-12 table-bordered table-striped table-condensed cf nopadding">
+			<thead class="cf">
+				<tr>
+					<th class="numeric">order #</th>
+					<th class="numeric">account id</th>
+					<th >username</th>
+					<th>date of order</th>
+					<th>transaction type</th>
+					<th>pass / fail</th>
+					<th>status</th>
+					<th>action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php 
+				foreach ($orderData->getorderhistoryresponse->orders->order as $row) {
+  $transaction_response = json_decode($row->transaction_response);
+$plan = isset($transaction_response->plan->name)?$transaction_response->plan->name:'';
+   
+ ?>
+				<tr>
+					<td data-title="order #" class="numeric">1</td>
+					<td data-title="account id" class="numeric">123456</td>
+					<td data-title="username" >kamlesh</td>
+					<td data-title="date of order"><?php echo $row ->transaction_receive ?></td>
+					<td data-title="transaction type"><a href="#" class="white" data-toggle="modal" data-target="#creditCardModal"><?php echo $row ->transaction_type ?></a></td>
+					<td data-title="pass / fail">&nbsp;</td>
+					<td data-title="status"><img src="images/tick-icon.png"/></td>
+					<td data-title="action">
+						<a href="/index/orderHistoryDetail/<?=$row->transaction_id?>" class="white" data-toggle="modal" data-target="#popup">View</a>
+					</td>
+				</tr>
+				
+				 <?php  }?>
+			</tbody>
+		</table>
+		<div class="clear"></div>
+		<div class="blur"  style="text-align:left">
+						<div class="pagination pagination-toolbar">
+							 <a class="paginate_click" href="/admin/OrderHistory?page=<?php echo ($page>1)?$page-1:1;?>">< Previous</a>
+<?php 
+for($i=1;$i<=$page;$i++){
+  if($i==$page){
+        echo " <span class='count'>$i</span> |";
+
+  }else{
+   echo "<a class='paginate_click' href='/admin/OrderHistory?page=".$i."'>$i</a> |"; 
+    }
+  }
+?>
+
+  <a class="paginate_click" href="/admin/OrderHistory?page=<?php echo $page+1;?>">Next ></a>
+						</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,109 @@
+<form class="form-horizontal" role="form"id="form1" name="form1"  action="/admin/user/edit" method="post" enctype="multipart/form-data" name="addUserFrm">
+    <input id="id" name="id" value="<?php echo $this->user->user_id ?>" type="hidden">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit User</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                    <label for="inputName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Name</label>
+                    <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                        <input  readonly class="form-control" id="inputName" type="text" value="<?php echo $this->user->username ?>"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                    <label for="inputEmail" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Email</label>
+                    <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                        <input  readonly class="form-control" id="inputEmail" value="<?php echo $this->user->email_address ?>" type="text" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+
+                    <?php if ($this->user->disable_account == '0') { ?>
+                        <label for="inputAdminName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Disable account</label><div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                            <button id="delete" onclick= "userdisable('<?php echo $this->user->user_id ?>')"  type="button" class="btn btn-default" >disable</button>
+
+                        </div>
+
+                    <?php } else { ?>
+                        <label for="inputAdminName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">active account</label>
+                        <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                            <button id="delete" onclick= "useractive('<?php echo $this->user->user_id ?>')"  type="button" class="btn btn-default" >active</button>
+                        </div>
+                    <?php } ?>
+
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                    <label for="inputLogin" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">profile photo</label>
+                    <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                        <?php
+                        $MemHelper = $this->Mem();
+                        echo '<img width="56px" src="' . $MemHelper->ProfilePic($this->user->metadata) . '"/>';
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+<!--         <button type="button" class="btn btn-primary" onclick="checkdata()">save user</button>
+ -->        <button type="button" class="btn btn-default" data-dismiss="modal">cancle</button>
+    </div>
+</form>
+
+
+<script type="text/javascript">
+<?php if (!empty($this->messages)) { ?>
+        jsuccessAndRefresh('<?php echo implode(' ', $this->messages) ?>');
+
+<?php } ?>
+
+    function checkdata()
+    {
+
+        var getnm = trim(document.getElementById("username").value);
+        var email = trim(document.getElementById("email").value);
+
+        if (getnm == "" || email == "")
+        {
+            alert("Please fill all the value properly.");
+            return false;
+        }
+        var email = document.getElementById('email');
+        var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+        if (!filter.test(email.value)) {
+            alert('Please provide a valid email address');
+            email.focus;
+            return false;
+        }
+
+        $.post(document.form1.action, $('#form1').serialize(), function (data) {
+            //$("#popup").html(data);
+        });
+        return true;
+
+    }
+
+    function trim(str) {
+        return str.replace(/^\s+|\s+$/g, "");
+    }
+    function resetdata()
+    {
+        document.getElementById("username").value = "";
+        document.getElementById("email").value = "";
+    }
+
+
+
+
+</script>

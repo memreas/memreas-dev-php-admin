@@ -1,0 +1,67 @@
+<?php 
+$sm = $this->getHelperPluginManager()->getServiceLocator();
+$router=$sm->get('Router');
+$request=$sm->get('Request');
+$routeMatch=$router->match($request);
+//get an array of the route params and their values
+$routeparams=$routeMatch->getParams();
+
+?> 
+
+<div class="tabinnercontent">
+	<div id="no-more-tables">
+		<table class="col-md-12 table-bordered table-striped table-condensed cf nopadding">
+			<thead class="cf">
+				<tr>
+					<th class="numeric">selected</th>
+					<th class="numeric">account id</th>
+					<th >username</th>
+					<th>date of order</th>
+					<th>transaction type</th>
+					<th>pass / fail</th>
+					<th>status</th>
+					<th>action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php 
+				foreach ($listpayees->listpayeesresponse->accounts->account as $row) {
+   
+				 
+ ?>
+				<tr>
+					<td data-title="selected" class="numeric">
+						<input name=ids[] type="checkbox" class="inputbox unistyle"/>
+
+					</td>
+					<td data-title="account id" class="numeric">123456</td>
+					 <td><?php echo $row ->username ?></td>
+      <td><?php echo $row ->balance ?></td>   
+					<td data-title="action">
+						<a href="/index/account-dopayout/<?=$row->account_id?>" class="white" data-toggle="modal" data-target="#popup">View</a>
+					</td>
+				</tr>
+				
+				 <?php  }?>
+			</tbody>
+		</table>
+		<div class="clear"></div>
+		<div class="blur"  style="text-align:left">
+						<div class="pagination pagination-toolbar">
+							 <a class="paginate_click" href="/admin/OrderHistory?page=<?php echo ($page>1)?$page-1:1;?>">< Previous</a>
+<?php 
+for($i=1;$i<=$page;$i++){
+  if($i==$page){
+        echo " <span class='count'>$i</span> |";
+
+  }else{
+   echo "<a class='paginate_click' href='/admin/OrderHistory?page=".$i."'>$i</a> |"; 
+    }
+  }
+?>
+
+  <a class="paginate_click" href="/admin/OrderHistory?page=<?php echo $page+1;?>">Next ></a>
+						</div>
+		</div>
+	</div>
+</div>

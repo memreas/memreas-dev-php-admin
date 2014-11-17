@@ -1,0 +1,71 @@
+<?php 
+$sm = $this->getHelperPluginManager()->getServiceLocator();
+$router=$sm->get('Router');
+$request=$sm->get('Request');
+$routeMatch=$router->match($request);
+//get an array of the route params and their values
+$routeparams=$routeMatch->getParams();
+ 
+?> 
+<div class="tabinnercontent">
+<div id="no-more-tables">
+	<table class="col-md-12 table-bordered table-striped table-condensed cf nopadding">
+		<thead class="cf">
+			<tr>
+				<th><a href="<?php echo $this->url('index',$routeparams,array('query' => array('page' => $page, 'order_by' => 'username', 'order' => $url_order)));?>"></a>user</th>
+				<th >plan</th>
+				<th ><a href="<?php echo $this->url('index',$routeparams,array('query' => array('page' => $page, 'order_by' => 'data_usage', 'order' => $url_order)));?>"></a>data usage (GB)</th>
+				<th># of image</th>
+				<th>avg. image size</th>
+				<th># of video</th>
+				<th>avg. video size</th>
+				<th># of audio comments</th>
+				<th>avg. audio comment</th>
+				<th>total % used</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php 
+    $MemHelper = $this->Mem();
+    $userTable = $MemHelper->getUserTable();
+
+foreach ($paginator as $key => $user) {
+$userData =  $userTable->getUser($user->user_id);
+
+?>
+			<tr>
+				<td data-title="user"><?php echo empty($userData)?$user->user_id:$userData -> username ?></td> 
+				<td data-title="plan"><?php echo $user -> plan ?></td> 
+				<td data-title="data usage (GB)"><?php echo $MemHelper->toByteString($user -> data_usage) ?></td>
+				<td data-title="# of image" ><?php echo $user -> total_image ?></td>
+				<td data-title="avg. image size"><?php echo $MemHelper->toByteString($user -> average_image) ?></td>
+				<td data-title="# of video"><?php echo $user -> total_vedio ?></td>
+				<td data-title="avg. video size"><?php echo $MemHelper->toByteString($user -> average_vedio) ?></td>
+				<td data-title="# of audio comments"><?php echo $user -> total_audio ?></td>
+				<td data-title="avg. audio comment"><?php echo $MemHelper->toByteString($user -> average_audio) ?></td>
+				<td data-title="total % used"><?php echo $MemHelper->calPercentge($user -> data_usage,$user -> allowed_size)?> %</td>
+			</tr>
+			<?php  } ?>
+		</tbody>
+	</table>
+	<div class="clear"></div>
+	<div class="blur"  style="text-align:left">
+					<div class="pagination pagination-toolbar">
+						<?php // add at the end of the file after the table
+echo $this->paginationControl(
+// the paginator object
+$this->paginator,
+// the scrolling style; see http://zf2.readthedocs.org/en/release-2.1.4/modules/zend.paginator.usage.html#rendering-pages-with-view-scripts
+'sliding',
+// the partial to use to render the control
+'layout/paginator.phtml'
+,
+//the route to link to when a user clicks a control link
+array('order_by'=>$order_by,'order' => $order,'q'=>$q)
+);
+?>
+						
+					</div>
+	</div>
+</div>
+</div>

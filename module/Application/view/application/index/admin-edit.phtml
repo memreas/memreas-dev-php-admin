@@ -1,0 +1,170 @@
+           <?php $MemHelper = $this->Mem(); ?>
+
+   <form id="adminaddfrm" action="/index/admin-edit" method="post" enctype="multipart/form-data" name="addUserFrm" class="form-horizontal" role="form">
+
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Edit Admin</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputLogin" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">username</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                  	            <input id="username" name="username" type="text" class="form-control" value="<?php echo $status=='error'? $post['username']:   $admin['username']?>" placeholder="Username">
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">email</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                                <input  id="email" name="email_address" type="text" class="form-control" value="<?php echo $status=='error'? $post['email_address']:$admin['email_address']?>" placeholder="Email">
+
+                  </div>
+                </div>
+              </div>
+               
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputAdminName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">account type</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                    <select name="role">
+                  <option value="">Select...</option>
+                  <option value="1" <?php if($admin['role'] == 1) echo 'selected' ?>   >Admin</option>
+                  <option value="2" <?php if($admin['role'] == 2) echo 'selected' ?> >Member</option>
+                                    <option value="3" <?php if($admin['role'] == 3) echo 'selected' ?> >SuperAdmin</option>
+
+                </select>
+                  </div>
+                </div>
+              </div>
+               <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+	               	<?php if($admin['disable_account']=='0'){ ?>
+	            		<label for="inputName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">disable account :</label>
+	            		<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+	              		<button  class="btn btn-default" id="delete" type="button" onclick= "admindelete('<?php echo $admin['user_id']?>')" value="delete">disable</button>
+	              		</div>
+	              	<?php }else{ ?>
+	               		<label for="inputName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">active account :</label>
+	               		<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+	              			<button  class="btn btn-default" id="delete" type="button" onclick= "adminActive('<?php echo $admin['user_id']?>')" value="activate">active</button>
+	          			</div> 
+	               	<?php  }?>
+                                       
+                </div>
+              </div>
+               <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">email</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+                                <input  id="email" name="email_address" type="text" class="form-control" value="<?php echo $status=='error'? $post['email_address']:$admin['email_address']?>" placeholder="Email">
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label for="inputCreated" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">profile photo</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+ 					<?php if ($admin['profile_photo'] == 1) {
+              			echo '<p>yes</p>';
+            		} else {
+              			echo '<p>no</p>';
+            		}
+            		?>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="checkdata()">save user</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">cancle</button>
+          </div>
+      </form>
+
+
+
+         
+           
+           
+            
+        
+<script type="text/javascript">
+<?php if(!empty($messages)){
+    
+    if($status == 'error'){?> 
+        jerror('<?php echo implode (' ',$this->messages) ?>');
+	
+    <?php }else {?>
+       jsuccessAndRefresh('<?php echo implode (' ',$this->messages) ?>');
+    <?php }
+    
+    
+    }?>
+
+function checkdata()
+{ 
+
+	var getnm = trim(document.getElementById("username").value);
+        var email = trim(document.getElementById("email").value);
+	
+	if(getnm == "" || email == "")
+	{
+		alert("Please fill all the value properly.");return false;
+	}
+        var email = document.getElementById('email');
+    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+    if (!filter.test(email.value)) {
+    alert('Please provide a valid email address');
+    email.focus;
+    return false;
+    }
+   $.post($('#adminaddfrm').attr('action'), $('#adminaddfrm').serialize(), function( data ) {
+        $( "#popup" ).find(".modal-content").html( data );
+});
+	return true;
+	
+}
+
+function trim(str) {
+        return str.replace(/^\s+|\s+$/g,"");
+}
+function resetdata()
+{
+    	document.getElementById("username").value="";
+        document.getElementById("email").value="";
+}
+function admindelete (adminid) {
+  var adminid=getRadioValue ()
+  if (adminid==0) {
+
+alert('please select user');    
+  }else{
+
+   
+    var url = "/index/adminDeactivate/"+adminid;
+    $mymodal.find(".modal-content").load(url, function() { 
+           $mymodal.modal(); 
+    });
+      
+
+  }
+}
+
+function adminActive (adminid) {
+       var url = "/index/adminActivate/"+adminid;
+
+      $mymodal.find(".modal-content").load(url, function() { 
+           $mymodal.modal(); 
+    });
+
+  
+}
+</script>

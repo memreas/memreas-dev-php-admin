@@ -1,0 +1,439 @@
+<?php
+$transaction_request = json_decode(trim($orderData->getorderresponse->order->transaction_request));
+$transaction_response = json_decode(trim($orderData->getorderresponse->order->transaction_response));
+$user = json_decode(trim($orderData->getorderresponse->order->user_detail));
+$tansaction_type = trim($orderData->getorderresponse->order->transaction_type);
+$amount ='';
+$MemHelper = $this->Mem();
+
+//echo '<pre>';
+//print_r($orderData);
+//echo "<h2>$tansaction_type </h2>";
+//exit;
+if($tansaction_type == 'buy_subscription'){
+
+?>
+<form class="form-horizontal" role="form">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		<h4 class="modal-title" id="myModalLabel">Buy Subscription</h4>
+	</div>
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Name</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputName" type="text" value="<?php echo $user->first_name. ' ' .$user->last_name?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputAddress" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Address</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputAddress" type="text"  value="<?php echo $user->address_line_1?>"/>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputCard" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Card Type</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputCard" type="text"  value="<?php echo 
+             $transaction_request->card_type ?>"/>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputCardNum" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Card number</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputCardNum" type="text" value="<?php echo $transaction_request->obfuscated_card_number?> " />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputExpire" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Expire on</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputExpire" type="text" value="<?php echo $transaction_request->exp_month."/".$transaction_request->exp_year?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputCity" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">City</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputCity" type="text" value="<?php echo $user->city?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputState" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">State</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputState" type="text" value="<?php echo $user->state?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputAmount" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputAmount" type="text" value="<?php echo $amount?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputZip" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Zip</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputZip" type="text" value="<?php echo $user->zip_code?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputCapture" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Capture</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputCapture" type="text" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputPaid" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Paid</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputPaid" type="text" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputAmount" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputAmount" type="text" value="<?php echo $transaction_response->plan->amount?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputCreated" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Created</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputCreated" type="text" value="<?php echo $transaction_response->plan->created?>" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		<button type="button" class="btn btn-primary">Save changes</button>
+	</div>
+</form>
+
+
+<?php } else if($tansaction_type == 'add_value_to_account') {  ;?>
+
+<form class="form-horizontal" role="form">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		<h4 class="modal-title" id="myModalLabel">Add Value To Account</h4>
+	</div>
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Name</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputName" type="text" value="<?php echo $transaction_response->card->name?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputAddress" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Address</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputAddress" type="text" value="<?php echo $transaction_response->card->address_line1?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputCard" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Card Type</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputCard" type="text" value="<?php echo 
+             $transaction_response->card->type?> " />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputCardNum" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Card number</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputCardNum" type="text" value="<?php echo $transaction_response->card->last4?>  " />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputExpire" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Expire on</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputExpire" type="text" value="<?php echo $transaction_response->card->exp_month."/".$transaction_response->card->exp_year?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputCity" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">City</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputCity" type="text" value="<?php echo $transaction_response->card->address_city?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputState" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">State</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputState" type="text" value="<?php echo $transaction_response->card->address_state?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputAmount" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputAmount" type="text" value ="<?php echo $transaction_response->amount?>"/>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputZip" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Zip</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputZip" type="text" value="<?php echo $user->zip_code?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputCapture" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Capture</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputCapture" type="text" value="<?php echo ($transaction_response->captured == 1)?'yes':'no'?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputPaid" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Paid</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputPaid" type="text" value="<?php echo ($transaction_response->paid == 1)?'yes':'no'?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputAmount" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputAmount" type="text" value="<?php echo $transaction_response->amount . ' '. $transaction_response->currency?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputCreated" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Created</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputCreated" type="text" value="<?php echo $MemHelper->showDate($transaction_response->created) ?>" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	</div>
+</form>
+<?php } else if($tansaction_type == 'store_credit_card') { ?>
+
+<form class="form-horizontal" role="form">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		<h4 class="modal-title" id="myModalLabel">Store Credit Card</h4>
+	</div>
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Name</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputName" type="text" value="<?php echo $user->first_name. ' ' .$user->last_name?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputAddress" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Address</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputAddress" type="text" value="<?php echo $transaction_response->address_line1?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputAddress" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Address2</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputAddress" type="text" value="<?php echo $transaction_response->address_line2?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputAddress" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">card type</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputAddress" type="text" value="<?php echo $transaction_response->type ?> " />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputAddress" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">card number</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputAddress" type="text" value="<?php echo $transaction_response->last4?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputCard" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Expire on</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputCard" type="text"  value="<?php echo $transaction_response->exp_month."/".$transaction_response->exp_year?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputCardNum" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">City</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputCardNum" type="text" value="<?php echo $user->city?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputState" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">State</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputState" type="text" value="<?php echo $user->state?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputZip" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Zip</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputZip" type="text" value="<?php echo $user->zip_code?>" />
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	</div>
+</form>
+
+
+<?php } else if($tansaction_type == 'refund_amount') {  ;?>
+
+<form class="form-horizontal" role="form">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		<h4 class="modal-title" id="myModalLabel">Store Credit Card</h4>
+	</div>
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Name</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputName" type="text" value="<?php echo $transaction_response->username?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputAddress" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Address</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputAddress" type="text" value="<?php echo $user->address_line_1?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputAddress" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Address2</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputAddress" type="text" value="<?php echo $user->address_line_2?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputCard" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Reason</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputCard" type="text" value="<?php echo 
+             $transaction_response->reason?> " />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputCardNum" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">City</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputCardNum" type="text" value="<?php echo $user->city?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputState" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">State</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputState" type="text" value="<?php echo $user->state?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputCity" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Balance</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputCity" type="text" value="<?php echo $transaction_response->balance?>" />
+					</div>
+				</div>
+			</div>
+			
+			
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputZip" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Zip</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputZip" type="text" value="<?php echo $user->zip_code?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputAmount" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputAmount" type="text" view="<?php echo $orderData->getorderresponse->order->amount //. ' '. $transaction_response->currency?>" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		<button type="button" class="btn btn-primary">Save changes</button>
+	</div>
+</form>
+
+<?php } ?>

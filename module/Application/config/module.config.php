@@ -45,7 +45,7 @@ return array(
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
             // using the path /application/:controller/:action
- 'admin' => array(
+/* 'admin' => array(
                 'type' => 'Segment',
                 'options' => array(
                     'route' => '/admin',
@@ -75,6 +75,7 @@ return array(
             )
                  
             ),
+*/
 
         ),
     ),
@@ -96,17 +97,17 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
-			'Application\Controller\User' => 'Application\Controller\UserController',
-			'Application\Controller\Event' => 'Application\Controller\EventController',
-            'Application\Controller\Paypal' => 'Application\Controller\PaypalController',
-            'Application\Controller\Manage' => 'Application\Controller\ManageController',
-            'Application\Controller\ReportFeedback' => 'Application\Controller\ReportFeedbackController',
-            'Application\Controller\Media' => 'Application\Controller\MediaController',
-            'Application\Controller\ModerateEvent' => 'Application\Controller\ModerateEventController',
+			// 'Application\Controller\User' => 'Application\Controller\UserController',
+			// 'Application\Controller\Event' => 'Application\Controller\EventController',
+   //          'Application\Controller\Paypal' => 'Application\Controller\PaypalController',
+   //          'Application\Controller\Manage' => 'Application\Controller\ManageController',
+   //          'Application\Controller\ReportFeedback' => 'Application\Controller\ReportFeedbackController',
+   //          'Application\Controller\Media' => 'Application\Controller\MediaController',
+   //          'Application\Controller\ModerateEvent' => 'Application\Controller\ModerateEventController',
             
-            'Application\Controller\ManageAdmin' => 'Application\Controller\ManageAdminController',
-            'Application\Controller\Account' => 'Application\Controller\AccountController',
-            'Application\Controller\OrderHistory' => 'Application\Controller\OrderHistoryController',
+   //          'Application\Controller\ManageAdmin' => 'Application\Controller\ManageAdminController',
+   //          'Application\Controller\Account' => 'Application\Controller\AccountController',
+   //          'Application\Controller\OrderHistory' => 'Application\Controller\OrderHistoryController',
 
 
 

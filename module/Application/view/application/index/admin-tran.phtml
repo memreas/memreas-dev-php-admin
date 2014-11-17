@@ -1,0 +1,117 @@
+<?php 
+ $sm = $this->getHelperPluginManager()->getServiceLocator();
+ 
+$router=$sm->get('Router');
+$request=$sm->get('Request');
+$routeMatch=$router->match($request);
+
+//get an array of the route params and their values
+$routeparams=$routeMatch->getParams();
+  $MemHelper = $this->Mem();
+  $userTable = $MemHelper->getAminUserTable();
+   
+
+
+
+
+?>
+<div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Recent Transactions</h4>
+                    </div>
+
+                  <form class="formstyle" method="post">
+                  <table class="col-md-12 table-bordered table-striped table-condensed cf nopadding">
+                    <thead class="cf">
+                      <tr>
+                         <th>profile picture</th>
+                        <th>Admin Name</th>
+                        <th class="numeric">admin level</th>
+                        <th>Log Type</th>
+                        <th>Created</th>
+                         
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+
+                        foreach ($paginator as $key => $resultset) {
+                          $adminData =  $userTable->getUser($resultset->admin_id);
+                            ?>
+                      <tr>
+                         <td data-title="profile picture" class="numeric"><img src="images/admin-u-profile.png"/></td>
+                        <td data-title="username" ><a href="#" class="white" data-toggle="modal" data-target="#detailpopup"><?=$adminData['username']?></a></td>
+                        <td data-title="admin level"><?=$adminData['role']?></td>
+                        <td data-title="admin recent transaction"><?=$resultset->log_type?></td>
+                        <td data-title="date added disc"><?php echo $MemHelper->showDate($resultset -> created)?></td>
+                         
+                      </tr>
+                      <?php }?>
+                    </tbody>
+                  </table>
+                  </form>
+                  <div class="clear"></div>
+                  <div class="blur"  style="text-align:left">
+                          <div class="pagination pagination-toolbar">
+                              <?php // add at the end of the file after the table
+echo $this->paginationControl(
+    // the paginator object
+    $this->paginator,
+    // the scrolling style; see http://zf2.readthedocs.org/en/release-2.1.4/modules/zend.paginator.usage.html#rendering-pages-with-view-scripts
+    'sliding',
+    // the partial to use to render the control
+    'layout/paginator.phtml'
+    ,
+    //the route to link to when a user clicks a control link
+    array(              'pageClass'=>'listpopup',      'order_by'=>$order_by,'order' => $order,'q'=>$q
+          )
+);
+?>
+                          </div>
+                  </div>
+                
+
+          
+                
+               
+            
+
+             
+         
+
+<script type="text/javascript">
+function adminedit (argument) {
+  var adminid=getRadioValue ()
+  if (adminid==0) {
+
+alert('please select user');    
+  }else{
+
+    var target = $('#tabone');
+    var url = "/admin/manage_admin/edit/"+adminid;
+      $(target).empty();
+          $(target).load( url );
+                  popup('forgot');
+
+  }
+}
+
+function admindelete (argument) {
+  var adminid=getRadioValue ('adminid');
+  if (adminid==0) {
+
+alert('please select user');    
+  }else{
+
+    var target = $('#tabone');
+    var url = "/admin/manage_admin/deactivate/"+adminid;
+      $(target).empty();
+          $(target).load( url );
+                  popup('forgot');
+
+  }
+}
+
+
+
+</script> 

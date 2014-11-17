@@ -1,0 +1,210 @@
+﻿
+ul.resp-tabs-list, p {
+    margin: 0px;
+    padding: 0px;
+}
+
+.resp-tabs-list li {
+    list-style: none;
+    cursor: pointer;
+	float:left;
+	background:#758ba7;
+	
+	text-align:center;
+	padding:9px 24px 19px;
+	line-height:16px;
+	border-radius:10px 10px 0 0; 
+}
+.resp-tabs-list li  a{
+	font-size:16px;
+	color:#fff;
+}
+
+.resp-tabs-container {
+    padding: 0px;
+    background-color: #fff;
+    clear: left;
+	border-radius:10px;
+	-moz-border-radius:10px 10px 0 0;
+	-webkit-border-radius:10px 10px 0 0;
+	 overflow: hidden;
+	 position: relative;
+    top: -10px;
+}
+
+h2.resp-accordion {
+    cursor: pointer;
+    padding: 5px;
+    display: none;
+}
+h2.resp-accordion a{
+	padding:9px 24px;
+	line-height:16px;
+}
+.resp-tab-content {
+    display: none;
+}
+
+.resp-tab-active {
+    background: #fff !important;
+}
+
+.resp-tab-active a {
+    color: #758ba7 !important;
+}
+h2.resp-tab-active a {
+	background:none;
+}
+.resp-content-active, .resp-accordion-active {
+    display: block;
+}
+
+.resp-tab-content {
+}
+h2.resp-accordion {
+    font-size: 16px;
+    margin: 0px;
+    padding:0;
+	background: #768ba8; /* Old browsers */
+	text-align:left;
+	border-radius:10px 10px 0 0;
+	-moz-border-radius:10px 10px 0 0;
+	-webkit-border-radius:10px 10px 0 0;
+	margin-bottom: 5px;
+	
+	
+}
+h2.resp-accordion  a{
+	color: #fff;
+    display: block;
+    font-size: 16px;
+}
+
+h2.resp-tab-active {
+}
+
+h2.resp-tab-title:last-child {
+    border-bottom: 12px solid #c1c1c1 !important;
+    background: blue;
+}
+/*-----------Vertical tabs-----------*/
+.resp-vtabs ul.resp-tabs-list {
+    float: left;
+    width: 30%;
+}
+
+.resp-vtabs .resp-tabs-list li {
+    display: block;
+    padding: 15px 15px !important;
+    margin: 0;
+    cursor: pointer;
+    float: none;
+}
+
+.resp-vtabs .resp-tabs-container {
+    padding: 0px;
+    background-color: #fff;
+    border: 1px solid #c1c1c1;
+    float: left;
+    width: 68%;
+    min-height: 250px;
+    border-radius: 4px;
+    clear: none;
+}
+
+.resp-vtabs .resp-tab-content {
+    border: none;
+}
+
+.resp-vtabs li.resp-tab-active {
+    border-right: none;
+    position: relative;
+    z-index: 1;
+}
+
+.resp-arrow {
+    width: 0;
+    height: 0;
+    float: right;
+    margin-right: 15px;
+    margin-top: 12px;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 12px solid #3ac4ff;
+}
+
+h2.resp-tab-active span.resp-arrow {
+    border: none;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 12px solid #3ac4ff;
+}
+.tabcontent{
+	padding:19px;
+	
+}
+.tabinnercontent{
+	padding:13px 19px;
+	border:1px solid #cccccc;
+	border-radius:7px;
+	-webkit-box-shadow: 1px 1px 3px 0px rgba(50, 50, 50, 0.75);
+-moz-box-shadow:    1px 1px 3px 0px rgba(50, 50, 50, 0.75);
+box-shadow:         1px 1px 3px 0px rgba(50, 50, 50, 0.75);
+}
+/*-----------Accordion styles-----------*/
+h2.resp-tab-active {
+    -webkit-box-shadow: 1px 1px 5px 0px rgba(50, 50, 50, 0.75);
+-moz-box-shadow:    1px 1px 5px 0px rgba(50, 50, 50, 0.75);
+box-shadow:         1px 1px 5px 0px rgba(50, 50, 50, 0.75);
+
+}
+h2.resp-tab-active a{
+	color:#1b1738;
+}
+.resp-easy-accordion  h2.resp-accordion {
+        display: block;
+}
+.resp-easy-accordion .resp-tab-content {
+}
+
+.resp-easy-accordion .resp-tab-content:last-child {
+}
+
+.resp-jfit {
+    width: 100%;
+    margin: 0px;
+}
+
+.resp-tab-content-active {
+    display: block;
+}
+
+h2.resp-accordion:first-child {
+}
+
+/*Here your can change the breakpoint to set the accordion, when screen resolution changed*/
+@media only screen and (max-width: 768px) {
+    ul.resp-tabs-list {
+        display: none;
+    }
+
+    h2.resp-accordion {
+        display: block;
+    }
+
+    .resp-vtabs .resp-tab-content {
+    }
+
+    .resp-vtabs .resp-tabs-container {
+        border: none;
+        float: none;
+        width: 100%;
+        min-height: initial;
+        clear: none;
+    }
+    .resp-accordion-closed {
+        display:none !important;
+    }
+    .resp-vtabs .resp-tab-content:last-child {
+    }
+}

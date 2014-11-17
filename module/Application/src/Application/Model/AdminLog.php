@@ -12,10 +12,7 @@ class AdminLog {
     public  $log_id,
             $admin_id,
             $log_type,
-            $created,
-            $balance,
-            $create_time,
-            $update_time;
+            $created;
             
        
 }

@@ -1,0 +1,101 @@
+<?php 
+ $sm = $this->getHelperPluginManager()->getServiceLocator();
+ 
+$router=$sm->get('Router');
+$request=$sm->get('Request');
+$routeMatch=$router->match($request);
+
+//get an array of the route params and their values
+$routeparams=$routeMatch->getParams();
+  
+
+
+?>
+<div class="tabinnercontent">
+								<div id="no-more-tables">
+									<form class="formstyle" method="post">
+									<table class="col-md-12 table-bordered table-striped table-condensed cf nopadding">
+										<thead class="cf">
+											<tr>
+												<th>selected</th>
+												<th>profile picture</th>
+												<th>username</th>
+												<th class="numeric">admin level</th>
+												<th>admin recent transaction</th>
+												<th>date added disc</th>
+												<th>status</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php 
+ $MemHelper = $this->Mem();
+ foreach ($paginator as $key => $resultset) {
+   
+ ?>
+
+   
+		<tr>
+			<td data-title="selected" class="numeric"><div class="checker"><span class="">
+				<input type="radio" class="inputbox unistyle"id="radio" name="adminid" value="<?php echo $resultset->user_id ?>">
+			</span></div></td>
+
+			<td data-title="profile picture" class="numeric"><img src="images/admin-u-profile.png"></td>
+			<td data-title="username"><?php echo $resultset -> username ?></td>
+			<td data-title="admin level"><?php echo $resultset -> role ?></td>
+			<td data-title="admin recent transaction"><a id="button" class="white " data-toggle="modal" data-target="#adminModal" href="/index/admin-tran/<?php echo $resultset -> user_id?>" >recent transactions</a></td>
+			<td data-title="date added disc"><?php echo $MemHelper->showDate($resultset -> create_date)?></td>
+			<td data-title="status"><?php
+        echo ($resultset ->disable_account == 0)?'<img src="/img/status.png" />':
+		'<img src="/img/cross.png" />'
+		; 
+     ?></td>
+		</tr>
+											<?php }?>
+											
+										</tbody>
+									</table>
+									</form>
+									<div class="clear"></div>
+									<div class="blur" style="text-align:left">
+													<div class="pagination pagination-toolbar">
+														    
+													</div>
+									</div>
+								</div>
+							</div>
+
+<script type="text/javascript">
+function adminedit (argument) {
+  var adminid=getRadioValue ()
+  if (adminid==0) {
+
+alert('please select user');    
+  }else{
+
+    var target = $('#tabone');
+    var url = "/admin/manage_admin/edit/"+adminid;
+      $(target).empty();
+          $(target).load( url );
+                  popup('forgot');
+
+  }
+}
+
+function admindelete (argument) {
+  var adminid=getRadioValue ('adminid');
+  if (adminid==0) {
+
+alert('please select user');    
+  }else{
+
+    var target = $('#tabone');
+    var url = "/admin/manage_admin/deactivate/"+adminid;
+      $(target).empty();
+          $(target).load( url );
+                  popup('forgot');
+
+  }
+}
+
+
+</script>

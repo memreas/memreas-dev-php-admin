@@ -5,40 +5,40 @@ $request=$sm->get('Request');
 $routeMatch=$router->match($request);
 //get an array of the route params and their values
 $routeparams=$routeMatch->getParams();
-  
+  $pagination_class = isset($pageClass) ? $pageClass :'paginate_click';
 ?>
 
 <?php if ($this->pageCount): ?>
-<div class="count">
+<ul >
 <!-- Previous page link -->
 <?php if (isset($this->previous)): ?>
-                    <a class="paginate_click" href="<?php echo $this->url($this->route,$routeparams,array('query' => array('page' => $this->previous, 'order_by' => $order_by, 'order' => $order))); ?>">
+                    <li><a class="<?=$pagination_class?>" href="<?php echo $this->url($this->route,$routeparams,array('query' => array('page' => $this->previous, 'order_by' => $order_by, 'order' => $order))); ?>">
     &lt; Previous
-  </a> |
+  </a> </li>
 <?php else: ?>
-  <span class="disabled">&lt; Previous</span> |
+  <li><span >&lt; Previous<span></li>
 <?php endif; ?>
 
 <!-- Numbered page links -->
 <?php foreach ($this->pagesInRange as $page): ?>
   <?php if ($page != $this->current): ?>
-          <a class="paginate_click" href="<?php echo $this->url($this->route, $routeparams ,array('query' => array('page' => $page, 'order_by' => $order_by, 'order' => $order)));?>">
+          <li><a class="<?=$pagination_class?>" href="<?php echo $this->url($this->route, $routeparams ,array('query' => array('page' => $page, 'order_by' => $order_by, 'order' => $order)));?>">
         <?php echo $page; ?>
-    </a> |
+    </a> </li>
   <?php else: ?>
-    <?php echo $page; ?> |
+   <li class="active"> <span ><?php echo $page; ?></span></li>
   <?php endif; ?>
 <?php endforeach; ?>
 
 <!-- Next page link -->
 <?php if (isset($this->next)): ?>
-        <a class="paginate_click" href="<?php echo $this->url($this->route,$routeparams, array('query' => array('page' => $this->next, 'order_by' => $order_by, 'order' => $order))); ?>">
+       <li> <a class="<?=$pagination_class?>" href="<?php echo $this->url($this->route,$routeparams, array('query' => array('page' => $this->next, 'order_by' => $order_by, 'order' => $order))); ?>">
     Next &gt;
-  </a>
+  </a></li>
 <?php else: ?>
-  <span class="disabled">Next &gt;</span>
+  <li><span class="disabled">Next &gt;</span></li>
 <?php endif; ?>
-</div>
+</ul>
 <?php endif; ?>
 
 <?php endif; ?>

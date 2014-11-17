@@ -1,0 +1,66 @@
+<?php 
+$sm = $this->getHelperPluginManager()->getServiceLocator();
+
+$router=$sm->get('Router');
+$request=$sm->get('Request');
+$routeMatch=$router->match($request);
+
+//get an array of the route params and their values
+$routeparams=$routeMatch->getParams();
+
+
+
+?>
+<div class="tabinnercontent">
+  <div id="no-more-tables">
+    <form class="formstyle" method="post">
+    <table class="col-md-12 table-bordered table-striped table-condensed cf nopadding">
+      <thead class="cf">
+
+        <tr>
+          <th><a href="#">profile picture</a></th>
+          <th><a href="<?php echo $this->url('index',$routeparams,array('query' => array('page' => $page, 'order_by' => 'username', 'order' => $url_order)));?>">username</th>
+<th><a href="<?php echo $this->url('index',$routeparams,array('query' => array('page' => $page, 'order_by' => 'name', 'order' => $url_order)));?>">event name</th>
+          <th><a href="#">event media</a></th>
+          <th><a href="#">viewable</a></th>
+          <th><a href="#">action</a></th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php 
+         $MemHelper = $this->Mem();
+
+foreach ($paginator as $key => $resultset) {
+$img = $MemHelper->ProfilePic($resultset -> metadata);
+?>
+        <tr>
+          <td data-title="profile picture" class="numeric"><img src="<?=$img?>"/></td>
+          <td data-title="username" ><a href="#" class="white" data-toggle="modal" data-target="#adminModal"><?php echo $resultset -> username ?></a></td>
+          <td data-title="event name"><?php echo $resultset -> name ?></td>
+          <td data-title="event media"><a href="/index/event-media/<?php echo $resultset -> event_id?>" class="white" data-toggle="modal" data-target="#popup">view fmedia</a></td>
+          <td data-title="viewable"><?php echo $MemHelper->showDate($resultset -> viewable_from). ' - '. $MemHelper->showDate($resultset -> viewable_to) .'-'.$MemHelper->showDate($resultset -> self_destruct)?> </td>
+          <td data-title="action"><a href="/index/event-change-status/<?=$resultset ->event_id?>" class="white" data-toggle="modal" data-target="#popup">change status</a></td>
+        </tr>
+       <?php } ?>
+      </tbody>
+    </table>
+    </form>
+    <div class="clear"></div>
+    <div class="blur"  style="text-align:left">
+            <div class="pagination pagination-toolbar">
+              <?php // add at the end of the file after the table
+echo $this->paginationControl(
+    // the paginator object
+    $this->paginator,
+    'sliding',
+    // the partial to use to render the control
+    'layout/paginator.phtml',
+    //the route to link to when a user clicks a control link
+    array(                'order_by'=>$order_by,'order' => $order,'q'=>$q
+          )
+);
+?>
+            </div>
+    </div>
+  </div>
+</div>

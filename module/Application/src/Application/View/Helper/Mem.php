@@ -13,7 +13,7 @@ class Mem extends AbstractHelper
     }
     public function ProfilePic($metadata="") {
         $json_array = json_decode ( $metadata, true );
-        $url = '/img/profile-pic.jpg';
+        $url = '/images/admin-u-profile.png';
         if (! empty ( $json_array ['S3_files']['thumbnails']['79x80'][0])){
             $url = $json_array ['S3_files']['thumbnails']['79x80'];
             $url = json_decode($this->signer->signArrayOfUrls($url));
@@ -24,7 +24,7 @@ class Mem extends AbstractHelper
     }
     public function EventPic($metadata="") {
         $json_array = json_decode ( $metadata, true );
-        $url = '/img/small-pic-3.jpg';
+        $url = '/images/500Pages.png';
         if (! empty ( $json_array ['S3_files']['thumbnails']['79x80'][0])){
             $url = $json_array ['S3_files']['thumbnails']['79x80'];
 			$url = json_decode($this->signer->signArrayOfUrls($url));
@@ -68,6 +68,11 @@ class Mem extends AbstractHelper
     { 
 
         return $this->sm->get('Application\Model\UserTable');
+    }
+    public function getAminUserTable()
+    { 
+
+        return $this->sm->get('Application\Model\AdminUserTable');
     }
     
 }
