@@ -185,14 +185,14 @@ $(document).on("click" , "a.listpopup", function(e){
   
 
    $('#tab0').load(UI.tab0);
-   /* $('#tab1').load(UI.tab1);
+    $('#tab1').load(UI.tab1);
     $('#tab2').load(UI.tab2);
     $('#tab3').load(UI.tab3);
     $('#tab4').load(UI.tab4);
 	    $('#tab5').load(UI.tab5);
 
     $('#tab6').load(UI.tab6);
-   $('#tab7').load(UI.tab7);*/
+   $('#tab7').load(UI.tab7);
       $('#tab8').load(UI.tab8);
 
 
