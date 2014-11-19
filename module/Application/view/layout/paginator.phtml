@@ -12,7 +12,7 @@ $routeparams=$routeMatch->getParams();
 <ul >
 <!-- Previous page link -->
 <?php if (isset($this->previous)): ?>
-                    <li><a class="<?=$pagination_class?>" href="<?php echo $this->url($this->route,$routeparams,array('query' => array('page' => $this->previous, 'order_by' => $order_by, 'order' => $order))); ?>">
+                    <li><a class="<?=$pagination_class?>" href="<?php echo $this->url($this->route,$routeparams,array('query' => array( 'q'=>$q, 'page' => $this->previous, 'order_by' => $order_by, 'order' => $order))); ?>">
     &lt; Previous
   </a> </li>
 <?php else: ?>
@@ -22,7 +22,7 @@ $routeparams=$routeMatch->getParams();
 <!-- Numbered page links -->
 <?php foreach ($this->pagesInRange as $page): ?>
   <?php if ($page != $this->current): ?>
-          <li><a class="<?=$pagination_class?>" href="<?php echo $this->url($this->route, $routeparams ,array('query' => array('page' => $page, 'order_by' => $order_by, 'order' => $order)));?>">
+          <li><a class="<?=$pagination_class?>" href="<?php echo $this->url($this->route, $routeparams ,array('query' => array('q'=>$q,'page' => $page, 'order_by' => $order_by, 'order' => $order)));?>">
         <?php echo $page; ?>
     </a> </li>
   <?php else: ?>
@@ -32,7 +32,7 @@ $routeparams=$routeMatch->getParams();
 
 <!-- Next page link -->
 <?php if (isset($this->next)): ?>
-       <li> <a class="<?=$pagination_class?>" href="<?php echo $this->url($this->route,$routeparams, array('query' => array('page' => $this->next, 'order_by' => $order_by, 'order' => $order))); ?>">
+       <li> <a class="<?=$pagination_class?>" href="<?php echo $this->url($this->route,$routeparams, array('query' => array('q'=>$q,'page' => $this->next, 'order_by' => $order_by, 'order' => $order))); ?>">
     Next &gt;
   </a></li>
 <?php else: ?>

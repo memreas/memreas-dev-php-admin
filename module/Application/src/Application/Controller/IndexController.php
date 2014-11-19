@@ -1214,20 +1214,25 @@ public function accountSummaryAction() {
     public function payoutAction() {
         $action = "listpayees";
                     $page = $this->params()->fromQuery('page', 1);
+ $q = $this->params()->fromQuery('q', 0);
+        $t =$q[0];
+        $username = '';
+        if($t == '@'){
+            $username =$search = substr ( $q, 1 );
+        }
 
-        $xml = "<xml><listpayees><page>$page</page><limit>10</limit></listpayees></xml>";
+  echo      $xml = "<xml><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
         $result = $this->fetchXML($action, $xml);
          $data = simplexml_load_string($result);
         
-     return array('listpayees' => $data,'page' => $page);
+     return array('listpayees' => $data,'page' => $page, 'q'=>$q);
      }
 public function doPayoutAction() {
-        $action = "makepayout";
-                    $page = $this->params()->fromQuery('page', 1);
 
-        $xml = "<xml><listpayees><page>$page</page><limit>10</limit></listpayees></xml>";
+        $action = "makepayout";
+        $xml = "<xml><makepayout><account_id>$account_id</account_id><amount>$amount</amount><description>$description</description></makepayout></xml>";
         $result = $this->fetchXML($action, $xml);
-         $data = simplexml_load_string($result);
+        $data = simplexml_load_string($result);
         
      return array('listpayees' => $data,'page' => $page);
      }
@@ -1241,6 +1246,16 @@ public function doPayoutAction() {
       
      }
 
+     public function refundAction() {
+        $action = "listpayees";
+                    $page = $this->params()->fromQuery('page', 1);
+
+        $xml = "<xml><listpayees><page>$page</page><limit>10</limit></listpayees></xml>";
+        $result = $this->fetchXML($action, $xml);
+         $data = simplexml_load_string($result);
+        
+     return array('listpayees' => $data,'page' => $page);
+     }
 }
 
 // end class IndexController

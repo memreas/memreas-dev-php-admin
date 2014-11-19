@@ -185,14 +185,14 @@ $(document).on("click" , "a.listpopup", function(e){
   
 
    $('#tab0').load(UI.tab0);
-    $('#tab1').load(UI.tab1);
+   /* $('#tab1').load(UI.tab1);
     $('#tab2').load(UI.tab2);
     $('#tab3').load(UI.tab3);
     $('#tab4').load(UI.tab4);
 	    $('#tab5').load(UI.tab5);
 
     $('#tab6').load(UI.tab6);
-   $('#tab7').load(UI.tab7);
+   $('#tab7').load(UI.tab7);*/
       $('#tab8').load(UI.tab8);
 
 
@@ -229,4 +229,68 @@ function getRadioValue () {
     else {
         return 0;
     }
+}
+
+ $(document).ready(function(){
+  
+      $('#horizontalTab').easyResponsiveTabs({
+        type: 'default', //Types: default, vertical, accordion           
+        width: 'auto', //auto or any width like 600px
+        fit: true,   // 100% fit in a container
+        closed: 'accordion', // Start closed if in accordion view
+        /*activate: function(event) { // Callback function if tab is switched
+          var $tab = $(this);
+            var index = $( "li" ).index( this );
+                  UI.current_tab='tab'+index;
+        }*/
+      });
+      $uniformed = $(".formstyle").find("input.unistyle, textarea, select, a.uniformTest");
+      $uniformed.uniform();
+       getCurrentTab();
+
+
+    });
+ function getCurrentTab(){
+        UI.current_tab='tab'+$( ".resp-tab-active" ).index()
+
+ }
+ /*Other*/
+addLoading = function(element, typeLoading, additionClass){
+    var jElement = $(element);
+    if (additionClass != '') additionClass = ' ' + additionClass;
+    jElement.append('<div class="overlay-bg' + additionClass + '"><div class="bg"></div><img src="/memreas/img/loading-line.gif" class="loading-small overlay-small-loading" /></div>');
+    if (typeLoading == 'input'){
+        var input_width = jElement.find('input').width();
+        var input_height = jElement.find('input').height() + 5;
+        var input_left_pos = (jElement.find('input').offset().left - jElement.offset().left);
+        var input_top_pos = (jElement.find('input').offset().top - jElement.offset().top);
+
+        jElement.find('.overlay-bg').css({'width':input_width, 'height':input_height, 'left':input_left_pos, 'top':input_top_pos}).fadeIn(500);
+        jElement.find('input').attr('readonly', true);
+    }
+    else jElement.find('.overlay-bg').fadeIn(500);
+}
+removeLoading = function(element){
+    var jElement = $(element);
+    jElement.find('.overlay-bg').remove();
+    jElement.find('input').removeAttr('readonly');
+}
+
+function getCurrentUrl(){
+  getCurrentTab();
+  var params = { q:q};
+var str = jQuery.param( params );
+ return UI[UI.current_tab] +'?'+ str;
+}
+function doAdminAjax(){
+url = getCurrentUrl();
+alert(url);
+  $.get(url,function(data){
+      $('#'+UI.current_tab).html(data);
+
+
+
+  });
+
+
 }

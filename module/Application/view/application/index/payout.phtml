@@ -7,61 +7,131 @@ $routeMatch=$router->match($request);
 $routeparams=$routeMatch->getParams();
 
 ?> 
-
 <div class="tabinnercontent">
 	<div id="no-more-tables">
+		<form  id="form1" action="/index/payout" class="form-horizontal formstyle" role="form" method="post">
+
 		<table class="col-md-12 table-bordered table-striped table-condensed cf nopadding">
 			<thead class="cf">
 				<tr>
 					<th class="numeric">selected</th>
 					<th class="numeric">account id</th>
 					<th >username</th>
-					<th>date of order</th>
-					<th>transaction type</th>
-					<th>pass / fail</th>
-					<th>status</th>
-					<th>action</th>
+					<th>balance</th>
+					 
 				</tr>
 			</thead>
 			<tbody>
 				<?php 
+				if(empty($listpayees->listpayeesresponse->accounts->account)){
+
+					echo '<td>No rec found</td>';
+					return;
+				}
 				foreach ($listpayees->listpayeesresponse->accounts->account as $row) {
    
 				 
  ?>
 				<tr>
 					<td data-title="selected" class="numeric">
-						<input name=ids[] type="checkbox" class="inputbox unistyle"/>
+						<input name=ids[] type="checkbox" class="inputbox unistyle" value="<?=$row->account_id?>"/>
 
 					</td>
 					<td data-title="account id" class="numeric">123456</td>
 					 <td><?php echo $row ->username ?></td>
-      <td><?php echo $row ->balance ?></td>   
-					<td data-title="action">
-						<a href="/index/account-dopayout/<?=$row->account_id?>" class="white" data-toggle="modal" data-target="#popup">View</a>
-					</td>
+      				<td><?php echo $row ->balance ?></td>   
+					 
 				</tr>
 				
 				 <?php  }?>
 			</tbody>
 		</table>
+	
 		<div class="clear"></div>
 		<div class="blur"  style="text-align:left">
 						<div class="pagination pagination-toolbar">
-							 <a class="paginate_click" href="/admin/OrderHistory?page=<?php echo ($page>1)?$page-1:1;?>">< Previous</a>
+							 <a class="paginate_click" href="/index/payout?q=<?=$q?>&page=<?php echo ($page>1)?$page-1:1;?>">< Previous</a>
 <?php 
 for($i=1;$i<=$page;$i++){
   if($i==$page){
         echo " <span class='count'>$i</span> |";
 
   }else{
-   echo "<a class='paginate_click' href='/admin/OrderHistory?page=".$i."'>$i</a> |"; 
+   echo "<a class='paginate_click' href='/index/payout?q=<?=$q?>&page=".$i."'>$i</a> |"; 
     }
   }
 ?>
 
-  <a class="paginate_click" href="/admin/OrderHistory?page=<?php echo $page+1;?>">Next ></a>
-						</div>
+  <a class="paginate_click" href="/index/payout?q=<?=$q?>&page=<?php echo $page+1;?>">Next ></a>
+						</div><a href="#" class="white" data-toggle="modal" data-target="#resondModal">Approve</a>
 		</div>
+ <div class="modal fade" id="resondModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+           <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Payout Comment</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                <div class="form-group padleftright30">
+                                    <label for="inputName" >select reason :</label>
+                                    <div class="radioboxs">
+                                        <div class="line padtop10">
+                                             <textarea name="other_reason" id="reason_other" cols="1" rows="1" class="input-group-lg" style="width:100%;height:100px;"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="checkdata()">payout</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">cancle</button>
+          </div>
+       </div>
+    </div>
+  </div>
+ 
+	</form>
 	</div>
 </div>
+<script type="text/javascript">
+    <?php if(!empty($messages)){
+    
+    if($status == 'error'){?> 
+        jerror('<?php echo implode (' ',$messages) ?>');
+    
+    <?php  }else {?>
+        jsuccessAndRefresh('<?php echo implode (' ',$messages) ?>');
+    <?php }
+    
+    
+    }?>
+    
+function checkdata()
+{ 
+	  var n = $( "input:checked" ).length;
+	                      var txt = $("#reason_other").val();
+
+
+  if (n==0) {
+
+alert('please select ');    
+  }else if(!txt.trim()) {                  
+                        alert ('please give reason ');
+                          return false;
+                    
+                    
+                }
+    $.post($('#form1').attr('action'), $( ":input" ).serializeArray(), function( data ) {
+         //show in pop up
+        $( "#popup" ).find(".modal-content").html( data );
+});
+    return true;
+    
+}
+doinitFrom();
+
+</script>
