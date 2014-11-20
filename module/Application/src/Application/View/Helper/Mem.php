@@ -25,11 +25,10 @@ class Mem extends AbstractHelper
     public function EventPic($metadata="") {
         $json_array = json_decode ( $metadata, true );
         $url = '/images/500Pages.png';
-        if (! empty ( $json_array ['S3_files']['thumbnails']['79x80'][0])){
-            $url = $json_array ['S3_files']['thumbnails']['79x80'];
+        if (! empty ( $json_array ['S3_files']['thumbnails']['448x306'][0])){
+            $url = $json_array ['S3_files']['thumbnails']['448x306'];
 			$url = json_decode($this->signer->signArrayOfUrls($url));
-             
- } 
+ 		} 
         return is_array($url)?$url[0]:$url ;
     }
     public function showDate($date="") {

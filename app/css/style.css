@@ -186,7 +186,9 @@ header {
 	height: 70px;
 	padding-top: 19px;
 	position: relative;
-	overflow: hidden;
+	overflow: visible;
+	padding-left:15px;
+	padding-right:15px;
 }
 
 #logo {

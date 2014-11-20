@@ -3,7 +3,7 @@
           <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
           <h4 class="modal-title" id="myModalLabel">Moderate Events</h4>
         </div>
-        <div class="fgallery fotorama"  data-click="false" data-swipe="true" data-ratio="800/325" data-max-width="100%"  data-allow-full-screen="true" data-fit="cover" data-click="true"  data-nav="thumbs">
+        <div class="fgallery fotorama"  data-click="false" data-swipe="true" data-ratio="800/546" data-max-width="100%"  data-width="100%" data-allow-full-screen="true" data-fit="cover" data-click="true"  data-nav="thumbs">
           <?php 
 
 $MemHelper = $this->Mem();
@@ -17,8 +17,8 @@ $MemHelper = $this->Mem();
  
               ?>
           <img src="<?=$mediaUrl?>">
-          <?php }else{ 
-$mediaUrl = $MemHelper->EventPic($media->metadata);
+          <?php }else{
+				$mediaUrl = $MemHelper->EventPic($media->metadata);
 
           ?>
          <a data-video="true" href="/jwplayer/index.html"><img src="<?=$mediaUrl?>"></a>
