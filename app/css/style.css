@@ -2859,7 +2859,7 @@ form.change-status textarea{
 }
 .boxtitle{
 	background:#758ba7;
-	color:#ff0000;
+	color: #fff !important;
 	font-size:16px;
 	padding:10px 15px;
 	margin-bottom:13px;

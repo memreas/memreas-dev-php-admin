@@ -1221,7 +1221,7 @@ public function accountSummaryAction() {
             $username =$search = substr ( $q, 1 );
         }
 
-  echo      $xml = "<xml><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
+        $xml = "<xml><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
         $result = $this->fetchXML($action, $xml);
          $data = simplexml_load_string($result);
         
@@ -1230,9 +1230,24 @@ public function accountSummaryAction() {
 public function doPayoutAction() {
 
         $action = "makepayout";
-        $xml = "<xml><makepayout><account_id>$account_id</account_id><amount>$amount</amount><description>$description</description></makepayout></xml>";
-        $result = $this->fetchXML($action, $xml);
-        $data = simplexml_load_string($result);
+        $description = $page = $this->params()->fromPost('other_reason', '');
+                $payee = $page = $this->params()->fromPost('ids',array());
+
+ 
+        try {
+            foreach ($payee as $account_id => $amount) {
+             $xml = "<xml><makepayout><account_id>$account_id</account_id><amount>$amount</amount><description>$description</description></makepayout></xml>";
+             error_log($xml);
+              $result = $this->fetchXML($action, $xml);
+
+                $data = simplexml_load_string($result);
+                print_r($data);
+        }
+         
+        } catch (Exception $e) {
+            
+        }
+        
         
      return array('listpayees' => $data,'page' => $page);
      }

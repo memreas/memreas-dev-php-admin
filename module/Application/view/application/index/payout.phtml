@@ -9,7 +9,7 @@ $routeparams=$routeMatch->getParams();
 ?> 
 <div class="tabinnercontent">
 	<div id="no-more-tables">
-		<form  id="form1" action="/index/payout" class="form-horizontal formstyle" role="form" method="post">
+		<form  id="form1" action="/index/doPayout" class="form-horizontal formstyle" role="form" method="post">
 
 		<table class="col-md-12 table-bordered table-striped table-condensed cf nopadding">
 			<thead class="cf">
@@ -34,7 +34,7 @@ $routeparams=$routeMatch->getParams();
  ?>
 				<tr>
 					<td data-title="selected" class="numeric">
-						<input name=ids[] type="checkbox" class="inputbox unistyle" value="<?=$row->account_id?>"/>
+						<input name=ids[<?=$row->account_id?>] type="checkbox" class="inputbox unistyle" value="<?=$row->balance?>"/>
 
 					</td>
 					<td data-title="account id" class="numeric">123456</td>

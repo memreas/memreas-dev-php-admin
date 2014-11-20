@@ -10,6 +10,8 @@
     'tab6':'/index/order-history',
     'tab7':'/index/account',
     'tab8':'/index/payout',
+        'tab9':'/index/refund',
+
     
     
     
@@ -189,11 +191,12 @@ $(document).on("click" , "a.listpopup", function(e){
     $('#tab2').load(UI.tab2);
     $('#tab3').load(UI.tab3);
     $('#tab4').load(UI.tab4);
-	    $('#tab5').load(UI.tab5);
-
+    $('#tab5').load(UI.tab5);
     $('#tab6').load(UI.tab6);
-   $('#tab7').load(UI.tab7);
-      $('#tab8').load(UI.tab8);
+    $('#tab7').load(UI.tab7);
+    $('#tab8').load(UI.tab8);
+    $('#tab9').load(UI.tab9);
+
 
 
 $(document)  
