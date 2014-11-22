@@ -9,7 +9,7 @@ $routeparams=$routeMatch->getParams();
 ?> 
 <div class="tabinnercontent">
 	<div id="no-more-tables">
-		<form  id="form1" action="/index/doPayout" class="form-horizontal formstyle" role="form" method="post">
+		<form  id="payout" action="/index/doPayout" class="form-horizontal formstyle" role="form" method="post">
 
 		<table class="col-md-12 table-bordered table-striped table-condensed cf nopadding">
 			<thead class="cf">
@@ -88,7 +88,7 @@ for($i=1;$i<=$page;$i++){
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary" onclick="checkdata()">payout</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">cancle</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
           </div>
        </div>
     </div>
@@ -110,7 +110,7 @@ for($i=1;$i<=$page;$i++){
     
     }?>
     
-function checkdata()
+function checkdata1()
 { 
 	  var n = $( "input:checked" ).length;
 	                      var txt = $("#reason_other").val();
@@ -125,7 +125,7 @@ alert('please select ');
                     
                     
                 }
-    $.post($('#form1').attr('action'), $( ":input" ).serializeArray(), function( data ) {
+    $.post($('#payout').attr('action'), $( ":input" ).serializeArray(), function( data ) {
          //show in pop up
         $( "#popup" ).find(".modal-content").html( data );
 });
