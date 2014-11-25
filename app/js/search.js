@@ -11,7 +11,7 @@ $(document).ready(function() {
             }
         }
 
-      //  addLoading('.top-search', 'input', '');
+       addLoading('.top-search', 'input', '');
         ajaxRequest('findtag', [{tag: "tag", value: query},  {tag: 'user_id', value: user_id} ]
                 , function(data) {
                     var q = $('#search').val();
@@ -53,7 +53,7 @@ $(document).ready(function() {
         },
         updater: function(item) {
             q = this.query;
-            doAdminAjax();
+            doSearchAjax();
             return item;
         },
         highlighter: function(item) {

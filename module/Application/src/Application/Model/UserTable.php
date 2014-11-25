@@ -27,6 +27,7 @@ class UserTable
      $select = $this->tableGateway->getSql()->select();
          if(!empty($order_by))  $select->order($order_by . ' ' . $order);
          if(!empty($where))  $select->where($where);
+         //echo $select->getSqlString();
     $resultSet = $this->tableGateway->selectWith($select);
 
         $resultSet->buffer();

@@ -38,8 +38,8 @@
         </h1>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-5 nopadleft navbar-collapse collapse">
-        <div class="searchdiv">
-          <input id="search" name="input" class="search_bar pull-left" value="@person, #discover" onblur="if(!/\S/.test(this.value))this.value=this.defaultValue" onfocus="if(this.value == '@person, #discover')this.value = '';" type="text">
+        <div class="searchdiv top-search">
+          <input id="search" name="input" class="search_bar pull-left " value="@person, #discover" onblur="if(!/\S/.test(this.value))this.value=this.defaultValue" onfocus="if(this.value == '@person, #discover')this.value = '';" type="text">
           <input type="image" src="/images/search-icon.png" class="putsubmit pull-right"/>
           <div class="clear"></div>
         </div>
@@ -55,7 +55,14 @@
       </div>
     </div>
   </header>
+  <div id="loadingpopup">
+            <div id="loadingpopupinner">
+                <img id="loadingimg" src="/memreas/img/loading.gif">
+                <span id="loadingtext">Please wait...</span>
+            </div>
+        </div>
   <div id="contentwrap"><!-- contentwrap -->
+
     <div class="container">
       <div class="row">
 

@@ -475,10 +475,18 @@ error_log("Exit admin " . __FUNCTION__ . PHP_EOL);
 
      public function userAction() {
             //$role = $this->security();
-        $order_by = $this->params()->fromQuery('order_by', 0);
+            $order_by = $this->params()->fromQuery('order_by', 0);
             $order    = $this->params()->fromQuery('order', 'DESC');
-            $q    = $this->params()->fromQuery('q', 0);
-            $where =array();
+            $page = $this->params()->fromQuery('page', 1);
+
+            $q    = $this->getUserName();
+            $where='';
+            if($q){
+                $where = new \Zend\Db\Sql\Where();
+                $where->like('username',"$q%");
+            }
+            
+ 
              $column = array('username','email_address','role','disable_account');
              $url_order = 'DESC';
   if (in_array($order_by, $column))
@@ -488,7 +496,6 @@ error_log("Exit admin " . __FUNCTION__ . PHP_EOL);
         try {
         $users = $this->getUserTable()->fetchAll($where, $order_by, $order);
         
-            $page = $this->params()->fromQuery('page', 1);
             $iteratorAdapter = new \Zend\Paginator\Adapter\Iterator($users);
             $paginator = new Paginator($iteratorAdapter);
             $paginator->setCurrentPageNumber($page);
@@ -1055,12 +1062,12 @@ public function accountSummaryAction() {
     public function orderHistoryAction() {
          //  $id = $this->params()->fromRoute('id'); 
        // $this->getAdminLogTable()->saveLog(array('log_type'=>'feedback_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$id));
-            $page = $this->params()->fromQuery('page', 1);
+             $username=$this->getUserName();
+                     $page = $this->params()->fromQuery('page', 1);
 
-         
             $result = $this->fetchXML('getorderhistory',"<xml><getorderhistory><user_id>0</user_id><page>$page</page><limit>15</limit></getorderhistory></xml>");
  $orderData = simplexml_load_string($result);
-//echo '<pre>';print_r($orderData); 
+ //echo '<pre>';print_r($orderData); 
      return array('orderData' => $orderData,'page' => $page);
 
     }
@@ -1210,6 +1217,32 @@ public function accountSummaryAction() {
             }
         return array( 'messages' => $this->messages, 'status' => $this->status);
         }
+    }
+    public   function getUserName()
+    {$username = '';
+        $q = $this->params()->fromQuery('q', 0);
+        if(empty($q)){
+            return 0;
+        }
+        $t =$q[0];
+        
+        if($t == '@'){
+            $username =$search = substr ( $q, 1 );
+        }
+        return $username;
+    }
+    public   function getEventName()
+    {
+        $q = $this->params()->fromQuery('q', 0);
+        if(empty($q)){
+            return 0;
+        }
+        $t =$q[0];
+        $name = '';
+        if($t == '!'){
+            $username =$search = substr ( $q, 1 );
+        }
+        return $name;
     }
     public function payoutAction() {
         $action = "listpayees";
