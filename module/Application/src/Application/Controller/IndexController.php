@@ -640,8 +640,12 @@ $user = $this->getUserTable()->getUser($id);
 
       $order_by = $this->params()->fromQuery('order_by', 0);
             $order    = $this->params()->fromQuery('order', 'DESC');
-            $q    = $this->params()->fromQuery('q', 0);
-            $where =array();
+            $q    = $this->getUserName();
+            $where='';
+            if($q){
+                $where = new \Zend\Db\Sql\Where();
+                $where->like('username',"$q%");
+            }
              $column = array('username','create_time');
              $url_order = 'DESC';
   if (in_array($order_by, $column))
@@ -690,8 +694,12 @@ $user = $this->getUserTable()->getUser($id);
     public function adminAction() {
         $order_by = $this->params()->fromQuery('order_by', 0);
         $order = $this->params()->fromQuery('order', 'DESC');
-        $q = $this->params()->fromQuery('q', 0);
-        $where = array();
+        $q    = $this->getUserName();
+            $where='';
+            if($q){
+                $where = new \Zend\Db\Sql\Where();
+                $where->like('username',"$q%");
+            }
         $column = array('username', 'role', 'create_date');
         $url_order = 'DESC';
         if (in_array($order_by, $column))
@@ -1023,8 +1031,13 @@ public function accountSummaryAction() {
 
         $order_by = $this->params()->fromQuery('order_by', 0);
         $order = $this->params()->fromQuery('order', 'DESC');
-        $q = $this->params()->fromQuery('q', 0);
-        $where = array();
+        $q    = $this->getUserName();
+            $where='';
+            if($q){
+                $where = new \Zend\Db\Sql\Where();
+                $where->like('username',"$q%");
+            }
+            $where->equalTo('user_id !="total-s3"');
         $column = array(
             'username',
             'data_usage'
@@ -1065,7 +1078,7 @@ public function accountSummaryAction() {
              $username=$this->getUserName();
                      $page = $this->params()->fromQuery('page', 1);
 
-            $result = $this->fetchXML('getorderhistory',"<xml><getorderhistory><user_id>0</user_id><page>$page</page><limit>15</limit></getorderhistory></xml>");
+            $result = $this->fetchXML('getorderhistory',"<xml><getorderhistory><user_id>0</user_id><search_username>$username</search_username><page>$page</page><limit>15</limit></getorderhistory></xml>");
  $orderData = simplexml_load_string($result);
  //echo '<pre>';print_r($orderData); 
      return array('orderData' => $orderData,'page' => $page);
@@ -1087,7 +1100,12 @@ public function accountSummaryAction() {
          $order_by = $this->params()->fromQuery('order_by', 0);
         $order = $this->params()->fromQuery('order', 'DESC');
         $q = $this->params()->fromQuery('q', 0);
-        $where = array('public' => 1);
+        $q    = $this->getUserName();
+        $where = new \Zend\Db\Sql\Where();
+            if($q){                
+                $where->like('username',"$q%");
+            }
+            $where->equalTo('public', 1);
         $column = array('username', 'name');
         $url_order = 'DESC';
         if (in_array($order_by, $column))
@@ -1254,7 +1272,7 @@ public function accountSummaryAction() {
             $username =$search = substr ( $q, 1 );
         }
 
-        $xml = "<xml><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
+   echo      $xml = "<xml><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
         $result = $this->fetchXML($action, $xml);
          $data = simplexml_load_string($result);
         
@@ -1288,8 +1306,7 @@ public function doPayoutAction() {
      public function accountAction() {
         $page = $this->params()->fromQuery('page', 1);
         $result = $this->fetchXML('getorderhistory',"<xml><getorderhistory><user_id>0</user_id><page>$page</page><limit>15</limit></getorderhistory></xml>");
-        $result ="<xml><getorderhistoryresponse><status>Success</status><message></message><orders><order><username>kamlesh</username><transaction_id>04c8f946-01b9-4da8-b7b5-2f4dac612b0d</transaction_id><transaction_type>add_seller</transaction_type><transaction_detail></transaction_detail><amount></amount><transaction_sent>2014-11-15 03:50:50</transaction_sent></order><order><username>kamlesh</username><transaction_id>ff7905ed-4cc4-4266-9827-59949c6f8f9f</transaction_id><transaction_type>add_value_to_account</transaction_type><transaction_detail></transaction_detail><amount>5.00</amount><transaction_sent>2014-11-15 03:48:15</transaction_sent></order><order><username>kamlesh</username><transaction_id>9b8a9f5a-0ed7-4f71-8f6a-05be7e329d57</transaction_id><transaction_type>buy_subscription</transaction_type><transaction_detail></transaction_detail><amount>2.00</amount><transaction_sent>2014-11-15 03:46:48</transaction_sent></order><order><username>kamlesh</username><transaction_id>6d5798a2-8de2-4fa0-982d-e74ce9d2d2f6</transaction_id><transaction_type>store_credit_card</transaction_type><transaction_detail></transaction_detail><amount></amount><transaction_sent>2014-11-15 03:44:04</transaction_sent></order><order><username>tranit2</username><transaction_id>95c70af2-3f94-417a-ac71-ae0b153172c1</transaction_id><transaction_type>buy_subscription</transaction_type><transaction_detail></transaction_detail><amount>4.00</amount><transaction_sent>2014-11-15 03:19:44</transaction_sent></order><order><username>tranit2</username><transaction_id>eaad02cd-84be-40fb-8128-3b064caa0c98</transaction_id><transaction_type>buy_subscription</transaction_type><transaction_detail></transaction_detail><amount>2.00</amount><transaction_sent>2014-11-15 03:15:43</transaction_sent></order><order><username>tranit2</username><transaction_id>d3702e78-9d21-453d-8033-167047a5897e</transaction_id><transaction_type>buy_subscription</transaction_type><transaction_detail></transaction_detail><amount>4.00</amount><transaction_sent>2014-11-15 03:06:49</transaction_sent></order><order><username>tranit2</username><transaction_id>a423732b-1e0d-462d-a53e-fccec35fe4b0</transaction_id><transaction_type>buy_subscription</transaction_type><transaction_detail></transaction_detail><amount>9.00</amount><transaction_sent>2014-11-15 03:04:44</transaction_sent></order><order><username>tranit2</username><transaction_id>1a110480-cbf4-451a-b4a1-d95a2cb01499</transaction_id><transaction_type>buy_subscription</transaction_type><transaction_detail></transaction_detail><amount>4.00</amount><transaction_sent>2014-11-15 02:57:40</transaction_sent></order><order><username>tranit2</username><transaction_id>f83244b8-c904-46df-a1c6-832c4cd6e650</transaction_id><transaction_type>buy_subscription</transaction_type><transaction_detail></transaction_detail><amount>9.00</amount><transaction_sent>2014-11-15 02:55:24</transaction_sent></order></orders></getorderhistoryresponse></xml>";
-        $orderData = simplexml_load_string($result);
+         $orderData = simplexml_load_string($result);
       return array('orderData' => $orderData,'page' => $page);
       
      }

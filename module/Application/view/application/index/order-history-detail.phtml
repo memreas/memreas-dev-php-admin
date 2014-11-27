@@ -6,8 +6,7 @@ $tansaction_type = trim($orderData->getorderresponse->order->transaction_type);
 $amount ='';
 $MemHelper = $this->Mem();
 
-//echo '<pre>';
-//print_r($orderData);
+
 //echo "<h2>$tansaction_type </h2>";
 //exit;
 if($tansaction_type == 'buy_subscription'){
@@ -81,7 +80,7 @@ if($tansaction_type == 'buy_subscription'){
 				<div class="form-group">
 					<label for="inputAmount" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
 					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-						<input class="form-control" id="inputAmount" type="text" value="<?php echo $amount?>" />
+						<input class="form-control" id="inputAmount" type="text" value="<?php echo $orderData->getorderresponse->order->amount ?>" />
 					</div>
 				</div>
 			</div>
@@ -109,14 +108,7 @@ if($tansaction_type == 'buy_subscription'){
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-12 col-md-12 col-lg-12">
-				<div class="form-group">
-					<label for="inputAmount" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
-					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-						<input class="form-control" id="inputAmount" type="text" value="<?php echo $transaction_response->plan->amount?>" />
-					</div>
-				</div>
-			</div>
+			 
 			<div class="col-sm-12 col-md-12 col-lg-12">
 				<div class="form-group">
 					<label for="inputCreated" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Created</label>
@@ -204,7 +196,7 @@ if($tansaction_type == 'buy_subscription'){
 				<div class="form-group">
 					<label for="inputAmount" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
 					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-						<input class="form-control" id="inputAmount" type="text" value ="<?php echo $transaction_response->amount?>"/>
+						<input class="form-control" id="inputAmount" type="text" value ="<?php echo $orderData->getorderresponse->order->amount ?>"/>
 					</div>
 				</div>
 			</div>
@@ -232,14 +224,7 @@ if($tansaction_type == 'buy_subscription'){
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-12 col-md-12 col-lg-12">
-				<div class="form-group">
-					<label for="inputAmount" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
-					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-						<input class="form-control" id="inputAmount" type="text" value="<?php echo $transaction_response->amount . ' '. $transaction_response->currency?>" />
-					</div>
-				</div>
-			</div>
+			 
 			<div class="col-sm-12 col-md-12 col-lg-12">
 				<div class="form-group">
 					<label for="inputCreated" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Created</label>
@@ -424,7 +409,7 @@ if($tansaction_type == 'buy_subscription'){
 				<div class="form-group">
 					<label for="inputAmount" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
 					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-						<input class="form-control" id="inputAmount" type="text" view="<?php echo $orderData->getorderresponse->order->amount //. ' '. $transaction_response->currency?>" />
+						<input class="form-control" id="inputAmount" type="text" value="<?php echo $orderData->getorderresponse->order->amount //. ' '. $transaction_response->currency?>" />
 					</div>
 				</div>
 			</div>
@@ -511,3 +496,6 @@ if($tansaction_type == 'buy_subscription'){
 	</div>
 </form>
 <?php }?>
+<?php
+//echo '<pre>';
+//print_r($orderData);

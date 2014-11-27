@@ -27,6 +27,7 @@ $routeparams=$routeMatch->getParams();
 			<tbody>
 				<?php 
 				foreach ($orderData->getorderhistoryresponse->orders->order as $row) {
+					//echo '<pre>';print_r($row);
    $transaction_response = json_decode($row->transaction_response);
 $plan = isset($transaction_response->plan->name)?$transaction_response->plan->name:'';
    
@@ -36,7 +37,7 @@ $plan = isset($transaction_response->plan->name)?$transaction_response->plan->na
 					<td data-title="transaction type">						<a href="/index/orderHistoryDetail/<?=$row->transaction_id?>" class="white" data-toggle="modal" data-target="#popup"><?php echo $row ->transaction_type ?></a>
 </td>
 					<td data-title="order #" class="numeric"><?=$row->balance->starting_balance?></td>
-					<td data-title="order #" class="numeric"><?=$row->balance->amount?></td>
+					<td data-title="order #" class="numeric"><?=$row->amount?></td>
 					<td data-title="order #" class="numeric"><?=$row->balance->ending_balance?></td>			
 					<td data-title="pass / fail">pass</td>
 										<td data-title="Currency">USD</td>
