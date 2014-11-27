@@ -420,6 +420,62 @@ if($tansaction_type == 'buy_subscription'){
 		
 	</div>
 </form>
+<?php } else if($tansaction_type == 'make_payout_seller') { ?>
+<form class="form-horizontal" role="form">
+  <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	  <h4 class="modal-title" id="myModalLabel"><?=$tansaction_type?></h4>
+	</div>
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Bank Name</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputName" type="text" value="<?php echo $transaction_response->account->bank_name?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputAddress" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Accont Last 4</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputAddress" type="text" value="<?php echo $transaction_response->account->last4?>" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputAddress" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Country</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputAddress" type="text" value="<?php echo $transaction_response->account->country?>" />
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputCardNum" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Currency</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputCardNum" type="text" value="<?php echo $transaction_response->currency?>" />
+					</div>
+				</div>
+			</div>
+			 
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div class="form-group">
+					<label for="inputAmount" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+						<input class="form-control" id="inputAmount" type="text" value="<?php echo $transaction_response->amount ?>" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	</div>
+</form>
 
 <?php }else{ ?>
 <form class="form-horizontal" role="form">

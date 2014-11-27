@@ -9,37 +9,39 @@ $routeparams=$routeMatch->getParams();
 ?> 
 <div class="tabinnercontent">
 	<div id="no-more-tables">
+    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Payout Response</h4>
+                    </div>
 		<form  id="payout" action="/index/doPayout" class="form-horizontal formstyle" role="form" method="post">
 
 		<table class="col-md-12 table-bordered table-striped table-condensed cf nopadding">
 			<thead class="cf">
 				<tr>
-					<th class="numeric">selected</th>
-					<th class="numeric">account id</th>
-					<th >username</th>
-					<th>balance</th>
+					 
+				  <th class="numeric">account id</th>
+					<th >amount</th>
+                    <th >status</th>
+					<th>message</th>
 					 
 				</tr>
 			</thead>
 			<tbody>
 				<?php 
-				if(empty($listpayees->listpayeesresponse->accounts->account)){
+				if(empty($response)){
 
 					echo '<td>No rec found</td>';
 					return;
 				}
-				foreach ($listpayees->listpayeesresponse->accounts->account as $row) {
+				foreach ($response as $row) {
    
 				 
  ?>
 				<tr>
-					<td data-title="selected" class="numeric">
-						<input name=ids[<?=$row->account_id?>] type="checkbox" class="inputbox unistyle" value="<?=$row->balance?>"/>
-
-					</td>
-					<td data-title="account id" class="numeric">123456</td>
-					 <td><?php echo $row ->username ?></td>
-      				<td><?php echo $row ->balance ?></td>   
+					<td data-title="selected" class="numeric"><?php echo $row['account_id'] ?></td>
+					<td data-title="account id" class="numeric"><?php echo $row['amount'] ?></td>
+					 <td><?php echo $row['status'] ?></td>
+      				<td><?php echo $row['message'] ?></td>   
 					 
 				</tr>
 				
@@ -48,23 +50,7 @@ $routeparams=$routeMatch->getParams();
 		</table>
 	
 		<div class="clear"></div>
-		<div class="blur"  style="text-align:left">
-						<div class="pagination pagination-toolbar">
-							 <a class="paginate_click" href="/index/payout?q=<?=$q?>&page=<?php echo ($page>1)?$page-1:1;?>">< Previous</a>
-<?php 
-for($i=1;$i<=$page;$i++){
-  if($i==$page){
-        echo " <span class='count'>$i</span> |";
-
-  }else{
-   echo "<a class='paginate_click' href='/index/payout?q=<?=$q?>&page=".$i."'>$i</a> |"; 
-    }
-  }
-?>
-
-  <a class="paginate_click" href="/index/payout?q=<?=$q?>&page=<?php echo $page+1;?>">Next ></a>
-						</div><a href="/index/payoutReason" class="white" data-toggle="modal" data-target="#popup">Approve</a>
-		</div>
+		
  
  
 	</form>

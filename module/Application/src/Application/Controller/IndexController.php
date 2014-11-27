@@ -1032,12 +1032,12 @@ public function accountSummaryAction() {
         $order_by = $this->params()->fromQuery('order_by', 0);
         $order = $this->params()->fromQuery('order', 'DESC');
         $q    = $this->getUserName();
-            $where='';
+        $where = new \Zend\Db\Sql\Where();
             if($q){
-                $where = new \Zend\Db\Sql\Where();
+                
                 $where->like('username',"$q%");
             }
-            $where->equalTo('user_id !="total-s3"');
+            $where->notEqualTo('user_info.user_id','total-s3');
         $column = array(
             'username',
             'data_usage'
@@ -1272,11 +1272,14 @@ public function accountSummaryAction() {
             $username =$search = substr ( $q, 1 );
         }
 
-   echo      $xml = "<xml><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
+        $xml = "<xml><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
         $result = $this->fetchXML($action, $xml);
          $data = simplexml_load_string($result);
         
      return array('listpayees' => $data,'page' => $page, 'q'=>$q);
+     }
+     public function payoutReasonAction() {
+        return array();
      }
 public function doPayoutAction() {
 
@@ -1289,23 +1292,28 @@ public function doPayoutAction() {
             foreach ($payee as $account_id => $amount) {
              $xml = "<xml><makepayout><account_id>$account_id</account_id><amount>$amount</amount><description>$description</description></makepayout></xml>";
              error_log($xml);
+
               $result = $this->fetchXML($action, $xml);
 
                 $data = simplexml_load_string($result);
-                print_r($data);
+                     $response[] = array('account_id' =>$account_id, 'status' => $data->makepayoutresponse->status ,'amount' => $amount ,'message' => $data->makepayoutresponse->message)  ;
+
+                
         }
          
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             
         }
+         
         
-        
-     return array('listpayees' => $data,'page' => $page);
+     return array('response' =>$response );
      }
 
      public function accountAction() {
         $page = $this->params()->fromQuery('page', 1);
-        $result = $this->fetchXML('getorderhistory',"<xml><getorderhistory><user_id>0</user_id><page>$page</page><limit>15</limit></getorderhistory></xml>");
+         $username   = $this->getUserName();
+         
+        $result = $this->fetchXML('getorderhistory',"<xml><getorderhistory><user_id>0</user_id><search_username>$username</search_username><page>$page</page><limit>15</limit></getorderhistory></xml>");
          $orderData = simplexml_load_string($result);
       return array('orderData' => $orderData,'page' => $page);
       
