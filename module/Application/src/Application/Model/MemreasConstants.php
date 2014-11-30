@@ -7,9 +7,9 @@ namespace Application\Model;
 
 class MemreasConstants {
 	
-const MEMREAS_WS = "https://memreasdev-wsu.memreas.com";
+const MEMREAS_WS = "https://memreasdev-ws1.memreas.com";
   //const MEMREAS_WS = "http://ws/";
-const ORIGINAL_URL = "https://memreasdev-wsg.memreas.com/";
+const ORIGINAL_URL = "https://memreasdev-ws1.memreas.com/";
 
 	
 	const CLOUDFRONT_DOWNLOAD_HOST = 'https://d3sisat5gdssl6.cloudfront.net/';
