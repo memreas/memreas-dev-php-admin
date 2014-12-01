@@ -43,14 +43,14 @@ $routeparams=$routeMatch->getParams();
 				<input type="radio" class="inputbox unistyle"id="radio" name="adminid" value="<?php echo $resultset->user_id ?>"></td>
 			
 
-			<td data-title="profile picture" class="numeric"><img src="images/admin-u-profile.png"></td>
+			<td data-title="profile picture" class="numeric"><img src="/images/admin-u-profile.png"></td>
 			<td data-title="username"><?php echo $resultset -> username ?></td>
 			<td data-title="admin level"><?php echo $resultset -> role ?></td>
 			<td data-title="admin recent transaction"><a id="button" class="white " data-toggle="modal" data-target="#listpopup" href="/index/admin-tran/<?php echo $resultset -> user_id?>" >recent transactions</a></td>
 			<td data-title="date added disc"><?php echo $MemHelper->showDate($resultset -> create_date)?></td>
 			<td data-title="status"><?php
-        echo ($resultset ->disable_account == 0)?'<img src="/img/status.png" />':
-		'<img src="/img/cross.png" />'
+        echo ($resultset ->disable_account == 0)?'<img src="/images/status.png" />':
+		'<img src="/images/cross.png" />'
 		; 
      ?></td>
 		</tr>

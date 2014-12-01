@@ -39,7 +39,7 @@ $routeparams=$routeMatch->getParams();
                           $adminData =  $userTable->getUser($resultset->admin_id);
                             ?>
                       <tr>
-                         <td data-title="profile picture" class="numeric"><img src="images/admin-u-profile.png"/></td>
+                         <td data-title="profile picture" class="numeric"><img src="/images/admin-u-profile.png"/></td>
                         <td data-title="username" ><a href="#" class="white" data-toggle="modal" data-target="#detailpopup"><?=$adminData['username']?></a></td>
                         <td data-title="admin level"><?=$adminData['role']?></td>
                         <td data-title="admin recent transaction"><?=$resultset->log_type?></td>

@@ -41,14 +41,14 @@ foreach ($paginator as $key => $user) {
                         <td data-title="status">
                           <?php
         echo ($user ->disable_account == 0)?'<img src="/images/status.png" />':
-    '<img src="/images/tick-icon.png"/>'
+    '<img src="/images/cross.png"/>'
     ; 
      ?>
                           </td>
                         <td data-title="action">
 
 
-<a class="white" href="/index/userView/<?php echo $user -> user_id ?>" data-toggle="modal" data-target="#popup"><img src="/images/edit-icon.png"/></a>
+<a class="white" href="/index/userView/<?php echo $user -> user_id ?>" data-toggle="modal" data-target="#popup"><img src="/images/eye.png"/></a>
 
                          
                       </tr> 

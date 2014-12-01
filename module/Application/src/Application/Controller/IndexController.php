@@ -1033,8 +1033,7 @@ public function accountSummaryAction() {
         $order = $this->params()->fromQuery('order', 'DESC');
         $q    = $this->getUserName();
         $where = new \Zend\Db\Sql\Where();
-            if($q){
-                
+            if($q){                
                 $where->like('username',"$q%");
             }
             $where->notEqualTo('user_info.user_id','total-s3');

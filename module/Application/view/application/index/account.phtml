@@ -14,8 +14,7 @@ $routeparams=$routeMatch->getParams();
 			<thead class="cf">
 				<tr>
 					<th class="numeric">order #</th>
-					<th class="numeric">account id</th>
-					<th >username</th>
+ 					<th >username</th>
 					<th>date of order</th>
 					<th>transaction type</th>
 					<th>pass / fail</th>
@@ -26,16 +25,15 @@ $routeparams=$routeMatch->getParams();
 			<tbody>
 				<?php 
 				foreach ($orderData->getorderhistoryresponse->orders->order as $row) {
-   
-				 
+ 				 
  ?>
 				<tr>
-					<td data-title="order #" class="numeric">1</td>
- 					 <td><?php echo $row ->username ?></td>
-      <td><?php echo $row ->balance ?></td>
-            <td><?php echo $row ->transaction_type ?></td>   
-               <td><?php echo $row ->amount ?></td>   
-
+					<td data-title="order #" class="numeric"><?php echo $row ->transaction_id ?></td>
+  					<td><?php echo $row ->username ?></td>
+      				<td><?php echo $row ->balance ?></td>
+            		<td><?php echo $row ->transaction_type ?></td>   
+               		<td><?php echo $row ->amount ?></td>   
+               		<th>pass</th>
 					<td data-title="action">
 						<a href="/index/account-dopayout/<?=$row->transaction_id?>" class="white" data-toggle="modal" data-target="#popup">View</a>
 					</td>
