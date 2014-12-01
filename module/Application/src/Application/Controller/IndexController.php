@@ -83,7 +83,7 @@ public $status ;
 //error_log("Inside fetch XML request action ---> " . $action . PHP_EOL);
 //error_log("Inside fetch XML request XML ---> " . $xml . PHP_EOL);
         $request = $guzzle->post(
-            'https://memreasdev-wsu.memreas.com',
+            $this->url,
             null,
             array(
             'action' => $action,

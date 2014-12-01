@@ -3028,3 +3028,16 @@ form.change-status textarea{
     font-size: 0.6rem;
     text-align: center;
 }
+
+.bond img {
+border: 1px solid #ebebeb;
+border-radius: 3px;
+max-height: 56px;
+vertical-align: middle;
+width: 56px;
+}
+.bond {
+border-bottom: 1px solid #ebebeb;
+margin-bottom: 10px;
+padding-bottom: 5px;
+}
