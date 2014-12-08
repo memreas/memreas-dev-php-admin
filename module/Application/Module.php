@@ -56,27 +56,7 @@ class Module {
         error_log('initAcl');
         $acl = new \Zend\Permissions\Acl\Acl();
         // $roles = include __DIR__ . '/config/module.acl.roles.php';
-        $roles = array(
-            'guest' => array(
-                    'Application\Controller\Index'
-            ),
-           
-            
-            'admin' => array(
-                'Application\Manage',
-                'Application\Event',
-                'Application\User',
-                'Application\ReportFeedback',
-                'Application\ModerateEvent',
-                'Application\Account',
-                'Application\OrderHistory',
-
-            
-            ),
-            'superadmin' =>  array(
-                'Application\Manageadmin'
-             ),
-        );
+        
         $allResources = array();
         foreach ($roles as $role => $resources) {
 

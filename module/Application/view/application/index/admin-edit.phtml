@@ -1,6 +1,7 @@
            <?php $MemHelper = $this->Mem(); ?>
 
    <form id="adminaddfrm" action="/index/admin-edit" method="post" enctype="multipart/form-data" name="addUserFrm" class="form-horizontal" role="form">
+  <input name="user_id" type="hidden" value="<?=$admin['user_id']?>" >
 
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -19,9 +20,9 @@
               </div>
               <div class="col-sm-12 col-md-12 col-lg-12">
                 <div class="form-group">
-                  <label for="inputName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">email</label>
+                  <label for="inputName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">password</label>
                   <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                                <input  id="email" name="email_address" type="text" class="form-control" value="<?php echo $status=='error'? $post['email_address']:$admin['email_address']?>" placeholder="Email">
+                    <input  id="password" name="password" type="text" class="form-control" value="" placeholder="Password">
 
                   </div>
                 </div>

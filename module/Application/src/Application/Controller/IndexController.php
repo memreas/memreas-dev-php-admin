@@ -23,7 +23,7 @@ use Zend\Http\ClientStatic;
 use Application\View\Helper\S3Service;
 use Application\View\Helper\S3;
 use Aws\S3\S3Client;
-use Application\Controller\AWSManagerSender;
+use Application\Memreas\AWSManagerSender;
 use Application\Model\MemreasConstants;
 use Application\Memreas\User;
 use Application\Controller\Common;
@@ -100,6 +100,7 @@ public $status ;
     }
 
     public function indexAction() {
+
 error_log("Enter admin " . __FUNCTION__ . PHP_EOL);
         //$path = $this->security("application/index/index.phtml");
         $path = "application/index/index.phtml";
@@ -280,9 +281,7 @@ error_log("Exit admin " . __FUNCTION__ . PHP_EOL);
         $session = new Container('user');
         $session->getManager()->destroy();
 
-        $view = new ViewModel();
-        $view->setTemplate('application/index/index.phtml'); // path to phtml file under view folder
-        return $view;
+        return $this->redirect()->toRoute('index', array('controller' => 'index', 'action' => 'manage'));
     }
 
     public function setSession($username,$password) {
@@ -439,7 +438,7 @@ public function getUserTable() {
         return $this->storage;
     }
 
-    public function security($path) {
+   /* public function security($path) {
         //if already login do nothing
         //$session = new Container("user");
         //if(!$session->offsetExists('user_id')){
@@ -449,7 +448,7 @@ public function getUserTable() {
         //}
         return $path;
         //return $this->redirect()->toRoute('index', array('action' => 'login'));
-    }
+    }*/
 public function showlogAction() {
      echo '<pre>' . file_get_contents(getcwd() . '/php_errors.log');
                 exit();
@@ -463,6 +462,7 @@ public function clearlogAction() {
 
 }
 public function manageAction() {
+ $this->security();
 error_log("Enter admin " . __FUNCTION__ . PHP_EOL);
         //$path = $this->security("application/index/index.phtml");
         $path = "application/manage/index.phtml";
@@ -474,7 +474,8 @@ error_log("Exit admin " . __FUNCTION__ . PHP_EOL);
 
 
      public function userAction() {
-            //$role = $this->security();
+                    $this->security();
+
             $order_by = $this->params()->fromQuery('order_by', 0);
             $order    = $this->params()->fromQuery('order', 'DESC');
             $page = $this->params()->fromQuery('page', 1);
@@ -517,6 +518,7 @@ error_log("Exit admin " . __FUNCTION__ . PHP_EOL);
 
      
     public function userViewAction() {
+        $this->security();
 
         if ($this->request->isPost()) {
             $id = $this->params()->fromPost('id');
@@ -568,7 +570,8 @@ return $result;
     
     public function userDeactiveAction() {
         
-              
+                      $this->security();
+
       $vdata=array();
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -603,7 +606,8 @@ $user = $this->getUserTable()->getUser($id);
     
     public function userActiveAction() {
         
-              
+                      $this->security();
+
       $vdata=array();
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -637,6 +641,7 @@ $user = $this->getUserTable()->getUser($id);
     }
     
     public function feedbackAction() {
+        $this->security();
 
       $order_by = $this->params()->fromQuery('order_by', 0);
             $order    = $this->params()->fromQuery('order', 'DESC');
@@ -671,6 +676,8 @@ $user = $this->getUserTable()->getUser($id);
     }
 
     public function feedbackViewAction() {
+                $this->security();
+
              $feedback_id = $this->params()->fromRoute('id'); 
         $this->getAdminLogTable()->saveLog(array('log_type'=>'feedback_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$feedback_id));
 
@@ -692,6 +699,7 @@ $user = $this->getUserTable()->getUser($id);
     }
 
     public function adminAction() {
+        $this->security();
         $order_by = $this->params()->fromQuery('order_by', 0);
         $order = $this->params()->fromQuery('order', 'DESC');
         $q    = $this->getUserName();
@@ -727,7 +735,9 @@ $user = $this->getUserTable()->getUser($id);
             'order_by' => $order_by, 'order' => $order, 'q' => $q, 'page' => $page, 'url_order' => $url_order);
     }
 
-    public function adminTranAction() {              
+    public function adminTranAction() { 
+            $this->security();
+             
         $user_id = $this->params()->fromRoute('id');
         $page = $this->params()->fromQuery('page', 1);
         $order_by = $this->params()->fromQuery('order_by', 0);
@@ -759,6 +769,8 @@ $user = $this->getUserTable()->getUser($id);
   
     }
      public function adminAddAction() {
+               // $this->security();
+
         $request = $this->getRequest();
         if ($request->isPost()) {
             $postData = $this->params()->fromPost();
@@ -773,8 +785,8 @@ $user = $this->getUserTable()->getUser($id);
 
                         $user['username'] = $postData['username'];
             $user['email_address'] = $postData['email_address'];
-            $user['password'] = $postData['password'];
-            $user['disable_account'] = 1;
+            $user['password'] = md5($postData['password']);
+            $user['disable_account'] = 0;
             $user['role'] = $postData['role'];
 
             $user_id=$this->getAdminUserTable()->saveUser($user);
@@ -807,9 +819,11 @@ $user = $this->getUserTable()->getUser($id);
     }
 
     public function adminEditAction() {
+                $this->security();
+
         $postData = array();
         if ($this->request->isPost()) {
-            $user_id = $this->params()->fromPost('id');
+            $user_id = $this->params()->fromPost('user_id');
             $user = $this->getAdminUserTable()->getUser($user_id);
 
 
@@ -817,7 +831,8 @@ $user = $this->getUserTable()->getUser($id);
                 $this->messages[] = 'Admin Not Found';
             } else {
                 $postData = $this->params()->fromPost();
-                if ($user['username'] != $postData['username'] || $user['email_address'] != $postData['email_address']) {
+                if ($user['username'] != $postData['username'] || 
+                    $user['email_address'] != $postData['email_address']) {
                     //$where['email_address'] = $postData['email_address'];
                     //$where['username'] = $postData['username'];
                     //$userExist = $this->getAdminUserTable()->isExist($where);
@@ -833,6 +848,9 @@ $user = $this->getUserTable()->getUser($id);
                 }
                 if (!empty($postData['role'])) {
                     $user['role'] = $postData['role'];
+                }
+                if (!empty($postData['password'])) {
+                    $user['password'] = md5($postData['password']);
                 }
 
                 $user['update_time'] = time();
@@ -861,6 +879,8 @@ $user = $this->getUserTable()->getUser($id);
     
 
     public function adminDeactivateAction() {
+                $this->security();
+
       $vdata=array();
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -908,6 +928,8 @@ $user = $this->getUserTable()->getUser($id);
     }
     
     public function adminActivateAction() {
+                $this->security();
+
       $vdata=array();
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -969,6 +991,8 @@ $user = $this->getUserTable()->getUser($id);
         return $this->friendTable;
     }
 public function accountSummaryAction() {
+            $this->security();
+
         try {
             $total = $this->getUserTable()->getUserRegisterCount(strtotime('01-12-2010'));
             $pastday = $this->getUserTable()->getUserRegisterCount(strtotime(' -1 day'));
@@ -1028,6 +1052,7 @@ public function accountSummaryAction() {
     }
       public function accountUsageAction() {
         // $role = $this->security();
+        $this->security();
 
         $order_by = $this->params()->fromQuery('order_by', 0);
         $order = $this->params()->fromQuery('order', 'DESC');
@@ -1072,6 +1097,8 @@ public function accountSummaryAction() {
         );
     }
     public function orderHistoryAction() {
+                $this->security();
+
          //  $id = $this->params()->fromRoute('id'); 
        // $this->getAdminLogTable()->saveLog(array('log_type'=>'feedback_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$id));
              $username=$this->getUserName();
@@ -1095,6 +1122,7 @@ public function accountSummaryAction() {
     }
 
     public function eventAction() {
+        $this->security();
 
          $order_by = $this->params()->fromQuery('order_by', 0);
         $order = $this->params()->fromQuery('order', 'DESC');
@@ -1139,6 +1167,7 @@ public function accountSummaryAction() {
     }
 
    public function eventMediaAction() {
+                $this->security();
 
         $event_id = $this->params()->fromRoute('id');
         $this->getAdminLogTable()->saveLog(array('log_type' => 'media_view', 'admin_id' => $_SESSION['user']['user_id'], 'entity_id' => $event_id));
@@ -1151,6 +1180,8 @@ public function accountSummaryAction() {
         return $view;
     }
  public function eventChangeStatusAction() {
+                $this->security();
+
         $eventTable = $this->getEventTable();
         $event_id = $this->params()->fromRoute('id');
         $event = $eventTable->getEvent($event_id);
@@ -1163,6 +1194,8 @@ public function accountSummaryAction() {
         return array('eventStatus' => $eventStatus, 'event' => $event);
     }
      public function eventApproveAction() {
+                $this->security();
+
 
         $date1 = strtotime('today + 1year');
         $date = strtotime('NOW');
@@ -1203,6 +1236,7 @@ public function accountSummaryAction() {
  }
 
     public function eventDisapproveAction() {
+                $this->security();
 
         $date1 = strtotime('today - 1 month');
         $eventTable = $this->getEventTable();
@@ -1262,6 +1296,8 @@ public function accountSummaryAction() {
         return $name;
     }
     public function payoutAction() {
+                $this->security();
+
         $action = "listpayees";
                     $page = $this->params()->fromQuery('page', 1);
  $q = $this->params()->fromQuery('q', 0);
@@ -1281,6 +1317,7 @@ public function accountSummaryAction() {
         return array();
      }
 public function doPayoutAction() {
+                $this->security();
 
         $action = "makepayout";
         $description = $page = $this->params()->fromPost('other_reason', '');
@@ -1309,6 +1346,8 @@ public function doPayoutAction() {
      }
 
      public function accountAction() {
+                $this->security();
+
         $page = $this->params()->fromQuery('page', 1);
          $username   = $this->getUserName();
          
@@ -1319,6 +1358,8 @@ public function doPayoutAction() {
      }
 
      public function refundAction() {
+                $this->security();
+
         $action = "listpayees";
                     $page = $this->params()->fromQuery('page', 1);
 
@@ -1328,6 +1369,65 @@ public function doPayoutAction() {
         
      return array('listpayees' => $data,'page' => $page);
      }
+
+     public function security()
+     {
+        $roles = array(
+            'guest' => array(
+                    'index'
+            ),
+           
+            
+            'admin' => array(
+                'logout',
+                'manage',         
+                'user',
+                'account',
+                'orderhistory',
+                'userView',
+                'userActive',
+                'userDeactive',
+                'event',
+                'eventApprove',
+                'eventDisapprove',
+                'eventChangeStatus',
+                'feedback',
+                'feedbackView',
+                'account-summary',
+                'account-usage', 
+                'order-history',
+              //  'payout',
+              //  'doPayout',
+              //  'refund' 
+
+            )
+        );
+        $userRole = 'guest';
+        $action = $this->params('action');
+error_log('reuested ---'.print_r($action,true));         
+        if (isset($_SESSION['user']['role']) ) {
+            switch ($_SESSION['user']['role']) {
+                default:  $userRole = 'guest'; break;
+                case '1': $userRole = 'admin'; break;
+                case '3': $userRole = 'superadmin'; break;
+                
+            }
+            
+        }
+
+        if($userRole  == 'superadmin'){
+            return true;
+
+        }elseif($userRole  == 'admin' && in_array($action,$roles['admin'])){
+             return true;
+
+
+        }elseif($userRole  == 'guest' && in_array($action, $roles['guest'])){
+             return true;
+        }
+        
+        die('<b>not autherise</>');//donot change this otherwise all action will be allowed
+      }
 }
 
 // end class IndexController
