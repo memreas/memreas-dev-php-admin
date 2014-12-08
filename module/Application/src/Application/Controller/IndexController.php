@@ -699,7 +699,7 @@ $user = $this->getUserTable()->getUser($id);
     }
 
     public function adminAction() {
-        $this->security();
+       // $this->security();
         $order_by = $this->params()->fromQuery('order_by', 0);
         $order = $this->params()->fromQuery('order', 'DESC');
         $q    = $this->getUserName();
