@@ -462,7 +462,7 @@ public function clearlogAction() {
 
 }
 public function manageAction() {
- $this->security();
+ //$this->security();
 error_log("Enter admin " . __FUNCTION__ . PHP_EOL);
         //$path = $this->security("application/index/index.phtml");
         $path = "application/manage/index.phtml";
