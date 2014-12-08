@@ -26,7 +26,6 @@ use Aws\S3\S3Client;
 use Application\Memreas\AWSManagerSender;
 use Application\Model\MemreasConstants;
 use Application\Memreas\User;
-use Application\Controller\Common;
 use DoctrineModule\Paginator\Adapter\Selectable as SelectableAdapter;
 use Zend\Paginator\Paginator;
 
@@ -1596,12 +1595,12 @@ error_log('reuested ---'.print_r($action,true));
         $xml = "<xml><login><username>kamlesh</username><password>123456</password><devicetype></devicetype><devicetoken></devicetoken></login></xml>";
         // $xml ="<xml><getplans><user_id>d37c751e-54a3-4eb9-88c9-472261e59629</user_id></getplans></xml>";
         //$userid=1;
-        $result = Common::fetchXML($action, $xml);
+        $result = $this->fetchXML($action, $xml);
         $data = simplexml_load_string($result);
          $status = trim($data->loginresponse->status);
 error_log('response from server---'.print_r($status,true));
         if('success' == strtolower($status)){
-                            Common::$sid = trim($data->loginresponse->sid);
+                            $_SESSION['user']['sid'] = trim($data->loginresponse->sid);
     
         }
         $userRec = $this->getUserTable()->fetchAll();
@@ -1616,7 +1615,7 @@ error_log('response from server---'.print_r($status,true));
         $xml = "<xml><getplans><user_id>$userid</user_id></getplans></xml>";
         // $xml ="<xml><getplans><user_id>d37c751e-54a3-4eb9-88c9-472261e59629</user_id></getplans></xml>";
         //$userid=1;
-        $result = Common::fetchXML($action, $xml);
+        $result = $this->fetchXML($action, $xml);
         $data = simplexml_load_string($result);
         $planSize = array(
             'PLAN_A_2GB_MONTHLY'   => '2000000000',
