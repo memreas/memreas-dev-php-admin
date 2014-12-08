@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Controller;
+namespace Application\Memreas;
 
 use Guzzle\Http\Client;
 use Guzzle\Http\EntityBody;

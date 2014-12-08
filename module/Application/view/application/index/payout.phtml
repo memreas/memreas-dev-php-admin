@@ -63,7 +63,7 @@ for($i=1;$i<=$page;$i++){
 ?>
 
   <a class="paginate_click" href="/index/payout?q=<?=$q?>&page=<?php echo $page+1;?>">Next ></a>
-						</div><a href="/index/payoutReason" class="white" data-toggle="modal" data-target="#popup">Approve</a>
+						</div><input type="button" value="Approve" onclick="chkUser()">
 		</div>
  
  
@@ -83,16 +83,32 @@ for($i=1;$i<=$page;$i++){
     
     }?>
     
-function checkdata()
-{ 
+    function chkUser (argument) {
+ 
 	  var n = $( "input:checked" ).length;
 	                      var txt = $("#reason_other").val();
 
 
   if (n==0) {
 
-alert('please select ');    
-  }else if(!txt.trim()) {                  
+alert('please select user');  
+return false;  
+  }else{
+
+     var url = "/index/payoutReason";
+
+        
+     $mymodal.find(".modal-content").load(url, function() { 
+           $mymodal.modal(); 
+    });
+  
+      
+
+  }
+}
+
+function checkdata()
+{  if(!txt.trim()) {                  
                         alert ('please give reason ');
                           return false;
                     
