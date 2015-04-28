@@ -9,13 +9,13 @@
     ],
     "homepage": "http://memreas.com/",
     "require": {
-        "php": ">=5.4",
+        "php": ">=5.5",
         "zendframework/zendframework": "2.*",
         "ext-curl": "*",
         "ext-json": "*",
-		"rhumsaa/uuid": "2.5.0",
+	"ramsey/uuid": "2.8.0",
         "aws/aws-sdk-php": "2.*",
-		"sybio/image-workshop": "2.0.0",
-		"doctrine/doctrine-orm-module": "0.*"
+	"sybio/image-workshop": "2.0.0",
+	"doctrine/doctrine-orm-module": "0.*"
     }    
 }
