@@ -11,3 +11,8 @@ composer.lock
 !vendor/composer/autoload_psr4.php
 vendor/
 data/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
