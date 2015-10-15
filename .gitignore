@@ -8,11 +8,9 @@ nbproject
 .settings
 .log
 composer.lock
-!vendor/composer/autoload_psr4.php
-vendor/
-data/
+composer.phar
+data
+vendor
 
 # Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
+.elasticbeanstalk
