@@ -7,7 +7,6 @@ nbproject
 .project
 .settings
 .log
-composer.lock
 composer.phar
 data
 vendor
