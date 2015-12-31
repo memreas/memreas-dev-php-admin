@@ -12,7 +12,7 @@ echo "You entered $comment"
 
 #Push to AWS
 echo "Committing to git..."
-git add --all
+git add .
 git commit -m "$comment"
 echo "Pushing to github..."
 set -v verbose #echo on
