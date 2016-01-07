@@ -9,8 +9,7 @@ nbproject
 .log
 composer.lock
 composer.phar
-data
-vendor
+data/session/
 php_errors.log
 
 # Elastic Beanstalk Files
