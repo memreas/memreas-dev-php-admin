@@ -20,13 +20,13 @@ return array(
 		            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
 				),
 			),
-			'memreasadmin' => array(
+			'memreasadmindb' => array(
 		        'driver'         => 'Pdo',
     			'driver_options' => array(
 		            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
 				),
 			),
-			'memreaspaymentstripe' => array(
+			'memreaspaymentsdb' => array(
 		        'driver'         => 'Pdo',
     			'driver_options' => array(
 		            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
