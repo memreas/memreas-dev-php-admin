@@ -18,4 +18,4 @@ echo "Pushing to github..."
 set -v verbose #echo on
 git push
 
-cp module/Application/src/Application/Model/MemreasConstants.localhost.php module/Application/src/Application/Model/MemreasConstants.php
+#cp module/Application/src/Application/Model/MemreasConstants.localhost.php module/Application/src/Application/Model/MemreasConstants.php
