@@ -12,43 +12,38 @@
  */
 
 return array(
-     'db'=> array(
-    'adapters'=>array(
-        'memreasintdb' => array(
-            'driver'         => 'Pdo',
-            'dsn'            => 'mysql:dbname=memreaspaymentsdb;host=memreasdevdb.co0fw2snbu92.us-east-1.rds.amazonaws.com',
-            'username' => 'memreas2013',
-            'password' => ''
-        ),
-        'memreaspaymentsdb' => array(
-            'driver'         => 'Pdo',
-            'dsn'            => 'mysql:dbname=memreaspaymentsdb;host=memreasdevdb.co0fw2snbu92.us-east-1.rds.amazonaws.com',
-            'username' => 'memreas2013',
-            'password' => ''
-        ),
-        'memreasadmindb' => array(
-            'driver'         => 'Pdo',
-            'dsn'            => 'mysql:dbname=memreasadmin;host=memreasdevdb.co0fw2snbu92.us-east-1.rds.amazonaws.com',
-            'username' => 'memreasdbuser',
-            'password' => 'memreas2013'
-        ),
-    )
-),
-    'service_manager' => array(
+	'db'=> array(
+		'adapters'=>array(
+			'memreasdb' => array(
+		        'driver'         => 'Pdo',
+    			'driver_options' => array(
+		            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
+				),
+			),
+			'memreaspaymentstripe' => array(
+		        'driver'         => 'Pdo',
+    			'driver_options' => array(
+		            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
+				),
+			),
+		)
+	),
+
+	'service_manager' => array(
         'abstract_factories' => array(
             'Zend\Db\Adapter\AdapterAbstractServiceFactory',
     ),
 
-        'factories' => array(
-            'Zend\Db\Adapter\Adapter'
-                    => 'Zend\Db\Adapter\AdapterServiceFactory',
-        ),
-    ),
+    //    'factories' => array(
+    //        'Zend\Db\Adapter\Adapter'
+    //                => 'Zend\Db\Adapter\AdapterServiceFactory',
+    //    ),
+    //),
     'session' => array(
         'config' => array(
             'class' => 'Zend\Session\Config\SessionConfig',
             'options' => array(
-                'name' => 'myapp',
+                'name' => 'memreas',
             ),
         ),
         'storage' => 'Zend\Session\Storage\SessionArrayStorage',
@@ -58,24 +53,6 @@ return array(
                 'Zend\Session\Validator\HttpUserAgent',
             ),
         ),
-    ),
-     'doctrine' => array(
-        'connection' => array(
-            'orm_default' => array(
-                'doctrine_type_mappings' => array(
-                                                'enum' => 'string',
-                                                    'bit' => 'string'),
-                'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
-                'params' => array(
-                    'host' => 'memreasdev-db.co0fw2snbu92.us-east-1.rds.amazonaws.com',
-                    //'host' => 'localhost',
-                    'port' => '3306',
-                    'dbname' => 'memreasintdb',
-                    'user'     => 'memreasdbuser',
-					'password' => 'memreas2013',)
-            ),
-        )
-
     ),
 
 );
