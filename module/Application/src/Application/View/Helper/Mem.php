@@ -1,8 +1,7 @@
 <?php
 namespace Application\View\Helper;
+ use Application\memreas\MemreasSignedURL;
  use Zend\View\Helper\AbstractHelper;
-use Application\Model\MemreasConstants;
-use Application\View\Helper\MemreasSignedURL;
 
 class Mem extends AbstractHelper
 {

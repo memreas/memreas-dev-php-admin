@@ -19,3 +19,16 @@ RewriteRule ^(.*)$ %{ENV:BASE}index.php [NC,L]
 #    Header set Access-Control-Allow-Origin: *
 #    Header set Access-Control-Allow-Origin: amazonaws.com
 #</ifModule>
+
+#
+# Change session cookie name
+#
+php_value session.name "memreascookie"
+php_value session.gc_maxlifetime 3600
+
+## BASIC PASSWORD PROTECTION
+AuthType basic
+AuthName "secure-content"
+AuthUserFile /var/app/current/apache_passwords
+Require valid-user
+

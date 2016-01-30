@@ -8,7 +8,7 @@ read comment
 echo "You entered $comment"
 
 #copy fe settings to push to git...
-#cp ./module/Application/src/Application/Model/MemreasConstants.fe.php ./module/Application/src/Application/Model/MemreasConstants.php
+cp ./module/Application/src/Application/Model/MemreasConstants.admin.php ./module/Application/src/Application/Model/MemreasConstants.php
 
 #Push to AWS
 echo "Committing to git..."
@@ -18,6 +18,6 @@ echo "Pushing to github..."
 set -v verbose #echo on
 git push
 
-#cp module/Application/src/Application/Model/MemreasConstants.localhost.php module/Application/src/Application/Model/MemreasConstants.php
+cp module/Application/src/Application/Model/MemreasConstants.localhost.php module/Application/src/Application/Model/MemreasConstants.php
 
 eb events -f

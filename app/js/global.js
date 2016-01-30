@@ -242,10 +242,6 @@ function detectHandheldIOSDevice(){
     else return false;
 }
 
-$(function(){
-
-});
-
 /*
 * Enable / Disable input field (for ajax calling and prevent user typing)
 * */
