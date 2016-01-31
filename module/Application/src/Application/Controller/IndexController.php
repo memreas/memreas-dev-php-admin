@@ -1,11 +1,9 @@
 <?php
 
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * Copyright (C) 2015 memreas llc. - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
  */
 namespace Application\Controller;
 
@@ -48,6 +46,7 @@ class IndexController extends AbstractActionController {
 	// start session by fetching and starting from REDIS - security check
 	//
 	public function setupSaveHandler() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		// start capture
 		ob_start ();
 		
@@ -116,14 +115,26 @@ class IndexController extends AbstractActionController {
 		return $xml->asXML ();
 	}
 	public function fetchXML($action, $xml) {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		$guzzle = new \GuzzleHttp\Client ();
-		$response = $guzzle->post ( $this->url, [ 
-				'form_params' => [ 
-						'action' => $action,
-						'xml' => $xml,
-						'sid' => empty ( $_SESSION ['user'] ['sid'] ) ? '' : $_SESSION ['user'] ['sid'] 
-				] 
-		] );
+		if (empty ( $_SESSION ['sid'] )) {
+			Mlog::addone ( __CLASS__ . __METHOD__.__LINE__, "::guzzle::action:: $action ::xml::$xml");
+			$response = $guzzle->post ( $this->url, [ 
+					'form_params' => [ 
+							'action' => $action,
+							'xml' => $xml 
+					] 
+			] );
+		} else {
+			Mlog::addone ( __CLASS__ . __METHOD__.__LINE__, "::guzzle::action:: $action ::xml::$xml sid::". $_SESSION ['sid']);
+			$response = $guzzle->post ( $this->url, [ 
+					'form_params' => [ 
+							'action' => $action,
+							'xml' => $xml,
+							'sid' => empty ( $_SESSION ['sid'] ) ? '' : $_SESSION ['sid'] 
+					] 
+			] );
+		}
 		
 		return $response->getBody ();
 	}
@@ -150,14 +161,14 @@ class IndexController extends AbstractActionController {
 		return $this->userinfoTable;
 	}
 	public function indexAction() {
-		$cm = __CLASS__ - __METHOD__;
-		Mlog::addone ( $cm . 'Inside indexAction...', 'find me' );
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		$path = "application/index/index.phtml";
 		$view = new ViewModel ();
 		$view->setTemplate ( $path ); // path to phtml file under view folder
 		return $view;
 	}
 	public function ApiServerSideAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			if (isset ( $_REQUEST ['callback'] )) {
 				// Fetch parms
@@ -184,6 +195,7 @@ class IndexController extends AbstractActionController {
 		exit ();
 	}
 	public function s3uploadAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$S3Service = new S3Service ();
 			$session = new Container ( 'user' );
@@ -204,6 +216,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function addmediaAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$session = new Container ( 'user' );
 			$s3 = new S3 ( MemreasConstants::S3_APPKEY, MemreasConstants::S3_APPSEC );
@@ -223,6 +236,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function loginAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		// Fetch the post data
 		$request = $this->getRequest ();
 		
@@ -244,6 +258,7 @@ class IndexController extends AbstractActionController {
 		) );
 	}
 	public function logoutAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			error_log ( 'IndexController -> logout->exec()...' . PHP_EOL );
 			try {
@@ -262,6 +277,7 @@ class IndexController extends AbstractActionController {
 		) );
 	}
 	public function setSession($username, $password) {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		// Fetch the user's data and store it in the session...
 		error_log ( "Inside setSession ..." );
 		$user = $this->getAminUserTable ()->fetchAll ( array (
@@ -286,6 +302,7 @@ class IndexController extends AbstractActionController {
 		return true;
 	}
 	public function fetchUserIPAddress() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		/*
 		 * Fetch the user's ip address
 		 */
@@ -302,6 +319,7 @@ class IndexController extends AbstractActionController {
 		return $ipAddress;
 	}
 	public function registrationAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			// Fetch the post data
 			$postData = $this->getRequest ()->getPost ()->toArray ();
@@ -380,6 +398,7 @@ class IndexController extends AbstractActionController {
 		return $this->userTable;
 	}
 	public function forgotpasswordAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$request = $this->getRequest ();
 			$postData = $request->getPost ()->toArray ();
@@ -397,6 +416,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function changepasswordAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$request = $this->getRequest ();
 			$postData = $request->getPost ()->toArray ();
@@ -418,16 +438,19 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function showlogAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		echo '<pre>' . file_get_contents ( getcwd () . '/php_errors.log' );
 		exit ();
 	}
 	public function clearlogAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		unlink ( getcwd () . '/php_errors.log' );
 		error_log ( "Log has been cleared!" );
 		echo '<pre>' . file_get_contents ( getcwd () . '/php_errors.log' );
 		exit ();
 	}
 	public function manageAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			error_log ( "Enter admin " . __FUNCTION__ . PHP_EOL );
 			// $path = $this->security("application/index/index.phtml");
@@ -439,6 +462,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function userAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$order_by = $this->params ()->fromQuery ( 'order_by', 0 );
 			$order = $this->params ()->fromQuery ( 'order', 'DESC' );
@@ -485,6 +509,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function userViewAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			if ($this->request->isPost ()) {
 				$id = $this->params ()->fromPost ( 'id' );
@@ -533,6 +558,7 @@ class IndexController extends AbstractActionController {
 		return $result;
 	}
 	public function userDeactiveAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$vdata = array ();
 			$request = $this->getRequest ();
@@ -568,6 +594,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function userActiveAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$vdata = array ();
 			$request = $this->getRequest ();
@@ -603,6 +630,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function feedbackAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$order_by = $this->params ()->fromQuery ( 'order_by', 0 );
 			$order = $this->params ()->fromQuery ( 'order', 'DESC' );
@@ -644,6 +672,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function feedbackViewAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$feedback_id = $this->params ()->fromRoute ( 'id' );
 			$this->getAdminLogTable ()->saveLog ( array (
@@ -668,6 +697,7 @@ class IndexController extends AbstractActionController {
 		return $this->AdminUserTable;
 	}
 	public function adminAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$order_by = $this->params ()->fromQuery ( 'order_by', 0 );
 			$order = $this->params ()->fromQuery ( 'order', 'DESC' );
@@ -715,6 +745,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function adminTranAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$user_id = $this->params ()->fromRoute ( 'id' );
 			$page = $this->params ()->fromQuery ( 'page', 1 );
@@ -755,6 +786,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function adminAddAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$request = $this->getRequest ();
 			if ($request->isPost ()) {
@@ -809,6 +841,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function adminEditAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$postData = array ();
 			if ($this->request->isPost ()) {
@@ -871,6 +904,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function adminDeactivateAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			
 			$vdata = array ();
@@ -919,6 +953,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function adminActivateAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$vdata = array ();
 			$request = $this->getRequest ();
@@ -978,6 +1013,7 @@ class IndexController extends AbstractActionController {
 		return $this->friendTable;
 	}
 	public function accountSummaryAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			try {
 				$total = $this->getUserTable ()->getUserRegisterCount ( strtotime ( '01-12-2010' ) );
@@ -1037,6 +1073,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function accountUsageAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$order_by = $this->params ()->fromQuery ( 'order_by', 0 );
 			$order = $this->params ()->fromQuery ( 'order', 'DESC' );
@@ -1082,6 +1119,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function orderHistoryAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			
 			// $id = $this->params()->fromRoute('id');
@@ -1099,6 +1137,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function orderHistoryDetailAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$transaction_id = $this->params ()->fromRoute ( 'id' );
 			$this->getAdminLogTable ()->saveLog ( array (
@@ -1115,6 +1154,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function eventAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$order_by = $this->params ()->fromQuery ( 'order_by', 0 );
 			$order = $this->params ()->fromQuery ( 'order', 'DESC' );
@@ -1165,6 +1205,7 @@ class IndexController extends AbstractActionController {
 		return $this->eventTable;
 	}
 	public function eventMediaAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$event_id = $this->params ()->fromRoute ( 'id' );
 			$this->getAdminLogTable ()->saveLog ( array (
@@ -1182,6 +1223,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function eventChangeStatusAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			
 			$eventTable = $this->getEventTable ();
@@ -1199,6 +1241,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function eventApproveAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			
 			$date1 = strtotime ( 'today + 1year' );
@@ -1247,6 +1290,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function eventDisapproveAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			
 			$date1 = strtotime ( 'today - 1 month' );
@@ -1312,6 +1356,7 @@ class IndexController extends AbstractActionController {
 		return $name;
 	}
 	public function payoutAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			
 			$action = "listpayees";
@@ -1338,6 +1383,7 @@ class IndexController extends AbstractActionController {
 	// return array ();
 	// }
 	public function doPayoutAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			
 			$action = "makepayout";
@@ -1368,6 +1414,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function accountAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			
 			$page = $this->params ()->fromQuery ( 'page', 1 );
@@ -1382,6 +1429,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function refundAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			
 			$action = "listpayees";
@@ -1398,6 +1446,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function security() {
+		$cm = __CLASS__ . __METHOD__;
 		$roles = array (
 				'guest' => array (
 						'index' 
@@ -1462,8 +1511,8 @@ class IndexController extends AbstractActionController {
 					break;
 			}
 		}
-		
-		if ($userRole == 'superadmin' && in_array ( $action, $roles ['superadmin'] )) {
+		Mlog::addone ( $cm . '$userRole--->', $userRole );
+		if ($userRole == 'superadmin') {
 			return true;
 		} elseif ($userRole == 'admin' && in_array ( $action, $roles ['admin'] )) {
 			return true;
@@ -1471,9 +1520,11 @@ class IndexController extends AbstractActionController {
 			return true;
 		}
 		
-		die ( '<b>not autherise</>' ); // donot change this otherwise all action will be allowed
+		die ( '<b>your account is not authorized for this function</>' ); // donot change this otherwise all action will be allowed
 	}
 	public function updateMediaInfoAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+		
 		if ($this->fetchSession ()) {
 			ini_set ( 'max_execution_time', 500 );
 			$aws = new AWSManagerSender ( $this->getServiceLocator () );
@@ -1597,6 +1648,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	protected function csvAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$columnHeaders = array (
 					'username',
@@ -1630,6 +1682,10 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function updateUserPlanAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+		/**
+		 * TODO: This code doesn't work??
+		 */
 		if ($this->fetchSession ()) {
 			$action = "login";
 			$xml = "<xml><login><username>kamlesh</username><password>123456</password><devicetype></devicetype><devicetoken></devicetoken></login></xml>";
@@ -1650,18 +1706,18 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function getPlan($userid = '') {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		$action = "getplans";
 		$xml = "<xml><getplans><user_id>$userid</user_id></getplans></xml>";
-		// $xml ="<xml><getplans><user_id>d37c751e-54a3-4eb9-88c9-472261e59629</user_id></getplans></xml>";
-		// $userid=1;
 		$result = $this->fetchXML ( $action, $xml );
 		$data = simplexml_load_string ( $result );
 		$planSize = array (
-				'PLAN_A_2GB_MONTHLY' => '2000000000',
-				'PLAN_B_10GB_MONTHLY' => '10000000000',
-				'PLAN_C_50GB_MONTHLY' => '50000000000',
-				'PLAN_C_100GB_MONTHLY' => '100000000000' 
+				'PLAN_A_2GB_MONTHLY' => MemreasConstants::_2GB,
+				'PLAN_B_10GB_MONTHLY' => MemreasConstants::_10GB,
+				'PLAN_C_50GB_MONTHLY' => MemreasConstants::_50GB,
+				'PLAN_C_100GB_MONTHLY' => MemreasConstants::_100GB 
 		);
+		
 		$plan = trim ( $data->getplansresponse->plan_id );
 		$status = trim ( $data->getplansresponse->status );
 		if ($status == 'Success') {

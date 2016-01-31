@@ -7,8 +7,8 @@
 namespace Application\Model;
 
 class MemreasConstants {
-	const MEMREAS_WS = "https://memreasdev-wsj.memreas.com";
-	const ORIGINAL_URL = "https://memreasdev-wsj.memreas.com/";
+	//const MEMREAS_WS = "https://memreasdev-wsj.memreas.com";
+	const MEMREAS_WS = "http://memreas-devphp-ws.localhost";
 	
 	// Redis constant section
 	const REDIS_SERVER_ENDPOINT = "localhost";
@@ -22,8 +22,6 @@ class MemreasConstants {
 	const S3_APPKEY = 'AKIAJMXGGG4BNFS42LZA';
 	const S3_APPSEC = 'xQfYNvfT0Ar+Wm/Gc4m6aacPwdT5Ors9YHE/d38H';
 	const S3HLSBUCKET = "memreasdevhlssec";
-	const CLOUDFRONT_DOWNLOAD_HOST = 'https://d3sisat5gdssl6.cloudfront.net/';
-	const CLOUDFRONT_HLSSTREAMING_HOST = 'https://d2cbahrg0944o.cloudfront.net/';
 	const S3HOST = 'https://s3.amazonaws.com/';
 	const SIGNURLS = true;
 	const EXPIRES = 36000; // 10 hours
@@ -35,7 +33,12 @@ class MemreasConstants {
 	const CLOUDFRONT_KEY_PAIR_ID = 'APKAISSKGZE3DR5HQCHA';
 	const CLOUDFRONT_EXPIRY_TIME = 36000; // 10 hours
 	
-	                       
+	//Plan size constants
+	const _2GB = '2000000000';
+	const _10GB = '10000000000';
+	const _50GB = '50000000000';
+	const _100GB = '100000000000';
+	
 	// admin section
 	const ADMIN_EMAIL = 'admin@memreas.com';
 	const NUMBER_OF_ROWS = '15';
