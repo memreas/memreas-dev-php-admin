@@ -13,7 +13,7 @@ use Application\Model\MemreasConstants;
  * -
  * Customized for admin session data
  */
-class AWSMemreasRedisSessionHandler implements \SessionHandlerInterface {
+class AWSMemreasAdminRedisSessionHandler implements \SessionHandlerInterface {
 	private $ttl = 1800; // 30 minutes default
 	private $db;
 	private $prefix;
@@ -80,12 +80,16 @@ class AWSMemreasRedisSessionHandler implements \SessionHandlerInterface {
 	}
 	public function startSessionWithMemreasCookie($memreascookie) {
 		$rMemreasCookieSession = $this->mRedis->getCache ( 'memreascookie::' . $memreascookie );
-		$rMemreasCookieSessionArr = json_decode ( $rMemreasCookieSession, true );
-		if (! session_id ()) {
-			session_id ( $rMemreasCookieSessionArr ['sid'] );
-			session_start ();
+		if (! empty ( $rMemreasCookieSession )) {
+			$rMemreasCookieSessionArr = json_decode ( $rMemreasCookieSession, true );
+			if (! session_id ()) {
+				session_id ( $rMemreasCookieSessionArr ['sid'] );
+				session_start ();
+			}
+			return true;
+		} else {
+			return false;
 		}
-		// error_log ( '_SESSION vars after memreascookie start...' . print_r ( $_SESSION, true ) . PHP_EOL );
 	}
 	public function startSessionWithUID($data) {
 		if (! empty ( $data->uid )) {
@@ -213,9 +217,16 @@ class AWSMemreasRedisSessionHandler implements \SessionHandlerInterface {
 	}
 	public function closeSessionWithMemreasCookie() {
 		// $this->destroy(session_id());
-		$this->mRedis->invalidateCache ( 'memreascookie::' . $_SESSION ['memreascookie'] );
-		$this->mRedis->invalidateCache ( 'uid::' . $_SESSION ['user_id'] );
-		session_destroy ();
+		try {
+			$this->mRedis->invalidateCache ( 'memreascookie::' . $_SESSION ['memreascookie'] );
+			$this->mRedis->invalidateCache ( 'uid::' . $_SESSION ['user_id'] );
+			session_destroy ();
+			return true;
+		} catch ( \Exception $e ) {
+			Mlog::addone ( __CLASS__ . __METHOD__ . '::$_COOKIE', $_COOKIE );
+			Mlog::addone ( __CLASS__ . __METHOD__ . '::Exception closing session', $e->getMessage );
+		}
+		return false;
 	}
 	public function storeSession($start) {
 		try {

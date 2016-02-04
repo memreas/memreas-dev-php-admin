@@ -1,4 +1,11 @@
+<?php
+use Application\memreas\Mlog;
+?>
 <!DOCTYPE html>
+<?php 
+Mlog::addone('inside index.phtml', '...');
+echo 'entered index.phtml';
+?>
 <html lang="en">
   <head>
     <meta charset="utf-8">

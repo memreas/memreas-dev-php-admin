@@ -9,7 +9,7 @@ namespace Application\Controller;
 
 use Application\Memreas\AWSManagerSender;
 use Application\Memreas\AWSMemreasRedisCache;
-use Application\Memreas\AWSMemreasRedisSessionHandler;
+use Application\Memreas\AWSMemreasAdminRedisSessionHandler;
 use Application\Memreas\Mlog;
 use Application\Memreas\User;
 use Application\Model;
@@ -51,7 +51,7 @@ class IndexController extends AbstractActionController {
 		ob_start ();
 		
 		$this->redis = new AWSMemreasRedisCache ( $this->getServiceLocator () );
-		$this->sessHandler = new AWSMemreasRedisSessionHandler ( $this->redis, $this->getServiceLocator () );
+		$this->sessHandler = new AWSMemreasAdminRedisSessionHandler ( $this->redis, $this->getServiceLocator () );
 		session_set_save_handler ( $this->sessHandler );
 		
 		// clean the buffer we don't need to send back session data
@@ -70,16 +70,18 @@ class IndexController extends AbstractActionController {
 		try {
 			if (! empty ( $_REQUEST ['sid'] )) {
 				$sid = $_REQUEST ['sid'];
-				Mlog::addone ( $cm . __LINE__ . '$sid', $sid );
+				Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::fetching redis session for $_COOKIE [memreascookie]->', $_COOKIE ['memreascookie'] );
 				$this->sessHandler->startSessionWithSID ( $sid );
 				$hasSession = true;
+				Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
 			} else if (! empty ( $_COOKIE ['memreascookie'] )) {
-				$this->sessHandler->startSessionWithMemreasCookie ( $_COOKIE ['memreascookie'] );
-				$hasSession = true;
+				Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::fetching redis session for $_COOKIE [memreascookie]->', $_COOKIE ['memreascookie'] );
+				$hasSession = $this->sessHandler->startSessionWithMemreasCookie ( $_COOKIE ['memreascookie'] );
 				Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
 			}
 		} catch ( \Exception $e ) {
 			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session lookup error->', $e->getMessage () );
+			$hasSession = false;
 		}
 		
 		//
@@ -90,7 +92,7 @@ class IndexController extends AbstractActionController {
 			return $hasSession;
 		}
 		
-		$this->indexAction ();
+		$this->logoutAction ();
 		return $hasSession;
 	}
 	public function xml2array($xmlstring) {
@@ -118,7 +120,7 @@ class IndexController extends AbstractActionController {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		$guzzle = new \GuzzleHttp\Client ();
 		if (empty ( $_SESSION ['sid'] )) {
-			Mlog::addone ( __CLASS__ . __METHOD__.__LINE__, "::guzzle::action:: $action ::xml::$xml");
+			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::action:: $action ::xml::$xml" );
 			$response = $guzzle->post ( $this->url, [ 
 					'form_params' => [ 
 							'action' => $action,
@@ -126,7 +128,7 @@ class IndexController extends AbstractActionController {
 					] 
 			] );
 		} else {
-			Mlog::addone ( __CLASS__ . __METHOD__.__LINE__, "::guzzle::action:: $action ::xml::$xml sid::". $_SESSION ['sid']);
+			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::action:: $action ::xml::$xml sid::" . $_SESSION ['sid'] );
 			$response = $guzzle->post ( $this->url, [ 
 					'form_params' => [ 
 							'action' => $action,
@@ -161,10 +163,12 @@ class IndexController extends AbstractActionController {
 		return $this->userinfoTable;
 	}
 	public function indexAction() {
-		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+		Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, 'Enter indexAction' );
 		$path = "application/index/index.phtml";
 		$view = new ViewModel ();
 		$view->setTemplate ( $path ); // path to phtml file under view folder
+		Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, 'returning $path ' . $path );
+		
 		return $view;
 	}
 	public function ApiServerSideAction() {
@@ -259,21 +263,22 @@ class IndexController extends AbstractActionController {
 	}
 	public function logoutAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
-		if ($this->fetchSession ()) {
-			error_log ( 'IndexController -> logout->exec()...' . PHP_EOL );
-			try {
-				if (! empty ( $_SESSION ['memreascookie'] )) {
-					$this->sessHandler->closeSessionWithMemreasCookie ();
-				} else {
-					$this->sessHandler->closeSessionWithSID ();
-				}
-			} catch ( \Exception $e ) {
-				error_log ( 'Caught exception: ' . $e->getMessage () . PHP_EOL );
+		error_log ( 'IndexController -> logout->exec()...' . PHP_EOL );
+		try {
+			if (! empty ( $_SESSION ['sid'] )) {
+				$result = $this->sessHandler->closeSessionWithSID ();
+				Mlog::addone ( 'logout sid result ', $result );
+			} else {
+				$result = $this->sessHandler->closeSessionWithMemreasCookie ();
+				Mlog::addone ( 'logout cookie result ', $result );
 			}
+			;
+		} catch ( \Exception $e ) {
+			error_log ( 'Caught exception: ' . $e->getMessage () . PHP_EOL );
 		}
+		Mlog::addone ( 'redirecting to index ', '..' );
 		return $this->redirect ()->toRoute ( 'index', array (
-				'controller' => 'index',
-				'action' => 'manage' 
+				'action' => "index" 
 		) );
 	}
 	public function setSession($username, $password) {
@@ -452,13 +457,13 @@ class IndexController extends AbstractActionController {
 	public function manageAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
-			error_log ( "Enter admin " . __FUNCTION__ . PHP_EOL );
+			error_log ( "Enter manageAction " . __FUNCTION__ . PHP_EOL );
 			// $path = $this->security("application/index/index.phtml");
 			$path = "application/manage/index.phtml";
 			$view = new ViewModel ();
 			$view->setTemplate ( $path ); // path to phtml file under view folder
+			error_log ( "Exit manageAction " . __FUNCTION__ . PHP_EOL );
 			return $view;
-			error_log ( "Exit admin " . __FUNCTION__ . PHP_EOL );
 		}
 	}
 	public function userAction() {
