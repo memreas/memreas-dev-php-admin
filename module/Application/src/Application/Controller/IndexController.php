@@ -7,11 +7,11 @@
  */
 namespace Application\Controller;
 
-use Application\Memreas\AWSManagerSender;
-use Application\Memreas\AWSMemreasRedisCache;
-use Application\Memreas\AWSMemreasAdminRedisSessionHandler;
-use Application\Memreas\Mlog;
-use Application\Memreas\User;
+use Application\memreas\AWSManagerSender;
+use Application\memreas\AWSMemreasRedisCache;
+use Application\memreas\AWSMemreasAdminRedisSessionHandler;
+use Application\memreas\Mlog;
+use Application\memreas\User;
 use Application\Model;
 use Application\Model\MemreasConstants;
 use Application\Model\UserTable;
