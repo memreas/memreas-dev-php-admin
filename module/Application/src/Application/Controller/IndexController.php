@@ -46,7 +46,7 @@ class IndexController extends AbstractActionController {
 	// start session by fetching and starting from REDIS - security check
 	//
 	public function setupSaveHandler() {
-		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+		//Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		// start capture
 		ob_start ();
 		
@@ -163,11 +163,11 @@ class IndexController extends AbstractActionController {
 		return $this->userinfoTable;
 	}
 	public function indexAction() {
-		Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, 'Enter indexAction' );
+		//Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, 'Enter indexAction' );
 		$path = "application/index/index.phtml";
 		$view = new ViewModel ();
 		$view->setTemplate ( $path ); // path to phtml file under view folder
-		Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, 'returning $path ' . $path );
+		//Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, 'returning $path ' . $path );
 		
 		return $view;
 	}
@@ -240,7 +240,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function loginAction() {
-		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+		//Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		// Fetch the post data
 		$request = $this->getRequest ();
 		
@@ -282,9 +282,9 @@ class IndexController extends AbstractActionController {
 		) );
 	}
 	public function setSession($username, $password) {
-		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+		//Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		// Fetch the user's data and store it in the session...
-		error_log ( "Inside setSession ..." );
+		//error_log ( "Inside setSession ..." );
 		$user = $this->getAminUserTable ()->fetchAll ( array (
 				'username' => $username,
 				'password' => md5 ( $password ) 
@@ -307,7 +307,7 @@ class IndexController extends AbstractActionController {
 		return true;
 	}
 	public function fetchUserIPAddress() {
-		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+		//Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		/*
 		 * Fetch the user's ip address
 		 */
@@ -443,7 +443,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function showlogAction() {
-		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+		//Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		echo '<pre>' . file_get_contents ( getcwd () . '/php_errors.log' );
 		exit ();
 	}
@@ -574,6 +574,7 @@ class IndexController extends AbstractActionController {
 				if (empty ( $postdata ['reason'] )) {
 					$this->status = 'error';
 				} else {
+					Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 					$this->getUserTable ()->updateUser ( array (
 							'disable_account' => '1' 
 					), $id );
