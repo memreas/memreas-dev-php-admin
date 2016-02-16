@@ -76,8 +76,9 @@ class IndexController extends AbstractActionController {
 				Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
 			} else if (! empty ( $_COOKIE ['memreascookie'] )) {
 				//Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::fetching redis session for $_COOKIE [memreascookie]->', $_COOKIE ['memreascookie'] );
-				$hasSession = $this->sessHandler->startSessionWithMemreasCookie ( $_COOKIE ['memreascookie'] );
-				//Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
+				$hasSession = $this->sessHandler->startSessionWithMemreasCookie ( $_COOKIE ['memreascookie'] $hasSession = true;
+					);
+				Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
 			}
 		} catch ( \Exception $e ) {
 			//Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session lookup error->', $e->getMessage () );
