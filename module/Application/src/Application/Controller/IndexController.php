@@ -580,7 +580,7 @@ class IndexController extends AbstractActionController {
 				
 				if (empty ( $postData ['reason'] )) {
 					$this->status = 'error';
-					$this->messages [] = 'Provide Resion';
+					$this->messages [] = 'Provide Reason';
 				} else {
 					
 					$this->getUserTable ()->updateUser ( array (
@@ -614,10 +614,11 @@ class IndexController extends AbstractActionController {
 			$request = $this->getRequest ();
 			if ($request->isPost ()) {
 				$id = $this->params ()->fromPost ( 'id' );
-				$postData = $this->params ()->fromPost ();
+				$postdata = $this->params ()->fromPost ();
 				
 				if (empty ( $postdata ['reason'] )) {
 					$this->status = 'error';
+					$this->messages [] = 'Provide reason';
 				} else {
 					$this->getUserTable ()->updateUser ( array (
 							'disable_account' => 0 
