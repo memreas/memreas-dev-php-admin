@@ -573,15 +573,18 @@ class IndexController extends AbstractActionController {
 			$request = $this->getRequest ();
 			if ($request->isPost ()) {
 						
-
 				$id = $this->params ()->fromPost ( 'id' );
-				$postData = $this->params ()->fromPost ();
-				Mlog::addone ( __CLASS__ . __METHOD__ .__LINE__ ,$postData);
-				
-				if (empty ( $postData ['reason'] )) {
+				$postdata = $this->params ()->fromPost ();
+				 
+				if (empty ( $postdata ['reason'] )) {
 					$this->status = 'error';
-					$this->messages [] = 'Provide Reason';
-				} else {
+					$this->messages [] = 'Provide reason';
+				} elseif ($postdata ['reason'] == 'other' && empty ( $postdata ['other_reason'] )) {
+					$this->status = 'error';
+					$this->messages [] = 'Provide reason';
+				} 
+
+				 else {
 					
 					$this->getUserTable ()->updateUser ( array (
 							'disable_account' => '1' 
@@ -589,7 +592,8 @@ class IndexController extends AbstractActionController {
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'user_deactivated',
 							'admin_id' => $_SESSION ['user'] ['user_id'],
-							'entity_id' => $id 
+							'entity_id' => $id ,
+							'description' => $description 
 					) );
 					
 					$this->messages [] = 'User Dactivated';
@@ -619,14 +623,24 @@ class IndexController extends AbstractActionController {
 				if (empty ( $postdata ['reason'] )) {
 					$this->status = 'error';
 					$this->messages [] = 'Provide reason';
-				} else {
+				} elseif ($postdata ['reason'] == 'other' && empty ( $postdata ['other_reason'] )) {
+					$this->status = 'error';
+					$this->messages [] = 'Provide reason';
+				} 
+
+				else {
+					$description = $postdata ['reason'];
+					if ($postdata ['reason'] == 'other') {
+						$description = $postdata ['other_reason'];
+					}
 					$this->getUserTable ()->updateUser ( array (
 							'disable_account' => 0 
 					), $id );
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'user_activated',
 							'admin_id' => $_SESSION ['user'] ['user_id'],
-							'entity_id' => $id 
+							'entity_id' => $id,
+							'description' => $description 
 					) );
 					
 					$this->messages [] = 'User activated';
@@ -930,8 +944,10 @@ class IndexController extends AbstractActionController {
 				// echo '<pre>';print_r($postData);exit;
 				if (empty ( $postdata ['reason'] )) {
 					$this->status = 'error';
+					$this->messages [] = 'Provide reason';
 				} elseif ($postdata ['reason'] == 'other' && empty ( $postdata ['other_reason'] )) {
 					$this->status = 'error';
+					$this->messages [] = 'Provide reason';
 				} 
 
 				else {
@@ -958,12 +974,12 @@ class IndexController extends AbstractActionController {
 			} else {
 				$id = $this->params ()->fromRoute ( 'id', 0 );
 			}
-			error_log ( 'user-id---' . $id );
+			//error_log ( 'user-id---' . $id );
 			$user = $this->getAdminUserTable ()->getUser ( $id );
 			$vdata ['user'] = $user;
 			$vdata ['messages'] = $this->messages;
 			$vdata ['status'] = $this->status;
-			print_r ( $vdata );
+			//print_r ( $vdata );
 			return $vdata;
 		}
 	}
@@ -995,7 +1011,8 @@ class IndexController extends AbstractActionController {
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'admin_activate',
 							'admin_id' => $_SESSION ['user'] ['user_id'],
-							'entity_id' => $id 
+							'entity_id' => $id ,
+							'description' => $description 
 					) );
 					
 					$this->messages [] = 'Admin User activated';
@@ -1534,7 +1551,7 @@ class IndexController extends AbstractActionController {
 		} elseif ($userRole == 'guest' && in_array ( $action, $roles ['guest'] )) {
 			return true;
 		}
-		
+		header('Location: /');
 		die ( '<b>your account is not authorized for this function</>' ); // donot change this otherwise all action will be allowed
 	}
 	public function updateMediaInfoAction() {
