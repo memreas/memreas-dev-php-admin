@@ -572,16 +572,17 @@ class IndexController extends AbstractActionController {
 			$vdata = array ();
 			$request = $this->getRequest ();
 			if ($request->isPost ()) {
-						Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+						
 
 				$id = $this->params ()->fromPost ( 'id' );
 				$postData = $this->params ()->fromPost ();
+				Mlog::addone ( __CLASS__ . __METHOD__ .__LINE__ ,$postData);
 				
-				if (empty ( $postdata ['reason'] )) {
+				if (empty ( $postData ['reason'] )) {
 					$this->status = 'error';
 					$this->messages [] = 'Provide Resion';
 				} else {
-					Mlog::addone ( __CLASS__ . __METHOD__ .__LINE__ ,$postData);
+					
 					$this->getUserTable ()->updateUser ( array (
 							'disable_account' => '1' 
 					), $id );
