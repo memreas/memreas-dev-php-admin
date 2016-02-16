@@ -59,8 +59,8 @@ class IndexController extends AbstractActionController {
 	}
 	public function fetchSession() {
 		$cm = __CLASS__ . __METHOD__;
-		Mlog::addone ( $cm . '$_POST', $_POST );
-				Mlog::addone ( $cm . '$_GET', $_GET );
+		//Mlog::addone ( $cm . '$_POST', $_POST );
+		//Mlog::addone ( $cm . '$_GET', $_GET );
 
 		//Mlog::addone ( $cm . '$_COOKIE', $_COOKIE );
 		/**
@@ -581,7 +581,7 @@ class IndexController extends AbstractActionController {
 					$this->status = 'error';
 					$this->messages [] = 'Provide Resion';
 				} else {
-					Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+					Mlog::addone ( __CLASS__ . __METHOD__ .__LINE__ ,$postData);
 					$this->getUserTable ()->updateUser ( array (
 							'disable_account' => '1' 
 					), $id );
