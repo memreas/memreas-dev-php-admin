@@ -73,7 +73,7 @@ class IndexController extends AbstractActionController {
 				//Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::fetching redis session for $_COOKIE [memreascookie]->', $_COOKIE ['memreascookie'] );
 				$this->sessHandler->startSessionWithSID ( $sid );
 				$hasSession = true;
-				//Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
+				Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
 			} else if (! empty ( $_COOKIE ['memreascookie'] )) {
 				//Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::fetching redis session for $_COOKIE [memreascookie]->', $_COOKIE ['memreascookie'] );
 				$hasSession = $this->sessHandler->startSessionWithMemreasCookie ( $_COOKIE ['memreascookie'] );
@@ -563,11 +563,14 @@ class IndexController extends AbstractActionController {
 		return $result;
 	}
 	public function userDeactiveAction() {
-		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
+					Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+
 			$vdata = array ();
 			$request = $this->getRequest ();
 			if ($request->isPost ()) {
+						Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+
 				$id = $this->params ()->fromPost ( 'id' );
 				$postData = $this->params ()->fromPost ();
 				
