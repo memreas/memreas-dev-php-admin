@@ -579,6 +579,7 @@ class IndexController extends AbstractActionController {
 				
 				if (empty ( $postdata ['reason'] )) {
 					$this->status = 'error';
+					$this->messages [] = 'Provide Resion';
 				} else {
 					Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 					$this->getUserTable ()->updateUser ( array (
