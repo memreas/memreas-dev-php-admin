@@ -59,7 +59,9 @@ class IndexController extends AbstractActionController {
 	}
 	public function fetchSession() {
 		$cm = __CLASS__ . __METHOD__;
-		//Mlog::addone ( $cm . '$_REQUEST', $_REQUEST );
+		Mlog::addone ( $cm . '$_POST', $_POST );
+				Mlog::addone ( $cm . '$_GET', $_GET );
+
 		//Mlog::addone ( $cm . '$_COOKIE', $_COOKIE );
 		/**
 		 * Setup save handler and start session
@@ -73,12 +75,12 @@ class IndexController extends AbstractActionController {
 				//Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::fetching redis session for $_COOKIE [memreascookie]->', $_COOKIE ['memreascookie'] );
 				$this->sessHandler->startSessionWithSID ( $sid );
 				$hasSession = true;
-				Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
+				//Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
 			} else if (! empty ( $_COOKIE ['memreascookie'] )) {
 				//Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::fetching redis session for $_COOKIE [memreascookie]->', $_COOKIE ['memreascookie'] );
 				$hasSession = $this->sessHandler->startSessionWithMemreasCookie ( $_COOKIE ['memreascookie'] );
 				$hasSession = true;
-				Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
+				//Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
 			}
 		} catch ( \Exception $e ) {
 			//Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session lookup error->', $e->getMessage () );
