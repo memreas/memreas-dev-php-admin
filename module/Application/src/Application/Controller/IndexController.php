@@ -537,7 +537,7 @@ class IndexController extends AbstractActionController {
 					// $this->getUserTable()->saveUser($user);
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'user_update',
-							'admin_id' => $_SESSION ['user'] ['user_id'],
+							'admin_id' => $_SESSION ['user_id'],
 							'entity_id' => $id 
 					) );
 					
@@ -591,7 +591,7 @@ class IndexController extends AbstractActionController {
 					), $id );
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'user_deactivated',
-							'admin_id' => $_SESSION ['user'] ['user_id'],
+							'admin_id' => $_SESSION['user_id'],
 							'entity_id' => $id ,
 							'description' => $description 
 					) );
@@ -638,7 +638,7 @@ class IndexController extends AbstractActionController {
 					), $id );
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'user_activated',
-							'admin_id' => $_SESSION ['user'] ['user_id'],
+							'admin_id' => $_SESSION  ['user_id'],
 							'entity_id' => $id,
 							'description' => $description 
 					) );
@@ -706,7 +706,7 @@ class IndexController extends AbstractActionController {
 			$feedback_id = $this->params ()->fromRoute ( 'id' );
 			$this->getAdminLogTable ()->saveLog ( array (
 					'log_type' => 'feedback_view',
-					'admin_id' => $_SESSION ['user'] ['user_id'],
+					'admin_id' => $_SESSION  ['user_id'],
 					'entity_id' => $feedback_id 
 			) );
 			
@@ -839,7 +839,7 @@ class IndexController extends AbstractActionController {
 					
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'admin_user_added',
-							'admin_id' => $_SESSION ['user'] ['user_id'],
+							'admin_id' => $_SESSION  ['user_id'],
 							'entity_id' => $user_id 
 					) );
 					
@@ -912,7 +912,7 @@ class IndexController extends AbstractActionController {
 						$this->getAdminUserTable ()->saveUser ( $user );
 						$this->getAdminLogTable ()->saveLog ( array (
 								'log_type' => 'admin_info_updated',
-								'admin_id' => $_SESSION ['user'] ['user_id'],
+								'admin_id' => $_SESSION  ['user_id'],
 								'entity_id' => $user_id 
 						) );
 						$this->messages [] = 'Data Update sucessfully';
@@ -961,7 +961,7 @@ class IndexController extends AbstractActionController {
 					), $id );
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'admin_deactivated',
-							'admin_id' => $_SESSION ['user'] ['user_id'],
+							'admin_id' => $_SESSION  ['user_id'],
 							'entity_id' => $id,
 							'description' => $description 
 					) );
@@ -1010,7 +1010,7 @@ class IndexController extends AbstractActionController {
 					), $id );
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'admin_activate',
-							'admin_id' => $_SESSION ['user'] ['user_id'],
+							'admin_id' => $_SESSION  ['user_id'],
 							'entity_id' => $id ,
 							'description' => $description 
 					) );
@@ -1174,7 +1174,7 @@ class IndexController extends AbstractActionController {
 			$transaction_id = $this->params ()->fromRoute ( 'id' );
 			$this->getAdminLogTable ()->saveLog ( array (
 					'log_type' => 'feedback_view',
-					'admin_id' => $_SESSION ['user'] ['user_id'],
+					'admin_id' => $_SESSION  ['user_id'],
 					'entity_id' => $transaction_id 
 			) );
 			$result = $this->fetchXML ( 'getorder', "<xml><getorder><transaction_id>$transaction_id</transaction_id></getorder></xml>" );
@@ -1242,7 +1242,7 @@ class IndexController extends AbstractActionController {
 			$event_id = $this->params ()->fromRoute ( 'id' );
 			$this->getAdminLogTable ()->saveLog ( array (
 					'log_type' => 'media_view',
-					'admin_id' => $_SESSION ['user'] ['user_id'],
+					'admin_id' => $_SESSION  ['user_id'],
 					'entity_id' => $event_id 
 			) );
 			
@@ -1300,7 +1300,7 @@ class IndexController extends AbstractActionController {
 						$eventStatus = 'active';
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'event_disable',
-							'admin_id' => $_SESSION ['user'] ['user_id'],
+							'admin_id' => $_SESSION  ['user_id'],
 							'entity_id' => $postdata ['event_id'],
 							'description' => $description 
 					) );
@@ -1348,7 +1348,7 @@ class IndexController extends AbstractActionController {
 					), $postdata ['event_id'] );
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'event_disable',
-							'admin_id' => $_SESSION ['user'] ['user_id'],
+							'admin_id' => $_SESSION  ['user_id'],
 							'entity_id' => $postdata ['event_id'],
 							'description' => $description 
 					) );
@@ -1728,7 +1728,7 @@ class IndexController extends AbstractActionController {
 			$status = trim ( $data->loginresponse->status );
 			error_log ( 'response from server---' . print_r ( $status, true ) );
 			if ('success' == strtolower ( $status )) {
-				$_SESSION ['user'] ['sid'] = trim ( $data->loginresponse->sid );
+				$_SESSION  ['sid'] = trim ( $data->loginresponse->sid );
 			}
 			$userRec = $this->getUserTable ()->fetchAll ();
 			foreach ( $userRec as $user ) {
