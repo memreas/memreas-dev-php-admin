@@ -589,7 +589,8 @@ class IndexController extends AbstractActionController {
 					if ($postdata ['reason'] == 'other') {
 						$description = $postdata ['other_reason'];
 					}
-					
+				Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ .$_SESSION['user_id'] .$description);
+
 					$this->getUserTable ()->updateUser ( array (
 							'disable_account' => '1' 
 					), $id );
