@@ -18,8 +18,8 @@ class MemreasConstants {
 	                              
 	// s3 section
 	const S3BUCKET = "memreasdevsec";
-	const S3_APPKEY = 'AKIAJMXGGG4BNFS42LZA';
-	const S3_APPSEC = 'xQfYNvfT0Ar+Wm/Gc4m6aacPwdT5Ors9YHE/d38H';
+	const S3_APPKEY = 'AKIAIXDH3Q23AP4KPZRA';
+	const S3_APPSEC = 'TM+p8s9hlJwnKECCEKSVVhEOBjVhTWDG4ijIhJdk';
 	const S3HLSBUCKET = "memreasdevhlssec";
 	const S3HOST = 'https://s3.amazonaws.com/';
 	const SIGNURLS = true;
