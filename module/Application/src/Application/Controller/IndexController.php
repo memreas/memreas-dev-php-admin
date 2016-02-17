@@ -567,7 +567,7 @@ class IndexController extends AbstractActionController {
 	}
 	public function userDeactiveAction() {
 		if ($this->fetchSession ()) {
-					Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+					Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ .$_SESSION['user_id']);
 
 			$vdata = array ();
 			$request = $this->getRequest ();
@@ -585,6 +585,10 @@ class IndexController extends AbstractActionController {
 				} 
 
 				 else {
+                                        $description = $postdata ['reason'];
+					if ($postdata ['reason'] == 'other') {
+						$description = $postdata ['other_reason'];
+					}
 					
 					$this->getUserTable ()->updateUser ( array (
 							'disable_account' => '1' 
