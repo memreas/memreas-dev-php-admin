@@ -38,7 +38,7 @@
             
  
 <script type="text/javascript">
-    <?php  
+    <?php if(!empty($messages)){
     
     if($status == 'error'){?> 
         jerror('<?php echo implode (' ',$messages) ?>');
@@ -48,7 +48,7 @@
     <?php }
     
     
-    ?>
+    }?>
     
 function checkdata()
 { var reason = $("input[name='reason']:checked").val();
