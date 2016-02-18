@@ -97,7 +97,7 @@ class NotificationTable
         
         $select = new Select;
         $select->from($this->tableGateway->getTable());
-        $select->where("create_time >= $time AND notification_method = 0");
+        $select->where("create_time >= $time AND notification_methods = 0");
         $select->columns(array('num' => new \Zend\Db\Sql\Expression('COUNT(notification_id)')));
         
         $results = $this->tableGateway->selectWith($select);

@@ -10,7 +10,6 @@ namespace Application\Model;
 class Notification {
 
     public $notification_id,
-            $user_id,
             $notification_type,
             $meta,
             $links,
@@ -19,7 +18,7 @@ class Notification {
             $create_time,
             $update_time,
             $short_code,
-            $notification_method;    
+            $notification_methods;    
  
 }
 
