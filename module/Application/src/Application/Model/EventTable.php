@@ -31,14 +31,10 @@ class EventTable
        $select = new Select;
        $table=$this->tableGateway->getTable();
         $select->from($table);
-        if($where!=null)
-            $select->where($where);
-        if($order!=null)
-        $select->order($order);
-        if($count!=null)
-            $select->limit($count);
-        if($offset!=null)
-        $select->offset($offset);
+        if($where!=null)  $select->where($where);
+        if($order!=null)  $select->order($order);
+        if($count!=null)  $select->limit($count);
+        if($offset!=null) $select->offset($offset);
         $statement = $this->tableGateway->getAdapter()->createStatement();
         $select->prepareStatement($this->tableGateway->getAdapter(), $statement);
          if(!empty($order_by))  $select->order($order_by . ' ' . $order);

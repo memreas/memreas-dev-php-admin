@@ -1196,10 +1196,11 @@ class IndexController extends AbstractActionController {
 			$order_by = $this->params ()->fromQuery ( 'order_by', 0 );
 			$order = $this->params ()->fromQuery ( 'order', 'DESC' );
 			$q = $this->params ()->fromQuery ( 'q', 0 );
-			$q = $this->getUserName ();
 			$where = new \Zend\Db\Sql\Where ();
 			if ($q) {
-				$where->like ( 'username', "$q%" );
+                            $q = $this->getUserName ();
+                            
+			    $where->like ( 'username', "$q%" );
 			}
 			$where->equalTo ( 'public', 1 );
 			$column = array (

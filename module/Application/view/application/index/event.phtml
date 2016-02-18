@@ -19,8 +19,8 @@ $routeparams=$routeMatch->getParams();
 
         <tr>
           <th><a href="#">profile picture</a></th>
-          <th><a href="<?php echo $this->url('index',$routeparams,array('query' => array('page' => $page, 'order_by' => 'username', 'order' => $url_order)));?>">username</th>
-<th><a href="<?php echo $this->url('index',$routeparams,array('query' => array('page' => $page, 'order_by' => 'name', 'order' => $url_order)));?>">event name</th>
+          <th><a class="paginate_click" href="<?php echo $this->url('index',$routeparams,array('query' => array('page' => $page, 'order_by' => 'username', 'order' => $url_order)));?>">username</a></th>
+          <th><a  clss="paginate_click" href="<?php echo $this->url('index',$routeparams,array('query' => array('page' => $page, 'order_by' => 'name', 'order' => $url_order)));?>">event name</a></th>
           <th><a href="#">event media</a></th>
           <th><a href="#">viewable</a></th>
           <th><a href="#">action</a></th>
