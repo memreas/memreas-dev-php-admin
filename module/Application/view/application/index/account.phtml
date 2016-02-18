@@ -24,6 +24,7 @@ $routeparams=$routeMatch->getParams();
 			</thead>
 			<tbody>
 				<?php 
+                                if(isset($orderData->getorderhistoryresponse->orders->order)){
 				foreach ($orderData->getorderhistoryresponse->orders->order as $row) {
  				 
  ?>
@@ -39,7 +40,7 @@ $routeparams=$routeMatch->getParams();
 					</td>
 				</tr>
 				
-				 <?php  }?>
+                                <?php  } }?>
 			</tbody>
 		</table>
 		<div class="clear"></div>

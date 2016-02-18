@@ -25,9 +25,9 @@ $routeparams=$routeMatch->getParams();
 				<?php 
 				if(empty($listpayees->listpayeesresponse->accounts->account)){
 
-					echo '<td>No rec found</td>';
-					return;
-				}
+					 
+					 
+				
 				foreach ($listpayees->listpayeesresponse->accounts->account as $row) {
    
 				 
@@ -43,7 +43,7 @@ $routeparams=$routeMatch->getParams();
 					 
 				</tr>
 				
-				 <?php  }?>
+				 <?php  } }?>
 			</tbody>
 		</table>
 	
@@ -84,22 +84,15 @@ for($i=1;$i<=$page;$i++){
     }?>
     
     function chkUser (argument) {
- 
-	  var n = $( "input:checked" ).length;
-	                      var txt = $("#reason_other").val();
-
-
-  if (n==0) {
-
-alert('please select user');  
-return false;  
-  }else{
-
-     var url = "/index/payoutReason";
-
-        
-     $mymodal.find(".modal-content").load(url, function() { 
-           $mymodal.modal(); 
+        var n = $( "input:checked" ).length;
+        var txt = $("#reason_other").val();
+        if (n==0) {
+            alert('please select user');  
+            return false;  
+        }else{
+            var url = "/index/payoutReason";
+            $mymodal.find(".modal-content").load(url, function() { 
+            $mymodal.modal(); 
     });
   
       
@@ -107,17 +100,15 @@ return false;
   }
 }
 
-function checkdata()
-{  if(!txt.trim()) {                  
-                        alert ('please give reason ');
-                          return false;
-                    
-                    
-                }
+function checkdata(){
+    if(!txt.trim()) {                  
+        alert ('please give reason ');
+        return false;
+    }
     $.post($('#payout').attr('action'), $( ":input" ).serializeArray(), function( data ) {
          //show in pop up
         $( "#popup" ).find(".modal-content").html( data );
-});
+    });
     return true;
     
 }
