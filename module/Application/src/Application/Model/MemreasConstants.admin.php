@@ -15,7 +15,8 @@ class MemreasConstants {
 	const REDIS_SERVER_SESSION_ONLY = true;
 	const REDIS_SERVER_PORT = "6379";
 	const REDIS_CACHE_TTL = 3600; // 1 hour
-	                              
+	const REDIS_CACHE_USER_TTL = 300; // 5 minutes
+	
 	// s3 section
 	const S3BUCKET = "memreasdevsec";
 	const S3_APPKEY = 'AKIAIXDH3Q23AP4KPZRA';

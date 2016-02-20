@@ -11,6 +11,7 @@ use Application\memreas\AWSManagerSender;
 use Application\memreas\AWSMemreasRedisCache;
 use Application\memreas\AWSMemreasAdminRedisSessionHandler;
 use Application\memreas\Mlog;
+use Application\memreas\MUUID;
 use Application\memreas\User;
 use Application\Model;
 use Application\Model\MemreasConstants;
@@ -46,7 +47,7 @@ class IndexController extends AbstractActionController {
 	// start session by fetching and starting from REDIS - security check
 	//
 	public function setupSaveHandler() {
-		//Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+		// Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		// start capture
 		ob_start ();
 		
@@ -59,10 +60,10 @@ class IndexController extends AbstractActionController {
 	}
 	public function fetchSession() {
 		$cm = __CLASS__ . __METHOD__;
-		//Mlog::addone ( $cm . '$_POST', $_POST );
-		//Mlog::addone ( $cm . '$_GET', $_GET );
-
-		//Mlog::addone ( $cm . '$_COOKIE', $_COOKIE );
+		// Mlog::addone ( $cm . '$_POST', $_POST );
+		// Mlog::addone ( $cm . '$_GET', $_GET );
+		
+		// Mlog::addone ( $cm . '$_COOKIE', $_COOKIE );
 		/**
 		 * Setup save handler and start session
 		 */
@@ -72,18 +73,18 @@ class IndexController extends AbstractActionController {
 		try {
 			if (! empty ( $_REQUEST ['sid'] )) {
 				$sid = $_REQUEST ['sid'];
-				//Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::fetching redis session for $_COOKIE [memreascookie]->', $_COOKIE ['memreascookie'] );
+				// Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::fetching redis session for $_COOKIE [memreascookie]->', $_COOKIE ['memreascookie'] );
 				$this->sessHandler->startSessionWithSID ( $sid );
 				$hasSession = true;
-				//Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
+				// Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
 			} else if (! empty ( $_COOKIE ['memreascookie'] )) {
-				//Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::fetching redis session for $_COOKIE [memreascookie]->', $_COOKIE ['memreascookie'] );
+				// Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::fetching redis session for $_COOKIE [memreascookie]->', $_COOKIE ['memreascookie'] );
 				$hasSession = $this->sessHandler->startSessionWithMemreasCookie ( $_COOKIE ['memreascookie'] );
 				$hasSession = true;
-				//Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
+				// Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
 			}
 		} catch ( \Exception $e ) {
-			//Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session lookup error->', $e->getMessage () );
+			// Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session lookup error->', $e->getMessage () );
 			$hasSession = false;
 		}
 		
@@ -166,11 +167,11 @@ class IndexController extends AbstractActionController {
 		return $this->userinfoTable;
 	}
 	public function indexAction() {
-		//Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, 'Enter indexAction' );
+		// Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, 'Enter indexAction' );
 		$path = "application/index/index.phtml";
 		$view = new ViewModel ();
 		$view->setTemplate ( $path ); // path to phtml file under view folder
-		//Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, 'returning $path ' . $path );
+		                              // Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, 'returning $path ' . $path );
 		
 		return $view;
 	}
@@ -243,7 +244,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function loginAction() {
-		//Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+		// Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		// Fetch the post data
 		$request = $this->getRequest ();
 		
@@ -285,9 +286,9 @@ class IndexController extends AbstractActionController {
 		) );
 	}
 	public function setSession($username, $password) {
-		//Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+		// Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		// Fetch the user's data and store it in the session...
-		//error_log ( "Inside setSession ..." );
+		// error_log ( "Inside setSession ..." );
 		$user = $this->getAminUserTable ()->fetchAll ( array (
 				'username' => $username,
 				'password' => md5 ( $password ) 
@@ -310,7 +311,7 @@ class IndexController extends AbstractActionController {
 		return true;
 	}
 	public function fetchUserIPAddress() {
-		//Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+		// Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		/*
 		 * Fetch the user's ip address
 		 */
@@ -446,7 +447,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function showlogAction() {
-		//Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+		// Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		echo '<pre>' . file_get_contents ( getcwd () . '/php_errors.log' );
 		exit ();
 	}
@@ -567,15 +568,15 @@ class IndexController extends AbstractActionController {
 	}
 	public function userDeactiveAction() {
 		if ($this->fetchSession ()) {
-					Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ .$_SESSION['user_id']);
-
+			Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ . $_SESSION ['user_id'] );
+			
 			$vdata = array ();
 			$request = $this->getRequest ();
 			if ($request->isPost ()) {
-						
+				
 				$id = $this->params ()->fromPost ( 'id' );
 				$postdata = $this->params ()->fromPost ();
-				 
+				
 				if (empty ( $postdata ['reason'] )) {
 					$this->status = 'error';
 					$this->messages [] = 'Provide reason';
@@ -584,20 +585,20 @@ class IndexController extends AbstractActionController {
 					$this->messages [] = 'Provide reason';
 				} 
 
-				 else {
-                                        $description = $postdata ['reason'];
+				else {
+					$description = $postdata ['reason'];
 					if ($postdata ['reason'] == 'other') {
 						$description = $postdata ['other_reason'];
 					}
-				Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ .$_SESSION['user_id'] .$description);
-
+					Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ . $_SESSION ['user_id'] . $description );
+					
 					$this->getUserTable ()->updateUser ( array (
 							'disable_account' => '1' 
 					), $id );
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'user_deactivated',
-							'admin_id' => $_SESSION['user_id'],
-							'entity_id' => $id ,
+							'admin_id' => $_SESSION ['user_id'],
+							'entity_id' => $id,
 							'description' => $description 
 					) );
 					
@@ -643,7 +644,7 @@ class IndexController extends AbstractActionController {
 					), $id );
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'user_activated',
-							'admin_id' => $_SESSION  ['user_id'],
+							'admin_id' => $_SESSION ['user_id'],
 							'entity_id' => $id,
 							'description' => $description 
 					) );
@@ -711,7 +712,7 @@ class IndexController extends AbstractActionController {
 			$feedback_id = $this->params ()->fromRoute ( 'id' );
 			$this->getAdminLogTable ()->saveLog ( array (
 					'log_type' => 'feedback_view',
-					'admin_id' => $_SESSION  ['user_id'],
+					'admin_id' => $_SESSION ['user_id'],
 					'entity_id' => $feedback_id 
 			) );
 			
@@ -844,7 +845,7 @@ class IndexController extends AbstractActionController {
 					
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'admin_user_added',
-							'admin_id' => $_SESSION  ['user_id'],
+							'admin_id' => $_SESSION ['user_id'],
 							'entity_id' => $user_id 
 					) );
 					
@@ -917,7 +918,7 @@ class IndexController extends AbstractActionController {
 						$this->getAdminUserTable ()->saveUser ( $user );
 						$this->getAdminLogTable ()->saveLog ( array (
 								'log_type' => 'admin_info_updated',
-								'admin_id' => $_SESSION  ['user_id'],
+								'admin_id' => $_SESSION ['user_id'],
 								'entity_id' => $user_id 
 						) );
 						$this->messages [] = 'Data Update sucessfully';
@@ -966,7 +967,7 @@ class IndexController extends AbstractActionController {
 					), $id );
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'admin_deactivated',
-							'admin_id' => $_SESSION  ['user_id'],
+							'admin_id' => $_SESSION ['user_id'],
 							'entity_id' => $id,
 							'description' => $description 
 					) );
@@ -979,12 +980,12 @@ class IndexController extends AbstractActionController {
 			} else {
 				$id = $this->params ()->fromRoute ( 'id', 0 );
 			}
-			//error_log ( 'user-id---' . $id );
+			// error_log ( 'user-id---' . $id );
 			$user = $this->getAdminUserTable ()->getUser ( $id );
 			$vdata ['user'] = $user;
 			$vdata ['messages'] = $this->messages;
 			$vdata ['status'] = $this->status;
-			//print_r ( $vdata );
+			// print_r ( $vdata );
 			return $vdata;
 		}
 	}
@@ -1015,8 +1016,8 @@ class IndexController extends AbstractActionController {
 					), $id );
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'admin_activate',
-							'admin_id' => $_SESSION  ['user_id'],
-							'entity_id' => $id ,
+							'admin_id' => $_SESSION ['user_id'],
+							'entity_id' => $id,
 							'description' => $description 
 					) );
 					
@@ -1164,7 +1165,25 @@ class IndexController extends AbstractActionController {
 			$username = $this->getUserName ();
 			$page = $this->params ()->fromQuery ( 'page', 1 );
 			
-			$result = $this->fetchXML ( 'getorderhistory', "<xml><getorderhistory><user_id>0</user_id><search_username>$username</search_username><page>$page</page><limit>15</limit></getorderhistory></xml>" );
+			// $result = $this->fetchXML ( 'getorderhistory', "<xml><getorderhistory><user_id>0</user_id><search_username>$username</search_username><page>$page</page><limit>15</limit></getorderhistory></xml>" );
+			/**
+			 * Set admin key as UUID with username as value 
+			 * - pass admin_key as request parameter
+			 * - proxy will check for admin_key and pass through
+			 * - set ttl t0 5 mins since this is user data
+			 */
+			$admin_key = MUUID::fetchUUID();
+			$sid = $_SESSION['sid'];
+			$this->redis->setCache($admin_key, $username, MemreasConstants::REDIS_CACHE_USER_TTL);
+			$result = $this->fetchXML ( "getorderhistory&admin_key=$admin_key", "
+					<xml>
+						<sid>$sid</sid>
+						<getorderhistory>
+						<user_id></user_id>
+						<search_username>$username</search_username>
+						<page>$page</page>
+						<limit>15</limit>
+						</getorderhistory></xml>" );
 			$orderData = simplexml_load_string ( $result );
 			// echo '<pre>';print_r($orderData);
 			return array (
@@ -1179,7 +1198,7 @@ class IndexController extends AbstractActionController {
 			$transaction_id = $this->params ()->fromRoute ( 'id' );
 			$this->getAdminLogTable ()->saveLog ( array (
 					'log_type' => 'feedback_view',
-					'admin_id' => $_SESSION  ['user_id'],
+					'admin_id' => $_SESSION ['user_id'],
 					'entity_id' => $transaction_id 
 			) );
 			$result = $this->fetchXML ( 'getorder', "<xml><getorder><transaction_id>$transaction_id</transaction_id></getorder></xml>" );
@@ -1198,9 +1217,9 @@ class IndexController extends AbstractActionController {
 			$q = $this->params ()->fromQuery ( 'q', 0 );
 			$where = new \Zend\Db\Sql\Where ();
 			if ($q) {
-                            $q = $this->getUserName ();
-                            
-			    $where->like ( 'username', "$q%" );
+				$q = $this->getUserName ();
+				
+				$where->like ( 'username', "$q%" );
 			}
 			$where->equalTo ( 'public', 1 );
 			$column = array (
@@ -1248,7 +1267,7 @@ class IndexController extends AbstractActionController {
 			$event_id = $this->params ()->fromRoute ( 'id' );
 			$this->getAdminLogTable ()->saveLog ( array (
 					'log_type' => 'media_view',
-					'admin_id' => $_SESSION  ['user_id'],
+					'admin_id' => $_SESSION ['user_id'],
 					'entity_id' => $event_id 
 			) );
 			
@@ -1306,7 +1325,7 @@ class IndexController extends AbstractActionController {
 						$eventStatus = 'active';
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'event_disable',
-							'admin_id' => $_SESSION  ['user_id'],
+							'admin_id' => $_SESSION ['user_id'],
 							'entity_id' => $postdata ['event_id'],
 							'description' => $description 
 					) );
@@ -1354,7 +1373,7 @@ class IndexController extends AbstractActionController {
 					), $postdata ['event_id'] );
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'event_disable',
-							'admin_id' => $_SESSION  ['user_id'],
+							'admin_id' => $_SESSION ['user_id'],
 							'entity_id' => $postdata ['event_id'],
 							'description' => $description 
 					) );
@@ -1557,7 +1576,7 @@ class IndexController extends AbstractActionController {
 		} elseif ($userRole == 'guest' && in_array ( $action, $roles ['guest'] )) {
 			return true;
 		}
-		header('Location: /');
+		header ( 'Location: /' );
 		die ( '<b>your account is not authorized for this function</>' ); // donot change this otherwise all action will be allowed
 	}
 	public function updateMediaInfoAction() {
@@ -1734,7 +1753,7 @@ class IndexController extends AbstractActionController {
 			$status = trim ( $data->loginresponse->status );
 			error_log ( 'response from server---' . print_r ( $status, true ) );
 			if ('success' == strtolower ( $status )) {
-				$_SESSION  ['sid'] = trim ( $data->loginresponse->sid );
+				$_SESSION ['sid'] = trim ( $data->loginresponse->sid );
 			}
 			$userRec = $this->getUserTable ()->fetchAll ();
 			foreach ( $userRec as $user ) {
