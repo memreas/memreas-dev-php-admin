@@ -1163,6 +1163,7 @@ class IndexController extends AbstractActionController {
 			// $id = $this->params()->fromRoute('id');
 			// $this->getAdminLogTable()->saveLog(array('log_type'=>'feedback_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$id));
 			$username = $this->getUserName ();
+                        $username = "jmeah80";
 			$page = $this->params ()->fromQuery ( 'page', 1 );
 			
 			// $result = $this->fetchXML ( 'getorderhistory', "<xml><getorderhistory><user_id>0</user_id><search_username>$username</search_username><page>$page</page><limit>15</limit></getorderhistory></xml>" );
@@ -1177,10 +1178,10 @@ class IndexController extends AbstractActionController {
 			$this->redis->setCache($admin_key, $username, MemreasConstants::REDIS_CACHE_USER_TTL);
 			$result = $this->fetchXML ( "getorderhistory&admin_key=$admin_key", "
 					<xml>
-						<sid>$sid</sid>
+						<sid>$sid<						<search_username>$username</search_username>
+/sid>
 						<getorderhistory>
 						<user_id></user_id>
-						<search_username>$username</search_username>
 						<page>$page</page>
 						<limit>15</limit>
 						</getorderhistory></xml>" );
