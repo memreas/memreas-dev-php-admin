@@ -1185,7 +1185,7 @@ class IndexController extends AbstractActionController {
 						<limit>15</limit>
 						</getorderhistory></xml>" );
 			$orderData = simplexml_load_string ( $result );
-			// echo '<pre>';print_r($orderData);
+			echo '<pre>';print_r($result);
 			return array (
 					'orderData' => $orderData,
 					'page' => $page 
