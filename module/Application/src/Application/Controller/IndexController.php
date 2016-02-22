@@ -1178,8 +1178,8 @@ class IndexController extends AbstractActionController {
 			$this->redis->setCache($admin_key, $username, MemreasConstants::REDIS_CACHE_USER_TTL);
 			$result = $this->fetchXML ( "getorderhistory&admin_key=$admin_key", "
 					<xml>
-						<sid>$sid<						<search_username>$username</search_username>
-/sid>
+						<sid>$sid</sid>
+                                                <search_username>$username</search_username>
 						<getorderhistory>
 						<user_id></user_id>
 						<page>$page</page>
