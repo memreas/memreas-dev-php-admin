@@ -122,6 +122,7 @@ class IndexController extends AbstractActionController {
 	}
 	public function fetchXML($action, $xml) {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+                                
 		$guzzle = new \GuzzleHttp\Client ();
 		if (empty ( $_SESSION ['sid'] )) {
 			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::action:: $action ::xml::$xml" );
@@ -132,16 +133,18 @@ class IndexController extends AbstractActionController {
 					] 
 			] );
 		} else {
-			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::action:: $action ::xml::$xml sid::" . $_SESSION ['sid'] );
-			$response = $guzzle->post ( $this->url, [ 
-					'form_params' => [ 
+                    $x= [ 
+                                                        'admin_key' =>  $this->redis->getCache('admin_key'),
 							'action' => $action,
 							'xml' => $xml,
 							'sid' => empty ( $_SESSION ['sid'] ) ? '' : $_SESSION ['sid'] 
-					] 
+					] ;
+			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::url:: $this->url ::x:".$x);
+			$response = $guzzle->post ( $this->url, [ 
+					'form_params' => $x,
 			] );
 		}
-		
+                                
 		return $response->getBody ();
 	}
 	public function getAdminLogTable() {
@@ -1176,7 +1179,7 @@ class IndexController extends AbstractActionController {
 			$admin_key = MUUID::fetchUUID();
 			$sid = $_SESSION['sid'];
 			$this->redis->setCache($admin_key, $username, MemreasConstants::REDIS_CACHE_USER_TTL);
-			$result = $this->fetchXML ( "getorderhistory&admin_key=$admin_key", "
+			$result = $this->fetchXML ( "getorderhistory", "
 					<xml>
 						<sid>$sid</sid>
                                                 <search_username>$username</search_username>
