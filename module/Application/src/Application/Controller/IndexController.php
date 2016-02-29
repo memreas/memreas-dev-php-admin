@@ -134,15 +134,16 @@ class IndexController extends AbstractActionController {
 			] );
 		} else {
                     $admin_key = $this->redis->getCache('admin_key');
-                    $x= [ 
-                                                        'admin_key' => $admin_key ,
+			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::action:: $action ::xml::$xml sid::" . $_SESSION ['sid']."admin:key".$admin_key );
+                        
+			$response = $guzzle->post ( $this->url, [ 
+					'form_params' => [ 
+                                            
 							'action' => $action,
 							'xml' => $xml,
-							'sid' => empty ( $_SESSION ['sid'] ) ? '' : $_SESSION ['sid'] 
-					] ;
-			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::url:: $this->url ::x:".print_r($x,true));
-			$response = $guzzle->post ( $this->url, [ 
-					'form_params' => $x,
+							'sid' => empty ( $_SESSION ['sid'] ) ? '' : $_SESSION ['sid'] ,
+                                                         'admin_key' => $admin_key 
+					] 
 			] );
 		}
                                 
@@ -1179,7 +1180,7 @@ class IndexController extends AbstractActionController {
 			 */
 			$admin_key = MUUID::fetchUUID();
 			$sid = $_SESSION['sid'];
-			$this->redis->setCache($admin_key, $username, MemreasConstants::REDIS_CACHE_USER_TTL);
+			$this->redis->setCache('admin_key', $admin_key, MemreasConstants::REDIS_CACHE_USER_TTL);
 			$result = $this->fetchXML ( "getorderhistory", "
 					<xml>
 						<sid>$sid</sid>
