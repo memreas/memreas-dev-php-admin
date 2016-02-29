@@ -133,13 +133,14 @@ class IndexController extends AbstractActionController {
 					] 
 			] );
 		} else {
+                    $admin_key = $this->redis->getCache('admin_key');
                     $x= [ 
-                                                        'admin_key' =>  $this->redis->getCache('admin_key'),
+                                                        'admin_key' => $admin_key ,
 							'action' => $action,
 							'xml' => $xml,
 							'sid' => empty ( $_SESSION ['sid'] ) ? '' : $_SESSION ['sid'] 
 					] ;
-			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::url:: $this->url ::x:".$x);
+			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::url:: $this->url ::x:".print_r($x,true));
 			$response = $guzzle->post ( $this->url, [ 
 					'form_params' => $x,
 			] );
