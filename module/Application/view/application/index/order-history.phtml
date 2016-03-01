@@ -28,7 +28,7 @@ $routeparams=$routeMatch->getParams();
 				<?php 
                                 if(isset($orderData->orders)){
 				foreach ($orderData->orders as $row) {
-					//echo '<pre>';print_r($row);
+					echo '<pre>';print_r($row);exit;
    $transaction_response = json_decode($row->transaction_response);
 $plan = isset($transaction_response->plan->name)?$transaction_response->plan->name:'';
    
