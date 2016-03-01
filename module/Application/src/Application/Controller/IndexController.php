@@ -136,7 +136,7 @@ class IndexController extends AbstractActionController {
                     $admin_key = $this->redis->getCache('admin_key');
 			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::action:: $action ::xml::$xml sid::" . $_SESSION ['sid']."admin:key".$admin_key );
                         
-			$response = $guzzle->post ( $this->url, [ 
+			$response = $guzzle->request ( 'POST', $this->url, [ 
 					'form_params' => [ 
                                             
 							'action' => $action,
@@ -1192,7 +1192,7 @@ class IndexController extends AbstractActionController {
 						</getorderhistory></xml>" );
 			//$orderData = simplexml_load_string ( $result );
                         //$result = trim ( ( string ) $response->getBody () );
-			echo '<pre>';var_dump($result);
+			echo '<pre>';print_r($result);
 			return array (
 					'orderData' => $result,
 					'page' => $page 
