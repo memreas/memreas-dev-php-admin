@@ -1181,7 +1181,7 @@ class IndexController extends AbstractActionController {
 			$admin_key = MUUID::fetchUUID();
 			$sid = $_SESSION['sid'];
 			$this->redis->setCache('admin_key', $admin_key, MemreasConstants::REDIS_CACHE_USER_TTL);
-			$result = $this->fetchXML ( "getorderhistory", "
+			$response = $this->fetchXML ( "getorderhistory", "
 					<xml>
 						<sid>$sid</sid>
                                                 <search_username>$username</search_username>
