@@ -1190,11 +1190,10 @@ class IndexController extends AbstractActionController {
 						<page>$page</page>
 						<limit>15</limit>
 						</getorderhistory></xml>" );
-			$orderData = json_decode ((string) $result, true );
+			$orderData = json_decode ((string) $result);
                                 
-			echo '<pre>';print_r($orderData );
 			return array (
-					'orderData' => $result,
+					'orderData' => $orderData,
 					'page' => $page 
 			);
 		}

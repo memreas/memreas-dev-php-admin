@@ -26,8 +26,8 @@ $routeparams=$routeMatch->getParams();
 			</thead>
 			<tbody>
 				<?php 
-                                if(isset($orderData->getorderhistoryresponse->orders->order)){
-				foreach ($orderData->getorderhistoryresponse->orders->order as $row) {
+                                if(isset($orderData->orders)){
+				foreach ($orderData->orders as $row) {
 					//echo '<pre>';print_r($row);
    $transaction_response = json_decode($row->transaction_response);
 $plan = isset($transaction_response->plan->name)?$transaction_response->plan->name:'';
