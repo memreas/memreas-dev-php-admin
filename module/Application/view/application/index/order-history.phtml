@@ -35,15 +35,14 @@ $plan = isset($transaction_response->plan->name)?$transaction_response->plan->na
  ?>
 				<tr>
 					<td data-title="username" ><?=$row->username?></td>
-					<td data-title="transaction type">						<a href="/index/orderHistoryDetail/<?=$row->transaction_id?>" class="white" data-toggle="modal" data-target="#popup"><?php echo $row ->transaction_type ?></a>
+					<td data-title="transaction type"><a href="/index/orderHistoryDetail/<?=$row->transaction->transaction_id?>" class="white" data-toggle="modal" data-target="#popup"><?php echo $row ->transaction->transaction_type ?></a>
 </td>
 					<td data-title="order #" class="numeric"><?=$row->balance->starting_balance?></td>
-					<td data-title="order #" class="numeric"><?=$row->amount?></td>
+					<td data-title="order #" class="numeric"><?=$row->transaction->amount?></td>
 					<td data-title="order #" class="numeric"><?=$row->balance->ending_balance?></td>			
-					<td data-title="pass / fail">pass</td>
-										<td data-title="Currency">USD</td>
-
-					<td data-title="Transaction Date"><?php echo $row ->transaction_sent ?></td>
+					<td data-title="pass / fail"><?=$row->transaction->transaction_status?></td>
+					<td data-title="Currency"><?=$row->transaction->currency?></td>
+					<td data-title="Transaction Date"><?php echo $row ->transaction->transaction_sent ?></td>
 				</tr>
 				
                                 <?php  } }?>
