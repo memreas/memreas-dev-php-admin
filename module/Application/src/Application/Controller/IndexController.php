@@ -1212,7 +1212,7 @@ class IndexController extends AbstractActionController {
 			$result = $this->fetchXML ( 'getorder',
                                 "<xml><sid>$sid</sid><getorder><transaction_id>$transaction_id</transaction_id></getorder></xml>" );
 			$orderData = json_decode ((string) $result);
-			echo '<pre>';print_r($orderData);exit;
+			echo '<pre>';print_r($orderData,true);exit;
 			return array (
 					'orderData' => $orderData 
 			);
