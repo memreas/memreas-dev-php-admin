@@ -1192,7 +1192,7 @@ class IndexController extends AbstractActionController {
 						<limit>15</limit>
 						</getorderhistory></xml>" );
 			$orderData = json_decode ((string) $result);
-                               error_log(print_r($orderData,true));
+                               //error_log(print_r($orderData,true));
 			return array (
 					'orderData' => $orderData,
 					'page' => $page 
@@ -1209,7 +1209,8 @@ class IndexController extends AbstractActionController {
 					'admin_id' => $_SESSION ['user_id'],
 					'entity_id' => $transaction_id 
 			) );
-			$result = $this->fetchXML ( 'getorder', "<xml><sid>$sid</sid><getorder><transaction_id>$transaction_id</transaction_id></getorder></xml>" );
+			$result = $this->fetchXML ( 'getorder',
+                                "<xml><sid>$sid</sid><getorder><transaction_id>$transaction_id</transaction_id></getorder></xml>" );
 			$orderData = json_decode ((string) $result);
 			echo '<pre>';print_r($orderData);exit;
 			return array (
