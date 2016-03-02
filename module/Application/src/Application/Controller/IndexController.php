@@ -134,7 +134,7 @@ class IndexController extends AbstractActionController {
 			] );
 		} else {
                     $admin_key = MUUID::fetchUUID();
-		    $sid = $_SESSION['sid'];
+		    
 		    $this->redis->setCache('admin_key', $admin_key, MemreasConstants::REDIS_CACHE_USER_TTL);
                     //$admin_key = $this->redis->getCache('admin_key');
 			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::action:: $action ::xml::$xml sid::" . $_SESSION ['sid']."admin:key".$admin_key );
@@ -1167,7 +1167,7 @@ class IndexController extends AbstractActionController {
 	public function orderHistoryAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
-			
+			$sid = $_SESSION['sid'];
 			// $id = $this->params()->fromRoute('id');
 			// $this->getAdminLogTable()->saveLog(array('log_type'=>'feedback_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$id));
 			$username = $this->getUserName ();
