@@ -1202,15 +1202,16 @@ class IndexController extends AbstractActionController {
 	public function orderHistoryDetailAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
+                    $sid = $_SESSION['sid'];
 			$transaction_id = $this->params ()->fromRoute ( 'id' );
 			$this->getAdminLogTable ()->saveLog ( array (
 					'log_type' => 'feedback_view',
 					'admin_id' => $_SESSION ['user_id'],
 					'entity_id' => $transaction_id 
 			) );
-			$result = $this->fetchXML ( 'getorder', "<xml><getorder><transaction_id>$transaction_id</transaction_id></getorder></xml>" );
-			$orderData = simplexml_load_string ( $result );
-			// echo '<pre>';print_r($orderData);exit;
+			$result = $this->fetchXML ( 'getorder', "<xml><sid>$sid</sid><getorder><transaction_id>$transaction_id</transaction_id></getorder></xml>" );
+			$orderData = json_decode ((string) $result);
+			echo '<pre>';print_r($orderData);exit;
 			return array (
 					'orderData' => $orderData 
 			);
