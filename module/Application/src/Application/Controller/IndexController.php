@@ -1087,8 +1087,8 @@ class IndexController extends AbstractActionController {
 				$emailpastday = $this->getNotificationTable ()->getEmailInviteCount ( strtotime ( '-1 day' ) );
 				$emailpastweek = $this->getNotificationTable ()->getEmailInviteCount ( strtotime ( '-1 week' ) );
 				$emailpastmonth = $this->getNotificationTable ()->getEmailInviteCount ( strtotime ( '-1 month' ) );
-				
-				$result = $this->fetchXML ( 'getplansstatic', '<xml><getplansstatic><static>1</static></getplansstatic></xml>' );
+				$sid = $_SESSION['sid'];
+				$result = $this->fetchXML ( 'getplansstatic', '<xml><sid>$sid</sid><getplansstatic><static>1</static></getplansstatic></xml>' );
 				$summaryData = simplexml_load_string ( $result );
 				
 				// echo '<pre>';print_r($summaryData);exit;
@@ -1171,7 +1171,7 @@ class IndexController extends AbstractActionController {
 			// $id = $this->params()->fromRoute('id');
 			// $this->getAdminLogTable()->saveLog(array('log_type'=>'feedback_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$id));
 			$username = $this->getUserName ();
-                        $username = "jmeah80";
+                        //$username = "jmeah80";
 			$page = $this->params ()->fromQuery ( 'page', 1 );
 			
 			// $result = $this->fetchXML ( 'getorderhistory', "<xml><getorderhistory><user_id>0</user_id><search_username>$username</search_username><page>$page</page><limit>15</limit></getorderhistory></xml>" );
@@ -1434,8 +1434,8 @@ class IndexController extends AbstractActionController {
 			if ($t == '@') {
 				$username = $search = substr ( $q, 1 );
 			}
-			
-			$xml = "<xml><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
+			$sid = $_SESSION['sid'];
+			$xml = "<xml><sid>$sid</sid><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
 			$result = $this->fetchXML ( $action, $xml );
 			$data = simplexml_load_string ( $result );
 			
@@ -1456,10 +1456,10 @@ class IndexController extends AbstractActionController {
 			$action = "makepayout";
 			$description = $page = $this->params ()->fromPost ( 'other_reason', '' );
 			$payee = $page = $this->params ()->fromPost ( 'ids', array () );
-			
+			$sid = $_SESSION['sid'];
 			try {
 				foreach ( $payee as $account_id => $amount ) {
-					$xml = "<xml><makepayout><account_id>$account_id</account_id><amount>$amount</amount><description>$description</description></makepayout></xml>";
+					$xml = "<xml><sid>$sid</sid><makepayout><account_id>$account_id</account_id><amount>$amount</amount><description>$description</description></makepayout></xml>";
 					error_log ( $xml );
 					
 					$result = $this->fetchXML ( $action, $xml );
@@ -1486,8 +1486,8 @@ class IndexController extends AbstractActionController {
 			
 			$page = $this->params ()->fromQuery ( 'page', 1 );
 			$username = $this->getUserName ();
-			
-			$result = $this->fetchXML ( 'getorderhistory', "<xml><getorderhistory><user_id>0</user_id><search_username>$username</search_username><page>$page</page><limit>15</limit></getorderhistory></xml>" );
+			$sid = $_SESSION['sid'];
+			$result = $this->fetchXML ( 'getorderhistory', "<xml><sid>$sid</sid><getorderhistory><user_id>0</user_id><search_username>$username</search_username><page>$page</page><limit>15</limit></getorderhistory></xml>" );
 			$orderData = simplexml_load_string ( $result );
 			return array (
 					'orderData' => $orderData,
@@ -1501,8 +1501,8 @@ class IndexController extends AbstractActionController {
 			
 			$action = "listpayees";
 			$page = $this->params ()->fromQuery ( 'page', 1 );
-			
-			$xml = "<xml><listpayees><page>$page</page><limit>10</limit></listpayees></xml>";
+			$sid = $_SESSION['sid'];
+			$xml = "<xml><sid>$sid</sid><listpayees><page>$page</page><limit>10</limit></listpayees></xml>";
 			$result = $this->fetchXML ( $action, $xml );
 			$data = simplexml_load_string ( $result );
 			
@@ -1586,8 +1586,8 @@ class IndexController extends AbstractActionController {
 		} elseif ($userRole == 'guest' && in_array ( $action, $roles ['guest'] )) {
 			return true;
 		}
-		header ( 'Location: /' );
-		die ( '<b>your account is not authorized for this function</>' ); // donot change this otherwise all action will be allowed
+                                
+		die ( '<b>your account is not authorized for this function</b>' ); // donot change this otherwise all action will be allowed
 	}
 	public function updateMediaInfoAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
