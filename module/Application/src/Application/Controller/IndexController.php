@@ -1437,7 +1437,7 @@ class IndexController extends AbstractActionController {
 			$sid = $_SESSION['sid'];
 			$xml = "<xml><sid>$sid</sid><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
 			$result = $this->fetchXML ( $action, $xml );
-			$data = simplexml_load_string ( $result );
+			$data = json_decode ((string) $result);
 			
 			return array (
 					'listpayees' => $data,
@@ -1463,13 +1463,13 @@ class IndexController extends AbstractActionController {
 					error_log ( $xml );
 					
 					$result = $this->fetchXML ( $action, $xml );
-					
-					$data = simplexml_load_string ( $result );
+					 $data = json_decode ((string) $result);
+                                
 					$response [] = array (
 							'account_id' => $account_id,
-							'status' => $data->makepayoutresponse->status,
+							'status' => $data->status,
 							'amount' => $amount,
-							'message' => $data->makepayoutresponse->message 
+							'message' => $data->message 
 					);
 				}
 			} catch ( \Exception $e ) {
@@ -1488,7 +1488,7 @@ class IndexController extends AbstractActionController {
 			$username = $this->getUserName ();
 			$sid = $_SESSION['sid'];
 			$result = $this->fetchXML ( 'getorderhistory', "<xml><sid>$sid</sid><getorderhistory><user_id>0</user_id><search_username>$username</search_username><page>$page</page><limit>15</limit></getorderhistory></xml>" );
-			$orderData = simplexml_load_string ( $result );
+			$orderData = json_decode ((string) $result);
 			return array (
 					'orderData' => $orderData,
 					'page' => $page 
