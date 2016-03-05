@@ -217,7 +217,7 @@ removeLoading = function(element){
 }
 
 
-function doSearchAjax(){
+function doSearchAjax(q){
   getCurrentTab();
 
   if (typeof q == "undefined") {
@@ -243,5 +243,5 @@ function doGetUrl(url){
 function accountusage(){
       
     var q = $('#accountusage').val();
-    doSearchAjax();
+    doSearchAjax(q);
 }
