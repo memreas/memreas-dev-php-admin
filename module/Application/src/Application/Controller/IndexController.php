@@ -202,7 +202,7 @@ class IndexController extends AbstractActionController {
 				$json = json_encode ( $result );
 				// Return the ajax call...
 				$callback_json = $callback . "(" . $json . ")";
-                                error_log($callback_json);
+                                error_log('tag----'.print_r($result,TRUE));
 				$output = ob_get_clean ();
 				header ( "Content-type: plain/text" );
 				echo $callback_json;
