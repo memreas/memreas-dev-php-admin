@@ -198,10 +198,9 @@ class IndexController extends AbstractActionController {
 				
 				// Guzzle the LoginWeb Service
 				$result = $this->fetchXML ( $ws_action, $xml );
-				
-				$json = json_encode ( $result );
+                                 
 				// Return the ajax call...
-				$callback_json = $callback . "(" . $json . ")";
+				$callback_json = $callback . "(" . $result . ")";
                                 error_log('tag----'.print_r($result,TRUE));
 				$output = ob_get_clean ();
 				header ( "Content-type: plain/text" );
