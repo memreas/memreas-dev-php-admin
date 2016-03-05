@@ -221,7 +221,7 @@ function doSearchAjax(){
   getCurrentTab();
 
   if (typeof q == "undefined") {
-    url = UI[UI.current_tab]
+    url = UI[UI.current_tab];
   }else{
     var params = { q:q};
     var str = jQuery.param( params );
