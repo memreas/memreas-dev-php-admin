@@ -217,7 +217,7 @@ removeLoading = function(element){
 }
 
 
-function doSearchAjax(q){
+function doSearchAjax(){
   getCurrentTab();
 
   if (typeof q == "undefined") {
