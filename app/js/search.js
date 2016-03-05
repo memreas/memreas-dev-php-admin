@@ -17,7 +17,7 @@ $(document).ready(function() {
                     var q = $('#search').val();
                     users = [];
                     map = {};
-                    var objs = data;
+                    var objs = data ;
 
                     switch (q.charAt(0))
                     {
