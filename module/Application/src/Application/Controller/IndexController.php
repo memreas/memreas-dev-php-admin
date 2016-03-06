@@ -1144,7 +1144,7 @@ class IndexController extends AbstractActionController {
 				$paginator = new Paginator ( $iteratorAdapter );
 				$paginator->setCurrentPageNumber ( $page );
 				$paginator->setItemCountPerPage ( MemreasConstants::NUMBER_OF_ROWS );
-				
+				echo '<pre>';print_r($info);
 				// $totalused = $this->getUserInfoTable()->totalPercentUsed();
 				/*
 				 * $rec = $this->getUserInfoTable()->fetchAll(); print_r($rec); $allowed_size = $rec-> allowed_size; $data_usage=$rec-> data_usage; $totalused = $data_usage*100/allowed_size; print_r($totalused);

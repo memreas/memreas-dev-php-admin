@@ -239,9 +239,3 @@ function doGetUrl(url){
 
 
 }
-
-function accountusage(){
-      
-    var q = $('#accountusage').val();
-    doSearchAjax(q);
-}

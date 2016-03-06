@@ -63,7 +63,7 @@ $(document).ready(function() {
             doSearchAjax();
             return item;
         },
-        highlighter: function(item) {
+                  highlighter: function(item) {
             return h(item);
         },
         minLength: 4
