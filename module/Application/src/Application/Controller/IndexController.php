@@ -1447,9 +1447,9 @@ class IndexController extends AbstractActionController {
 			);
 		}
 	}
-	// public function payoutReasonAction() {
-	// return array ();
-	// }
+	 public function payoutReasonAction() {
+	 return array ();
+	 }
 	public function doPayoutAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
