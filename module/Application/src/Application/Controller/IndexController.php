@@ -1489,7 +1489,7 @@ class IndexController extends AbstractActionController {
 			$sid = $_SESSION['sid'];
 			$result = $this->fetchXML ( 'getorderhistory', "<xml><sid>$sid</sid><getorderhistory><user_id>0</user_id><search_username>$username</search_username><page>$page</page><limit>15</limit></getorderhistory></xml>" );
 			$orderData = json_decode ((string) $result);
-                        echo '<pre>';print_r($orderData);
+                        //echo '<pre>';print_r($orderData);
 			return array (
 					'orderData' => $orderData,
 					'page' => $page 

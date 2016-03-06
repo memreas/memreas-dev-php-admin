@@ -24,19 +24,19 @@ $routeparams=$routeMatch->getParams();
 			</thead>
 			<tbody>
 				<?php 
-                                if(isset($orderData->orders->order)){
-				foreach ($orderData->orders->order as $row) {
+                                if(isset($orderData->orders)){
+				foreach ($orderData->orders as $row) {
  				 
  ?>
 				<tr>
-					<td data-title="order #" class="numeric"><?php echo $row ->transaction_id ?></td>
+					<td data-title="order #" class="numeric"><?php echo $row ->transaction->transaction_id ?></td>
   					<td><?php echo $row ->username ?></td>
-      				<td><?php echo $row ->balance ?></td>
-            		<td><?php echo $row ->transaction_type ?></td>   
-               		<td><?php echo $row ->amount ?></td>   
+      				<td><?php echo $row ->balance->ending_balance ?></td>
+            		<td><?php echo $row->transaction ->transaction_type ?></td>   
+               		<td><?php echo $row->transaction ->amount ?></td>   
                		<th>pass</th>
 					<td data-title="action">
-						<a href="/index/account-dopayout/<?=$row->transaction_id?>" class="white" data-toggle="modal" data-target="#popup">View</a>
+						<a href="/index/account-dopayout/<?=$row->transaction->transaction_id?>" class="white" data-toggle="modal" data-target="#popup">View</a>
 					</td>
 				</tr>
 				
