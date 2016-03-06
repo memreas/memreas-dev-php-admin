@@ -63,7 +63,7 @@ for($i=1;$i<=$page;$i++){
 ?>
 
   <a class="paginate_click" href="/index/payout?q=<?=$q?>&page=<?php echo $page+1;?>">Next ></a>
-						</div><input type="button" value="Approve" onclick="checkdata()">
+						</div><input type="button" value="Approve" onclick="chkUser()">
 		</div>
  
  
@@ -101,10 +101,8 @@ for($i=1;$i<=$page;$i++){
 }
 
 function checkdata(){
-     var n = $( "input:checked" ).length;
-     var txt = $("#reason_other").val();
-     if (n==0) {
-         alert('please select ');
+    if(!txt.trim()) {                  
+        alert ('please give reason ');
          return false;
     }
     $.post($('#payout').attr('action'), $( ":input" ).serializeArray(), function( data ) {
