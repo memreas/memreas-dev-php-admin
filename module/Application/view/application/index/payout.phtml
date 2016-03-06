@@ -101,9 +101,11 @@ for($i=1;$i<=$page;$i++){
 }
 
 function checkdata(){
-    if(!txt.trim()) {                  
-        alert ('please give reason ');
-        return false;
+     var n = $( "input:checked" ).length;
+     var txt = $("#reason_other").val();
+     if (n==0) {
+         alert('please select ');
+         return false;
     }
     $.post($('#payout').attr('action'), $( ":input" ).serializeArray(), function( data ) {
          //show in pop up
