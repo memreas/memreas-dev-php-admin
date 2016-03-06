@@ -1437,9 +1437,9 @@ class IndexController extends AbstractActionController {
 			$sid = $_SESSION['sid'];
 			$xml = "<xml><sid>$sid</sid><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
 			$result = $this->fetchXML ( $action, $xml );
-                        echo '<pre>rrr';print_r($result);
+                                
 			$data = json_decode ((string) $result);
-			echo '<pre>';print_r($data);
+                                
 			return array (
 					'listpayees' => $data,
 					'page' => $page,
