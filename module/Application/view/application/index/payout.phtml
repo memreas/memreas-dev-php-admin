@@ -99,19 +99,30 @@ for($i=1;$i<=$page;$i++){
 
   }
 }
+function checkdata()
+{ 
+	  var n = $( "input:checked" ).length;
+	                      var txt = $("#reason_other").val();
 
-function checkdata(){
-    if(!txt.trim()) {                  
-        alert ('please give reason ');
-         return false;
-    }
+
+  if (n==0) {
+
+alert('please select ');    
+  }else if(!txt.trim()) {                  
+                        alert ('please give reason ');
+                          return false;
+                    
+                    
+                }
     $.post($('#payout').attr('action'), $( ":input" ).serializeArray(), function( data ) {
          //show in pop up
         $( "#popup" ).find(".modal-content").html( data );
-    });
+});
     return true;
     
 }
+
+
 doinitFrom();
 
 </script>
