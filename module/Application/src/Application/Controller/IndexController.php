@@ -1437,7 +1437,7 @@ class IndexController extends AbstractActionController {
 			$sid = $_SESSION['sid'];
 			$xml = "<xml><sid>$sid</sid><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
 			$result = $this->fetchXML ( $action, $xml );
-                                
+                         
 			$data = json_decode ((string) $result);
                                 
 			return array (
@@ -1447,9 +1447,9 @@ class IndexController extends AbstractActionController {
 			);
 		}
 	}
-	// public function payoutReasonAction() {
-	// return array ();
-	// }
+	 public function payoutReasonAction() {
+	 return array ();
+	 }
 	public function doPayoutAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
