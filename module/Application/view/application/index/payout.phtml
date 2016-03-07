@@ -1,128 +1,120 @@
-<?php 
+<?php
 $sm = $this->getHelperPluginManager()->getServiceLocator();
-$router=$sm->get('Router');
-$request=$sm->get('Request');
-$routeMatch=$router->match($request);
+$router = $sm->get('Router');
+$request = $sm->get('Request');
+$routeMatch = $router->match($request);
 //get an array of the route params and their values
-$routeparams=$routeMatch->getParams();
-
+$routeparams = $routeMatch->getParams();
 ?> 
 <div class="tabinnercontent">
-	<div id="no-more-tables">
-		<form  id="payout" action="/index/doPayout" class="form-horizontal formstyle" role="form" method="post">
+    <div id="no-more-tables">
+        <form  id="payout" action="/index/doPayout" class="form-horizontal formstyle" role="form" method="post">
 
-		<table class="col-md-12 table-bordered table-striped table-condensed cf nopadding">
-			<thead class="cf">
-				<tr>
-					<th class="numeric">selected</th>
-					<th class="numeric">account id</th>
-					<th >username</th>
-					<th>balance</th>
-					 
-				</tr>
-			</thead>
-			<tbody>
-				<?php 
-				if(!empty($listpayees->accounts)){
+            <table class="col-md-12 table-bordered table-striped table-condensed cf nopadding">
+                <thead class="cf">
+                    <tr>
+                        <th class="numeric">selected</th>
+                        <th class="numeric">account id</th>
+                        <th >username</th>
+                        <th>balance</th>
 
-					 
-					 
-				
-				foreach ($listpayees->accounts as $row) {
-   
-				 
- ?>
-				<tr>
-					<td data-title="selected" class="numeric">
-						<input name=ids[<?=$row->account_id?>] type="checkbox" class="inputbox unistyle" value="<?=$row->balance?>"/>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if (!empty($listpayees->accounts)) {
 
-					</td>
-					<td data-title="account id" class="numeric">123456</td>
-					 <td><?php echo $row ->username ?></td>
-      				<td><?php echo $row ->balance ?></td>   
-					 
-				</tr>
-				
-				 <?php  } }?>
-			</tbody>
-		</table>
-	
-		<div class="clear"></div>
-		<div class="blur"  style="text-align:left">
-						<div class="pagination pagination-toolbar">
-							 <a class="paginate_click" href="/index/payout?q=<?=$q?>&page=<?php echo ($page>1)?$page-1:1;?>">< Previous</a>
-<?php 
-for($i=1;$i<=$page;$i++){
-  if($i==$page){
+
+
+
+                        foreach ($listpayees->accounts as $row) {
+                            ?>
+                            <tr>
+                                <td data-title="selected" class="numeric">
+                                    <input name=ids[<?= $row->account_id ?>] type="checkbox" class="inputbox unistyle" value="<?= $row->balance ?>"/>
+
+                                </td>
+                                <td data-title="account id" class="numeric">123456</td>
+                                <td><?php echo $row->username ?></td>
+                                <td><?php echo $row->balance ?></td>   
+
+                            </tr>
+
+    <?php }
+} ?>
+                </tbody>
+            </table>
+
+            <div class="clear"></div>
+            <div class="blur"  style="text-align:left">
+                <div class="pagination pagination-toolbar">
+                    <a class="paginate_click" href="/index/payout?q=<?= $q ?>&page=<?php echo ($page > 1) ? $page - 1 : 1; ?>">< Previous</a>
+<?php
+for ($i = 1; $i <= $page; $i++) {
+    if ($i == $page) {
         echo " <span class='count'>$i</span> |";
-
-  }else{
-   echo "<a class='paginate_click' href='/index/payout?q=<?=$q?>&page=".$i."'>$i</a> |"; 
+    } else {
+        echo "<a class='paginate_click' href='/index/payout?q=<?=$q?>&page=" . $i . "'>$i</a> |";
     }
-  }
+}
 ?>
 
-  <a class="paginate_click" href="/index/payout?q=<?=$q?>&page=<?php echo $page+1;?>">Next ></a>
-						</div><input type="button" value="Approve" onclick="chkUser()">
-		</div>
- 
- 
-	</form>
-	</div>
+                    <a class="paginate_click" href="/index/payout?q=<?= $q ?>&page=<?php echo $page + 1; ?>">Next ></a>
+                </div><input type="button" value="Approve" onclick="chkUser()">
+            </div>
+
+
+        </form>
+    </div>
 </div>
 <script type="text/javascript">
-    <?php if(!empty($messages)){
-    
-    if($status == 'error'){?> 
-        jerror('<?php echo implode (' ',$messages) ?>');
-    
-    <?php  }else {?>
-        jsuccessAndRefresh('<?php echo implode (' ',$messages) ?>');
+<?php if (!empty($messages)) {
+
+    if ($status == 'error') {
+        ?>
+            jerror('<?php echo implode(' ', $messages) ?>');
+
+    <?php } else { ?>
+            jsuccessAndRefresh('<?php echo implode(' ', $messages) ?>');
     <?php }
-    
-    
-    }?>
-    
-    function chkUser (argument) {
-        var n = $( "input:checked" ).length;
+}
+?>
+
+    function chkUser(argument) {
+        var n = $("input:checked").length;
         var txt = $("#reason_other").val();
-        if (n==0) {
-            alert('please select user');  
-            return false;  
-        }else{
+        if (n == 0) {
+            alert('please select user');
+            return false;
+        } else {
             var url = "/index/payoutReason";
-            $mymodal.find(".modal-content").load(url, function() { 
-            $mymodal.modal(); 
-    });
-  
-      
-
-  }
-}
-function checkdata()
-{ 
-	  var n = $( "input:checked" ).length;
-	                      var txt = $("#reason_other").val();
+            $mymodal.find(".modal-content").load(url, function () {
+                $mymodal.modal();
+            });
 
 
-  if (n==0) {
 
-alert('please select ');    
-  }else if(!txt.trim()) {                  
-                        alert ('please give reason ');
-                          return false;
-                    
-                    
-                }
-    $.post($('#payout').attr('action'), $( ":input" ).serializeArray(), function( data ) {
-         //show in pop up
-        $( "#popup" ).find(".modal-content").html( data );
-});
-    return true;
-    
-}
+        }
+    }
+    function checkdata()
+    {
+        var n = $("input:checked").length;
+        var txt = $("#reason_other").val();
+        if (n == 0) {
+            alert('please select ');
+        } else if (!txt.trim()) {
+            alert('please give reason ');
+            return false;
+        }
+        $.post($('#payout').attr('action'), $(":input").serializeArray(), function (data) {
+            //show in pop up
+            $("#popup").find(".modal-content").html(data);
+        });
+        return true;
+
+    }
 
 
-doinitFrom();
+    doinitFrom();
 
 </script>
