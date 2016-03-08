@@ -35,7 +35,7 @@ $img = $MemHelper->ProfilePic($resultset -> metadata);
 ?>
         <tr>
           <td data-title="profile picture" class="numeric"><img src="<?=$img?>"/></td>
-          <td data-title="username" ><a href="#" class="white" data-toggle="modal" data-target="#adminModal"><?php echo $resultset -> username ?></a></td>
+          <td data-title="username" ><?php echo $resultset -> username ?></td>
           <td data-title="event name"><?php echo $resultset -> name ?></td>
           <td data-title="event media"><a href="/index/event-media/<?php echo $resultset -> event_id?>" class="white" data-toggle="modal" data-target="#popup">view fmedia</a></td>
           <td data-title="viewable"><?php echo $MemHelper->showDate($resultset -> viewable_from). ' - '. $MemHelper->showDate($resultset -> viewable_to) .'-'.$MemHelper->showDate($resultset -> self_destruct)?> </td>

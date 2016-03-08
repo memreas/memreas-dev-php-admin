@@ -610,7 +610,7 @@ class IndexController extends AbstractActionController {
 							'description' => $description 
 					) );
 					
-					$this->messages [] = 'User Dactivated';
+					$this->messages [] = 'User Deactivated';
 					$this->status = 'success';
 				}
 				
@@ -980,7 +980,7 @@ class IndexController extends AbstractActionController {
 							'description' => $description 
 					) );
 					
-					$this->messages [] = ' Admin User Dactivated';
+					$this->messages [] = ' Admin User Deactivated';
 					$this->status = 'success';
 				}
 				
