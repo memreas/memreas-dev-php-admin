@@ -1497,7 +1497,7 @@ class IndexController extends AbstractActionController {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			
-			$action = "stripe_MakePayout";
+			$action = "stripe_payeePayout";
 			$description = $page = $this->params ()->fromPost ( 'other_reason', '' );
 			$payee = $page = $this->params ()->fromPost ( 'ids', array () );
 			$sid = $_SESSION['sid'];
