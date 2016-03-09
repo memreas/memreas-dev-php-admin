@@ -154,6 +154,7 @@ class IndexController extends AbstractActionController {
 	}
 	public function fetchJson($action, $jsonArray) {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+                $jsonArray['type'] ='jsonp'; 
                                 
 		$guzzle = new \GuzzleHttp\Client ();
 		if (empty ( $_SESSION ['sid'] )) {
@@ -1470,7 +1471,7 @@ class IndexController extends AbstractActionController {
 			$sid = $_SESSION['sid'];
                         
                         //$jsonArr['action']= 'list';
-                        $jsonArr['type'] ='jsonp'; 
+                        
                         $jsonArr['json'] =array(
                                //   'sid' => $sid,
                                   'username'=> $username,
