@@ -1468,9 +1468,14 @@ class IndexController extends AbstractActionController {
 				$username = $search = substr ( $q, 1 );
 			}
 			$sid = $_SESSION['sid'];
-                        $jsonArr['username']= 'all';
                         
-			$xml = "<xml><sid>$sid</sid><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
+                        $jsonArr['action']= 'list';$jsonArr['type'] ='jsonp'; 
+                        $jsonArr['json'] =array(
+                                  'sid' => $sid,
+                                  'username'=> 'jmeah86'
+                                  );
+                                
+			//$xml = "<xml><sid>$sid</sid><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
 			$result = $this->fetchJson ( $action, $jsonArr );
                           $result = substr($result, strpos($result, "{") );
 			$data = json_decode ((string)$result);
