@@ -1423,10 +1423,10 @@ class IndexController extends AbstractActionController {
 		return $name;
 	}
 	public function payoutAction() {
-		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+		
 		if ($this->fetchSession ()) {
 			
-			$action = "listpayees";
+			$action = "stripe_listMassPayee";
 			$page = $this->params ()->fromQuery ( 'page', 1 );
 			$q = $this->params ()->fromQuery ( 'q', 0 );
 			$t = $q [0];
@@ -1439,7 +1439,7 @@ class IndexController extends AbstractActionController {
 			$result = $this->fetchXML ( $action, $xml );
                          
 			$data = json_decode ((string) $result);
-                                
+                          Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$data  );      
 			return array (
 					'listpayees' => $data,
 					'page' => $page,
