@@ -1521,8 +1521,9 @@ class IndexController extends AbstractActionController {
                                             );
                                 
                                 $result = $this->fetchJson ( $action, $jsonArr );
+                                Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$result  );  
 					 $data = json_decode ((string) $result);
-                                 Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$result  );    
+                                   
 					$response [] = array (
 							'account_id' => $account_id,
 							'status' => $data->status,
