@@ -1469,7 +1469,8 @@ class IndexController extends AbstractActionController {
 			}
 			$sid = $_SESSION['sid'];
                         
-                        $jsonArr['action']= 'list';$jsonArr['type'] ='jsonp'; 
+                        //$jsonArr['action']= 'list';
+                        $jsonArr['type'] ='jsonp'; 
                         $jsonArr['json'] =array(
                                   'sid' => $sid,
                                   'username'=> $username,
@@ -1502,7 +1503,7 @@ class IndexController extends AbstractActionController {
 			$sid = $_SESSION['sid'];
 			try {
 				foreach ( $payee as $account_id => $amount ) {
-					$xml = "<xml><sid>$sid</sid><makepayout><account_id>$account_id</account_id><amount>$amount</amount><description>$description</description></makepayout></xml>";
+					//$xml = "<xml><sid>$sid</sid><makepayout><account_id>$account_id</account_id><amount>$amount</amount><description>$description</description></makepayout></xml>";
 					error_log ( $xml );
 					
 					$result = $this->fetchXML ( $action, $xml );
