@@ -22,7 +22,9 @@ $routeparams = $routeMatch->getParams();
                 </thead>
                 <tbody>
                     <?php
-                    if (!empty($listpayees->accounts)) {
+                    if($listpayees->status == 'Failure'){
+                        echo "<tr><td colspan='4'>$listpayees->message</td></tr>";
+                    } elseif (!empty($listpayees->accounts)) {
 
 
 
