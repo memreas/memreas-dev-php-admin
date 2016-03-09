@@ -152,7 +152,40 @@ class IndexController extends AbstractActionController {
                                 
 		return $response->getBody ();
 	}
-	public function getAdminLogTable() {
+	public function fetchJson($action, $jsonArray) {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+                                
+		$guzzle = new \GuzzleHttp\Client ();
+		if (empty ( $_SESSION ['sid'] )) {
+			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::action:: $action ::xml::$xml" );
+			$response = $guzzle->post ( $this->url, [ 
+					'form_params' => [ 
+							'action' => $action,
+							'json' => json_encode($jsonArray)
+					] 
+			] );
+		} else {
+                    $admin_key = MUUID::fetchUUID();
+		    
+		    $this->redis->setCache('admin_key', $admin_key, MemreasConstants::REDIS_CACHE_USER_TTL);
+                    //$admin_key = $this->redis->getCache('admin_key');
+			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::action:: $action ::xml::$xml sid::" . $_SESSION ['sid']."admin:key".$admin_key );
+                        
+			$response = $guzzle->request ( 'POST', $this->url, [ 
+					'form_params' => [ 
+                                            
+							'action' => $action,
+							'json' => json_encode($jsonArray),
+							'sid' => empty ( $_SESSION ['sid'] ) ? '' : $_SESSION ['sid'] ,
+                                                        'admin_key' => $admin_key 
+					] 
+			] );
+		}
+                                
+		return $response->getBody ();
+	}
+	
+        public function getAdminLogTable() {
 		if (! $this->adminLogTable) {
 			$sm = $this->getServiceLocator ();
 			$this->adminLogTable = $sm->get ( 'Application\Model\AdminLogTable' );
@@ -1435,8 +1468,10 @@ class IndexController extends AbstractActionController {
 				$username = $search = substr ( $q, 1 );
 			}
 			$sid = $_SESSION['sid'];
+                        $jsonArr['username']= 'all';
+                        
 			$xml = "<xml><sid>$sid</sid><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
-			$result = $this->fetchXML ( $action, $xml );
+			$result = $this->fetchJson ( $action, $jsonArr );
                           $result = substr($result, strpos($result, "{") );
 			$data = json_decode ((string)$result);
                           Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$data  );      
