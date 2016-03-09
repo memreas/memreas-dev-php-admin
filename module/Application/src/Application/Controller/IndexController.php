@@ -1437,8 +1437,8 @@ class IndexController extends AbstractActionController {
 			$sid = $_SESSION['sid'];
 			$xml = "<xml><sid>$sid</sid><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
 			$result = $this->fetchXML ( $action, $xml );
-                         
-			$data = json_decode ((string) $result);
+                          $result = substr($result, strpos($result, "{") );
+			$data = json_decode ((string)$result);
                           Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$data  );      
 			return array (
 					'listpayees' => $data,
