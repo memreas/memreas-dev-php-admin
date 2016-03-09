@@ -1472,7 +1472,7 @@ class IndexController extends AbstractActionController {
                         //$jsonArr['action']= 'list';
                         $jsonArr['type'] ='jsonp'; 
                         $jsonArr['json'] =array(
-                                  'sid' => $sid,
+                               //   'sid' => $sid,
                                   'username'=> $username,
                             'page' => $page,
                             'limit' => 10
