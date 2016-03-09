@@ -1502,26 +1502,33 @@ class IndexController extends AbstractActionController {
 			$payee = $page = $this->params ()->fromPost ( 'ids', array () );
 			$sid = $_SESSION['sid'];
 			try {
+                            $payeeArr=array();
 				foreach ( $payee as $account_id => $amount ) {
 					//$xml = "<xml><sid>$sid</sid><makepayout><account_id>$account_id</account_id><amount>$amount</amount><description>$description</description></makepayout></xml>";
                                 
-					$jsonArr['json']= array (
-                                            'sid'=>$_SESSION['sid'],
-                                                            'account_id' => $account_id,
-                                                            'amount' => $amount,
-                                                            'description' => $description 
-							);
+					$payeeArr[]=array(
+                                            'account_id'=>$account_id,
+                                            'amount' => $amount,
+                                            'description' => $description
+                                            
+                                        );
                                 
-					$result = $this->fetchJson ( $action, $jsonArr );
+					
+				}
+                                $jsonArr['json']= array (
+                                            'sid'=>$_SESSION['sid'],
+                                            'payees' => $payeeArr
+                                            );
+                                
+                                $result = $this->fetchJson ( $action, $jsonArr );
 					 $data = json_decode ((string) $result);
-                                 Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$data  );    
+                                 Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$result  );    
 					$response [] = array (
 							'account_id' => $account_id,
 							'status' => $data->status,
 							'amount' => $amount,
 							'message' => $data->message 
 					);
-				}
 			} catch ( \Exception $e ) {
 			}
 			
