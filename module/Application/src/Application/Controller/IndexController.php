@@ -1430,7 +1430,7 @@ class IndexController extends AbstractActionController {
 			$page = $this->params ()->fromQuery ( 'page', 1 );
 			$q = $this->params ()->fromQuery ( 'q', 0 );
 			$t = $q [0];
-			$username = '';
+			$username = 'all';
 			if ($t == '@') {
 				$username = $search = substr ( $q, 1 );
 			}
