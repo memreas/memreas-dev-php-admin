@@ -1506,6 +1506,7 @@ class IndexController extends AbstractActionController {
 					//$xml = "<xml><sid>$sid</sid><makepayout><account_id>$account_id</account_id><amount>$amount</amount><description>$description</description></makepayout></xml>";
                                 
 					$jsonArr['json']= array (
+                                            'sid'=>$_SESSION['sid'],
                                                             'account_id' => $account_id,
                                                             'amount' => $amount,
                                                             'description' => $description 
