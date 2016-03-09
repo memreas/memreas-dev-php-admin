@@ -1473,10 +1473,9 @@ class IndexController extends AbstractActionController {
                         //$jsonArr['action']= 'list';
                         
                         $jsonArr['json'] =array(
-                               //   'sid' => $sid,
-                                  'username'=> $username,
-                            'page' => $page,
-                            'limit' => 10
+                                   'username'=> $username,
+                                   'page' => $page,
+                                   'limit' => 10
                                   );
                                 
 			//$xml = "<xml><sid>$sid</sid><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
@@ -1498,16 +1497,57 @@ class IndexController extends AbstractActionController {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			
-			$action = "makepayout";
+			$action = "stripe_MakePayout";
 			$description = $page = $this->params ()->fromPost ( 'other_reason', '' );
 			$payee = $page = $this->params ()->fromPost ( 'ids', array () );
 			$sid = $_SESSION['sid'];
 			try {
 				foreach ( $payee as $account_id => $amount ) {
 					//$xml = "<xml><sid>$sid</sid><makepayout><account_id>$account_id</account_id><amount>$amount</amount><description>$description</description></makepayout></xml>";
-					error_log ( $xml );
-					
-					$result = $this->fetchXML ( $action, $xml );
+                                
+					$jsonArr['json']= array (
+                                                            'account_id' => $account_id,
+                                                            'amount' => $amount,
+                                                            'description' => $description 
+							);
+                                
+					$result = $this->fetchJson ( $action, $jsonArr );
+					 $data = json_decode ((string) $result);
+                                 Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$data  );    
+					$response [] = array (
+							'account_id' => $account_id,
+							'status' => $data->status,
+							'amount' => $amount,
+							'message' => $data->message 
+					);
+				}
+			} catch ( \Exception $e ) {
+			}
+			
+			return array (
+					'response' => $response 
+			);
+		}
+	}
+        public function doRefundAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+		if ($this->fetchSession ()) {
+			
+			$action = "stripe_refund";
+			$description = $page = $this->params ()->fromPost ( 'other_reason', '' );
+			$payee = $page = $this->params ()->fromPost ( 'ids', array () );
+			$sid = $_SESSION['sid'];
+			try {
+				foreach ( $payee as $account_id => $amount ) {
+					//$xml = "<xml><sid>$sid</sid><makepayout><account_id>$account_id</account_id><amount>$amount</amount><description>$description</description></makepayout></xml>";
+                                
+					$jsonArr['json']= array (
+                                                            'account_id' => $account_id,
+                                                            'amount' => $amount,
+                                                            'reason' => $description 
+							);
+                                
+					$result = $this->fetchJson ( $action, $jsonArr );
 					 $data = json_decode ((string) $result);
                                 
 					$response [] = array (
@@ -1525,6 +1565,7 @@ class IndexController extends AbstractActionController {
 			);
 		}
 	}
+        
 	public function accountAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
