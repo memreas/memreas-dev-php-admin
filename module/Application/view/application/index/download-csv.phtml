@@ -4,7 +4,7 @@
 $fh = @fopen( 'php://output', 'w' );
 fputcsv($fh, $columnHeaders);
      
-foreach ($resultset as $key => $user) {
+foreach ($results as $key => $user) {
     $row=array();
     $userData =  $userTable->getUser($user->user_id);
     $row []= empty($userData)?$user->user_id:$userData -> username  ;
