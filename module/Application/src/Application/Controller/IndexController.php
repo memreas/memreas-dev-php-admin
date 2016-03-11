@@ -1123,7 +1123,8 @@ class IndexController extends AbstractActionController {
 				$emailpastmonth = $this->getNotificationTable ()->getEmailInviteCount ( strtotime ( '-1 month' ) );
 				$sid = $_SESSION['sid'];
 				$result = $this->fetchXML ( 'getplansstatic', '<xml><sid>$sid</sid><getplansstatic><static>1</static></getplansstatic></xml>' );
-				$summaryData = simplexml_load_string ( $result );
+				Mlog::addone ( __CLASS__ . __METHOD__. __LINE__, $result);
+                                $summaryData = simplexml_load_string ( $result );
 				
 				// echo '<pre>';print_r($summaryData);exit;
 			} catch ( Exception $exc ) {
