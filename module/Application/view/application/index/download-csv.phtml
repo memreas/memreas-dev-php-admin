@@ -4,7 +4,7 @@
 $fh = @fopen( 'php://output', 'w' );
 fputcsv($fh, $columnHeaders);
      
-foreach ($paginator as $key => $user) {
+foreach ($resultset as $key => $user) {
     $row=array();
     $userData =  $userTable->getUser($user->user_id);
     $row []= empty($userData)?$user->user_id:$userData -> username  ;
