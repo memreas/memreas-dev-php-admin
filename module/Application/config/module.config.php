@@ -113,7 +113,8 @@ return array (
 						'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
 						'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
 						'error/404' => __DIR__ . '/../view/error/404.phtml',
-						'error/index' => __DIR__ . '/../view/error/index.phtml' 
+						'error/index' => __DIR__ . '/../view/error/index.phtml',
+                                    'index/download-csv' => __DIR__ . '/../view/application/index/download-csv.phtml' 
 				),
 				'template_path_stack' => array (
 						__DIR__ . '/../view' 
@@ -121,9 +122,7 @@ return array (
 				'strategies' => array (
 						'ViewJsonStrategy' 
 				),
-				'template_map' => array (
-						'download/download-csv' => __DIR__ . '/../view/application/download/download-csv.phtml' 
-				) 
+				
 		),
 		'doctrine' => array (
 				'driver' => array (
