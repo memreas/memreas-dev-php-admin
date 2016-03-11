@@ -1125,7 +1125,7 @@ class IndexController extends AbstractActionController {
 				$result = $this->fetchXML ( 'getplansstatic', "<xml><sid>$sid</sid><getplansstatic><static>1</static></getplansstatic></xml>" );
 				$result = substr($result, strpos($result, "{") );
                                
-                                
+                            
                                 $summaryData = json_decode ((string) $result);
 				 Mlog::addone ( __CLASS__ . __METHOD__. __LINE__, $summaryData);
 				// echo '<pre>';print_r($summaryData);exit;
