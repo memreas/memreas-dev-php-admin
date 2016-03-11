@@ -2,7 +2,8 @@
     $MemHelper = $this->Mem();
     $userTable = $MemHelper->getUserTable();
 $fh = @fopen( 'php://output', 'w' );
-
+fputcsv($fh, $columnHeaders);
+     
 foreach ($paginator as $key => $user) {
     $row=array();
     $userData =  $userTable->getUser($user->user_id);
