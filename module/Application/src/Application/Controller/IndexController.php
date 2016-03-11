@@ -1521,7 +1521,7 @@ class IndexController extends AbstractActionController {
                                             );
                                 
                                 $result = $this->fetchJson ( $action, $jsonArr );
-                                Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$result  );  
+                                Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__.'$reslut->>',$result  );  
 					 $data = json_decode ((string) $result);
                                    
 					$response [] = array (
@@ -1810,7 +1810,7 @@ class IndexController extends AbstractActionController {
 			die ( 'done' );
 		}
 	}
-	protected function csvAction() {
+	public function csvAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$columnHeaders = array (
@@ -1829,7 +1829,7 @@ class IndexController extends AbstractActionController {
 			$filename = 'test.csv';
 			$resultset = $info;
 			$view = new ViewModel ();
-			$view->setTemplate ( 'download/download-csv' )->setVariable ( 'results', $resultset )->setTerminal ( true );
+			$view->setTemplate ( 'index/download-csv' )->setVariable ( 'results', $resultset )->setTerminal ( true );
 			$view->setVariable ( 'columnHeaders', $columnHeaders );
 			
 			$output = $this->getServiceLocator ()->get ( 'viewrenderer' )->render ( $view );
