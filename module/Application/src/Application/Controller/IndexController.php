@@ -1813,7 +1813,7 @@ class IndexController extends AbstractActionController {
 	public function csvAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
-			$columnHeaders = array (
+			$resultset = array (
 					'username',
 					'plan',
 					'data_usage',
@@ -1827,7 +1827,8 @@ class IndexController extends AbstractActionController {
 			);
 			$info = $this->getUserInfoTable ()->userInfoAll ()->toArray ();
 			$filename = 'test.csv';
-			$resultset = $info;
+                        
+			$resultset .= $info;
 			$view = new ViewModel ();
 			$view->setTemplate ( 'index/download-csv' )->setVariable ( 'results', $resultset )->setTerminal ( true );
 			$view->setVariable ( 'columnHeaders', $columnHeaders );
