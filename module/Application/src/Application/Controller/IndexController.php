@@ -1825,7 +1825,7 @@ class IndexController extends AbstractActionController {
 					'Avg. audio comment size',
 					'total % used' 
 			);
-			$info = $this->getUserInfoTable ()->userInfoAll ()->toArray ();
+			$info = $this->getUserInfoTable ()->userInfoAll ();
 			$filename = 'test.csv';
                         
 			$resultset= $info;
