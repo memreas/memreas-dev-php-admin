@@ -1,39 +1,22 @@
-<table class="col-md-12 table-bordered table-striped table-condensed cf nopadding">
-		<thead class="cf">
-			<tr>
-				<th>user</th>
-				<th>plan</th>
-				<th>data usage (GB)</th>
-				<th># of image</th>
-				<th>avg. image size</th>
-				<th># of video</th>
-				<th>avg. video size</th>
-				<th># of audio comments</th>
-				<th>avg. audio comment</th>
-				<th>total % used</th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php 
+<?php 
     $MemHelper = $this->Mem();
     $userTable = $MemHelper->getUserTable();
+$fh = @fopen( 'php://output', 'w' );
 
-foreach ($resultset as $key => $user) {
-$userData =  $userTable->getUser($user->user_id);
-
-?>
-			<tr>
-				<td data-title="user"><?php echo empty($userData)?$user->user_id:$userData -> username ?></td> 
-				<td data-title="plan"><?php echo $user -> plan ?></td> 
-				<td data-title="data usage (GB)"><?php echo $MemHelper->toByteString($user -> data_usage) ?></td>
-				<td data-title="# of image" ><?php echo $user -> total_image ?></td>
-				<td data-title="avg. image size"><?php echo $MemHelper->toByteString($user -> average_image) ?></td>
-				<td data-title="# of video"><?php echo $user -> total_vedio ?></td>
-				<td data-title="avg. video size"><?php echo $MemHelper->toByteString($user -> average_vedio) ?></td>
-				<td data-title="# of audio comments"><?php echo $user -> total_audio ?></td>
-				<td data-title="avg. audio comment"><?php echo $MemHelper->toByteString($user -> average_audio) ?></td>
-				<td data-title="total % used"><?php echo $MemHelper->calPercentge($user -> data_usage,$user -> allowed_size)?> %</td>
-			</tr>
-			<?php  } ?>
-		</tbody>
-	</table>
+foreach ($paginator as $key => $user) {
+    $row=array();
+    $userData =  $userTable->getUser($user->user_id);
+    $row []= empty($userData)?$user->user_id:$userData -> username  ;
+    $row []= $user -> plan ;
+    $row []= $MemHelper->toByteString($user -> data_usage) ;
+    $row []= $user -> total_image ;
+    $row []= $MemHelper->toByteString($user -> average_image) ;
+    $row []= $user -> total_vedio ;
+    $row []= $MemHelper->toByteString($user -> average_vedio) ;
+    $row []= $user -> total_audio ;
+    $row []= $MemHelper->toByteString($user -> average_audio) ;
+    $row []= $MemHelper->calPercentge($user -> data_usage,$user -> allowed_size).' %'; 
+    fputcsv($fh, $row);                
+} 
+fclose($fh);
+?> 
