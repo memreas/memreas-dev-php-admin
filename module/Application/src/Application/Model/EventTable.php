@@ -75,7 +75,7 @@ class EventTable
     {
         $select = $this->tableGateway->getSql()->select();
         // $select->from('event'); 
-        $select->columns(array('name')); 
+        //$select->columns(array('event_id')); 
         $select->join('user', "user.user_id = event.user_id", array('username', 'profile_photo')); 
         $select->join('media', new \Zend\Db\Sql\Expression('media.user_id = user.user_id AND media.is_profile_pic = 1'), array('metadata'),'left'); 
           if(!empty($order_by))  $select->order($order_by . ' ' . $order);
@@ -153,7 +153,7 @@ $data['self_destruct']= strtotime($data['self_destruct']);
        $select = new Select;
        $table=$this->tableGateway->getTable();
              $select = $this->tableGateway->getSql()->select();
-
+ $select->columns(array('event_id')); 
        // $select->from(array('e'=> $table));
                  $select->join(array("em"=>"event_media"),
                           'event.event_id=em.event_id',array(),'left')
