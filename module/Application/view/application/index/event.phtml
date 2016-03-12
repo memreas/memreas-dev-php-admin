@@ -34,6 +34,7 @@ $routeparams=$routeMatch->getParams();
 foreach ($paginator as $key => $resultset) { 
 $img = $MemHelper->ProfilePic($resultset -> metadata);
 $media = $eventTable->getEventMedia ( $resultset -> event_id);
+echo '<pre>';print_r($media);
 $mediaImg = $MemHelper->EventPic($media -> metadata);
 ?>
         <tr>
