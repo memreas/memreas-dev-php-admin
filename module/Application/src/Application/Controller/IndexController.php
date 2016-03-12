@@ -1297,7 +1297,8 @@ class IndexController extends AbstractActionController {
 					'order' => $order,
 					'q' => $q,
 					'page' => $page,
-					'url_order' => $url_order 
+					'url_order' => $url_order,
+                            'eventTable'=> $this->eventTable
 			);
 		}
 	}
