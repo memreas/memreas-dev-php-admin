@@ -44,11 +44,20 @@ $medias = $eventTable->getEventMedia ( $resultset -> event_id);
               <ul class="rslides">
               <?php
                 foreach($medias as $media){
-                     
-                $mediaImg = $MemHelper->EventPic($media->eventmedia);
-                echo "<li>$mediaImg</li>";
-                }
-              ?> 
+                 $json_array = json_decode ($media->eventmeta, true );
+             if(isset($json_array ['S3_files'] ['type'] ['image']))  
+             { 
+              $mediaUrl = $MemHelper->EventPic($media->eventmeta);
+
+ 
+              ?>
+          <img src="<?=$mediaUrl?>">
+          <?php }else{
+              $mediaUrl = $MemHelper->EventPic($media->eventmeta);
+          ?>
+         <a data-video="true" href="/jwplayer/index.html"><img src="<?=$mediaUrl?>"></a>
+        
+             <?php }}?> 
               </ul>
           </td>
           <td data-title="event media"><a href="/index/event-media/<?php echo $resultset -> event_id?>" class="white" data-toggle="modal" data-target="#popup">view media</a></td>
