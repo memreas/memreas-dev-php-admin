@@ -21,6 +21,7 @@ $routeparams=$routeMatch->getParams();
           <th><a href="#">profile picture</a></th>
           <th><a class="paginate_click" href="<?php echo $this->url('index',$routeparams,array('query' => array('page' => $page, 'order_by' => 'username', 'order' => $url_order)));?>">username</a></th>
           <th><a  clss="paginate_click" href="<?php echo $this->url('index',$routeparams,array('query' => array('page' => $page, 'order_by' => 'name', 'order' => $url_order)));?>">event name</a></th>
+          <th><a href="#">Thumbnail</a></th>
           <th><a href="#">event media</a></th>
           <th><a href="#">viewable</a></th>
           <th><a href="#">action</a></th>
@@ -30,14 +31,15 @@ $routeparams=$routeMatch->getParams();
         <?php 
          $MemHelper = $this->Mem();
 
-foreach ($paginator as $key => $resultset) {
+foreach ($paginator as $key => $resultset) {echo '<pre>';print_r($resultset);
 $img = $MemHelper->ProfilePic($resultset -> metadata);
 ?>
         <tr>
           <td data-title="profile picture" class="numeric"><img src="<?=$img?>"/></td>
           <td data-title="username" ><?php echo $resultset -> username ?></td>
           <td data-title="event name"><?php echo $resultset -> name ?></td>
-          <td data-title="event media"><a href="/index/event-media/<?php echo $resultset -> event_id?>" class="white" data-toggle="modal" data-target="#popup">view fmedia</a></td>
+          <td data-title="profile picture" class="numeric"><img src="<?=$img?>"/></td>
+          <td data-title="event media"><a href="/index/event-media/<?php echo $resultset -> event_id?>" class="white" data-toggle="modal" data-target="#popup">view media</a></td>
           <td data-title="viewable"><?php echo $MemHelper->showDate($resultset -> viewable_from). ' - '. $MemHelper->showDate($resultset -> viewable_to) .'-'.$MemHelper->showDate($resultset -> self_destruct)?> </td>
           <td data-title="action"><a href="/index/event-change-status/<?=$resultset ->event_id?>" class="white" data-toggle="modal" data-target="#popup">change status</a></td>
         </tr>

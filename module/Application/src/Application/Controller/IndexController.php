@@ -1416,7 +1416,7 @@ class IndexController extends AbstractActionController {
 					$event = $eventTable->getEvent ( $postData ['event_id'] );
 					$eventTable->update ( array (
 							'event_id' => $postdata ['event_id'],
-							'self_destruct' => $date1 
+							'report_flag' => 1 
 					), $postdata ['event_id'] );
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'event_disable',
