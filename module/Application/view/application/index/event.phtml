@@ -21,7 +21,7 @@ $routeparams=$routeMatch->getParams();
           <th><a href="#">profile picture</a></th>
           <th><a class="paginate_click" href="<?php echo $this->url('index',$routeparams,array('query' => array('page' => $page, 'order_by' => 'username', 'order' => $url_order)));?>">username</a></th>
           <th><a  clss="paginate_click" href="<?php echo $this->url('index',$routeparams,array('query' => array('page' => $page, 'order_by' => 'name', 'order' => $url_order)));?>">event name</a></th>
-          <th><a href="#">Thumbnail</a></th>
+          <th width="15%"><a href="#">Thumbnail</a></th>
           <th><a href="#">event media</a></th>
           <th><a href="#">viewable</a></th>
           <th><a href="#">action</a></th>
@@ -55,7 +55,7 @@ $medias = $eventTable->getEventMedia ( $resultset -> event_id);
           <?php }else{
               $mediaUrl = $MemHelper->EventPic($media->eventmeta);
           ?>
-         <a data-video="true" href="/jwplayer/index.html"><img src="<?=$mediaUrl?>"></a>
+          <a data-video="true" href="/jwplayer/index.html"><img  src="<?=$mediaUrl?>"></a>
         
              <?php }}?> 
               </ul>
