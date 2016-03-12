@@ -153,15 +153,22 @@ $data['self_destruct']= strtotime($data['self_destruct']);
     public function getEventMedia($event_id){
        $select = new Select;
        $table=$this->tableGateway->getTable();
-             $select = $this->tableGateway->getSql()->select(array("m"=>"media"));
-             $select->join(array("em"=>"event_media"),'em.media_id=m.media_id',array(),'left')
-                    ->where(array('em.event_id'=>$event_id));            
-          
+             $select = $this->tableGateway->getSql()->select();
+
+       // $select->from(array('e'=> $table));
+                 $select->join(array("em"=>"event_media"),
+                          'event.event_id=em.event_id',array(),'left')
+                    ->join(array("m"=>"media"),
+                          'm.media_id=em.media_id',array('media_id','user_id', 'is_profile_pic', 'sync_status', 'metadata'),'left')
+                   ->where(array('event.event_id'=>$event_id));            
+           // $statement = $this->tableGateway->getAdapter()->createStatement();
+        //$select->prepareStatement($this->tableGateway->getAdapter(), $statement);
+        //$data=$statement->execute();
                  $data = $this->tableGateway->selectWith($select);
 
 //            $sql = $select->__toString();
 ////                        
-    echo $select->getSqlString()."\n <pre>";        print_r($data->current());exit;
+  //   echo $select->getSqlString()."\n <pre>";        print_r($data->current());exit;
             return $data;
     }
 }
