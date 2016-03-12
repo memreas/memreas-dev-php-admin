@@ -3082,10 +3082,10 @@ footer{
 	background: linear-gradient(to bottom, #292929 0%,#000000 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#292929', endColorstr='#000000',GradientType=0 ); 
 }
- .rslides img {
+ .rslides .tumb-img {
   display: block;
   height: auto;
   float: left;
-  width: 80px;
+  width: 150px;
   border: 0;
   }
