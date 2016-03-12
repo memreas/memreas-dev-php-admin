@@ -51,11 +51,13 @@ $medias = $eventTable->getEventMedia ( $resultset -> event_id);
 
  
               ?>
-          <img  clss="thumb-img" src="<?=$mediaUrl?>">
+                  <li><img  clss="thumb-img" src="<?=$mediaUrl?>"></li>
           <?php }else{
               $mediaUrl = $MemHelper->EventPic($media->eventmeta);
           ?>
-          <a data-video="true" href="/jwplayer/index.html"><img clss="thumb-img"   src="<?=$mediaUrl?>"></a>
+                  <li>
+                      <a data-video="true" href="/jwplayer/index.html"><img clss="thumb-img"   src="<?=$mediaUrl?>"></a>
+                  </li>
         
              <?php }}?> 
               </ul>
