@@ -73,12 +73,11 @@ class EventTable
 	
     public function moderateFetchAll($where=null, $order_by=null, $order=null)
     {
-         
-      $select = $this->tableGateway->getSql()->select();
+        $select = $this->tableGateway->getSql()->select();
         // $select->from('event'); 
-        //$select->columns(array('event_id')); 
+        $select->columns(array('name')); 
         $select->join('user', "user.user_id = event.user_id", array('username', 'profile_photo')); 
-        $select->join('media', new \Zend\Db\Sql\Expression('media.user_id = user.user_id AND media.is_profile_pic = 1'), array('usermeta'=>'metadata'),'left'); 
+        $select->join('media', new \Zend\Db\Sql\Expression('media.user_id = user.user_id AND media.is_profile_pic = 1'), array('metadata'),'left'); 
           if(!empty($order_by))  $select->order($order_by . ' ' . $order);
          if(!empty($where))  $select->where($where);       
                
@@ -154,12 +153,12 @@ $data['self_destruct']= strtotime($data['self_destruct']);
        $select = new Select;
        $table=$this->tableGateway->getTable();
              $select = $this->tableGateway->getSql()->select();
-$select->columns(array());
+
        // $select->from(array('e'=> $table));
                  $select->join(array("em"=>"event_media"),
                           'event.event_id=em.event_id',array(),'left')
                     ->join(array("m"=>"media"),
-                          'm.media_id=em.media_id',array('media_id','user_id', 'is_profile_pic', 'sync_status', 'eventmeta' => 'metadata'),'left')
+                          'm.media_id=em.media_id',array('media_id','user_id', 'is_profile_pic', 'sync_status', 'metadata'),'left')
                    ->where(array('event.event_id'=>$event_id));            
            // $statement = $this->tableGateway->getAdapter()->createStatement();
         //$select->prepareStatement($this->tableGateway->getAdapter(), $statement);
