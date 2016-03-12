@@ -32,10 +32,8 @@ $routeparams=$routeMatch->getParams();
          $MemHelper = $this->Mem();
 
 foreach ($paginator as $key => $resultset) { 
-$img = $MemHelper->ProfilePic($resultset -> metadata);
-$media = $eventTable->getEventMedia ( $resultset -> event_id)->toArray();
-echo '<pre>';print_r($resultset);
-$mediaImg = $MemHelper->EventPic($media -> metadata);
+$img = $MemHelper->ProfilePic($resultset -> usermetadata);
+ $mediaImg = $MemHelper->EventPic($resultset -> metadata);
 ?>
         <tr>
           <td data-title="profile picture" class="numeric"><img src="<?=$img?>"/></td>
