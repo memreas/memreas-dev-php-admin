@@ -79,13 +79,7 @@ class EventTable
         //$select->columns(array('event_id')); 
         $select->join('user', "user.user_id = event.user_id", array('username', 'profile_photo')); 
         $select->join('media', new \Zend\Db\Sql\Expression('media.user_id = user.user_id AND media.is_profile_pic = 1'), array('usermeta'=>'metadata'),'left'); 
-        $select->join(array("em"=>"event_media"),
-                          'event.event_id=em.event_id',array(),'left');
-        $select->join(array("m"=>"media"),
-                          'm.media_id=em.media_id',array('media_id','user_id', 'is_profile_pic', 'sync_status', 'metadata'),'left');
-                    
-        
-        if(!empty($order_by))  $select->order($order_by . ' ' . $order);
+          if(!empty($order_by))  $select->order($order_by . ' ' . $order);
          if(!empty($where))  $select->where($where);       
                
          $results = $this->tableGateway->selectWith($select);
@@ -159,17 +153,10 @@ $data['self_destruct']= strtotime($data['self_destruct']);
     public function getEventMedia($event_id){
        $select = new Select;
        $table=$this->tableGateway->getTable();
-             $select = $this->tableGateway->getSql()->select();
-
-       // $select->from(array('e'=> $table));
-                 $select->join(array("em"=>"event_media"),
-                          'event.event_id=em.event_id',array(),'left')
-                    ->join(array("m"=>"media"),
-                          'm.media_id=em.media_id',array('media_id','user_id', 'is_profile_pic', 'sync_status', 'metadata'),'left')
-                   ->where(array('event.event_id'=>$event_id));            
-           // $statement = $this->tableGateway->getAdapter()->createStatement();
-        //$select->prepareStatement($this->tableGateway->getAdapter(), $statement);
-        //$data=$statement->execute();
+             $select = $this->tableGateway->getSql()->select(array("m"=>"media"));
+             $select->join(array("em"=>"event_media"),'em.media_id=m.media_id',array(),'left')
+                    ->where(array('em.event_id'=>$event_id));            
+          
                  $data = $this->tableGateway->selectWith($select);
 
 //            $sql = $select->__toString();
