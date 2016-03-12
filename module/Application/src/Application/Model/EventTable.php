@@ -161,7 +161,7 @@ $data['self_destruct']= strtotime($data['self_destruct']);
 
 //            $sql = $select->__toString();
 ////                        
-  //   echo $select->getSqlString()."\n <pre>";        print_r($data->current());exit;
+    echo $select->getSqlString()."\n <pre>";        print_r($data->current());exit;
             return $data;
     }
 }
