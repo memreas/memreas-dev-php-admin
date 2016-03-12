@@ -150,10 +150,10 @@ $data['self_destruct']= strtotime($data['self_destruct']);
     }
     
     public function getEventMedia($event_id){
-       $select = new Select;
-       $table=$this->tableGateway->getTable();
-             $select = $this->tableGateway->getSql()->select();
- $select->columns(array('event_id')); 
+        $select = new Select;
+        $table=$this->tableGateway->getTable();
+        $select = $this->tableGateway->getSql()->select();
+        //$select->columns(array('event_id')); 
        // $select->from(array('e'=> $table));
                  $select->join(array("em"=>"event_media"),
                           'event.event_id=em.event_id',array(),'left')
