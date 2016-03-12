@@ -78,7 +78,7 @@ class EventTable
         // $select->from('event'); 
         //$select->columns(array('event_id')); 
         $select->join('user', "user.user_id = event.user_id", array('username', 'profile_photo')); 
-        $select->join('media', new \Zend\Db\Sql\Expression('media.user_id = user.user_id AND media.is_profile_pic = 1'), array('metadata'),'left'); 
+        $select->join('media', new \Zend\Db\Sql\Expression('media.user_id = user.user_id AND media.is_profile_pic = 1'), array('usermeta'=>'metadata'),'left'); 
           if(!empty($order_by))  $select->order($order_by . ' ' . $order);
          if(!empty($where))  $select->where($where);       
                
