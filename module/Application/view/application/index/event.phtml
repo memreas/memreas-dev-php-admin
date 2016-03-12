@@ -41,7 +41,7 @@ $medias = $eventTable->getEventMedia ( $resultset -> event_id);
           <td data-title="username" ><?php echo $resultset -> username ?></td>
           <td data-title="event name"><?php echo $resultset -> name ?></td>
           <td data-title="profile picture" class="numeric">
-              <ul class="rslides">
+              <ul class="rslides-media">
               <?php
                 foreach($medias as $media){
                  $json_array = json_decode ($media->eventmeta, true );
@@ -51,12 +51,12 @@ $medias = $eventTable->getEventMedia ( $resultset -> event_id);
 
  
               ?>
-                  <li><img  class="thumb-img" src="<?=$mediaUrl?>"></li>
+                  <li><img   src="<?=$mediaUrl?>"></li>
           <?php }else{
               $mediaUrl = $MemHelper->EventPic($media->eventmeta);
           ?>
                   <li>
-                      <a data-video="true" href="/jwplayer/index.html"><img class="thumb-img"   src="<?=$mediaUrl?>"></a>
+                      <a data-video="true" href="/jwplayer/index.html"><img src="<?=$mediaUrl?>"></a>
                   </li>
         
              <?php }}?> 
@@ -92,6 +92,6 @@ echo $this->paginationControl(
 
 <script type="text/javascript">
 $(function () {
-   $(".rslides").responsiveSlides();
+   $(".rslides-media").responsiveSlides();
 });
 </script>
