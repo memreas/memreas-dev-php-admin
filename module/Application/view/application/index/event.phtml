@@ -31,7 +31,7 @@ $routeparams=$routeMatch->getParams();
         <?php 
          $MemHelper = $this->Mem();
 
-foreach ($paginator as $key => $resultset) {echo '<pre>';print_r($resultset);
+foreach ($paginator as $key => $resultset) { 
 $img = $MemHelper->ProfilePic($resultset -> metadata);
 ?>
         <tr>
