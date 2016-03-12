@@ -33,15 +33,24 @@ $routeparams=$routeMatch->getParams();
 
 foreach ($paginator as $key => $resultset) { 
 $img = $MemHelper->ProfilePic($resultset -> metadata);
-$media = $eventTable->getEventMedia ( $resultset -> event_id);
-echo '<pre>';print_r($media->toArray());
-$mediaImg = $MemHelper->EventPic($media -> metadata);
+$medias = $eventTable->getEventMedia ( $resultset -> event_id);
+
 ?>
         <tr>
           <td data-title="profile picture" class="numeric"><img src="<?=$img?>"/></td>
           <td data-title="username" ><?php echo $resultset -> username ?></td>
           <td data-title="event name"><?php echo $resultset -> name ?></td>
-          <td data-title="profile picture" class="numeric"><img src="<?=$mediaImg?>"/></td>
+          <td data-title="profile picture" class="numeric">
+              <ul class="rslides">
+              <?php
+                foreach($medias as $media){
+                     
+                $mediaImg = $MemHelper->EventPics($media->eventmedia);
+                echo "<li>$mediaImg</li>";
+                }
+              ?> 
+              </ul>
+          </td>
           <td data-title="event media"><a href="/index/event-media/<?php echo $resultset -> event_id?>" class="white" data-toggle="modal" data-target="#popup">view media</a></td>
           <td data-title="viewable"><?php echo $MemHelper->showDate($resultset -> viewable_from). ' - '. $MemHelper->showDate($resultset -> viewable_to) .'-'.$MemHelper->showDate($resultset -> self_destruct)?> </td>
           <td data-title="action"><a href="/index/event-change-status/<?=$resultset ->event_id?>" class="white" data-toggle="modal" data-target="#popup">change status</a></td>
