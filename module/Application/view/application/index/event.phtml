@@ -45,7 +45,7 @@ $medias = $eventTable->getEventMedia ( $resultset -> event_id);
               <?php
                 foreach($medias as $media){
                      
-                $mediaImg = $MemHelper->EventPics($media->eventmedia);
+                $mediaImg = $MemHelper->EventPic($media->eventmedia);
                 echo "<li>$mediaImg</li>";
                 }
               ?> 
