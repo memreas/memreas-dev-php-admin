@@ -79,7 +79,13 @@ class EventTable
         //$select->columns(array('event_id')); 
         $select->join('user', "user.user_id = event.user_id", array('username', 'profile_photo')); 
         $select->join('media', new \Zend\Db\Sql\Expression('media.user_id = user.user_id AND media.is_profile_pic = 1'), array('usermeta'=>'metadata'),'left'); 
-          if(!empty($order_by))  $select->order($order_by . ' ' . $order);
+        $select->join(array("em"=>"event_media"),
+                          'event.event_id=em.event_id',array(),'left');
+        $select->join(array("m"=>"media"),
+                          'm.media_id=em.media_id',array('media_id','user_id', 'is_profile_pic', 'sync_status', 'metadata'),'left');
+                    
+        
+        if(!empty($order_by))  $select->order($order_by . ' ' . $order);
          if(!empty($where))  $select->where($where);       
                
          $results = $this->tableGateway->selectWith($select);
