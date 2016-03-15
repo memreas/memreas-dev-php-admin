@@ -35,14 +35,23 @@ class Mem extends AbstractHelper
  		} 
         return is_array($url)?$url[0]:$url ;
     }
-    public function showDate($date="",$default='-') {
-        return empty($date)?$default:date('m-d-Y',$date);
+    public function showDate($date = "", $default = '-') {
+        $dt = date_create($date);
+        if ($dt !== null) {
+            return $dt->format('m-d-Y'); // insert this value
+        }
+        return $default;
     }
-    public function showFullDate($date="") {
-        return empty($date)?'-':date('Y-m-d H:i:s',$date);
+
+    public function showFullDate($date = "", $default = '-') {
+        $dt = date_create($date);
+        if ($dt !== null) {
+            return $dt->format('Y-m-d H:i:s'); // insert this value
+        }
+        return $default;
     }
-   
-	 /**
+
+    /**
      * Returns the formatted size
      *
      * @param  int $size
