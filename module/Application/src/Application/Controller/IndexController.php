@@ -1369,8 +1369,11 @@ class IndexController extends AbstractActionController {
 					$event = $eventTable->getEvent ( $postData ['event_id'] );
 					
 					$eventStatus = 'inactive';
-					if (($event->viewable_to >= $date || $event->viewable_to == '') && ($event->viewable_from <= $date || $event->viewable_from == '') && ($event->self_destruct >= $date || $event->self_destruct == ''))
-						$eventStatus = 'active';
+                                        if ($event->report_flag == 0){
+                                            $eventStatus = 'active';
+                                            
+                                        }
+						
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'event_disable',
 							'admin_id' => $_SESSION ['user_id'],
@@ -1382,7 +1385,7 @@ class IndexController extends AbstractActionController {
 					
 					$eventTable->update ( array (
 							'event_id' => $postdata ['event_id'],
-							'self_destruct' => $date1 
+							'report_flag' => 0 
 					), $postdata ['event_id'] );
 					return array (
 							'eventStatus' => $eventStatus,
