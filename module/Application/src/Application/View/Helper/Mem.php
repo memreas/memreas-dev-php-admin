@@ -36,7 +36,7 @@ class Mem extends AbstractHelper
         return is_array($url)?$url[0]:$url ;
     }
     public function showDate($date = "", $default = '-') {
-        $dt = date_create($date);
+        $dt = new \DateTime($date);
         if ($dt !== null) {
             return $dt->format('m-d-Y'); // insert this value
         }
@@ -44,7 +44,7 @@ class Mem extends AbstractHelper
     }
 
     public function showFullDate($date = "", $default = '-') {
-        $dt = date_create($date);
+        $dt = new \DateTime($date);
         if ($dt !== null) {
             return $dt->format('Y-m-d H:i:s'); // insert this value
         }
