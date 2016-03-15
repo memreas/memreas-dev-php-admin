@@ -231,7 +231,7 @@ class IndexController extends AbstractActionController {
 				$xml = $message_data ['json'];
 				
 				// Guzzle the LoginWeb Service
-				$result = $this->fetchXML ( $ws_action, $xml );
+				$result = $this->fetchJson ( $ws_action, $xml );
                                  
 				// Return the ajax call...
 				$callback_json = $callback . "(" . $result . ")";
