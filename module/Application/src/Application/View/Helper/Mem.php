@@ -36,9 +36,10 @@ class Mem extends AbstractHelper
         return is_array($url)?$url[0]:$url ;
     }
     public function showDate($date = "", $default = '-') {
-        $dt = new \DateTime($date);
+$dt = date_create($date);
+var_dump($dt);
         if (!$dt) {
-            return $dt->format('m-d-Y'); // insert this value
+            return date_format($dt,'m-d-Y'); // insert this value
         }
         return $default;
     }
