@@ -310,6 +310,7 @@ class IndexController extends AbstractActionController {
 	public function logoutAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		error_log ( 'IndexController -> logout->exec()...' . PHP_EOL );
+                if ($this->fetchSession ()) {
 		try {
 			if (! empty ( $_SESSION ['sid'] )) {
 				$result = $this->sessHandler->closeSessionWithSID ();
@@ -326,6 +327,7 @@ class IndexController extends AbstractActionController {
 		return $this->redirect ()->toRoute ( 'index', array (
 				'action' => "index" 
 		) );
+                }
 	}
 	public function setSession($username, $password) {
 		// Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
