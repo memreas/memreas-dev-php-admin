@@ -36,15 +36,15 @@ class Mem extends AbstractHelper
         return is_array($url)?$url[0]:$url ;
     }
     public function showDate($date = "", $default = '-') {
-        $dt = new \DateTime($date);
-        if ($dt !== null) {
+        $dt = new DateTime($date);
+        if (!$dt) {
             return $dt->format('m-d-Y'); // insert this value
         }
         return $default;
     }
 
     public function showFullDate($date = "", $default = '-') {
-        $dt = new \DateTime($date);
+        $dt = new DateTime($date);
         if ($dt !== null) {
             return $dt->format('Y-m-d H:i:s'); // insert this value
         }
