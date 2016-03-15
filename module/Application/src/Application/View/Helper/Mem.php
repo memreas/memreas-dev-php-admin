@@ -35,8 +35,8 @@ class Mem extends AbstractHelper
  		} 
         return is_array($url)?$url[0]:$url ;
     }
-    public function showDate($date="") {
-        return empty($date)?'-':date('m-d-Y',$date);
+    public function showDate($date="",$default='-') {
+        return empty($date)?$default:date('m-d-Y',$date);
     }
     public function showFullDate($date="") {
         return empty($date)?'-':date('Y-m-d H:i:s',$date);

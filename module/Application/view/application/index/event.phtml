@@ -24,6 +24,7 @@ $routeparams=$routeMatch->getParams();
           <th ><a href="#">Thumbnail</a></th>
           <th><a href="#">event media</a></th>
           <th><a href="#">viewable</a></th>
+          <th><a href="#">ghost</a></th>
           <th><a href="#">action</a></th>
         </tr>
       </thead>
@@ -63,7 +64,8 @@ $medias = $eventTable->getEventMedia ( $resultset -> event_id);
               </ul>
           </td>
           <td data-title="event media"><a href="/index/event-media/<?php echo $resultset -> event_id?>" class="white" data-toggle="modal" data-target="#popup">view media</a></td>
-          <td data-title="viewable"><?php echo $MemHelper->showDate($resultset -> viewable_from). ' - '. $MemHelper->showDate($resultset -> viewable_to) .'-'.$MemHelper->showDate($resultset -> self_destruct)?> </td>
+          <td data-title="viewable"><?php echo 'FROM:'.$MemHelper->showDate($resultset -> viewable_from,'n/a'). ' TO: '. $MemHelper->showDate($resultset -> viewable_to, 'n/a') ?> </td>
+          <td>$MemHelper->showDate($resultset -> self_destruct, 'n/a')</td>
           <td data-title="action"><a href="/index/event-change-status/<?=$resultset ->event_id?>" class="white" data-toggle="modal" data-target="#popup">change status</a></td>
         </tr>
        <?php } ?>

@@ -12,13 +12,13 @@ $MemHelper = $this->Mem();
                 $json_array = json_decode ($media->metadata, true );
              if(isset($json_array ['S3_files'] ['type'] ['image']))  
              { 
-              $mediaUrl = $MemHelper->EventPic($media->metadata);
+              $mediaUrl = $MemHelper->EventPic($media->eventmeta);
 
  
               ?>
           <img src="<?=$mediaUrl?>">
           <?php }else{
-				$mediaUrl = $MemHelper->EventPic($media->metadata);
+				$mediaUrl = $MemHelper->EventPic($media->eventmeta);
 
           ?>
          <a data-video="true" href="/jwplayer/index.html"><img src="<?=$mediaUrl?>"></a>
