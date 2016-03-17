@@ -11,8 +11,7 @@ $routeparams=$routeMatch->getParams();
 
 
 ?>
- <a  data-toggle="modal" data-target="#popup" href="/index/admin-add" class="btn  btn-primary btn-xs" role="group" aria-label="...">Add</a><button onclick= "adminedit()" class="btn btn-xs  btn-primary" role="group" aria-label="...">Edit</button><button onclick="admindelete()" class="btn btn-xs btn-primary" role="group" aria-label="...">Del</button>
-
+ 
 
  
 <div class="tabinnercontent">
@@ -61,6 +60,8 @@ $routeparams=$routeMatch->getParams();
 									</form>
 									<div class="clear"></div>
 									<div class="blur" style="text-align:left">
+                                                                            <a  data-toggle="modal" data-target="#popup" href="/index/admin-add" class="btn  btn-primary btn-xm" role="group" aria-label="...">Add</a><button onclick= "adminedit()" class="btn btn-xm  btn-primary" role="group" aria-label="...">Edit</button><button onclick="admindelete()" class="btn btn-xm btn-primary" role="group" aria-label="...">Del</button>
+
 													<div class="pagination pagination-toolbar">
                             <?php // add at the end of the file after the table
                               echo $this->paginationControl(

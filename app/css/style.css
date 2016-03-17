@@ -32,7 +32,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
  color:#FFF;
 }
 ::selection {
-	background: ##185EB3;
+	background: #185EB3;
 	color: #FFF;
 }
 ol, ul {
@@ -100,7 +100,6 @@ a {
 	outline: 0;
 	color: #d84429;
 }
-a:
 input, textarea {
 outline:0;
 }
@@ -3082,3 +3081,10 @@ footer{
 	background: linear-gradient(to bottom, #292929 0%,#000000 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#292929', endColorstr='#000000',GradientType=0 ); 
 }
+.rslides-media img {
+  display: block;
+  height: auto;
+  float: left;
+  width: 150px;
+  border: 0;
+  }

@@ -73,8 +73,7 @@ class EventTable
 	
     public function moderateFetchAll($where=null, $order_by=null, $order=null)
     {
-         
-      $select = $this->tableGateway->getSql()->select();
+        $select = $this->tableGateway->getSql()->select();
         // $select->from('event'); 
         //$select->columns(array('event_id')); 
         $select->join('user', "user.user_id = event.user_id", array('username', 'profile_photo')); 
@@ -151,15 +150,15 @@ $data['self_destruct']= strtotime($data['self_destruct']);
     }
     
     public function getEventMedia($event_id){
-       $select = new Select;
-       $table=$this->tableGateway->getTable();
-             $select = $this->tableGateway->getSql()->select();
-
+        $select = new Select;
+        $table=$this->tableGateway->getTable();
+        $select = $this->tableGateway->getSql()->select();
+        //$select->columns(array('event_id')); 
        // $select->from(array('e'=> $table));
                  $select->join(array("em"=>"event_media"),
                           'event.event_id=em.event_id',array(),'left')
                     ->join(array("m"=>"media"),
-                          'm.media_id=em.media_id',array('media_id','user_id', 'is_profile_pic', 'sync_status', 'metadata'),'left')
+                          'm.media_id=em.media_id',array('media_id','user_id', 'is_profile_pic', 'sync_status', 'eventmeta'=>'metadata'),'left')
                    ->where(array('event.event_id'=>$event_id));            
            // $statement = $this->tableGateway->getAdapter()->createStatement();
         //$select->prepareStatement($this->tableGateway->getAdapter(), $statement);

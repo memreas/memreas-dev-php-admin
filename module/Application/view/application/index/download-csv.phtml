@@ -1,0 +1,23 @@
+<?php 
+    $MemHelper = $this->Mem();
+    $userTable = $MemHelper->getUserTable();
+$fh = @fopen( 'php://output', 'w' );
+fputcsv($fh, $columnHeaders);
+     
+foreach ($results as $key => $user) {
+    $row=array();
+    $userData =  $userTable->getUser($user->user_id);
+    $row []= empty($userData)?$user->user_id:$userData -> username  ;
+    $row []= $user -> plan ;
+    $row []= $MemHelper->toByteString($user -> data_usage) ;
+    $row []= $user -> total_image ;
+    $row []= $MemHelper->toByteString($user -> average_image) ;
+    $row []= $user -> total_vedio ;
+    $row []= $MemHelper->toByteString($user -> average_vedio) ;
+    $row []= $user -> total_audio ;
+    $row []= $MemHelper->toByteString($user -> average_audio) ;
+    $row []= $MemHelper->calPercentge($user -> data_usage,$user -> allowed_size).' %'; 
+    fputcsv($fh, $row);                
+} 
+fclose($fh);
+?> 

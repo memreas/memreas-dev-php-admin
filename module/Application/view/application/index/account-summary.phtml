@@ -72,16 +72,16 @@
 							<div class="clear"></div>
 						</div>
 						<?php 
-      $status= strtolower(trim($summaryData->getplansresponse->status));
+      $status= strtolower(trim($summaryData->status));
      if($status == 'success'){;
       $c =false;
-      foreach ($summaryData->getplansresponse->plans->plan
+      foreach ($summaryData->plans->plans
 as $plan) {
       
       ?>
 						<div class="<?=(($c = !$c)?'grey':'blue')?>">
 							<div class="pull-left">
-							<?= $plan->plan_name ."($plan->plan_amount $plan->plan_currency)" ?>
+							<?= $plan->plan_name ."($plan->amount $plan->currency)" ?>
 							</div>
 							<div class="pull-right">
 							<?= $plan->user_count?>
@@ -204,7 +204,7 @@ as $plan) {
 							</div>
 						</div>
 						<div class="blue">
-							<div class="row">
+							<!--div class="row">
 								<div class="col-xs-3 text-center">
 									facebook
 								</div>
@@ -217,11 +217,11 @@ as $plan) {
 								<div class="col-xs-3 text-center">
 									<?php echo $fbpastmonth ?>
 								</div>
-							</div>
+							</div-->
 						</div>
 						
 						<div class="grey">
-							<div class="row">
+							<!--div class="row">
 								<div class="col-xs-3 text-center">
 									twitter
 								</div>
@@ -234,7 +234,7 @@ as $plan) {
 								<div class="col-xs-3 text-center">
 									<?php echo $twpastmonth ?>
 								</div>
-							</div>
+							</div-->
 						</div>
 						
 						<div class="grey">
