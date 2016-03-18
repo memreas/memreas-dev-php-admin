@@ -1511,34 +1511,49 @@ class IndexController extends AbstractActionController {
 			$payee = $page = $this->params ()->fromPost ( 'ids', array () );
 			$sid = $_SESSION['sid'];
 			try {
-                            $payeeArr=array();
-				foreach ( $payee as $account_id => $amount ) {
-					//$xml = "<xml><sid>$sid</sid><makepayout><account_id>$account_id</account_id><amount>$amount</amount><description>$description</description></makepayout></xml>";
-                                
-					$payeeArr[]=array(
+                            
+				foreach ( $payee as $account_id => $amount ) {                                
+					$payeeArr[0]=array(
                                             'account_id'=>$account_id,
                                             'amount' => $amount,
                                             'description' => $description
                                             
                                         );
                                 
-					
-				}
-                                $jsonArr['json']= array (
+					$jsonArr['json']= array (
                                             'sid'=>$_SESSION['sid'],
                                             'payees' => $payeeArr
-                                            );
-                                
-                                $result = $this->fetchJson ( $action, $jsonArr );
+                                            );   
+                                        $result = $this->fetchJson ( $action, $jsonArr );
                                 Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__.'$reslut->>',$result  );  
 					 $data = json_decode ((string) $result);
-                                   
-					$response [] = array (
-							'account_id' => $account_id,
+                                         if($data->status == 'Success'){
+                                            foreach ($data->payouts as $name => $value) {
+                                                $response [] = array (
+							'account_id' => $value->account_id,
 							'status' => $data->status,
-							'amount' => $amount,
-							'message' => $data->message 
-					);
+							'amount' => $value->amount,
+							'message' => $data->message,
+                                                        'username' => $name
+                                                    );
+                                            }
+                                                
+                                         }else{
+                                             $response [] = array (
+							'account_id' =>$account_id,
+							'status' => $data->status,
+							'amount' =>  $amount,
+							'message' => $data->message,
+                                                        'username' => ''
+                                                    );
+                                         }
+				
+                                }
+                                
+                                
+                             
+                                   
+					
 			} catch ( \Exception $e ) {
 			}
 			
@@ -1567,7 +1582,7 @@ class IndexController extends AbstractActionController {
                                 
 					$result = $this->fetchJson ( $action, $jsonArr );
 					 $data = json_decode ((string) $result);
-                                
+                                         Mlog::addone ( __CLASS__ . __METHOD__.__LINE__ ,  $data);
 					$response [] = array (
 							'account_id' => $account_id,
 							'status' => $data->status,
