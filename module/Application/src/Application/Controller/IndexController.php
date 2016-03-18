@@ -1605,11 +1605,21 @@ class IndexController extends AbstractActionController {
 			
 			$page = $this->params ()->fromQuery ( 'page', 1 );
 			$username = $this->getUserName ();
+                        $date_from = '2015-12-31';
+                        $date_to = '2016-12-31';
 			$sid = $_SESSION['sid'];
-			$result = $this->fetchXML ( 'getorderhistory', "<xml><sid>$sid</sid><getorderhistory><user_id>0</user_id><search_username>$username</search_username><page>$page</page><limit>15</limit></getorderhistory></xml>" );
-			$orderData = json_decode ((string) $result);
-                        //echo '<pre>';print_r($orderData);
-			return array (
+                        $action = "stripe_accounthistory";
+                                
+					$jsonArr['json']= array (
+                                                            'user_name' => $username,
+                                                            'date_from' => $amount,
+                                                            'date_to' => $description 
+							);
+                                
+					 $result = $this->fetchJson ( $action, $jsonArr );
+					 $data = json_decode ((string) $result);
+                                         Mlog::addone ( __CLASS__ . __METHOD__.__LINE__ ,  $data);
+ 			return array (
 					'orderData' => $orderData,
 					'page' => $page 
 			);
