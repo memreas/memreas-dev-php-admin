@@ -1605,6 +1605,7 @@ class IndexController extends AbstractActionController {
 			
 			$page = $this->params ()->fromQuery ( 'page', 1 );
 			$username = $this->getUserName ();
+                        $username = 'jmeah114';
                         $date_from = '2015-12-31';
                         $date_to = '2016-12-31';
 			$sid = $_SESSION['sid'];
@@ -1612,8 +1613,8 @@ class IndexController extends AbstractActionController {
                                 
 					$jsonArr['json']= array (
                                                             'user_name' => $username,
-                                                            'date_from' => $amount,
-                                                            'date_to' => $description 
+                                                            'date_from' => $date_from,
+                                                            'date_to' => $date_to 
 							);
                                 
 					 $result = $this->fetchJson ( $action, $jsonArr );
