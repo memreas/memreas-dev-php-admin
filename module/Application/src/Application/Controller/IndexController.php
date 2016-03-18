@@ -1612,6 +1612,7 @@ class IndexController extends AbstractActionController {
                         $action = "stripe_accounthistory";
                                 
 					$jsonArr['json']= array (
+                                                            'sid' =>$sid,
                                                             'user_name' => $username,
                                                             'date_from' => $date_from,
                                                             'date_to' => $date_to 
