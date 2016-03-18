@@ -1603,13 +1603,29 @@ class IndexController extends AbstractActionController {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			
+			$action = "stripe_listMassPayee";
 			$page = $this->params ()->fromQuery ( 'page', 1 );
-			$username = $this->getUserName ();
-                        $username = 'jmeah114';
-                        $date_from = '2015-12-31';
-                        $date_to = '2016-12-31';
+			$q = $this->params ()->fromQuery ( 'q', 0 );
+			$t = $q [0];
+			$username = 'all';
+			if ($t == '@') {
+				$username = $search = substr ( $q, 1 );
+			}
 			$sid = $_SESSION['sid'];
-                        $action = "stripe_accounthistory";
+                        
+                        //$jsonArr['action']= 'list';
+                        
+                        $jsonArr['json'] =array(
+                                   'username'=> $username,
+                                   'page' => $page,
+                                   'limit' => 10
+                                  );
+                                
+			//$xml = "<xml><sid>$sid</sid><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
+			$result = $this->fetchJson ( $action, $jsonArr );
+                          $result = substr($result, strpos($result, "{") );
+			$data = json_decode ((string)$result);
+                          Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$data  ); exit;
                                
 					$jsonArr['json']= array (
                                                             //'sid' =>$sid,
