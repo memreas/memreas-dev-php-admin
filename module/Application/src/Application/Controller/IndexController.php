@@ -1603,7 +1603,7 @@ class IndexController extends AbstractActionController {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			
-			$action = "stripe_listMassPayee";
+			$action = "stripe_accounthistory";
 			$page = $this->params ()->fromQuery ( 'page', 1 );
 			$q = $this->params ()->fromQuery ( 'q', 0 );
 			$t = $q [0];
