@@ -1607,7 +1607,7 @@ class IndexController extends AbstractActionController {
 			$page = $this->params ()->fromQuery ( 'page', 1 );
 			$q = $this->params ()->fromQuery ( 'q', 0 );
 			$t = $q [0];
-			$username = 'all';
+			$username = 'jmeah114';
 			if ($t == '@') {
 				$username = $search = substr ( $q, 1 );
 			}
@@ -1616,9 +1616,9 @@ class IndexController extends AbstractActionController {
                         //$jsonArr['action']= 'list';
                         
                         $jsonArr['json'] =array(
-                                   'username'=> $username,
-                                   'page' => $page,
-                                   'limit' => 10
+                                   'user_name' => $username,
+                                   'date_from' => $date_from,
+                                   'date_to' => $date_to 
                                   );
                                 
 			//$xml = "<xml><sid>$sid</sid><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
@@ -1627,16 +1627,7 @@ class IndexController extends AbstractActionController {
 			$data = json_decode ((string)$result);
                           Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$data  ); exit;
                                
-					$jsonArr['json']= array (
-                                                            //'sid' =>$sid,
-                                                            'user_name' => $username,
-                                                            'date_from' => $date_from,
-                                                            'date_to' => $date_to 
-							);
                                 
-					 $result = $this->fetchJson ( $action, $jsonArr );
-					 $data = json_decode ((string) $result);
-                                         Mlog::addone ( __CLASS__ . __METHOD__.__LINE__ ,  $result);
  			return array (
 					'orderData' => $orderData,
 					'page' => $page 
