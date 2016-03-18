@@ -1610,9 +1610,9 @@ class IndexController extends AbstractActionController {
                         $date_to = '2016-12-31';
 			$sid = $_SESSION['sid'];
                         $action = "stripe_accounthistory";
-                                
+                               
 					$jsonArr['json']= array (
-                                                            'sid' =>$sid,
+                                                            //'sid' =>$sid,
                                                             'user_name' => $username,
                                                             'date_from' => $date_from,
                                                             'date_to' => $date_to 
@@ -1620,7 +1620,7 @@ class IndexController extends AbstractActionController {
                                 
 					 $result = $this->fetchJson ( $action, $jsonArr );
 					 $data = json_decode ((string) $result);
-                                         Mlog::addone ( __CLASS__ . __METHOD__.__LINE__ ,  $data);
+                                         Mlog::addone ( __CLASS__ . __METHOD__.__LINE__ ,  $result);
  			return array (
 					'orderData' => $orderData,
 					'page' => $page 
