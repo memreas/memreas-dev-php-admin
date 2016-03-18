@@ -11,9 +11,6 @@ composer.lock
 composer.phar
 php_errors.log
 
-#ignore constants - use env specific via deploy script
-module/Application/src/Application/Model/MemreasConstants.php
-
 # Elastic Beanstalk Files
 .elasticbeanstalk
 
