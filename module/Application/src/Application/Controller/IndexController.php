@@ -120,32 +120,34 @@ class IndexController extends AbstractActionController {
 		}
 		return $xml->asXML ();
 	}
-	public function fetchXML($action, $xml) {
+	public function fetchXML($action, $xml, $user_id = '') {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
                                 
 		$guzzle = new \GuzzleHttp\Client ();
-		if (empty ( $_SESSION ['sid'] )) {
+		if (!empty ( $user_id )) {
+			$admin_key = MUUID::fetchUUID();
+			
+			$this->redis->setCache('admin_key', $admin_key, MemreasConstants::REDIS_CACHE_USER_TTL);
+			//$admin_key = $this->redis->getCache('admin_key');
+			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::action:: $action ::xml::$xml sid::" . $_SESSION ['sid']."admin:key".$admin_key );
+			
+			$response = $guzzle->request ( 'POST', $this->url, [
+					'form_params' => [
+			
+							'action' => $action,
+							'xml' => $xml,
+							'sid' => empty ( $_SESSION ['sid'] ) ? '' : $_SESSION ['sid'] ,
+							'admin_key' => $admin_key
+					]
+			] );
+				
+		} else {
+			
 			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::action:: $action ::xml::$xml" );
 			$response = $guzzle->post ( $this->url, [ 
 					'form_params' => [ 
 							'action' => $action,
 							'xml' => $xml 
-					] 
-			] );
-		} else {
-                    $admin_key = MUUID::fetchUUID();
-		    
-		    $this->redis->setCache('admin_key', $admin_key, MemreasConstants::REDIS_CACHE_USER_TTL);
-                    //$admin_key = $this->redis->getCache('admin_key');
-			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::action:: $action ::xml::$xml sid::" . $_SESSION ['sid']."admin:key".$admin_key );
-                        
-			$response = $guzzle->request ( 'POST', $this->url, [ 
-					'form_params' => [ 
-                                            
-							'action' => $action,
-							'xml' => $xml,
-							'sid' => empty ( $_SESSION ['sid'] ) ? '' : $_SESSION ['sid'] ,
-                                                         'admin_key' => $admin_key 
 					] 
 			] );
 		}
