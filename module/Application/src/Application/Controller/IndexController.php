@@ -1511,34 +1511,49 @@ class IndexController extends AbstractActionController {
 			$payee = $page = $this->params ()->fromPost ( 'ids', array () );
 			$sid = $_SESSION['sid'];
 			try {
-                            $payeeArr=array();
-				foreach ( $payee as $account_id => $amount ) {
-					//$xml = "<xml><sid>$sid</sid><makepayout><account_id>$account_id</account_id><amount>$amount</amount><description>$description</description></makepayout></xml>";
-                                
-					$payeeArr[]=array(
+                            
+				foreach ( $payee as $account_id => $amount ) {                                
+					$payeeArr[0]=array(
                                             'account_id'=>$account_id,
                                             'amount' => $amount,
                                             'description' => $description
                                             
                                         );
                                 
-					
-				}
-                                $jsonArr['json']= array (
+					$jsonArr['json']= array (
                                             'sid'=>$_SESSION['sid'],
                                             'payees' => $payeeArr
-                                            );
-                                
-                                $result = $this->fetchJson ( $action, $jsonArr );
+                                            );   
+                                        $result = $this->fetchJson ( $action, $jsonArr );
                                 Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__.'$reslut->>',$result  );  
 					 $data = json_decode ((string) $result);
-                                   
-					$response [] = array (
-							'account_id' => $account_id,
+                                         if($data->status == 'Success'){
+                                            foreach ($data->payouts as $name => $value) {
+                                                $response [] = array (
+							'account_id' => $value->account_id,
 							'status' => $data->status,
-							'amount' => $amount,
-							'message' => $data->message 
-					);
+							'amount' => $value->amount,
+							'message' => $data->message,
+                                                        'username' => $name
+                                                    );
+                                            }
+                                                
+                                         }else{
+                                             $response [] = array (
+							'account_id' =>$account_id,
+							'status' => $data->status,
+							'amount' =>  $amount,
+							'message' => $data->message,
+                                                        'username' => ''
+                                                    );
+                                         }
+				
+                                }
+                                
+                                
+                             
+                                   
+					
 			} catch ( \Exception $e ) {
 			}
 			
@@ -1567,7 +1582,7 @@ class IndexController extends AbstractActionController {
                                 
 					$result = $this->fetchJson ( $action, $jsonArr );
 					 $data = json_decode ((string) $result);
-                                
+                                         Mlog::addone ( __CLASS__ . __METHOD__.__LINE__ ,  $data);
 					$response [] = array (
 							'account_id' => $account_id,
 							'status' => $data->status,
@@ -1588,13 +1603,32 @@ class IndexController extends AbstractActionController {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			
+			$action = "stripe_accounthistory";
 			$page = $this->params ()->fromQuery ( 'page', 1 );
-			$username = $this->getUserName ();
+			$q = $this->params ()->fromQuery ( 'q', 0 );
+			$t = $q [0];
+			$username = 'jmeah114';
+			if ($t == '@') {
+				$username = $search = substr ( $q, 1 );
+			}
 			$sid = $_SESSION['sid'];
-			$result = $this->fetchXML ( 'getorderhistory', "<xml><sid>$sid</sid><getorderhistory><user_id>0</user_id><search_username>$username</search_username><page>$page</page><limit>15</limit></getorderhistory></xml>" );
-			$orderData = json_decode ((string) $result);
-                        //echo '<pre>';print_r($orderData);
-			return array (
+                        
+                        //$jsonArr['action']= 'list';
+                        
+                        $jsonArr['json'] =array(
+                                   'username' => $username,
+                                   'date_from' => $date_from,
+                                   'date_to' => $date_to 
+                                  );
+                                
+			//$xml = "<xml><sid>$sid</sid><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
+			$result = $this->fetchJson ( $action, $jsonArr );
+                          $result = substr($result, strpos($result, "{") );
+			$data = json_decode ((string)$result);
+                          Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$data  ); exit;
+                               
+                                
+ 			return array (
 					'orderData' => $orderData,
 					'page' => $page 
 			);
