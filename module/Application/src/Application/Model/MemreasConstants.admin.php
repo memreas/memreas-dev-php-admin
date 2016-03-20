@@ -10,7 +10,7 @@ class MemreasConstants {
 	const MEMREAS_WS = "https://memreasdev-wsj.memreas.com";
 	
 	// Redis constant section
-	const REDIS_SERVER_ENDPOINT = "10.179.214.247";
+	const REDIS_SERVER_ENDPOINT = "10.164.216.184";
 	const REDIS_SERVER_USE = true;
 	const REDIS_SERVER_SESSION_ONLY = true;
 	const REDIS_SERVER_PORT = "6379";
