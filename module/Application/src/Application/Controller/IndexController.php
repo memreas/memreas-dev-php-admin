@@ -1484,7 +1484,7 @@ class IndexController extends AbstractActionController {
                         //$jsonArr['action']= 'list';
                         
                         $jsonArr['json'] =array(
-                                   'user_name'=> $username,
+                                   'username'=> $username,
                                    'page' => $page,
                                    'limit' => 10
                                   );
@@ -1618,7 +1618,7 @@ class IndexController extends AbstractActionController {
                         //$jsonArr['action']= 'list';
                         
                         $jsonArr['json'] =array(
-                                   'username' => $username,
+                                   'user_name' => $username,
                                    'date_from' => $date_from,
                                    'date_to' => $date_to 
                                   );
