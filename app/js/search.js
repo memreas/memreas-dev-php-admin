@@ -50,7 +50,10 @@ $(document).ready(function() {
                     }
                    removeLoading('.top-search');
                    return process(users);
-                }, 'undefined', true);
+                }, renmoveLodingTag , true);
+                function renmoveLodingTag(){
+                    removeLoading('.top-search');
+                }
     }, 1000);
 
 
