@@ -219,11 +219,13 @@ removeLoading = function(element){
 
 function doSearchAjax(){
   getCurrentTab();
-
+var q= $('#search').val();
+var from = $('#from').val();
+var to = $('#to').val();
   if (typeof q == "undefined") {
     url = UI[UI.current_tab];
   }else{
-    var params = { q:q};
+    var params = { q:q, from:from, to:to};
     var str = jQuery.param( params );
     url =  UI[UI.current_tab] +'?'+ str;
   }
