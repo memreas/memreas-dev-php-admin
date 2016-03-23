@@ -9,6 +9,10 @@ $routeparams=$routeMatch->getParams();
 ?> 
 
 <div class="tabinnercontent">
+     User Name : <input id="actHisUser" type="text" name="username" value="<?=$username?>" />From  : <input id="actHisFrom" type="text" name="from" value="<?=$fromDate?>" />
+     To : <input id="actHisTo" type="text" name="to" value="<?=$toDate?>" /><input type="submit" value="Get History" onclick="accountHistory()" />
+        
+    
 	<div id="no-more-tables">
 		<table class="col-md-12 table-bordered table-striped table-condensed cf nopadding">
 			<thead class="cf">
@@ -18,29 +22,34 @@ $routeparams=$routeMatch->getParams();
 					<th>date of order</th>
 					<th>transaction type</th>
 					<th>pass / fail</th>
-					<th>status</th>
+					<th>Amount</th>
 					<th>action</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php 
-                                if(isset($orderData->orders)){
-				foreach ($orderData->orders as $row) {
- 				 
- ?>
+                                if($orderData->status == 'Success'){                                             
+				foreach ($orderData->transactions as $row) {
+ 				 $status = $row->pass_fail == 1?'pass':'fail';
+                                ?>
 				<tr>
-					<td data-title="order #" class="numeric"><?php echo $row ->transaction->transaction_id ?></td>
-  					<td><?php echo $row ->username ?></td>
-      				<td><?php echo $row ->balance->ending_balance ?></td>
-            		<td><?php echo $row->transaction ->transaction_type ?></td>   
-               		<td><?php echo $row->transaction ->amount ?></td>   
-               		<th>pass</th>
+                                    <td data-title="order #" class="numeric"><?php echo $row->transaction_id ?></td>
+                                    <td><?php echo $orderData->account->username ?></td>
+                                    <td><?php echo $row->transaction_sent ?></td>
+                                    <td><?php echo $row->transaction_type ?></td>
+                                    <td><?php echo $status ?></td>
+                                    <td><?php echo "$row->amount   $row->currency" ?></td>   
+                                   
 					<td data-title="action">
-						<a href="/index/account-dopayout/<?=$row->transaction->transaction_id?>" class="white" data-toggle="modal" data-target="#popup">View</a>
+						<!--a href="/index/<?=$row->transaction->transaction_id?>" class="white" data-toggle="modal" data-target="#popup">View</a-->
 					</td>
 				</tr>
 				
-                                <?php  } }?>
+                                <?php   }
+                                }elseif($orderData->status == 'Failure'){
+                                   echo "<tr><td>$orderData->status  : $orderData->message </td></tr>"; 
+                                }
+                                ?>
 			</tbody>
 		</table>
 		<div class="clear"></div>
@@ -63,3 +72,16 @@ for($i=1;$i<=$page;$i++){
 		</div>
 	</div>
 </div>
+<script>
+    function accountHistory(){
+        
+         var obj = {};
+        obj.username = $('#actHisUser').val();
+        obj.form = $('#actHisFrom').val();
+        obj.to = $('#actHisTo').val();
+        
+        
+        doSearchAjax(obj);
+        
+    }
+    </script>

@@ -42,7 +42,12 @@ class IndexController extends AbstractActionController {
 	protected $adminLogTable;
 	protected $sessHandler;
 	protected $redis;
+        protected $sm;
 	
+        public function __construct($sm)
+    {
+        $this->sm = $sm;
+    }
 	//
 	// start session by fetching and starting from REDIS - security check
 	//
@@ -51,8 +56,8 @@ class IndexController extends AbstractActionController {
 		// start capture
 		ob_start ();
 		
-		$this->redis = new AWSMemreasRedisCache ( $this->getServiceLocator () );
-		$this->sessHandler = new AWSMemreasAdminRedisSessionHandler ( $this->redis, $this->getServiceLocator () );
+		$this->redis = new AWSMemreasRedisCache ( $this->sm );
+		$this->sessHandler = new AWSMemreasAdminRedisSessionHandler ( $this->redis, $this->sm );
 		session_set_save_handler ( $this->sessHandler );
 		
 		// clean the buffer we don't need to send back session data
@@ -190,23 +195,23 @@ class IndexController extends AbstractActionController {
 	
         public function getAdminLogTable() {
 		if (! $this->adminLogTable) {
-			$sm = $this->getServiceLocator ();
-			$this->adminLogTable = $sm->get ( 'Application\Model\AdminLogTable' );
+			
+			$this->adminLogTable = $this->sm->get ( 'Application\Model\AdminLogTable' );
 		}
 		return $this->adminLogTable;
 	}
 	protected $feedbackTable;
 	public function getFeedbackTable() {
 		if (! $this->feedbackTable) {
-			$sm = $this->getServiceLocator ();
-			$this->feedbackTable = $sm->get ( 'Application\Model\FeedbackTable' );
+			
+			$this->feedbackTable = $this->sm->get ( 'Application\Model\FeedbackTable' );
 		}
 		return $this->feedbackTable;
 	}
 	public function getUserInfoTable() {
 		if (! $this->userinfoTable) {
-			$sm = $this->getServiceLocator ();
-			$this->userinfoTable = $sm->get ( 'Application\Model\UserInfoTable' );
+			
+			$this->userinfoTable = $this->sm->get ( 'Application\Model\UserInfoTable' );
 		}
 		return $this->userinfoTable;
 	}
@@ -361,7 +366,7 @@ class IndexController extends AbstractActionController {
 		/*
 		 * Fetch the user's ip address
 		 */
-		$ipAddress = $this->getServiceLocator ()->get ( 'Request' )->getServer ( 'REMOTE_ADDR' );
+		$ipAddress = $this->sm->get ( 'Request' )->getServer ( 'REMOTE_ADDR' );
 		if (! empty ( $_SERVER ['HTTP_CLIENT_IP'] )) {
 			$ipAddress = $_SERVER ['HTTP_CLIENT_IP'];
 		} else if (! empty ( $_SERVER ['HTTP_X_FORWARDED_FOR'] )) {
@@ -438,17 +443,17 @@ class IndexController extends AbstractActionController {
 	}
 	public function getUserTable() {
 		if (! $this->userTable) {
-			$sm = $this->getServiceLocator ();
-			$this->userTable = $sm->get ( 'Application\Model\UserTable' );
-			;
+                                
+			$this->userTable = $this->sm->get ( 'Application\Model\UserTable' );
+			
 		}
 		return $this->userTable;
 	}
 	public function getAminUserTable() {
 		if (! $this->userTable) {
-			$sm = $this->getServiceLocator ();
-			$this->userTable = $sm->get ( 'Application\Model\AdminUserTable' );
-			;
+			
+			$this->userTable = $this->sm->get ( 'Application\Model\AdminUserTable' );
+		
 		}
 		return $this->userTable;
 	}
@@ -772,8 +777,8 @@ class IndexController extends AbstractActionController {
 	protected $AdminUserTable;
 	public function getAdminUserTable() {
 		if (! $this->AdminUserTable) {
-			$sm = $this->getServiceLocator ();
-			$this->AdminUserTable = $sm->get ( 'Application\Model\AdminUserTable' );
+			
+			$this->AdminUserTable = $this->sm->get ( 'Application\Model\AdminUserTable' );
 		}
 		return $this->AdminUserTable;
 	}
@@ -904,11 +909,11 @@ class IndexController extends AbstractActionController {
 					);
 					$viewModel = new ViewModel ( $viewVar );
 					$viewModel->setTemplate ( 'email/register' );
-					$viewRender = $this->getServiceLocator ()->get ( 'ViewRenderer' );
+					$viewRender = $this->sm->get ( 'ViewRenderer' );
 					$html = $viewRender->render ( $viewModel );
 					$subject = 'Welcome to Event App';
 					if (empty ( $aws_manager ))
-						$aws_manager = new AWSManagerSender ( $this->getServiceLocator () );
+						$aws_manager = new AWSManagerSender ( $this->sm );
 					$aws_manager->sendSeSMail ( $to, $subject, $html ); // Active this line when app go live
 					$this->status = $status = 'Success';
 					$message = "Welcome to Event App. Your profile has been created.";
@@ -1083,16 +1088,16 @@ class IndexController extends AbstractActionController {
 	protected $notifcationTable;
 	public function getNotificationTable() {
 		if (! $this->notifcationTable) {
-			$sm = $this->getServiceLocator ();
-			$this->notifcationTable = $sm->get ( 'Application\Model\NotficationTable' );
+			
+			$this->notifcationTable = $this->sm->get ( 'Application\Model\NotficationTable' );
 		}
 		return $this->notifcationTable;
 	}
 	protected $friendTable;
 	public function getFriendTable() {
 		if (! $this->friendTable) {
-			$sm = $this->getServiceLocator ();
-			$this->friendTable = $sm->get ( 'Application\Model\FriendTable' );
+			
+			$this->friendTable = $this->sm->get ( 'Application\Model\FriendTable' );
 		}
 		return $this->friendTable;
 	}
@@ -1209,34 +1214,40 @@ class IndexController extends AbstractActionController {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$sid = $_SESSION['sid'];
-			// $id = $this->params()->fromRoute('id');
-			// $this->getAdminLogTable()->saveLog(array('log_type'=>'feedback_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$id));
-			$username = $this->getUserName ();
-                        //$username = "jmeah80";
-			$page = $this->params ()->fromQuery ( 'page', 1 );
-			
-			// $result = $this->fetchXML ( 'getorderhistory', "<xml><getorderhistory><user_id>0</user_id><search_username>$username</search_username><page>$page</page><limit>15</limit></getorderhistory></xml>" );
-			/**
-			 * Set admin key as UUID with username as value 
-			 * - pass admin_key as request parameter
-			 * - proxy will check for admin_key and pass through
-			 * - set ttl t0 5 mins since this is user data
-			 */
-			
-			$result = $this->fetchXML ( "getorderhistory", "
-					<xml>
-						<sid>$sid</sid>
-                                                <search_username>$username</search_username>
-						<getorderhistory>
-						<user_id></user_id>
-						<page>$page</page>
-						<limit>15</limit>
-						</getorderhistory></xml>" );
-			$orderData = json_decode ((string) $result);
-                               error_log('orderhistory result->'.print_r($orderData,true));
-			return array (
-					'orderData' => $orderData,
-					'page' => $page 
+                        $page       = $this->params()->fromQuery( 'page', 1 );	
+                        $limit       = $this->params()->fromQuery( 'limit', 1000);
+			$username = $this->params()->fromQuery( 'username','jmeah114' );
+                        $action = "stripe_getorderhistory";
+			$sid = $_SESSION['sid'];
+                        $user_id= $this->params()->fromQuery( 'user_id', '' );
+                        
+                        //$jsonArr['action']= 'list';
+                        
+                        $jsonArr['json'] =array(
+                                   'user_id' => $user_id,
+                                   'sid' => $sid,
+                                   'search_username' => $username,
+                                   'page' => $page ,
+                                'limit' => $limit ,
+                                  );
+                        if(empty($username)){
+                            $data=array();
+                        }else{
+                            $result = $this->fetchJson ( $action, $jsonArr );
+                        $result = substr($result, strpos($result, "{") );
+			$data = json_decode ((string)$result);
+                          Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$data  ); 
+                        }        
+ 			
+                               
+                            
+ 			return array (
+					'orderData' => $data,
+					'page' => $page,
+                            'user_id'=>$user_id,
+                            'page' => $page,
+                            'limit' => $limit,
+                            'username' =>$username
 			);
 		}
 	}
@@ -1308,8 +1319,8 @@ class IndexController extends AbstractActionController {
 	}
 	public function getEventTable() {
 		if (! $this->eventTable) {
-			$sm = $this->getServiceLocator ();
-			$this->eventTable = $sm->get ( 'Application\Model\EventTable' );
+			
+			$this->eventTable = $this->sm->get ( 'Application\Model\EventTable' );
 		}
 		return $this->eventTable;
 	}
@@ -1604,35 +1615,40 @@ class IndexController extends AbstractActionController {
 	public function accountAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
-			
-			$action = "stripe_accounthistory";
-			$page = $this->params ()->fromQuery ( 'page', 1 );
-			$q = $this->params ()->fromQuery ( 'q', 0 );
-			$t = $q [0];
-			$username = 'jmeah114';
-			if ($t == '@') {
-				$username = $search = substr ( $q, 1 );
-			}
+                        $defaultFrom = date('Y-m-d', strtotime("-1 month"));
+                        $defaultTo  =  date('Y-m-d',  strtotime('now'));
+			$fromDate   = $this->params()->fromQuery( 'from',$defaultFrom);
+                        $toDate     = $this->params()->fromQuery( 'to',$defaultTo);
+                        $page       = $this->params()->fromQuery( 'page', 1 );	
+			$username = $this->params()->fromQuery( 'username','' );
+                        $action = "stripe_accounthistory";
 			$sid = $_SESSION['sid'];
                         
                         //$jsonArr['action']= 'list';
                         
                         $jsonArr['json'] =array(
                                    'user_name' => $username,
-                                   'date_from' => $date_from,
-                                   'date_to' => $date_to 
+                                   'sid' => $sid,
+                                   'date_from' => $fromDate,
+                                   'date_to' => $toDate 
                                   );
-                                
-			//$xml = "<xml><sid>$sid</sid><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
-			$result = $this->fetchJson ( $action, $jsonArr );
-                          $result = substr($result, strpos($result, "{") );
+                        if(empty($username)){
+                            $data=array();
+                        }else{
+                            $result = $this->fetchJson ( $action, $jsonArr );
+                        $result = substr($result, strpos($result, "{") );
 			$data = json_decode ((string)$result);
-                          Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$data  ); exit;
+                          Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$data  ); 
+                        }        
+ 			
                                
-                                
+                            
  			return array (
-					'orderData' => $orderData,
-					'page' => $page 
+					'orderData' => $data,
+					'page' => $page,
+                            'fromDate'=>$fromDate,
+                            'toDate' => $toDate,
+                            'username' =>$username
 			);
 		}
 	}
@@ -1735,7 +1751,7 @@ class IndexController extends AbstractActionController {
 		
 		if ($this->fetchSession ()) {
 			ini_set ( 'max_execution_time', 500 );
-			$aws = new AWSManagerSender ( $this->getServiceLocator () );
+			$aws = new AWSManagerSender ( $this->sm );
 			$client = $aws->s3;
 			$bucket = 'memreasdevsec';
 			$total_used = 0.0;
@@ -1878,7 +1894,7 @@ class IndexController extends AbstractActionController {
 			$view->setTemplate ( 'index/download-csv' )->setVariable ( 'results', $resultset )->setTerminal ( true );
 			$view->setVariable ( 'columnHeaders', $columnHeaders );
 			
-			$output = $this->getServiceLocator ()->get ( 'viewrenderer' )->render ( $view );
+			$output = $this->sm->get ( 'viewrenderer' )->render ( $view );
 			
 			$response = $this->getResponse ();
 			
