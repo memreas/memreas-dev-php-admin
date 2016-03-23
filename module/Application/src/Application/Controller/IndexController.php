@@ -1636,7 +1636,7 @@ class IndexController extends AbstractActionController {
                                
                             
  			return array (
-					'orderData' => $orderData,
+					'orderData' => $data,
 					'page' => $page 
 			);
 		}
