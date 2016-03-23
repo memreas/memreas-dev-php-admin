@@ -102,7 +102,7 @@ return array (
 				'factories' => array (
 						'Application\Controller\Index' =>    function($cm) {
                                                 $sm   = $cm->getServiceLocator();
-                                                $controller = new Application\Controller\IndexController($sm);
+                                                $controller = new \Application\Controller\IndexController($sm);
                                                 return $controller;
                                                 }
             ),
