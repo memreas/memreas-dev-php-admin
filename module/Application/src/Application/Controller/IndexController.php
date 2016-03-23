@@ -1611,10 +1611,10 @@ class IndexController extends AbstractActionController {
 		if ($this->fetchSession ()) {
                         $defaultFrom =   date('Y-m-d',  strtotime('now'));
                         $defaultTo  =   date('Y-m-d', strtotime("-1 month"));
-			$fromDate = $this->params()->fromQuery ( 'from',$defaultFrom);
-                        $toDate = $this->params() ->fromQuery ( 'to',$defaultTo);
-                        $page = $this->params ()->fromQuery ( 'page', 1 );	
-			$username = $this->params ()->fromQuery ( 'username','' );
+			$fromDate   = $this->params()->fromQuery( 'from',$defaultFrom);
+                        $toDate     = $this->params()->fromQuery( 'to',$defaultTo);
+                        $page       = $this->params()->fromQuery( 'page', 1 );	
+			$username = $this->params()->fromQuery( 'username','' );
                         $action = "stripe_accounthistory";
 			$sid = $_SESSION['sid'];
                         
