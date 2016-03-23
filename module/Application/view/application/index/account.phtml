@@ -47,7 +47,7 @@ $routeparams=$routeMatch->getParams();
 				
                                 <?php   }
                                 }else{
-                                    
+                                   echo "<tr><td>$orderData->status  : $orderData->message </td></tr>"; 
                                 }
                                 ?>
 			</tbody>
@@ -75,7 +75,7 @@ for($i=1;$i<=$page;$i++){
 <script>
     function accountHistory(){
         
-         var obj = new Object();
+         var obj = {};
         obj.username = $('#actHisUser').val();
         obj.form = $('#actHisFrom').val();
         obj.to = $('#actHisTo').val();
