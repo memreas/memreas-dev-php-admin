@@ -42,6 +42,7 @@ class IndexController extends AbstractActionController {
 	protected $adminLogTable;
 	protected $sessHandler;
 	protected $redis;
+        protected $sm;
 	
         public function __construct($sm)
     {
@@ -55,8 +56,8 @@ class IndexController extends AbstractActionController {
 		// start capture
 		ob_start ();
 		
-		$this->redis = new AWSMemreasRedisCache ( $this->getServiceLocator () );
-		$this->sessHandler = new AWSMemreasAdminRedisSessionHandler ( $this->redis, $this->getServiceLocator () );
+		$this->redis = new AWSMemreasRedisCache ( $this->sm );
+		$this->sessHandler = new AWSMemreasAdminRedisSessionHandler ( $this->redis, $this->sm );
 		session_set_save_handler ( $this->sessHandler );
 		
 		// clean the buffer we don't need to send back session data
@@ -365,7 +366,7 @@ class IndexController extends AbstractActionController {
 		/*
 		 * Fetch the user's ip address
 		 */
-		$ipAddress = $this->getServiceLocator ()->get ( 'Request' )->getServer ( 'REMOTE_ADDR' );
+		$ipAddress = $this->sm->get ( 'Request' )->getServer ( 'REMOTE_ADDR' );
 		if (! empty ( $_SERVER ['HTTP_CLIENT_IP'] )) {
 			$ipAddress = $_SERVER ['HTTP_CLIENT_IP'];
 		} else if (! empty ( $_SERVER ['HTTP_X_FORWARDED_FOR'] )) {
@@ -444,7 +445,7 @@ class IndexController extends AbstractActionController {
 		if (! $this->userTable) {
                                 
 			$this->userTable = $this->sm->get ( 'Application\Model\UserTable' );
-			;
+			
 		}
 		return $this->userTable;
 	}
@@ -452,7 +453,7 @@ class IndexController extends AbstractActionController {
 		if (! $this->userTable) {
 			
 			$this->userTable = $this->sm->get ( 'Application\Model\AdminUserTable' );
-			;
+		
 		}
 		return $this->userTable;
 	}
@@ -908,11 +909,11 @@ class IndexController extends AbstractActionController {
 					);
 					$viewModel = new ViewModel ( $viewVar );
 					$viewModel->setTemplate ( 'email/register' );
-					$viewRender = $this->getServiceLocator ()->get ( 'ViewRenderer' );
+					$viewRender = $this->sm->get ( 'ViewRenderer' );
 					$html = $viewRender->render ( $viewModel );
 					$subject = 'Welcome to Event App';
 					if (empty ( $aws_manager ))
-						$aws_manager = new AWSManagerSender ( $this->getServiceLocator () );
+						$aws_manager = new AWSManagerSender ( $this->sm );
 					$aws_manager->sendSeSMail ( $to, $subject, $html ); // Active this line when app go live
 					$this->status = $status = 'Success';
 					$message = "Welcome to Event App. Your profile has been created.";
@@ -1740,7 +1741,7 @@ class IndexController extends AbstractActionController {
 		
 		if ($this->fetchSession ()) {
 			ini_set ( 'max_execution_time', 500 );
-			$aws = new AWSManagerSender ( $this->getServiceLocator () );
+			$aws = new AWSManagerSender ( $this->sm );
 			$client = $aws->s3;
 			$bucket = 'memreasdevsec';
 			$total_used = 0.0;
@@ -1883,7 +1884,7 @@ class IndexController extends AbstractActionController {
 			$view->setTemplate ( 'index/download-csv' )->setVariable ( 'results', $resultset )->setTerminal ( true );
 			$view->setVariable ( 'columnHeaders', $columnHeaders );
 			
-			$output = $this->getServiceLocator ()->get ( 'viewrenderer' )->render ( $view );
+			$output = $this->sm->get ( 'viewrenderer' )->render ( $view );
 			
 			$response = $this->getResponse ();
 			
