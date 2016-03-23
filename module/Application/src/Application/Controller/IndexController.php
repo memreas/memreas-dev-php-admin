@@ -194,23 +194,23 @@ class IndexController extends AbstractActionController {
 	
         public function getAdminLogTable() {
 		if (! $this->adminLogTable) {
-			$sm = $this->getServiceLocator ();
-			$this->adminLogTable = $sm->get ( 'Application\Model\AdminLogTable' );
+			
+			$this->adminLogTable = $this->sm->get ( 'Application\Model\AdminLogTable' );
 		}
 		return $this->adminLogTable;
 	}
 	protected $feedbackTable;
 	public function getFeedbackTable() {
 		if (! $this->feedbackTable) {
-			$sm = $this->getServiceLocator ();
-			$this->feedbackTable = $sm->get ( 'Application\Model\FeedbackTable' );
+			
+			$this->feedbackTable = $this->sm->get ( 'Application\Model\FeedbackTable' );
 		}
 		return $this->feedbackTable;
 	}
 	public function getUserInfoTable() {
 		if (! $this->userinfoTable) {
-			$sm = $this->getServiceLocator ();
-			$this->userinfoTable = $sm->get ( 'Application\Model\UserInfoTable' );
+			
+			$this->userinfoTable = $this->sm->get ( 'Application\Model\UserInfoTable' );
 		}
 		return $this->userinfoTable;
 	}
@@ -450,8 +450,8 @@ class IndexController extends AbstractActionController {
 	}
 	public function getAminUserTable() {
 		if (! $this->userTable) {
-			$sm = $this->getServiceLocator ();
-			$this->userTable = $sm->get ( 'Application\Model\AdminUserTable' );
+			
+			$this->userTable = $this->sm->get ( 'Application\Model\AdminUserTable' );
 			;
 		}
 		return $this->userTable;
@@ -776,8 +776,8 @@ class IndexController extends AbstractActionController {
 	protected $AdminUserTable;
 	public function getAdminUserTable() {
 		if (! $this->AdminUserTable) {
-			$sm = $this->getServiceLocator ();
-			$this->AdminUserTable = $sm->get ( 'Application\Model\AdminUserTable' );
+			
+			$this->AdminUserTable = $this->sm->get ( 'Application\Model\AdminUserTable' );
 		}
 		return $this->AdminUserTable;
 	}
@@ -1087,16 +1087,16 @@ class IndexController extends AbstractActionController {
 	protected $notifcationTable;
 	public function getNotificationTable() {
 		if (! $this->notifcationTable) {
-			$sm = $this->getServiceLocator ();
-			$this->notifcationTable = $sm->get ( 'Application\Model\NotficationTable' );
+			
+			$this->notifcationTable = $this->sm->get ( 'Application\Model\NotficationTable' );
 		}
 		return $this->notifcationTable;
 	}
 	protected $friendTable;
 	public function getFriendTable() {
 		if (! $this->friendTable) {
-			$sm = $this->getServiceLocator ();
-			$this->friendTable = $sm->get ( 'Application\Model\FriendTable' );
+			
+			$this->friendTable = $this->sm->get ( 'Application\Model\FriendTable' );
 		}
 		return $this->friendTable;
 	}
@@ -1312,8 +1312,8 @@ class IndexController extends AbstractActionController {
 	}
 	public function getEventTable() {
 		if (! $this->eventTable) {
-			$sm = $this->getServiceLocator ();
-			$this->eventTable = $sm->get ( 'Application\Model\EventTable' );
+			
+			$this->eventTable = $this->sm->get ( 'Application\Model\EventTable' );
 		}
 		return $this->eventTable;
 	}
