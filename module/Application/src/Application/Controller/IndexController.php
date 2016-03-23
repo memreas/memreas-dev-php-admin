@@ -1629,13 +1629,12 @@ class IndexController extends AbstractActionController {
                                    'date_to' => $date_to 
                                   );
                                 
-			//$xml = "<xml><sid>$sid</sid><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
-			$result = $this->fetchJson ( $action, $jsonArr );
-                          $result = substr($result, strpos($result, "{") );
+ 			$result = $this->fetchJson ( $action, $jsonArr );
+                        $result = substr($result, strpos($result, "{") );
 			$data = json_decode ((string)$result);
-                          Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$data  ); exit;
+                          Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$data  ); 
                                
-                                
+                            
  			return array (
 					'orderData' => $orderData,
 					'page' => $page 
