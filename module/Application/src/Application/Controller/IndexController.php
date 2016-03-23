@@ -43,7 +43,7 @@ class IndexController extends AbstractActionController {
 	protected $sessHandler;
 	protected $redis;
 	
-        public function __construct(ServiceLocatorInterface $sm)
+        public function __construct($sm)
     {
         $this->sm = $sm;
     }
