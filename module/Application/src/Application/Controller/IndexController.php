@@ -1623,14 +1623,18 @@ class IndexController extends AbstractActionController {
                         $jsonArr['json'] =array(
                                    'user_name' => $username,
                                    'sid' => $sid,
-                                   'date_from' => $date_from,
-                                   'date_to' => $date_to 
+                                   'date_from' => $fromDate,
+                                   'date_to' => $toDate 
                                   );
-                                
- 			$result = $this->fetchJson ( $action, $jsonArr );
+                        if(empty($username)){
+                            $data=array();
+                        }else{
+                            $result = $this->fetchJson ( $action, $jsonArr );
                         $result = substr($result, strpos($result, "{") );
 			$data = json_decode ((string)$result);
                           Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$data  ); 
+                        }        
+ 			
                                
                             
  			return array (
