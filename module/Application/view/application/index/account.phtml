@@ -9,8 +9,8 @@ $routeparams=$routeMatch->getParams();
 ?> 
 
 <div class="tabinnercontent">
-     User Name : <input type="text" name="username" value="<?=$username?>" />From  : <input type="text" name="from" value="<?=$fromDate?>" />
-     To : <input type="text" name="to" value="<?=$toDate?>" /><input type="submit" value="Get History" />
+     User Name : <input id="actHisUser" type="text" name="username" value="<?=$username?>" />From  : <input id="actHisFrom" type="text" name="from" value="<?=$fromDate?>" />
+     To : <input id="actHisTo" type="text" name="to" value="<?=$toDate?>" /><input type="submit" value="Get History" onclick="accountHistory()" />
         
     
 	<div id="no-more-tables">
@@ -72,3 +72,16 @@ for($i=1;$i<=$page;$i++){
 		</div>
 	</div>
 </div>
+<script>
+    function accountHistory(){
+        
+        var params ={};
+        params.username = $('#actHisUser').val();
+        params.username = $('#actHisFrom').val();
+        params.username = $('#actHisTo').val();
+        
+        
+        doSearchAjax(params);
+        
+    }
+    </script>
