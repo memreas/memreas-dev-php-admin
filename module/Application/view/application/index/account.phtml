@@ -75,13 +75,13 @@ for($i=1;$i<=$page;$i++){
 <script>
     function accountHistory(){
         
-        var params ={};
-        params.username = $('#actHisUser').val();
-        params.username = $('#actHisFrom').val();
-        params.username = $('#actHisTo').val();
+         var obj = new Object();
+        obj.username = $('#actHisUser').val();
+        obj.form = $('#actHisFrom').val();
+        obj.to = $('#actHisTo').val();
         
         
-        doSearchAjax(params);
+        doSearchAjax(obj);
         
     }
     </script>
