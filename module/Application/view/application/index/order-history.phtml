@@ -9,6 +9,10 @@ $routeparams=$routeMatch->getParams();
 ?> 
 
 <div class="tabinnercontent">
+         User Name : <input id="ordHisUser" type="text" name="username" value="<?=$username?>" />
+         From  : <input id="ordHisFrom" type="text" name="from" value="<?=$fromDate?>" />
+         To : <input id="actHisTo" type="text" name="to" value="<?=$toDate?>" />
+         <input type="submit" value="Get History" onclick="accountHistory()" />
 	<div id="no-more-tables">
 		<table class="col-md-12 table-bordered table-striped table-condensed cf nopadding">
 			<thead class="cf">

@@ -1214,34 +1214,40 @@ class IndexController extends AbstractActionController {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$sid = $_SESSION['sid'];
-			// $id = $this->params()->fromRoute('id');
-			// $this->getAdminLogTable()->saveLog(array('log_type'=>'feedback_view', 'admin_id'=>$_SESSION['user']['user_id'], 'entity_id'=>$id));
-			$username = $this->getUserName ();
-                        //$username = "jmeah80";
-			$page = $this->params ()->fromQuery ( 'page', 1 );
-			
-			// $result = $this->fetchXML ( 'getorderhistory', "<xml><getorderhistory><user_id>0</user_id><search_username>$username</search_username><page>$page</page><limit>15</limit></getorderhistory></xml>" );
-			/**
-			 * Set admin key as UUID with username as value 
-			 * - pass admin_key as request parameter
-			 * - proxy will check for admin_key and pass through
-			 * - set ttl t0 5 mins since this is user data
-			 */
-			
-			$result = $this->fetchXML ( "getorderhistory", "
-					<xml>
-						<sid>$sid</sid>
-                                                <search_username>$username</search_username>
-						<getorderhistory>
-						<user_id></user_id>
-						<page>$page</page>
-						<limit>15</limit>
-						</getorderhistory></xml>" );
-			$orderData = json_decode ((string) $result);
-                               error_log('orderhistory result->'.print_r($orderData,true));
-			return array (
-					'orderData' => $orderData,
-					'page' => $page 
+                        $page       = $this->params()->fromQuery( 'page', 1 );	
+                        $limit       = $this->params()->fromQuery( 'limit', 1000);
+			$username = $this->params()->fromQuery( 'username','' );
+                        $action = "stripe_getorderhistory";
+			$sid = $_SESSION['sid'];
+                        $user_id= $this->params()->fromQuery( 'user_id', '' );
+                        
+                        //$jsonArr['action']= 'list';
+                        
+                        $jsonArr['json'] =array(
+                                   'user_id' => $user_id,
+                                   'sid' => $sid,
+                                   'search_username' => $username,
+                                   'page' => $page ,
+                                'limit' => $limit ,
+                                  );
+                        if(empty($username)){
+                            $data=array();
+                        }else{
+                            $result = $this->fetchJson ( $action, $jsonArr );
+                        $result = substr($result, strpos($result, "{") );
+			$data = json_decode ((string)$result);
+                          Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$data  ); 
+                        }        
+ 			
+                               
+                            
+ 			return array (
+					'orderData' => $data,
+					'page' => $page,
+                            'user_id'=>$user_id,
+                            'page' => $page,
+                            'limit' => $limit,
+                            'username' =>$username
 			);
 		}
 	}
