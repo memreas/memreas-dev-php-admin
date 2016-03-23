@@ -46,7 +46,7 @@ $routeparams=$routeMatch->getParams();
 				</tr>
 				
                                 <?php   }
-                                }else{
+                                }elseif($orderData->status == 'Error'){
                                    echo "<tr><td>$orderData->status  : $orderData->message </td></tr>"; 
                                 }
                                 ?>
