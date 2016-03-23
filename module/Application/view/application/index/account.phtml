@@ -9,8 +9,8 @@ $routeparams=$routeMatch->getParams();
 ?> 
 
 <div class="tabinnercontent">
-     User Name : <input type="text" name="user" value="" />User Name : <input type="text" name="user" value="" />
-     User Name : <input type="text" name="user" value="" /><input type="submit" value="" />
+     User Name : <input type="text" name="user" value="" />From  : <input type="text" name="user" value="" />
+     To : <input type="text" name="user" value="" /><input type="submit" value="Get History" />
         
     
 	<div id="no-more-tables">
@@ -22,29 +22,37 @@ $routeparams=$routeMatch->getParams();
 					<th>date of order</th>
 					<th>transaction type</th>
 					<th>pass / fail</th>
-					<th>status</th>
+					<th>Amount</th>
 					<th>action</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php 
-                                if(isset($orderData->orders)){
-				foreach ($orderData->orders as $row) {
+                                if($orderData->status == 'Success'){                          
+                                
+                                
+				foreach ($orderData->transactions as $row) {
  				 
  ?>
 				<tr>
-					<td data-title="order #" class="numeric"><?php echo $row ->transaction->transaction_id ?></td>
-  					<td><?php echo $row ->username ?></td>
-      				<td><?php echo $row ->balance->ending_balance ?></td>
-            		<td><?php echo $row->transaction ->transaction_type ?></td>   
-               		<td><?php echo $row->transaction ->amount ?></td>   
+					<td data-title="order #" class="numeric"><?php echo $row->transaction_id ?></td>
+  					<td><?php echo $orderData->account->username ?></td>
+      				<td><?php echo $row->transaction_sent ?></td>
+            		<td><?php echo $row->transaction_type ?></td>
+                        <td><?php echo $row->pass_fail ?></td>
+                        
+               		<td><?php echo $row->amount .  $row->currency?></td>   
                		<th>pass</th>
 					<td data-title="action">
 						<a href="/index/account-dopayout/<?=$row->transaction->transaction_id?>" class="white" data-toggle="modal" data-target="#popup">View</a>
 					</td>
 				</tr>
 				
-                                <?php  } }?>
+                                <?php   }
+                                }else{
+                                    
+                                }
+                                ?>
 			</tbody>
 		</table>
 		<div class="clear"></div>
