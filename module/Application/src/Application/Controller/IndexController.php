@@ -1216,7 +1216,7 @@ class IndexController extends AbstractActionController {
 			$sid = $_SESSION['sid'];
                         $page       = $this->params()->fromQuery( 'page', 1 );	
                         $limit       = $this->params()->fromQuery( 'limit', 1000);
-			$username = $this->params()->fromQuery( 'username','' );
+			$username = $this->params()->fromQuery( 'username','jmeah114' );
                         $action = "stripe_getorderhistory";
 			$sid = $_SESSION['sid'];
                         $user_id= $this->params()->fromQuery( 'user_id', '' );
