@@ -8,7 +8,7 @@ class Index implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator) {
         /* @var $serviceLocator \Zend\Mvc\Controller\ControllerManager */
         $sm   = $serviceLocator->getServiceLocator();
-        $controller = new Application\Controller\IndexController($sm);
+        $controller = new \Application\Controller\IndexController($sm);
         return $controller;
     }
 }
