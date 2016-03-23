@@ -1609,8 +1609,8 @@ class IndexController extends AbstractActionController {
 	public function accountAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
-                        $defaultFrom =   date('Y-m-d',  strtotime('now'));
-                        $defaultTo  =   date('Y-m-d', strtotime("-1 month"));
+                        $defaultFrom = date('Y-m-d', strtotime("-1 month"));
+                        $defaultTo  =  date('Y-m-d',  strtotime('now'));
 			$fromDate   = $this->params()->fromQuery( 'from',$defaultFrom);
                         $toDate     = $this->params()->fromQuery( 'to',$defaultTo);
                         $page       = $this->params()->fromQuery( 'page', 1 );	
