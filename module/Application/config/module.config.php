@@ -100,11 +100,9 @@ return array (
 		),
 		'controllers' => array (
 				'factories' => array (
-						'Application\Controller\Index' =>    function(ControllerManager $cm) {
-                                                $sm   = $cm->getServiceLocator();
-                                                $controller = new Application\Controller\IndexController($sm);
-                                                return $controller;
-                                                }
+						'Application\Controller\Index' =>    'Application\Controller\Factory\Index.php'
+                                                
+                                               
             ),
 				
 		),
