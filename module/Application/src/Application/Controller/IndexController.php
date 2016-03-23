@@ -1609,15 +1609,13 @@ class IndexController extends AbstractActionController {
 	public function accountAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
-			
-			$action = "stripe_accounthistory";
-			$page = $this->params ()->fromQuery ( 'page', 1 );
-			$q = $this->params ()->fromQuery ( 'q', 0 );
-			$t = $q [0];
-			$username = 'jmeah114';
-			if ($t == '@') {
-				$username = $search = substr ( $q, 1 );
-			}
+                        $defaultFrom = date('Y-m-d',  date('Y-m-d',  strtotime( $time()) ) );
+                        $defaultTo  = date('Y-m-d',  strtotime("-1 month")) ;
+			$fromDate = $this->params()->fromQuery ( 'from',$defaultFrom);
+                        $toDate = $this->params ->fromQuery ( 'to',$defaultTo);
+                        $page = $this->params ()->fromQuery ( 'page', 1 );	
+			$username = $this->params ()->fromQuery ( 'username','' );
+                        $action = "stripe_accounthistory";
 			$sid = $_SESSION['sid'];
                         
                         //$jsonArr['action']= 'list';
@@ -1637,7 +1635,10 @@ class IndexController extends AbstractActionController {
                             
  			return array (
 					'orderData' => $data,
-					'page' => $page 
+					'page' => $page,
+                            'fromDate'=>$fromDate,
+                            'toDate' => $toDate,
+                            'username' =>$username
 			);
 		}
 	}
