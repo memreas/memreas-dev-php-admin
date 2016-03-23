@@ -30,7 +30,7 @@ $routeparams=$routeMatch->getParams();
 				<?php 
                                 if($orderData->status == 'Success'){                                             
 				foreach ($orderData->transactions as $row) {
- 				 $status = $row->pass_fail == 0?'pass':'fail';
+ 				 $status = $row->pass_fail == 1?'pass':'fail';
                                 ?>
 				<tr>
                                     <td data-title="order #" class="numeric"><?php echo $row->transaction_id ?></td>
