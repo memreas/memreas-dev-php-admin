@@ -43,6 +43,10 @@ class IndexController extends AbstractActionController {
 	protected $sessHandler;
 	protected $redis;
 	
+        public function __construct(ServiceLocatorInterface $sm)
+    {
+        $this->sm = $sm;
+    }
 	//
 	// start session by fetching and starting from REDIS - security check
 	//
@@ -438,8 +442,8 @@ class IndexController extends AbstractActionController {
 	}
 	public function getUserTable() {
 		if (! $this->userTable) {
-			$sm = $this->getServiceLocator ();
-			$this->userTable = $sm->get ( 'Application\Model\UserTable' );
+                                
+			$this->userTable = $this->sm->get ( 'Application\Model\UserTable' );
 			;
 		}
 		return $this->userTable;
