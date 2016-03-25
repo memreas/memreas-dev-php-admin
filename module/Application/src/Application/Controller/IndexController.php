@@ -256,8 +256,8 @@ class IndexController extends AbstractActionController {
 		if ($this->fetchSession ()) {
 			$S3Service = new S3Service ();
 			$session = new Container ( 'user' );
-			$data ['bucket'] = 'memreasdev';
-			$data ['folder'] = $_SESSION ['user_id'] . '/image/';
+			$data ['bucket'] = MemreasConstants::S3BUCKET;
+			$data ['folder'] = $_SESSION ['user_id'] . '/'.MUUID::fetchUUID().'/'; //incorrect needs media id
 			$data ['user_id'] = $_SESSION ['user_id'];
 			$data ['ACCESS_KEY'] = $S3Service::getAccessKey ();
 			list ( $data ['policy'], $data ['signature'] ) = $S3Service::get_policy_and_signature ( array (
