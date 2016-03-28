@@ -42,12 +42,10 @@ class IndexController extends AbstractActionController {
 	protected $adminLogTable;
 	protected $sessHandler;
 	protected $redis;
-        protected $sm;
-	
-        public function __construct($sm)
-    {
-        $this->sm = $sm;
-    }
+	protected $sm;
+	public function __construct($sm) {
+		$this->sm = $sm;
+	}
 	//
 	// start session by fetching and starting from REDIS - security check
 	//
@@ -131,23 +129,22 @@ class IndexController extends AbstractActionController {
                     $data->addChild ( 'clientIPAddress', $this->fetchUserIPAddress () );
    $xml = $data->asXML ();              
 		$guzzle = new \GuzzleHttp\Client ();
-		if (!empty ( $user_id )) {
-			$admin_key = MUUID::fetchUUID();
+		if (! empty ( $user_id )) {
+			$admin_key = MUUID::fetchUUID ();
 			
-			$this->redis->setCache('admin_key', $admin_key, MemreasConstants::REDIS_CACHE_USER_TTL);
-			//$admin_key = $this->redis->getCache('admin_key');
-			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::action:: $action ::xml::$xml sid::" . $_SESSION ['sid']."admin:key".$admin_key );
+			$this->redis->setCache ( 'admin_key', $admin_key, MemreasConstants::REDIS_CACHE_USER_TTL );
+			// $admin_key = $this->redis->getCache('admin_key');
+			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::action:: $action ::xml::$xml sid::" . $_SESSION ['sid'] . "admin:key" . $admin_key );
 			
-			$response = $guzzle->request ( 'POST', $this->url, [
-					'form_params' => [
-			
+			$response = $guzzle->request ( 'POST', $this->url, [ 
+					'form_params' => [ 
+							
 							'action' => $action,
 							'xml' => $xml,
-							'sid' => empty ( $_SESSION ['sid'] ) ? '' : $_SESSION ['sid'] ,
-							'admin_key' => $admin_key
-					]
+							'sid' => empty ( $_SESSION ['sid'] ) ? '' : $_SESSION ['sid'],
+							'admin_key' => $admin_key 
+					] 
 			] );
-				
 		} else {
 			
 			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::action:: $action ::xml::$xml" );
@@ -158,44 +155,43 @@ class IndexController extends AbstractActionController {
 					] 
 			] );
 		}
-                                
+		
 		return $response->getBody ();
 	}
 	public function fetchJson($action, $jsonArray) {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
-                $jsonArray['type'] ='jsonp'; 
-                                
+		$jsonArray ['type'] = 'jsonp';
+		
 		$guzzle = new \GuzzleHttp\Client ();
 		if (empty ( $_SESSION ['sid'] )) {
 			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::action:: $action ::xml::$xml" );
 			$response = $guzzle->post ( $this->url, [ 
 					'form_params' => [ 
 							'action' => $action,
-							'json' => json_encode($jsonArray)
+							'json' => json_encode ( $jsonArray ) 
 					] 
 			] );
 		} else {
-                    $admin_key = MUUID::fetchUUID();
-		    
-		    $this->redis->setCache('admin_key', $admin_key, MemreasConstants::REDIS_CACHE_USER_TTL);
-                    //$admin_key = $this->redis->getCache('admin_key');
-			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::action:: $action ::xml::$xml sid::" . $_SESSION ['sid']."admin:key".$admin_key );
-                        
+			$admin_key = MUUID::fetchUUID ();
+			
+			$this->redis->setCache ( 'admin_key', $admin_key, MemreasConstants::REDIS_CACHE_USER_TTL );
+			// $admin_key = $this->redis->getCache('admin_key');
+			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::action:: $action ::xml::$xml sid::" . $_SESSION ['sid'] . "admin:key" . $admin_key );
+			
 			$response = $guzzle->request ( 'POST', $this->url, [ 
 					'form_params' => [ 
-                                            
+							
 							'action' => $action,
-							'json' => json_encode($jsonArray),
-							'sid' => empty ( $_SESSION ['sid'] ) ? '' : $_SESSION ['sid'] ,
-                                                        'admin_key' => $admin_key 
+							'json' => json_encode ( $jsonArray ),
+							'sid' => empty ( $_SESSION ['sid'] ) ? '' : $_SESSION ['sid'],
+							'admin_key' => $admin_key 
 					] 
 			] );
 		}
-                                
+		
 		return $response->getBody ();
 	}
-	
-        public function getAdminLogTable() {
+	public function getAdminLogTable() {
 		if (! $this->adminLogTable) {
 			
 			$this->adminLogTable = $this->sm->get ( 'Application\Model\AdminLogTable' );
@@ -241,10 +237,10 @@ class IndexController extends AbstractActionController {
 				
 				// Guzzle the LoginWeb Service
 				$result = $this->fetchXML ( $ws_action, $xml );
-                                 
+				
 				// Return the ajax call...
 				$callback_json = $callback . "(" . $result . ")";
-                                error_log('tag----'.print_r($result,TRUE));
+				error_log ( 'tag----' . print_r ( $result, TRUE ) );
 				$output = ob_get_clean ();
 				header ( "Content-type: plain/text" );
 				echo $callback_json;
@@ -259,7 +255,7 @@ class IndexController extends AbstractActionController {
 			$S3Service = new S3Service ();
 			$session = new Container ( 'user' );
 			$data ['bucket'] = MemreasConstants::S3BUCKET;
-			$data ['folder'] = $_SESSION ['user_id'] . '/'.MUUID::fetchUUID().'/'; //incorrect needs media id
+			$data ['folder'] = $_SESSION ['user_id'] . '/' . MUUID::fetchUUID () . '/'; // incorrect needs media id
 			$data ['user_id'] = $_SESSION ['user_id'];
 			$data ['ACCESS_KEY'] = $S3Service::getAccessKey ();
 			list ( $data ['policy'], $data ['signature'] ) = $S3Service::get_policy_and_signature ( array (
@@ -319,24 +315,24 @@ class IndexController extends AbstractActionController {
 	public function logoutAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		error_log ( 'IndexController -> logout->exec()...' . PHP_EOL );
-                if ($this->fetchSession ()) {
-		try {
-			if (! empty ( $_SESSION ['sid'] )) {
-				$result = $this->sessHandler->closeSessionWithSID ();
-				Mlog::addone ( 'logout sid result ', $result );
-			} else {
-				$result = $this->sessHandler->closeSessionWithMemreasCookie ();
-				Mlog::addone ( 'logout cookie result ', $result );
+		if ($this->fetchSession ()) {
+			try {
+				if (! empty ( $_SESSION ['sid'] )) {
+					$result = $this->sessHandler->closeSessionWithSID ();
+					Mlog::addone ( 'logout sid result ', $result );
+				} else {
+					$result = $this->sessHandler->closeSessionWithMemreasCookie ();
+					Mlog::addone ( 'logout cookie result ', $result );
+				}
+				;
+			} catch ( \Exception $e ) {
+				error_log ( 'Caught exception: ' . $e->getMessage () . PHP_EOL );
 			}
-			;
-		} catch ( \Exception $e ) {
-			error_log ( 'Caught exception: ' . $e->getMessage () . PHP_EOL );
+			Mlog::addone ( 'redirecting to index ', '..' );
+			return $this->redirect ()->toRoute ( 'index', array (
+					'action' => "index" 
+			) );
 		}
-		Mlog::addone ( 'redirecting to index ', '..' );
-		return $this->redirect ()->toRoute ( 'index', array (
-				'action' => "index" 
-		) );
-                }
 	}
 	public function setSession($username, $password) {
 		// Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
@@ -445,9 +441,8 @@ class IndexController extends AbstractActionController {
 	}
 	public function getUserTable() {
 		if (! $this->userTable) {
-                                
-			$this->userTable = $this->sm->get ( 'Application\Model\UserTable' );
 			
+			$this->userTable = $this->sm->get ( 'Application\Model\UserTable' );
 		}
 		return $this->userTable;
 	}
@@ -455,7 +450,6 @@ class IndexController extends AbstractActionController {
 		if (! $this->userTable) {
 			
 			$this->userTable = $this->sm->get ( 'Application\Model\AdminUserTable' );
-		
 		}
 		return $this->userTable;
 	}
@@ -1132,13 +1126,12 @@ class IndexController extends AbstractActionController {
 				$emailpastday = $this->getNotificationTable ()->getEmailInviteCount ( strtotime ( '-1 day' ) );
 				$emailpastweek = $this->getNotificationTable ()->getEmailInviteCount ( strtotime ( '-1 week' ) );
 				$emailpastmonth = $this->getNotificationTable ()->getEmailInviteCount ( strtotime ( '-1 month' ) );
-				$sid = $_SESSION['sid'];
+				$sid = $_SESSION ['sid'];
 				$result = $this->fetchXML ( 'getplansstatic', "<xml><sid>$sid</sid><getplansstatic><static>1</static></getplansstatic></xml>" );
-				$result = substr($result, strpos($result, "{") );
-                               
-                            
-                                $summaryData = json_decode ((string) $result);
-				 Mlog::addone ( __CLASS__ . __METHOD__. __LINE__, $summaryData);
+				$result = substr ( $result, strpos ( $result, "{" ) );
+				
+				$summaryData = json_decode ( ( string ) $result );
+				Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, $summaryData );
 				// echo '<pre>';print_r($summaryData);exit;
 			} catch ( Exception $exc ) {
 				
@@ -1192,7 +1185,7 @@ class IndexController extends AbstractActionController {
 				$paginator = new Paginator ( $iteratorAdapter );
 				$paginator->setCurrentPageNumber ( $page );
 				$paginator->setItemCountPerPage ( MemreasConstants::NUMBER_OF_ROWS );
-				//echo '<pre>';print_r($info);
+				// echo '<pre>';print_r($info);
 				// $totalused = $this->getUserInfoTable()->totalPercentUsed();
 				/*
 				 * $rec = $this->getUserInfoTable()->fetchAll(); print_r($rec); $allowed_size = $rec-> allowed_size; $data_usage=$rec-> data_usage; $totalused = $data_usage*100/allowed_size; print_r($totalused);
@@ -1215,59 +1208,56 @@ class IndexController extends AbstractActionController {
 	public function orderHistoryAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
-			$sid = $_SESSION['sid'];
-                        $page       = $this->params()->fromQuery( 'page', 1 );	
-                        $limit       = $this->params()->fromQuery( 'limit', 1000);
-			$username = $this->params()->fromQuery( 'username','jmeah114' );
-                        $action = "stripe_getorderhistory";
-			$sid = $_SESSION['sid'];
-                        $user_id= $this->params()->fromQuery( 'user_id', '' );
-                        
-                        //$jsonArr['action']= 'list';
-                        
-                        $jsonArr['json'] =array(
-                                   'user_id' => $user_id,
-                                   'sid' => $sid,
-                                   'search_username' => $username,
-                                   'page' => $page ,
-                                'limit' => $limit ,
-                                  );
-                        if(empty($username)){
-                            $data=array();
-                        }else{
-                            $result = $this->fetchJson ( $action, $jsonArr );
-                        $result = substr($result, strpos($result, "{") );
-			$data = json_decode ((string)$result);
-                          Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$data  ); 
-                        }        
- 			
-                               
-                            
- 			return array (
+			$sid = $_SESSION ['sid'];
+			$page = $this->params ()->fromQuery ( 'page', 1 );
+			$limit = $this->params ()->fromQuery ( 'limit', 1000 );
+			$username = $this->params ()->fromQuery ( 'username', 'jmeah114' );
+			$action = "stripe_getorderhistory";
+			$sid = $_SESSION ['sid'];
+			$user_id = $this->params ()->fromQuery ( 'user_id', '' );
+			
+			// $jsonArr['action']= 'list';
+			
+			$jsonArr ['json'] = array (
+					'user_id' => $user_id,
+					'sid' => $sid,
+					'search_username' => $username,
+					'page' => $page,
+					'limit' => $limit 
+			);
+			if (empty ( $username )) {
+				$data = array ();
+			} else {
+				$result = $this->fetchJson ( $action, $jsonArr );
+				$result = substr ( $result, strpos ( $result, "{" ) );
+				$data = json_decode ( ( string ) $result );
+				Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, $data );
+			}
+			
+			return array (
 					'orderData' => $data,
 					'page' => $page,
-                            'user_id'=>$user_id,
-                            'page' => $page,
-                            'limit' => $limit,
-                            'username' =>$username
+					'user_id' => $user_id,
+					'page' => $page,
+					'limit' => $limit,
+					'username' => $username 
 			);
 		}
 	}
 	public function orderHistoryDetailAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
-                    $sid = $_SESSION['sid'];
+			$sid = $_SESSION ['sid'];
 			$transaction_id = $this->params ()->fromRoute ( 'id' );
 			$this->getAdminLogTable ()->saveLog ( array (
 					'log_type' => 'feedback_view',
 					'admin_id' => $_SESSION ['user_id'],
 					'entity_id' => $transaction_id 
 			) );
-			$result = $this->fetchXML ( 'getorder',
-                                "<xml><sid>$sid</sid><getorder><transaction_id>$transaction_id</transaction_id></getorder></xml>" );
-                                
-                        $orderData = json_decode ((string) $result);
-			//echo '<pre>a';print_r($orderData,true);exit;
+			$result = $this->fetchXML ( 'getorder', "<xml><sid>$sid</sid><getorder><transaction_id>$transaction_id</transaction_id></getorder></xml>" );
+			
+			$orderData = json_decode ( ( string ) $result );
+			// echo '<pre>a';print_r($orderData,true);exit;
 			return array (
 					'orderData' => $orderData 
 			);
@@ -1315,7 +1305,7 @@ class IndexController extends AbstractActionController {
 					'q' => $q,
 					'page' => $page,
 					'url_order' => $url_order,
-                            'eventTable'=> $this->eventTable
+					'eventTable' => $this->eventTable 
 			);
 		}
 	}
@@ -1386,11 +1376,10 @@ class IndexController extends AbstractActionController {
 					$event = $eventTable->getEvent ( $postData ['event_id'] );
 					
 					$eventStatus = 'inactive';
-                                        if ($event->report_flag == 0){
-                                            $eventStatus = 'active';
-                                            
-                                        }
-						
+					if ($event->report_flag == 0) {
+						$eventStatus = 'active';
+					}
+					
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'event_disable',
 							'admin_id' => $_SESSION ['user_id'],
@@ -1481,7 +1470,6 @@ class IndexController extends AbstractActionController {
 		return $name;
 	}
 	public function payoutAction() {
-		
 		if ($this->fetchSession ()) {
 			
 			$action = "stripe_listMassPayee";
@@ -1492,21 +1480,21 @@ class IndexController extends AbstractActionController {
 			if ($t == '@') {
 				$username = $search = substr ( $q, 1 );
 			}
-			$sid = $_SESSION['sid'];
-                        
-                        //$jsonArr['action']= 'list';
-                        
-                        $jsonArr['json'] =array(
-                                   'username'=> $username,
-                                   'page' => $page,
-                                   'limit' => 10
-                                  );
-                                
-			//$xml = "<xml><sid>$sid</sid><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
+			$sid = $_SESSION ['sid'];
+			
+			// $jsonArr['action']= 'list';
+			
+			$jsonArr ['json'] = array (
+					'username' => $username,
+					'page' => $page,
+					'limit' => 10 
+			);
+			
+			// $xml = "<xml><sid>$sid</sid><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
 			$result = $this->fetchJson ( $action, $jsonArr );
-                          $result = substr($result, strpos($result, "{") );
-			$data = json_decode ((string)$result);
-                          Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$data  );      
+			$result = substr ( $result, strpos ( $result, "{" ) );
+			$data = json_decode ( ( string ) $result );
+			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, $data );
 			return array (
 					'listpayees' => $data,
 					'page' => $page,
@@ -1514,9 +1502,9 @@ class IndexController extends AbstractActionController {
 			);
 		}
 	}
-	 public function payoutReasonAction() {
-	 return array ();
-	 }
+	public function payoutReasonAction() {
+		return array ();
+	}
 	public function doPayoutAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
@@ -1524,51 +1512,44 @@ class IndexController extends AbstractActionController {
 			$action = "stripe_payeePayout";
 			$description = $page = $this->params ()->fromPost ( 'other_reason', '' );
 			$payee = $page = $this->params ()->fromPost ( 'ids', array () );
-			$sid = $_SESSION['sid'];
+			$sid = $_SESSION ['sid'];
 			try {
-                            
-				foreach ( $payee as $account_id => $amount ) {                                
-					$payeeArr[0]=array(
-                                            'account_id'=>$account_id,
-                                            'amount' => $amount,
-                                            'description' => $description
-                                            
-                                        );
-                                
-					$jsonArr['json']= array (
-                                            'sid'=>$_SESSION['sid'],
-                                            'payees' => $payeeArr
-                                            );   
-                                        $result = $this->fetchJson ( $action, $jsonArr );
-                                Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__.'$reslut->>',$result  );  
-					 $data = json_decode ((string) $result);
-                                         if($data->status == 'Success'){
-                                            foreach ($data->payouts as $name => $value) {
-                                                $response [] = array (
-							'account_id' => $value->account_id,
-							'status' => $data->status,
-							'amount' => $value->amount,
-							'message' => $data->message,
-                                                        'username' => $name
-                                                    );
-                                            }
-                                                
-                                         }else{
-                                             $response [] = array (
-							'account_id' =>$account_id,
-							'status' => $data->status,
-							'amount' =>  $amount,
-							'message' => $data->message,
-                                                        'username' => ''
-                                                    );
-                                         }
 				
-                                }
-                                
-                                
-                             
-                                   
+				foreach ( $payee as $account_id => $amount ) {
+					$payeeArr [0] = array (
+							'account_id' => $account_id,
+							'amount' => $amount,
+							'description' => $description 
+					)
+					;
 					
+					$jsonArr ['json'] = array (
+							'sid' => $_SESSION ['sid'],
+							'payees' => $payeeArr 
+					);
+					$result = $this->fetchJson ( $action, $jsonArr );
+					Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '$reslut->>', $result );
+					$data = json_decode ( ( string ) $result );
+					if ($data->status == 'Success') {
+						foreach ( $data->payouts as $name => $value ) {
+							$response [] = array (
+									'account_id' => $value->account_id,
+									'status' => $data->status,
+									'amount' => $value->amount,
+									'message' => $data->message,
+									'username' => $name 
+							);
+						}
+					} else {
+						$response [] = array (
+								'account_id' => $account_id,
+								'status' => $data->status,
+								'amount' => $amount,
+								'message' => $data->message,
+								'username' => '' 
+						);
+					}
+				}
 			} catch ( \Exception $e ) {
 			}
 			
@@ -1577,27 +1558,27 @@ class IndexController extends AbstractActionController {
 			);
 		}
 	}
-        public function doRefundAction() {
+	public function doRefundAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			
 			$action = "stripe_refund";
 			$description = $page = $this->params ()->fromPost ( 'other_reason', '' );
 			$payee = $page = $this->params ()->fromPost ( 'ids', array () );
-			$sid = $_SESSION['sid'];
+			$sid = $_SESSION ['sid'];
 			try {
 				foreach ( $payee as $account_id => $amount ) {
-					//$xml = "<xml><sid>$sid</sid><makepayout><account_id>$account_id</account_id><amount>$amount</amount><description>$description</description></makepayout></xml>";
-                                
-					$jsonArr['json']= array (
-                                                            'account_id' => $account_id,
-                                                            'amount' => $amount,
-                                                            'reason' => $description 
-							);
-                                
+					// $xml = "<xml><sid>$sid</sid><makepayout><account_id>$account_id</account_id><amount>$amount</amount><description>$description</description></makepayout></xml>";
+					
+					$jsonArr ['json'] = array (
+							'account_id' => $account_id,
+							'amount' => $amount,
+							'reason' => $description 
+					);
+					
 					$result = $this->fetchJson ( $action, $jsonArr );
-					 $data = json_decode ((string) $result);
-                                         Mlog::addone ( __CLASS__ . __METHOD__.__LINE__ ,  $data);
+					$data = json_decode ( ( string ) $result );
+					Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, $data );
 					$response [] = array (
 							'account_id' => $account_id,
 							'status' => $data->status,
@@ -1613,44 +1594,41 @@ class IndexController extends AbstractActionController {
 			);
 		}
 	}
-        
 	public function accountAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
-                        $defaultFrom = date('Y-m-d', strtotime("-1 month"));
-                        $defaultTo  =  date('Y-m-d',  strtotime('now'));
-			$fromDate   = $this->params()->fromQuery( 'from',$defaultFrom);
-                        $toDate     = $this->params()->fromQuery( 'to',$defaultTo);
-                        $page       = $this->params()->fromQuery( 'page', 1 );	
-			$username = $this->params()->fromQuery( 'username','' );
-                        $action = "stripe_accounthistory";
-			$sid = $_SESSION['sid'];
-                        
-                        //$jsonArr['action']= 'list';
-                        
-                        $jsonArr['json'] =array(
-                                   'user_name' => $username,
-                                   'sid' => $sid,
-                                   'date_from' => $fromDate,
-                                   'date_to' => $toDate 
-                                  );
-                        if(empty($username)){
-                            $data=array();
-                        }else{
-                            $result = $this->fetchJson ( $action, $jsonArr );
-                        $result = substr($result, strpos($result, "{") );
-			$data = json_decode ((string)$result);
-                          Mlog::addone  ( __CLASS__ . __METHOD__.__LINE__,$data  ); 
-                        }        
- 			
-                               
-                            
- 			return array (
+			$defaultFrom = date ( 'Y-m-d', strtotime ( "-1 month" ) );
+			$defaultTo = date ( 'Y-m-d', strtotime ( 'now' ) );
+			$fromDate = $this->params ()->fromQuery ( 'from', $defaultFrom );
+			$toDate = $this->params ()->fromQuery ( 'to', $defaultTo );
+			$page = $this->params ()->fromQuery ( 'page', 1 );
+			$username = $this->params ()->fromQuery ( 'username', '' );
+			$action = "stripe_accounthistory";
+			$sid = $_SESSION ['sid'];
+			
+			// $jsonArr['action']= 'list';
+			
+			$jsonArr ['json'] = array (
+					'user_name' => $username,
+					'sid' => $sid,
+					'date_from' => $fromDate,
+					'date_to' => $toDate 
+			);
+			if (empty ( $username )) {
+				$data = array ();
+			} else {
+				$result = $this->fetchJson ( $action, $jsonArr );
+				$result = substr ( $result, strpos ( $result, "{" ) );
+				$data = json_decode ( ( string ) $result );
+				Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, $data );
+			}
+			
+			return array (
 					'orderData' => $data,
 					'page' => $page,
-                            'fromDate'=>$fromDate,
-                            'toDate' => $toDate,
-                            'username' =>$username
+					'fromDate' => $fromDate,
+					'toDate' => $toDate,
+					'username' => $username 
 			);
 		}
 	}
@@ -1660,7 +1638,7 @@ class IndexController extends AbstractActionController {
 			
 			$action = "listpayees";
 			$page = $this->params ()->fromQuery ( 'page', 1 );
-			$sid = $_SESSION['sid'];
+			$sid = $_SESSION ['sid'];
 			$xml = "<xml><sid>$sid</sid><listpayees><page>$page</page><limit>10</limit></listpayees></xml>";
 			$result = $this->fetchXML ( $action, $xml );
 			$data = simplexml_load_string ( $result );
@@ -1745,7 +1723,7 @@ class IndexController extends AbstractActionController {
 		} elseif ($userRole == 'guest' && in_array ( $action, $roles ['guest'] )) {
 			return true;
 		}
-                                
+		
 		die ( '<b>your account is not authorized for this function</b>' ); // donot change this otherwise all action will be allowed
 	}
 	public function updateMediaInfoAction() {
@@ -1890,8 +1868,8 @@ class IndexController extends AbstractActionController {
 			);
 			$info = $this->getUserInfoTable ()->userInfoAll ();
 			$filename = 'test.csv';
-                        
-			$resultset= $info;
+			
+			$resultset = $info;
 			$view = new ViewModel ();
 			$view->setTemplate ( 'index/download-csv' )->setVariable ( 'results', $resultset )->setTerminal ( true );
 			$view->setVariable ( 'columnHeaders', $columnHeaders );
