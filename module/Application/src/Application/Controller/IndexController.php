@@ -142,7 +142,8 @@ class IndexController extends AbstractActionController {
 							'action' => $action,
 							'xml' => $xml,
 							'sid' => empty ( $_SESSION ['sid'] ) ? '' : $_SESSION ['sid'],
-							'admin_key' => $admin_key 
+							'admin_key' => $admin_key ,
+                                 'clientIPAddress'=> $this->fetchUserIPAddress ()
 					] 
 			] );
 		} else {
@@ -185,7 +186,8 @@ class IndexController extends AbstractActionController {
 							'action' => $action,
 							'json' => json_encode ( $jsonArray ),
 							'sid' => empty ( $_SESSION ['sid'] ) ? '' : $_SESSION ['sid'],
-							'admin_key' => $admin_key 
+							'admin_key' => $admin_key ,
+                                                        'clientIPAddress' => $this->fetchUserIPAddress ()
 					] 
 			] );
 		}
