@@ -124,7 +124,7 @@ class IndexController extends AbstractActionController {
 	}
 	public function fetchXML($action, $xml, $user_id = '') {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
-
+		
 		//
 		// Set ip in xml
 		//
@@ -170,19 +170,14 @@ class IndexController extends AbstractActionController {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		$jsonArray ['type'] = 'jsonp';
 		
-		
-		//
-		// Set ip in json
-		//
-		$jsonArray ['clientIPAddress'] =  $this->fetchUserIPAddress ();
-		
 		$guzzle = new \GuzzleHttp\Client ();
 		if (empty ( $_SESSION ['sid'] )) {
 			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::action:: $action ::xml::$xml" );
 			$response = $guzzle->post ( $this->url, [ 
 					'form_params' => [ 
 							'action' => $action,
-							'json' => json_encode ( $jsonArray ) 
+							'json' => json_encode ( $jsonArray ),
+							'clientIPAddress' => $this->fetchUserIPAddress () 
 					] 
 			] );
 		} else {
@@ -198,7 +193,8 @@ class IndexController extends AbstractActionController {
 							'action' => $action,
 							'json' => json_encode ( $jsonArray ),
 							'sid' => empty ( $_SESSION ['sid'] ) ? '' : $_SESSION ['sid'],
-							'admin_key' => $admin_key 
+							'admin_key' => $admin_key,
+							'clientIPAddress' => $this->fetchUserIPAddress () 
 					] 
 			] );
 		}
@@ -1534,8 +1530,7 @@ class IndexController extends AbstractActionController {
 							'account_id' => $account_id,
 							'amount' => $amount,
 							'description' => $description 
-					)
-					;
+					);
 					
 					$jsonArr ['json'] = array (
 							'sid' => $_SESSION ['sid'],
