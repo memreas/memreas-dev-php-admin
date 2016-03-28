@@ -150,16 +150,21 @@ class IndexController extends AbstractActionController {
 							'action' => $action,
 							'xml' => $xml,
 							'sid' => empty ( $_SESSION ['sid'] ) ? '' : $_SESSION ['sid'],
-							'admin_key' => $admin_key 
+							'admin_key' => $admin_key ,
+							'clientIPAddress' => $this->fetchUserIPAddress ()
 					] 
 			] );
 		} else {
-			
 			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::action:: $action ::xml::$xml" );
+			$admin_key = MUUID::fetchUUID ();
+			$this->redis->setCache ( 'admin_key', $admin_key, MemreasConstants::REDIS_CACHE_USER_TTL );
 			$response = $guzzle->post ( $this->url, [ 
 					'form_params' => [ 
 							'action' => $action,
-							'xml' => $xml 
+							'xml' => $xml, 
+							'sid' => empty ( $_SESSION ['sid'] ) ? '' : $_SESSION ['sid'],
+							'admin_key' => $admin_key ,
+							'clientIPAddress' => $this->fetchUserIPAddress ()
 					] 
 			] );
 		}
@@ -169,6 +174,7 @@ class IndexController extends AbstractActionController {
 	public function fetchJson($action, $jsonArray) {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		$jsonArray ['type'] = 'jsonp';
+		$jsonArray ['json']['clientIPAddress'] = $this->fetchUserIPAddress ();
 		
 		$guzzle = new \GuzzleHttp\Client ();
 		if (empty ( $_SESSION ['sid'] )) {
