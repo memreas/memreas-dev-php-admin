@@ -170,6 +170,12 @@ class IndexController extends AbstractActionController {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		$jsonArray ['type'] = 'jsonp';
 		
+		
+		//
+		// Set ip in json
+		//
+		$jsonArray ['clientIPAddress'] =  $this->fetchUserIPAddress ();
+		
 		$guzzle = new \GuzzleHttp\Client ();
 		if (empty ( $_SESSION ['sid'] )) {
 			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, "::guzzle::action:: $action ::xml::$xml" );
