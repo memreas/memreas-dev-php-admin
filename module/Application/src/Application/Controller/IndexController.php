@@ -127,7 +127,8 @@ class IndexController extends AbstractActionController {
 	}
 	public function fetchXML($action, $xml, $user_id = '') {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
-                                
+                    $data->addChild ( 'clientIPAddress', $this->fetchUserIPAddress () );
+   $xml = $data->asXML ();              
 		$guzzle = new \GuzzleHttp\Client ();
 		if (!empty ( $user_id )) {
 			$admin_key = MUUID::fetchUUID();
