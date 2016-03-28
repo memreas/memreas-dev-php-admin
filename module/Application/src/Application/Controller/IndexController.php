@@ -161,6 +161,7 @@ class IndexController extends AbstractActionController {
 	public function fetchJson($action, $jsonArray) {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		$jsonArray ['type'] = 'jsonp';
+                $jsonArray ['clientIPAddress'] = $this->fetchUserIPAddress ();
 		
 		$guzzle = new \GuzzleHttp\Client ();
 		if (empty ( $_SESSION ['sid'] )) {
