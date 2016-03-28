@@ -76,15 +76,14 @@ class IndexController extends AbstractActionController {
 		try {
 			if (! empty ( $_REQUEST ['sid'] )) {
 				$sid = $_REQUEST ['sid'];
-				// Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::fetching redis session for $_COOKIE [memreascookie]->', $_COOKIE ['memreascookie'] );
 				$this->sessHandler->startSessionWithSID ( $sid );
 				$hasSession = true;
-				// Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
+				Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
 			} else if (! empty ( $_COOKIE ['memreascookie'] )) {
-				// Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::fetching redis session for $_COOKIE [memreascookie]->', $_COOKIE ['memreascookie'] );
+				Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::fetching redis session for $_COOKIE [memreascookie]->', $_COOKIE ['memreascookie'] );
 				$hasSession = $this->sessHandler->startSessionWithMemreasCookie ( $_COOKIE ['memreascookie'] );
 				$hasSession = true;
-				// Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
+				Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
 			}
 		} catch ( \Exception $e ) {
 			// Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session lookup error->', $e->getMessage () );
