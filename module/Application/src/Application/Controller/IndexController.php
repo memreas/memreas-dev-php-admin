@@ -127,6 +127,7 @@ class IndexController extends AbstractActionController {
 	}
 	public function fetchXML($action, $xml, $user_id = '') {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+                 $data = simplexml_load_string ( $xml );
                     $data->addChild ( 'clientIPAddress', $this->fetchUserIPAddress () );
    $xml = $data->asXML ();              
 		$guzzle = new \GuzzleHttp\Client ();
