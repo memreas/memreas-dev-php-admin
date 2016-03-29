@@ -1225,20 +1225,23 @@ class IndexController extends AbstractActionController {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$sid = $_SESSION ['sid'];
+                        $defaultFrom = date ( 'Y-m-d', strtotime ( "-1 month" ) );
+			$defaultTo = date ( 'Y-m-d', strtotime ( 'now' ) );
+			$fromDate = $this->params ()->fromQuery ( 'from', $defaultFrom );
+			$toDate = $this->params ()->fromQuery ( 'to', $defaultTo );
 			$page = $this->params ()->fromQuery ( 'page', 1 );
 			$limit = $this->params ()->fromQuery ( 'limit', 1000 );
-			$username = $this->params ()->fromQuery ( 'username', 'jmeah114' );
+			$username = $this->params ()->fromQuery ( 'username', '' );
 			$action = "stripe_getorderhistory";
-			$sid = $_SESSION ['sid'];
 			$user_id = $this->params ()->fromQuery ( 'user_id', '' );
 			
 			// $jsonArr['action']= 'list';
 			
 			$jsonArr ['json'] = array (
 					'user_id' => $user_id,
-                            'username'=> $username,
+                                        'username'=> $username,
 					'sid' => $sid,
-					'search_username' => $username,
+					//'search_username' => $username,
 					'page' => $page,
 					'limit' => $limit 
 			);
@@ -1248,7 +1251,7 @@ class IndexController extends AbstractActionController {
 				$result = $this->fetchJson ( $action, $jsonArr );
 				$result = substr ( $result, strpos ( $result, "{" ) );
 				$data = json_decode ( ( string ) $result );
-				Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, $data );
+				
 			}
 			
 			return array (
@@ -1257,7 +1260,9 @@ class IndexController extends AbstractActionController {
 					'user_id' => $user_id,
 					'page' => $page,
 					'limit' => $limit,
-					'username' => $username 
+					'fromDate' => $fromDate,
+					'toDate' => $toDate,
+					'username' => $username  
 			);
 		}
 	}

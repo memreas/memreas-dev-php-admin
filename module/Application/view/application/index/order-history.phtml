@@ -11,8 +11,8 @@ $routeparams=$routeMatch->getParams();
 <div class="tabinnercontent">
          User Name : <input id="ordHisUser" type="text" name="username" value="<?=$username?>" />
          From  : <input id="ordHisFrom" type="text" name="from" value="<?=$fromDate?>" />
-         To : <input id="actHisTo" type="text" name="to" value="<?=$toDate?>" />
-         <input type="submit" value="Get History" onclick="accountHistory()" />
+         To : <input id="ordHisTo" type="text" name="to" value="<?=$toDate?>" />
+         <input type="submit" value="Get History" onclick="orderHistory()" />
 	<div id="no-more-tables">
 		<table class="col-md-12 table-bordered table-striped table-condensed cf nopadding">
 			<thead class="cf">
@@ -32,7 +32,7 @@ $routeparams=$routeMatch->getParams();
 				<?php 
                                 if(isset($orderData->orders)){
 				foreach ($orderData->orders as $row) {
-				
+				$status = $row->transaction->pass_fail == 1?'pass':'fail';
    $transaction_response = json_decode($row->transaction->transaction_response);
 $plan = isset($transaction_response->plan->name)?$transaction_response->plan->name:'';
    
@@ -44,7 +44,7 @@ $plan = isset($transaction_response->plan->name)?$transaction_response->plan->na
 					<td data-title="order #" class="numeric"><?=$row->balance->starting_balance?></td>
 					<td data-title="order #" class="numeric"><?=$row->transaction->amount?></td>
 					<td data-title="order #" class="numeric"><?=$row->balance->ending_balance?></td>			
-					<td data-title="pass / fail"><?=$row->transaction->transaction_status?></td>
+					<td data-title="pass / fail"><?=$status?></td>
 					<td data-title="Currency"><?=$row->transaction->currency?></td>
 					<td data-title="Transaction Date"><?php echo $row ->transaction->transaction_sent ?></td>
 				</tr>
@@ -72,3 +72,16 @@ for($i=1;$i<=$page;$i++){
 		</div>
 	</div>
 </div>
+<script>
+    function orderHistory(){
+        
+         var obj = {};
+        obj.username = $('#ordHisUser').val();
+        obj.form = $('#ordHisFrom').val();
+        obj.to = $('#ordHisTo').val();
+        
+        
+        doSearchAjax(obj);
+        
+    }
+    </script>
