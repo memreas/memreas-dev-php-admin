@@ -1236,6 +1236,7 @@ class IndexController extends AbstractActionController {
 			
 			$jsonArr ['json'] = array (
 					'user_id' => $user_id,
+                            'username'=> $username,
 					'sid' => $sid,
 					'search_username' => $username,
 					'page' => $page,
