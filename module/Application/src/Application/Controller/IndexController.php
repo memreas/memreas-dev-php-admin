@@ -1241,7 +1241,7 @@ class IndexController extends AbstractActionController {
 					'user_id' => $user_id,
                                         'username'=> $username,
 					'sid' => $sid,
-					//'search_username' => $username,
+					'search_username' => $username,
 					'page' => $page,
 					'limit' => $limit 
 			);
