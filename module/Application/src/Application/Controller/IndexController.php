@@ -1502,7 +1502,7 @@ class IndexController extends AbstractActionController {
 			$page = $this->params ()->fromQuery ( 'page', 1 );
 			$limit = $this->params ()->fromQuery ( 'limit', 1000 );
 			$payeelist = $this->params ()->fromQuery ( 'payeelist', 'all' );
-			$action = "stripe_getorderhistory";
+			$action = "stripe_listMassPayee";
 			$user_id = $this->params ()->fromQuery ( 'user_id', '' );
 			
 			// $jsonArr['action']= 'list';
