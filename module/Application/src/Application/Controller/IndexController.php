@@ -1553,7 +1553,8 @@ class IndexController extends AbstractActionController {
 					$payeeArr [0] = array (
 							'account_id' => $account_id,
 							'amount' => $amount,
-							'description' => $description 
+							'description' => $description,
+                                                        'username'=> $_SESSION['username']
 					);
 					
 					$jsonArr ['json'] = array (
