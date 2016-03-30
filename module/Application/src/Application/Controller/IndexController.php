@@ -1559,7 +1559,7 @@ class IndexController extends AbstractActionController {
 					
 					$jsonArr ['json'] = array (
 							'sid' => $_SESSION ['sid'],
-                                                        'username'=> $_SESSION['username']
+                                                        'username'=> $_SESSION['username'],
 							'payees' => $payeeArr 
 					);
 					$result = $this->fetchJson ( $action, $jsonArr );
