@@ -1225,18 +1225,21 @@ class IndexController extends AbstractActionController {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$sid = $_SESSION ['sid'];
+                        $defaultFrom = date ( 'Y-m-d', strtotime ( "-1 month" ) );
+			$defaultTo = date ( 'Y-m-d', strtotime ( 'now' ) );
+			$fromDate = $this->params ()->fromQuery ( 'from', $defaultFrom );
+			$toDate = $this->params ()->fromQuery ( 'to', $defaultTo );
 			$page = $this->params ()->fromQuery ( 'page', 1 );
 			$limit = $this->params ()->fromQuery ( 'limit', 1000 );
-			$username = $this->params ()->fromQuery ( 'username', 'jmeah114' );
+			$username = $this->params ()->fromQuery ( 'username', '' );
 			$action = "stripe_getorderhistory";
-			$sid = $_SESSION ['sid'];
 			$user_id = $this->params ()->fromQuery ( 'user_id', '' );
 			
 			// $jsonArr['action']= 'list';
 			
 			$jsonArr ['json'] = array (
 					'user_id' => $user_id,
-                            'username'=> $username,
+                                        'username'=> $username,
 					'sid' => $sid,
 					'search_username' => $username,
 					'page' => $page,
@@ -1248,7 +1251,7 @@ class IndexController extends AbstractActionController {
 				$result = $this->fetchJson ( $action, $jsonArr );
 				$result = substr ( $result, strpos ( $result, "{" ) );
 				$data = json_decode ( ( string ) $result );
-				Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, $data );
+				
 			}
 			
 			return array (
@@ -1257,7 +1260,9 @@ class IndexController extends AbstractActionController {
 					'user_id' => $user_id,
 					'page' => $page,
 					'limit' => $limit,
-					'username' => $username 
+					'fromDate' => $fromDate,
+					'toDate' => $toDate,
+					'username' => $username  
 			);
 		}
 	}
@@ -1489,34 +1494,46 @@ class IndexController extends AbstractActionController {
 	public function payoutAction() {
 		if ($this->fetchSession ()) {
 			
-			$action = "stripe_listMassPayee";
-			$page = $this->params ()->fromQuery ( 'page', 1 );
-			$q = $this->params ()->fromQuery ( 'q', 0 );
-			$t = $q [0];
-			$username = 'all';
-			if ($t == '@') {
-				$username = $search = substr ( $q, 1 );
-			}
 			$sid = $_SESSION ['sid'];
+                        $defaultFrom = date ( 'Y-m-d', strtotime ( "-1 month" ) );
+			$defaultTo = date ( 'Y-m-d', strtotime ( 'now' ) );
+			$fromDate = $this->params ()->fromQuery ( 'from', $defaultFrom );
+			$toDate = $this->params ()->fromQuery ( 'to', $defaultTo );
+			$page = $this->params ()->fromQuery ( 'page', 1 );
+			$limit = $this->params ()->fromQuery ( 'limit', 1000 );
+			$payeelist = $this->params ()->fromQuery ( 'payeelist', 'all' );
+			$action = "stripe_listMassPayee";
+			$user_id = $this->params ()->fromQuery ( 'user_id', '' );
 			
 			// $jsonArr['action']= 'list';
 			
 			$jsonArr ['json'] = array (
-					'username' => $username,
+					'user_id' => $user_id,
+                                        'username'=> $_SESSION['username'],
+					'sid' => $sid,
+					  'payeelist' => $payeelist,
 					'page' => $page,
-					'limit' => 10 
+					'limit' => $limit 
 			);
+                                
+				$result = $this->fetchJson ( $action, $jsonArr );
+				$result = substr ( $result, strpos ( $result, "{" ) );
+				$data = json_decode ( ( string ) $result );
+				
+                                
 			
-			// $xml = "<xml><sid>$sid</sid><listpayees><username>$username</username><page>$page</page><limit>10</limit></listpayees></xml>";
-			$result = $this->fetchJson ( $action, $jsonArr );
-			$result = substr ( $result, strpos ( $result, "{" ) );
-			$data = json_decode ( ( string ) $result );
-			Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, $data );
 			return array (
 					'listpayees' => $data,
 					'page' => $page,
-					'q' => $q 
+					'user_id' => $user_id,
+					'page' => $page,
+					'limit' => $limit,
+					'fromDate' => $fromDate,
+					'toDate' => $toDate,
+					'username' => $username ,
+                                        'payeelist' => $payeelist
 			);
+                                
 		}
 	}
 	public function payoutReasonAction() {
