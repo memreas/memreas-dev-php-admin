@@ -2,6 +2,71 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.7.6 - 2016-04-06
+
+### Added
+
+- [#94](https://github.com/zendframework/zend-mvc/pull/94) adds a documentation
+  recipe for using middleware withing MVC event listeners.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#107](https://github.com/zendframework/zend-mvc/pull/107) fixes an incorrect
+  import statement in the `DiStrictAbstractServiceFactoryFactory` that prevented
+  it from working.
+- [#112](https://github.com/zendframework/zend-mvc/pull/112) fixes how the
+  `Forward` plugin detects and detaches event listeners to ensure it works
+  against either v2 or v3 releases of zend-eventmanager.
+
+## 2.7.5 - 2016-04-06
+
+### Added
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#111](https://github.com/zendframework/zend-mvc/pull/111) fixes a bug in how
+  the `ConsoleExceptionStrategyFactory` whereby it was overwriting the default
+  exception message template with an empty string when no configuration for it
+  was provided.
+
+## 2.7.4 - 2016-04-03
+
+### Added
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#114](https://github.com/zendframework/zend-mvc/pull/114) fixes an issue in
+  the `ServiceLocatorAware` initializer whereby plugin manager instances were
+  falsely identified as the container instance when under zend-servicemanager v2.
+
 ## 2.7.3 - 2016-03-08
 
 ### Added

@@ -7,8 +7,8 @@
 namespace Application\Model;
 
 class MemreasConstants {
-	//const MEMREAS_WS = "https://memreasdev-wsj.memreas.com";
-	const MEMREAS_WS = "http://memreas-devphp-ws.localhost";
+	//const MEMREAS_WS = "https://memreasdev-ws.memreas.com";
+	const MEMREAS_WS = "http://memreas-dev-php-ws.localhost";
 	
 	// Redis constant section
 	const REDIS_SERVER_ENDPOINT = "localhost";

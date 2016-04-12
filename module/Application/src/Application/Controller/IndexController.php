@@ -91,7 +91,7 @@ class IndexController extends AbstractActionController {
 		}
 		
 		//
-		// If session is valid on wsj we can proceed
+		// If session is valid on ws we can proceed
 		//
 		if ($hasSession) {
 			$this->security ();
