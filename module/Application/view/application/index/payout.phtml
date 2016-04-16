@@ -105,7 +105,7 @@ for ($i = 1; $i <= $page; $i++) {
         if (n == 0) {
             alert('please select ');
         } else if (!txt.trim()) {
-            alert('please give reason ');
+            alert('please provide reason ');
             return false;
         }
         $.post($('#payout').attr('action'), $(":input").serializeArray(), function (data) {
