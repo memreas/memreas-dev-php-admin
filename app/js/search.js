@@ -116,7 +116,7 @@ function personalSearchLi(target, item) {
     		 /*this will create one string with all the Javascript 
     		  properties and values to avoid multiple alert boxes: */
 
-    		  alertText += property + ':' + sampleObject[property]+'; ';
+    		  //alertText += property + ':' + sampleObject[property]+'; ';
     		  console.log (alertText);
 
     		}

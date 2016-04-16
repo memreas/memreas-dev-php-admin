@@ -1,73 +1,80 @@
-<?php 
-$sm = $this->getHelperPluginManager()->getServiceLocator();
-$router=$sm->get('Router');
-$request=$sm->get('Request');
-$routeMatch=$router->match($request);
-//get an array of the route params and their values
-$routeparams=$routeMatch->getParams();
+<?php
+$sm = $this->getHelperPluginManager ()->getServiceLocator ();
+$router = $sm->get ( 'Router' );
+$request = $sm->get ( 'Request' );
+$routeMatch = $router->match ( $request );
+// get an array of the route params and their values
+$routeparams = $routeMatch->getParams ();
 
-?> 
+?>
 <div class="tabinnercontent">
 	<div id="no-more-tables">
-    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Payout Response</h4>
-                    </div>
-		<form  id="payout" action="/index/doPayout" class="form-horizontal formstyle" role="form" method="post">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">
+				<span aria-hidden="true">×</span><span class="sr-only">Close</span>
+			</button>
+			<h4 class="modal-title" id="myModalLabel">Payout Response</h4>
+		</div>
+		<form id="payout" action="/index/doPayout"
+			class="form-horizontal formstyle" role="form" method="post">
 
-		<table class="col-md-12 table-bordered table-striped table-condensed cf nopadding">
-			<thead class="cf">
-				<tr>
-					 
-				  <th class="numeric">account id</th>
-					<th >amount</th>
-                    <th >status</th>
-					<th>message</th>
-					 
-				</tr>
-			</thead>
-			<tbody>
-				<?php 
-				if(empty($response)){
+			<table
+				class="col-md-12 table-bordered table-striped table-condensed cf nopadding">
+				<thead class="cf">
+					<tr>
 
+						<th class="numeric">account id</th>
+						<th>amount</th>
+						<th>status</th>
+						<th>message</th>
+
+					</tr>
+				</thead>
+				<tbody>
+				<?php
+				if (empty ( $response )) {
+					
 					echo '<td>No rec found</td>';
 					return;
 				}
-				foreach ($response as $row) {
-   
-				 
- ?>
+				foreach ( $response as $row ) {
+					
+					?>
 				<tr>
-					<td data-title="selected" class="numeric"><?php echo $row['account_id'] ?></td>
-					<td data-title="account id" class="numeric"><?php echo $row['amount'] ?></td>
-					 <td><?php echo $row['status'] ?></td>
-      				<td><?php echo $row['message'] ?></td>   
-					 
-				</tr>
+						<td data-title="selected" class="numeric"><?php echo $row['account_id'] ?></td>
+						<td data-title="account id" class="numeric"><?php echo $row['amount'] ?></td>
+						<td><?php echo $row['status'] ?></td>
+						<td><?php echo $row['message'] ?></td>
+
+					</tr>
 				
 				 <?php  }?>
 			</tbody>
-		</table>
-	
-		<div class="clear"></div>
-		
- 
- 
-	</form>
+			</table>
+
+			<div class="clear"></div>
+
+
+
+		</form>
 	</div>
 </div>
 <script type="text/javascript">
-    <?php if(!empty($messages)){
-    
-    if($status == 'error'){?> 
+    <?php
+				
+if (! empty ( $messages )) {
+					
+					if ($status == 'error') {
+						?> 
         jerror('<?php echo implode (' ',$messages) ?>');
     
     <?php  }else {?>
         jsuccessAndRefresh('<?php echo implode (' ',$messages) ?>');
-    <?php }
-    
-    
-    }?>
+    <?php
+					
+}
+				}
+				?>
     
 function checkdata()
 { 
@@ -79,7 +86,7 @@ function checkdata()
 
 alert('please select ');    
   }else if(!txt.trim()) {                  
-                        alert ('please give reason ');
+                        alert ('please provide reason ');
                           return false;
                     
                     
