@@ -1,7 +1,7 @@
-/*
-*@Define global function here
-*@ Tran Tuan
-*/
+/**
+ * Copyright (C) 2016 memreas llc. - All Rights Reserved Unauthorized copying of
+ * this file, via any medium is strictly prohibited Proprietary and confidential
+ */
 var GLOBAL_ENV = 'development'; //development or live
 var CURRENT_URL = document.URL;
 if (CURRENT_URL.indexOf('localhost') < 0 && GLOBAL_ENV == 'development')

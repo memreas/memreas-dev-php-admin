@@ -1,667 +1,742 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="shortcut icon" href="assets/img/favicon.png">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="shortcut icon" href="assets/img/favicon.png">
 
-    <title>MEM - Transaction History</title>
-    <!-- Bootstrap core CSS -->
-    <link href="/css/bootstrap.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="/css/style.css" rel="stylesheet">
-    <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" >
-  <link type="text/css" rel="stylesheet" href="/css/easy-responsive-tabs.css" />
-  <link type="text/css" rel="stylesheet" href="/css/uniform.css" />  
-<link rel="stylesheet" type="text/css" href="/css/jNotify.jquery.css" media="screen" />
+<title>memreas administration</title>
+<!-- Bootstrap core CSS -->
+<link href="/css/bootstrap.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="/css/style.css" rel="stylesheet">
+<link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+<link type="text/css" rel="stylesheet"
+	href="/css/easy-responsive-tabs.css" />
+<link type="text/css" rel="stylesheet" href="/css/uniform.css" />
+<link rel="stylesheet" type="text/css" href="/css/jNotify.jquery.css"
+	media="screen" />
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
-  
-  </head>
 
-  <body viewsource="no">
-  <header>  
-    <div class="row">
-      <div class="col-lg-3 col-md-3 col-sm-4 col-sm1-6  col-sm2-6 text-right">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <img src="/images/notification.png"/>
-        </button>
-        <h1 id="logo">
-          <a href="index.html">memreas</a>
-        </h1>
-      </div>
-      <div class="col-lg-6 col-md-6 col-sm-5 nopadleft navbar-collapse collapse">
-        <div class="searchdiv top-search">
-          <input id="search" name="input" class="search_bar pull-left " value="@person, #discover" onblur="if(!/\S/.test(this.value))this.value=this.defaultValue" onfocus="if(this.value == '@person, #discover')this.value = '';" type="text">
-          <input type="image" src="/images/search-icon.png" class="putsubmit pull-right"/>
-          <div class="clear"></div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-3 col-sm-3 col-sm1-5  col-sm2-5 nopadleft marrightmob text-right">
-        <div class="pro-info">
-          <figure class="pro-pic">
-            <img src="/images/profile-pic.png" alt="">
-          </figure>
-          <div class="pro-name">kamlesh</div>
-          
-          <div class="clear"></div>
-        </div>
-      </div>
-    </div>
-  </header>
-  <div id="loadingpopup">
-            <div id="loadingpopupinner">
-                <img id="loadingimg" src="/images/loading.gif">
-                <span id="loadingtext">Please wait...</span>
-            </div>
-        </div>
-  <div id="contentwrap"><!-- contentwrap -->
+</head>
 
-    <div class="container">
-      <div class="row">
+<body viewsource="no">
+	<header>
+		<div class="row">
+			<div
+				class="col-lg-3 col-md-3 col-sm-4 col-sm1-6  col-sm2-6 text-right">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<img src="/images/notification.png" />
+				</button>
+				<h1 id="logo">
+					<a href="index.html">memreas</a>
+				</h1>
+			</div>
+			<div
+				class="col-lg-6 col-md-6 col-sm-5 nopadleft navbar-collapse collapse">
+				<div class="searchdiv top-search">
+				<!-- 
+					<input id="search" name="input" class="search_bar pull-left "
+						value="@person, #discover"
+						onblur="if(!/\S/.test(this.value))this.value=this.defaultValue"
+						onfocus="if(this.value == '@person, #discover')this.value = '';"
+						type="text"> <input type="image" src="/images/search-icon.png"
+						class="putsubmit pull-right" />
+				
+					<div class="clear"></div>
+				-->
+				</div>
+			</div>
+			<div
+				class="col-lg-3 col-md-3 col-sm-3 col-sm1-5  col-sm2-5 nopadleft marrightmob text-right">
+				<div class="pro-info">
+					<figure class="pro-pic">
+						<img src="<?php echo $_SESSION ['profile_pic']; ?>" alt="">
+					</figure>
+					<div class="pro-name"><?php echo $_SESSION ['username']; ?></div>
 
-        <div id="horizontalTab" class="padtop19">
-          <ul class="resp-tabs-list smalltabs">
-            <li>
-              <a href="javascript:void(0)">manage user</a>
-            </li>
-            <li>
-              <a href="javascript:void(0)">manage admin</a>
-            </li>
-            <li>
-              <a href="javascript:void(0)">feedback report</a>
-            </li>
-            <li>
-              <a href="javascript:void(0)">moderate events</a>
-            </li>
-            <li>
-              <a href="javascript:void(0)">usage summary</a>
-            </li>
-            <li>
-              <a href="javascript:void(0)">account usage</a>
-            </li>
-            <li>
-              <a href="javascript:void(0)">order history</a>
-            </li>
-            <li>
-              <a href="javascript:void(0)">Account</a>
-            </li>
-            <li>
-              <a href="javascript:void(0)">Payout</a>
-            </li>
-            <!--li>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+	</header>
+	<div id="loadingpopup">
+		<div id="loadingpopupinner">
+			<img id="loadingimg" src="/images/loading.gif"> <span
+				id="loadingtext">Please wait...</span>
+		</div>
+	</div>
+	<div id="contentwrap">
+		<!-- contentwrap -->
+
+		<div class="container">
+			<div class="row">
+
+				<div id="horizontalTab" class="padtop19">
+					<ul class="resp-tabs-list smalltabs">
+						<li><a href="javascript:void(0)">manage user</a></li>
+						<li><a href="javascript:void(0)">manage admin</a></li>
+						<li><a href="javascript:void(0)">feedback report</a></li>
+						<li><a href="javascript:void(0)">moderate events</a></li>
+						<li><a href="javascript:void(0)">usage summary</a></li>
+						<li><a href="javascript:void(0)">account usage</a></li>
+						<li><a href="javascript:void(0)">order history</a></li>
+						<li><a href="javascript:void(0)">Account</a></li>
+						<li><a href="javascript:void(0)">Payout</a></li>
+						<!--li>
               <a href="javascript:void(0)">Refund</a>
             </li-->
-          </ul>
-          <div class="resp-tabs-container">
-            <div class="tabcontent" id="tab0"></div>
-            <div class="tabcontent" id="tab1"></div>
-            <div class="tabcontent" id="tab2"></div>
-            <div class="tabcontent" id="tab3"></div>
-            <div class="tabcontent" id="tab4"></div>
-            <div class="tabcontent" id="tab5"></div>
-            <div class="tabcontent" id="tab6"></div>
-            <div class="tabcontent" id="tab7"></div>
-            <div class="tabcontent" id="tab8"></div>
-            <div class="tabcontent" id="tab9"></div>
+					</ul>
+					<div class="resp-tabs-container">
+						<div class="tabcontent" id="tab0"></div>
+						<div class="tabcontent" id="tab1"></div>
+						<div class="tabcontent" id="tab2"></div>
+						<div class="tabcontent" id="tab3"></div>
+						<div class="tabcontent" id="tab4"></div>
+						<div class="tabcontent" id="tab5"></div>
+						<div class="tabcontent" id="tab6"></div>
+						<div class="tabcontent" id="tab7"></div>
+						<div class="tabcontent" id="tab8"></div>
+						<div class="tabcontent" id="tab9"></div>
 
 
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <footer>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12 footerdiv">
-          &copy; 2014 memreas, llc. All rights reserved.
-        </div>
-      </div>
-    </div>
-  </footer>
-  <!--Disable modal-->
-  <div class="modal fade" id="disableUserModal" tabindex="-1" role="dialog" aria-labelledby="disableUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title" id="myModalLabel">Deactive user</h4>
-          </div>
-        <form class="form-horizontal formstyle" role="form">
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group padleftright30">
-                  <label for="inputName" >select reason :</label>
-                  <div class="radioboxs">
-                    <div class="line">
-                      <input value="1" id="unavailable" name="disbaler" class="unistyle" type="radio" />&nbsp;unavailable
-                    </div>
-                    <div class="line">
-                      <input value="2" id="other" name="disbaler" class="unistyle" type="radio" />&nbsp;other
-                    </div>
-                    <div class="line padtop10">
-                      <textarea cols="1" rows="1" class="input-group-lg" style="width:100%;height:100px;"></textarea>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary">save user</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  <!--Edit user modal-->
-  
-  <div class="modal fade" id="popup" tabindex="-1" role="dialog" aria-labelledby="popup" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        
-      </div>
-    </div>
-  </div>
-  <div class="modal fade" id="listpopup" tabindex="-1" role="dialog" aria-labelledby="listpopup" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        
-      </div>
-    </div>
-  </div>
-  <!--Feedback modal-->
-  <div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form class="form-horizontal" role="form">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title" id="myModalLabel">View Feedback</h4>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputLogin" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">profile photo</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <img src="/images/admin-u-profile.png"/>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Name</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputName" type="text" value="chetnafe22"/>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputCreatetime" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Create time</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputCreatetime" value="1411260694" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputAdminName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">admin name</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputAdminName" value="kamlesh" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputCreated" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">feedback</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <textarea cols="1" rows="1" class="form-control"></textarea>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary">save user</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  
-  <div class="modal fade" id="adminModal" tabindex="-1" role="dialog" aria-labelledby="adminModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form class="form-horizontal" role="form">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title" id="myModalLabel">Recent Transactions</h4>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputLogin" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">log in</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputLogin" value="04b733b6-e1c1-4a6f-81b1-d8519ef6fb02" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputLogtype" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">log type</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputLogtype" type="text" value="feedback_view"/>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputEntityid" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">entity id</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputEntityid" value="f847019b-f7b0-4a24-9344-cd74b6ffb179" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputAdminName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">admin name</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputAdminName" value="kamlesh" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputCreated" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">created</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputCreated" value="1414548480" type="text" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  <!--Store Credit Card-->
-  <div class="modal fade" id="creditCardModal" tabindex="-1" role="dialog" aria-labelledby="creditCardModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form class="form-horizontal" role="form">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title" id="myModalLabel">Store Credit Card</h4>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Name</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputName" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputAddress" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Address</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputAddress" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputCard" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Reason</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputCard" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputCardNum" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">City</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputCardNum" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputState" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">State</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputState" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputCity" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Balance</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputCity" type="text" />
-                  </div>
-                </div>
-              </div>
-              
-              
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputZip" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Zip</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputZip" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputAmount" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputAmount" type="text" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  <!--Buy Subscription-->
-  <div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="buyModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form class="form-horizontal" role="form">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title" id="myModalLabel">Buy Subscription</h4>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Name</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputName" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputAddress" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Address</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputAddress" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputCard" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Card Type</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputCard" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputCardNum" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Card number</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputCardNum" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputExpire" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Expire on</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputExpire" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputCity" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">City</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputCity" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputState" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">State</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputState" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputAmount" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputAmount" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputZip" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Zip</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputZip" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputCapture" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Capture</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputCapture" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputPaid" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Paid</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputPaid" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputAmount" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputAmount" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputCreated" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Created</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputCreated" type="text" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  <!--Add Value To Account-->
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form class="form-horizontal" role="form">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title" id="myModalLabel">Add Value To Account</h4>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputName" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Name</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputName" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputAddress" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Address</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputAddress" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputCard" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Card Type</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputCard" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputCardNum" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Card number</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputCardNum" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputExpire" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Expire on</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputExpire" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputCity" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">City</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputCity" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputState" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">State</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputState" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputAmount" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputAmount" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputZip" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Zip</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputZip" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputCapture" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Capture</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputCapture" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputPaid" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Paid</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputPaid" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputAmount" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputAmount" type="text" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group">
-                  <label for="inputCreated" class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Created</label>
-                  <div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
-                    <input class="form-control" id="inputCreated" type="text" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-    <!-- Bootstrap core JavaScript
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 footerdiv">&copy; 2014 memreas, llc. All
+					rights reserved.</div>
+			</div>
+		</div>
+	</footer>
+	<!--Disable modal-->
+	<div class="modal fade" id="disableUserModal" tabindex="-1"
+		role="dialog" aria-labelledby="disableUserModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Deactive user</h4>
+				</div>
+				<form class="form-horizontal formstyle" role="form">
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group padleftright30">
+									<label for="inputName">select reason :</label>
+									<div class="radioboxs">
+										<div class="line">
+											<input value="1" id="unavailable" name="disbaler"
+												class="unistyle" type="radio" />&nbsp;unavailable
+										</div>
+										<div class="line">
+											<input value="2" id="other" name="disbaler" class="unistyle"
+												type="radio" />&nbsp;other
+										</div>
+										<div class="line padtop10">
+											<textarea cols="1" rows="1" class="input-group-lg"
+												style="width: 100%; height: 100px;"></textarea>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary">save user</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!--Edit user modal-->
+
+	<div class="modal fade" id="popup" tabindex="-1" role="dialog"
+		aria-labelledby="popup" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content"></div>
+		</div>
+	</div>
+	<div class="modal fade" id="listpopup" tabindex="-1" role="dialog"
+		aria-labelledby="listpopup" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content"></div>
+		</div>
+	</div>
+	<!--Feedback modal-->
+	<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog"
+		aria-labelledby="feedbackModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form class="form-horizontal" role="form">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">
+							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">View Feedback</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputLogin"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">profile
+										photo</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<img src="/images/admin-u-profile.png" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputName"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Name</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputName" type="text"
+											value="chetnafe22" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputCreatetime"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Create
+										time</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputCreatetime"
+											value="1411260694" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputAdminName"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">admin
+										name</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputAdminName"
+											value="kamlesh" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputCreated"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">feedback</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<textarea cols="1" rows="1" class="form-control"></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary">save user</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="adminModal" tabindex="-1" role="dialog"
+		aria-labelledby="adminModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form class="form-horizontal" role="form">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">
+							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Recent Transactions</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputLogin"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">log
+										in</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputLogin"
+											value="04b733b6-e1c1-4a6f-81b1-d8519ef6fb02" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputLogtype"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">log
+										type</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputLogtype" type="text"
+											value="feedback_view" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputEntityid"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">entity
+										id</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputEntityid"
+											value="f847019b-f7b0-4a24-9344-cd74b6ffb179" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputAdminName"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">admin
+										name</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputAdminName"
+											value="kamlesh" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputCreated"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">created</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputCreated"
+											value="1414548480" type="text" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!--Store Credit Card-->
+	<div class="modal fade" id="creditCardModal" tabindex="-1"
+		role="dialog" aria-labelledby="creditCardModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form class="form-horizontal" role="form">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">
+							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Store Credit Card</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputName"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Name</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputName" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputAddress"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Address</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputAddress" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputCard"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Reason</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputCard" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputCardNum"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">City</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputCardNum" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputState"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">State</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputState" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputCity"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Balance</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputCity" type="text" />
+									</div>
+								</div>
+							</div>
+
+
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputZip"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Zip</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputZip" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputAmount"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputAmount" type="text" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!--Buy Subscription-->
+	<div class="modal fade" id="buyModal" tabindex="-1" role="dialog"
+		aria-labelledby="buyModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form class="form-horizontal" role="form">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">
+							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Buy Subscription</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputName"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Name</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputName" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputAddress"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Address</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputAddress" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputCard"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Card
+										Type</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputCard" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputCardNum"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Card
+										number</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputCardNum" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputExpire"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Expire
+										on</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputExpire" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputCity"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">City</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputCity" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputState"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">State</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputState" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputAmount"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputAmount" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputZip"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Zip</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputZip" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputCapture"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Capture</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputCapture" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputPaid"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Paid</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputPaid" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputAmount"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputAmount" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputCreated"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Created</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputCreated" type="text" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!--Add Value To Account-->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form class="form-horizontal" role="form">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">
+							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Add Value To Account</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputName"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Name</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputName" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputAddress"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Address</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputAddress" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputCard"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Card
+										Type</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputCard" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputCardNum"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Card
+										number</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputCardNum" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputExpire"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Expire
+										on</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputExpire" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputCity"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">City</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputCity" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputState"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">State</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputState" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputAmount"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputAmount" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputZip"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Zip</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputZip" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputCapture"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Capture</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputCapture" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputPaid"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Paid</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputPaid" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputAmount"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Amount</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputAmount" type="text" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="inputCreated"
+										class="col-lg-3 col-md-3 col-sm-3 control-label nopadleft">Created</label>
+									<div class="col-lg-9 col-md-9 col-sm-9 nopadleft">
+										<input class="form-control" id="inputCreated" type="text" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- Bootstrap core JavaScript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="/js/bootstrap.js"></script>
-  <script src="/js/easyResponsiveTabs.js" type="text/javascript"></script>
-  <script src="/js/blocksit.js"></script>
-  <script src="/js/jquery.uniform.js"></script>
-      
-        <script src="/js/jNotify.jquery.min.js"></script>
-                <script src="/js/underscore-min.js"></script>
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src="/js/bootstrap.js"></script>
+	<script src="/js/easyResponsiveTabs.js" type="text/javascript"></script>
+	<script src="/js/blocksit.js"></script>
+	<script src="/js/jquery.uniform.js"></script>
+	<script src="/js/jNotify.jquery.min.js"></script>
+	<script src="/js/underscore-min.js"></script>
+	<script src="/js/bootstrap-typeahead.js"></script>
+	<script src="/js/search.js"></script>
+	<script src="/js/ajax.js"></script>
+	<script src="/js/global.js"></script>
+	<script src="/js/admin.js"></script>
+	<!-- <script src="/js/fotorama.js"></script>  -->
+	<script src="/js/responsiveslides.min.js" type="text/javascript"></script>
 
-        <script src="/js/bootstrap-typeahead.js"></script>
-
-        <script src="/js/search.js"></script>
-                <script src="/js/ajax.js"></script>
-                                <script src="/js/global.js"></script>
-
-
-
-<script src="/js/admin.js"></script>
-  <script src="/js/fotorama.js"></script> 
-                  <script src="/js/responsiveslides.min.js" type="text/javascript"></script>
-
-  </body>
+</body>
 </html>
