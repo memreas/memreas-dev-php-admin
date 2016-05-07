@@ -44,7 +44,7 @@
 			<div
 				class="col-lg-6 col-md-6 col-sm-5 nopadleft navbar-collapse collapse">
 				<div class="searchdiv top-search">
-				<!-- 
+					<!-- 
 					<input id="search" name="input" class="search_bar pull-left "
 						value="@person, #discover"
 						onblur="if(!/\S/.test(this.value))this.value=this.defaultValue"
@@ -57,15 +57,22 @@
 				</div>
 			</div>
 			<div
-				class="col-lg-3 col-md-3 col-sm-3 col-sm1-5  col-sm2-5 nopadleft marrightmob text-right">
+				class="col-lg-3 col-md-3 col-sm-3 col-sm1-5 col-sm2-5 nopadleft marrightmob text-right">
 				<div class="pro-info">
 					<figure class="pro-pic">
-						<img src="<?php echo $_SESSION ['profile_pic']; ?>" alt="">
+						<img src="<?php echo $_SESSION ['profile_pic_url']; ?>" alt="" class="img-responsive">
 					</figure>
 					<div class="pro-name"><?php echo $_SESSION ['username']; ?></div>
-
+					<div class="pro-name">
+						<form id="form-user-logout" name="user_logout_frm" method="post"
+							action="/index/logout">
+							<input class="btn btn-sm  pull-left login-btn" type="submit"
+								name="logout" value="logout">
+						</form>
+					</div>
 					<div class="clear"></div>
 				</div>
+
 			</div>
 		</div>
 	</header>

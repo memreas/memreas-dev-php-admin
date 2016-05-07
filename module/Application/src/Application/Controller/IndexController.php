@@ -76,12 +76,12 @@ class IndexController extends AbstractActionController {
 				$sid = $_REQUEST ['sid'];
 				$this->sessHandler->startSessionWithSID ( $sid );
 				$hasSession = true;
-				// Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
+				Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
 			} else if (! empty ( $_COOKIE ['memreascookie'] )) {
 				Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::fetching redis session for $_COOKIE [memreascookie]->', $_COOKIE ['memreascookie'] );
 				$hasSession = $this->sessHandler->startSessionWithMemreasCookie ( $_COOKIE ['memreascookie'] );
 				$hasSession = true;
-				// Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
+				Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session found->', $_SESSION );
 			}
 		} catch ( \Exception $e ) {
 			// Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::Redis Session lookup error->', $e->getMessage () );
@@ -472,7 +472,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function showlogAction() {
-		// Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		echo '<pre>' . file_get_contents ( getcwd () . '/php_errors.log' );
 		exit ();
 	}
@@ -486,8 +486,6 @@ class IndexController extends AbstractActionController {
 	public function manageAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
-			error_log ( "Enter manageAction " . __FUNCTION__ . PHP_EOL );
-			// $path = $this->security("application/index/index.phtml");
 			$path = "application/manage/index.phtml";
 			$view = new ViewModel ();
 			$view->setTemplate ( $path ); // path to phtml file under view folder
