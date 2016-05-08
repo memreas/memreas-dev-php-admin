@@ -306,7 +306,7 @@ class IndexController extends AbstractActionController {
 	}
 	public function logoutAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
-		error_log ( 'IndexController -> logout->exec()...' . PHP_EOL );
+		Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ , 'IndexController -> logout->exec()...' );
 		if ($this->fetchSession ()) {
 			try {
 				if (! empty ( $_SESSION ['sid'] )) {
@@ -316,15 +316,14 @@ class IndexController extends AbstractActionController {
 					$result = $this->sessHandler->closeSessionWithMemreasCookie ();
 					Mlog::addone ( 'logout cookie result ', $result );
 				}
-				;
 			} catch ( \Exception $e ) {
 				error_log ( 'Caught exception: ' . $e->getMessage () . PHP_EOL );
 			}
-			Mlog::addone ( 'redirecting to index ', '..' );
-			return $this->redirect ()->toRoute ( 'index', array (
-					'action' => "index" 
-			) );
 		}
+		Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ , 'redirecting to index... ' );
+		return $this->redirect ()->toRoute ( 'index', array (
+				'action' => "index" 
+		) );
 	}
 	public function setSession($username, $password) {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
@@ -1949,18 +1948,17 @@ class IndexController extends AbstractActionController {
 	}
 	public function getUserTable() {
 		if (! $this->userTable) {
-				
+			
 			$this->userTable = $this->sm->get ( 'Application\Model\UserTable' );
 		}
 		return $this->userTable;
 	}
 	public function getAminUserTable() {
 		if (! $this->userTable) {
-				
+			
 			$this->userTable = $this->sm->get ( 'Application\Model\AdminUserTable' );
 		}
 		return $this->userTable;
 	}
-	
 }
 // end class IndexController
