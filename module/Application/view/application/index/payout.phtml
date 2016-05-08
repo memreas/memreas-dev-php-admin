@@ -1,7 +1,9 @@
 <?php
+use Application\memreas\Mlog;
 $sm = $this->getHelperPluginManager ()->getServiceLocator ();
 $router = $sm->get ( 'Router' );
 $request = $sm->get ( 'Request' );
+Mlog::addone(__CLASS__.__METHOD__.__LINE__.'::payout request', $request);
 $routeMatch = $router->match ( $request );
 // get an array of the route params and their values
 $routeparams = $routeMatch->getParams ();

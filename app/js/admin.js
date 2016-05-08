@@ -165,8 +165,8 @@ $(document).ready(
 		width : 'auto', // auto or any width like 600px
 		fit : true, // 100% fit in a container
 		closed : 'accordion', // Start closed if in accordion view
-		activate : function(event) { // Callback function if tab is
-						// switched
+		activate : function(event) {
+		    // Callback function if tab is switched
 		    getCurrentTab();
 		    doGetUrl(UI[UI.current_tab]);
 		}
@@ -225,12 +225,13 @@ function doSearchAjax(params) {
 
     doGetUrl(url);
 };
+
 function doGetUrl(url) {
     $('#loadingpopup').fadeIn(1000);
-    console.log("getting url ---> " + url);
     $.get(url, function(data) {
 	$('#loadingpopup').fadeOut(500);
 	$('#' + UI.current_tab).html(data);
+	console.log("getting url ---> " + url);
+	console.log("getting data---> " + data);
     });
-
 }
