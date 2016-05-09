@@ -21,6 +21,8 @@ $routeparams = $routeMatch->getParams ();
 						<th class="numeric">account id</th>
 						<th>username</th>
 						<th>balance</th>
+						<th>investigate</th>
+						<th>cleared balance amount</th>
 
 					</tr>
 				</thead>
@@ -35,10 +37,12 @@ $routeparams = $routeMatch->getParams ();
                             <tr>
 						<td data-title="selected" class="numeric"><input name=ids[
 							<?= $row->account_id ?>] type="checkbox"
-							class="inputbox unistyle" value="<?= $row->balance ?>" /></td>
+							class="inputbox unistyle" value="<?= $row->balance ?>" <?php if ($row->investigate) {echo "disabled";} ?>> /></td>
 						<td data-title="account id" class="numeric">123456</td>
 						<td><?php echo $row->username ?></td>
 						<td><?php echo $row->balance ?></td>
+						<td><?php echo $row->investigate ?></td>
+						<td><?php echo $row->clearedBalanceAmount ?></td>
 
 					</tr>
 					<?php
