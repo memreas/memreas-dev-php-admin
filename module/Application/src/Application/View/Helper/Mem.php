@@ -21,8 +21,6 @@ class Mem extends AbstractHelper
         if (! empty ( $json_array ['S3_files']['thumbnails']['79x80'][0])){
             $url = $json_array ['S3_files']['thumbnails']['79x80'];
             $url = json_decode($this->signer->signArrayOfUrls($url));
-
-
         }
         return is_array($url)?$url[0]:$url ;
     }
