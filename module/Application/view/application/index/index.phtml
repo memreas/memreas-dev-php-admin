@@ -1,11 +1,4 @@
-<?php
-use Application\memreas\Mlog;
-?>
 <!DOCTYPE html>
-<?php 
-Mlog::addone('inside index.phtml', '...');
-echo 'entered index.phtml';
-?>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -61,15 +54,6 @@ echo 'entered index.phtml';
               <div class="col-xs-7">
                 <input type="password" onfocus="if(this.value == 'Password')this.value = '';" onblur="if(!/\S/.test(this.value))this.value=this.defaultValue" placeholder="Password" name="password"  class="form-control pull-left loginw">
                 <input class="btn btn-sm  pull-left login-btn" type="submit" name="log in" value="log in">
-              </div>
-            </div>
-            <div class="login-bottom row">
-              <div class="col-xs-5 nopadleft white">
-                <input type="checkbox" />
-                remember me
-              </div>
-              <div class="col-xs-7">
-                <a class="forgot clicker forgot-password" onclick="popup('forgot');" href="javascript:;">Forgot Your Password?</a>
               </div>
             </div>
           </form>

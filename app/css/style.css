@@ -2883,9 +2883,6 @@ form.change-status textarea{
 .padleftright30{padding-left:30px;padding-right:30px;padding-top:0;}
 .padtop10{padding-top:10px;}
 
-/*!
- * Fotorama 4.6.2 | http://fotorama.io/license/
- */
 @media only screen and (max-width: 800px) {
     
     /* Force table to not be like tables anymore */

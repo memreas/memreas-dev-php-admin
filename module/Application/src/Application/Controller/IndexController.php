@@ -43,6 +43,7 @@ class IndexController extends AbstractActionController {
 	protected $sessHandler;
 	protected $redis;
 	protected $sm;
+	protected $feedbackTable;
 	public function __construct($sm) {
 		$this->sm = $sm;
 	}
@@ -63,10 +64,7 @@ class IndexController extends AbstractActionController {
 	}
 	public function fetchSession() {
 		$cm = __CLASS__ . __METHOD__;
-		// Mlog::addone ( $cm . '$_POST', $_POST );
-		// Mlog::addone ( $cm . '$_GET', $_GET );
-		
-		// Mlog::addone ( $cm . '$_COOKIE', $_COOKIE );
+		// Mlog::addone ( $cm . '::$_REQUEST--->', $_REQUEST );
 		/**
 		 * Setup save handler and start session
 		 */
@@ -150,8 +148,8 @@ class IndexController extends AbstractActionController {
 							'action' => $action,
 							'xml' => $xml,
 							'sid' => empty ( $_SESSION ['sid'] ) ? '' : $_SESSION ['sid'],
-							'admin_key' => $admin_key ,
-							'clientIPAddress' => $this->fetchUserIPAddress ()
+							'admin_key' => $admin_key,
+							'clientIPAddress' => $this->fetchUserIPAddress () 
 					] 
 			] );
 		} else {
@@ -161,10 +159,10 @@ class IndexController extends AbstractActionController {
 			$response = $guzzle->post ( $this->url, [ 
 					'form_params' => [ 
 							'action' => $action,
-							'xml' => $xml, 
+							'xml' => $xml,
 							'sid' => empty ( $_SESSION ['sid'] ) ? '' : $_SESSION ['sid'],
-							'admin_key' => $admin_key ,
-							'clientIPAddress' => $this->fetchUserIPAddress ()
+							'admin_key' => $admin_key,
+							'clientIPAddress' => $this->fetchUserIPAddress () 
 					] 
 			] );
 		}
@@ -174,7 +172,7 @@ class IndexController extends AbstractActionController {
 	public function fetchJson($action, $jsonArray) {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		$jsonArray ['type'] = 'jsonp';
-		$jsonArray ['json']['clientIPAddress'] = $this->fetchUserIPAddress ();
+		$jsonArray ['json'] ['clientIPAddress'] = $this->fetchUserIPAddress ();
 		
 		$guzzle = new \GuzzleHttp\Client ();
 		if (empty ( $_SESSION ['sid'] )) {
@@ -207,34 +205,12 @@ class IndexController extends AbstractActionController {
 		
 		return $response->getBody ();
 	}
-	public function getAdminLogTable() {
-		if (! $this->adminLogTable) {
-			
-			$this->adminLogTable = $this->sm->get ( 'Application\Model\AdminLogTable' );
-		}
-		return $this->adminLogTable;
-	}
-	protected $feedbackTable;
-	public function getFeedbackTable() {
-		if (! $this->feedbackTable) {
-			
-			$this->feedbackTable = $this->sm->get ( 'Application\Model\FeedbackTable' );
-		}
-		return $this->feedbackTable;
-	}
-	public function getUserInfoTable() {
-		if (! $this->userinfoTable) {
-			
-			$this->userinfoTable = $this->sm->get ( 'Application\Model\UserInfoTable' );
-		}
-		return $this->userinfoTable;
-	}
 	public function indexAction() {
 		// Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, 'Enter indexAction' );
 		$path = "application/index/index.phtml";
 		$view = new ViewModel ();
-		$view->setTemplate ( $path ); // path to phtml file under view folder
-		                              // Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, 'returning $path ' . $path );
+		// path to phtml file under view folder
+		$view->setTemplate ( $path );
 		
 		return $view;
 	}
@@ -307,7 +283,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function loginAction() {
-		// Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		// Fetch the post data
 		$request = $this->getRequest ();
 		
@@ -330,7 +306,7 @@ class IndexController extends AbstractActionController {
 	}
 	public function logoutAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
-		error_log ( 'IndexController -> logout->exec()...' . PHP_EOL );
+		Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ , 'IndexController -> logout->exec()...' );
 		if ($this->fetchSession ()) {
 			try {
 				if (! empty ( $_SESSION ['sid'] )) {
@@ -340,18 +316,17 @@ class IndexController extends AbstractActionController {
 					$result = $this->sessHandler->closeSessionWithMemreasCookie ();
 					Mlog::addone ( 'logout cookie result ', $result );
 				}
-				;
 			} catch ( \Exception $e ) {
 				error_log ( 'Caught exception: ' . $e->getMessage () . PHP_EOL );
 			}
-			Mlog::addone ( 'redirecting to index ', '..' );
-			return $this->redirect ()->toRoute ( 'index', array (
-					'action' => "index" 
-			) );
 		}
+		Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ , 'redirecting to index... ' );
+		return $this->redirect ()->toRoute ( 'index', array (
+				'action' => "index" 
+		) );
 	}
 	public function setSession($username, $password) {
-		// Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		// Fetch the user's data and store it in the session...
 		// error_log ( "Inside setSession ..." );
 		$user = $this->getAminUserTable ()->fetchAll ( array (
@@ -376,7 +351,7 @@ class IndexController extends AbstractActionController {
 		return true;
 	}
 	public function fetchUserIPAddress() {
-		// Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		/*
 		 * Fetch the user's ip address
 		 */
@@ -388,7 +363,7 @@ class IndexController extends AbstractActionController {
 		} else {
 			$ipAddress = $_SERVER ['REMOTE_ADDR'];
 		}
-		// error_log ( 'ip is ' . $ipAddress );
+		Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ . '::$ipAddress->', $ipAddress );
 		
 		return $ipAddress;
 	}
@@ -455,20 +430,6 @@ class IndexController extends AbstractActionController {
 			}
 		}
 	}
-	public function getUserTable() {
-		if (! $this->userTable) {
-			
-			$this->userTable = $this->sm->get ( 'Application\Model\UserTable' );
-		}
-		return $this->userTable;
-	}
-	public function getAminUserTable() {
-		if (! $this->userTable) {
-			
-			$this->userTable = $this->sm->get ( 'Application\Model\AdminUserTable' );
-		}
-		return $this->userTable;
-	}
 	public function forgotpasswordAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
@@ -510,7 +471,7 @@ class IndexController extends AbstractActionController {
 		}
 	}
 	public function showlogAction() {
-		// Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		echo '<pre>' . file_get_contents ( getcwd () . '/php_errors.log' );
 		exit ();
 	}
@@ -524,8 +485,6 @@ class IndexController extends AbstractActionController {
 	public function manageAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
-			error_log ( "Enter manageAction " . __FUNCTION__ . PHP_EOL );
-			// $path = $this->security("application/index/index.phtml");
 			$path = "application/manage/index.phtml";
 			$view = new ViewModel ();
 			$view->setTemplate ( $path ); // path to phtml file under view folder
@@ -592,12 +551,9 @@ class IndexController extends AbstractActionController {
 					$postData = $this->params ()->fromPost ();
 					$user->username = $postData ['username'];
 					$user->email_address = $postData ['email_address'];
-					// $user->facebook_username = $postData['facebook_username'];
-					// $user->twitter_username = $postData['twitter_username'];
 					$user->disable_account = $postData ['disable_account'];
 					
 					// Save the changes
-					
 					// $this->getUserTable()->saveUser($user);
 					$this->getAdminLogTable ()->saveLog ( array (
 							'log_type' => 'user_update',
@@ -1225,7 +1181,7 @@ class IndexController extends AbstractActionController {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
 		if ($this->fetchSession ()) {
 			$sid = $_SESSION ['sid'];
-                        $defaultFrom = date ( 'Y-m-d', strtotime ( "-1 month" ) );
+			$defaultFrom = date ( 'Y-m-d', strtotime ( "-1 month" ) );
 			$defaultTo = date ( 'Y-m-d', strtotime ( 'now' ) );
 			$fromDate = $this->params ()->fromQuery ( 'from', $defaultFrom );
 			$toDate = $this->params ()->fromQuery ( 'to', $defaultTo );
@@ -1239,7 +1195,7 @@ class IndexController extends AbstractActionController {
 			
 			$jsonArr ['json'] = array (
 					'user_id' => $user_id,
-                                        'username'=> $username,
+					'username' => $username,
 					'sid' => $sid,
 					'search_username' => $username,
 					'page' => $page,
@@ -1251,7 +1207,6 @@ class IndexController extends AbstractActionController {
 				$result = $this->fetchJson ( $action, $jsonArr );
 				$result = substr ( $result, strpos ( $result, "{" ) );
 				$data = json_decode ( ( string ) $result );
-				
 			}
 			
 			return array (
@@ -1262,7 +1217,7 @@ class IndexController extends AbstractActionController {
 					'limit' => $limit,
 					'fromDate' => $fromDate,
 					'toDate' => $toDate,
-					'username' => $username  
+					'username' => $username 
 			);
 		}
 	}
@@ -1495,7 +1450,7 @@ class IndexController extends AbstractActionController {
 		if ($this->fetchSession ()) {
 			
 			$sid = $_SESSION ['sid'];
-                        $defaultFrom = date ( 'Y-m-d', strtotime ( "-1 month" ) );
+			$defaultFrom = date ( 'Y-m-d', strtotime ( "-1 month" ) );
 			$defaultTo = date ( 'Y-m-d', strtotime ( 'now' ) );
 			$fromDate = $this->params ()->fromQuery ( 'from', $defaultFrom );
 			$toDate = $this->params ()->fromQuery ( 'to', $defaultTo );
@@ -1509,18 +1464,16 @@ class IndexController extends AbstractActionController {
 			
 			$jsonArr ['json'] = array (
 					'user_id' => $user_id,
-                                        'username'=> $_SESSION['username'],
+					'username' => $_SESSION ['username'],
 					'sid' => $sid,
-					  'payeelist' => $payeelist,
+					'payeelist' => $payeelist,
 					'page' => $page,
 					'limit' => $limit 
 			);
-                                
-				$result = $this->fetchJson ( $action, $jsonArr );
-				$result = substr ( $result, strpos ( $result, "{" ) );
-				$data = json_decode ( ( string ) $result );
-				
-                                
+			
+			$result = $this->fetchJson ( $action, $jsonArr );
+			$result = substr ( $result, strpos ( $result, "{" ) );
+			$data = json_decode ( ( string ) $result );
 			
 			return array (
 					'listpayees' => $data,
@@ -1530,10 +1483,9 @@ class IndexController extends AbstractActionController {
 					'limit' => $limit,
 					'fromDate' => $fromDate,
 					'toDate' => $toDate,
-					'username' => $username ,
-                                        'payeelist' => $payeelist
+					'username' => $username,
+					'payeelist' => $payeelist 
 			);
-                                
 		}
 	}
 	public function payoutReasonAction() {
@@ -1553,13 +1505,12 @@ class IndexController extends AbstractActionController {
 					$payeeArr [0] = array (
 							'account_id' => $account_id,
 							'amount' => $amount,
-							'description' => $description,
-                                                        
+							'description' => $description 
 					);
 					
 					$jsonArr ['json'] = array (
 							'sid' => $_SESSION ['sid'],
-                                                        'username'=> $_SESSION['username'],
+							'username' => $_SESSION ['username'],
 							'payees' => $payeeArr 
 					);
 					$result = $this->fetchJson ( $action, $jsonArr );
@@ -1972,6 +1923,42 @@ class IndexController extends AbstractActionController {
 			$this->getUserInfoTable ()->saveUserInfo ( $row );
 		}
 	}
+	
+	// Tables
+	public function getAdminLogTable() {
+		if (! $this->adminLogTable) {
+			
+			$this->adminLogTable = $this->sm->get ( 'Application\Model\AdminLogTable' );
+		}
+		return $this->adminLogTable;
+	}
+	public function getFeedbackTable() {
+		if (! $this->feedbackTable) {
+			
+			$this->feedbackTable = $this->sm->get ( 'Application\Model\FeedbackTable' );
+		}
+		return $this->feedbackTable;
+	}
+	public function getUserInfoTable() {
+		if (! $this->userinfoTable) {
+			
+			$this->userinfoTable = $this->sm->get ( 'Application\Model\UserInfoTable' );
+		}
+		return $this->userinfoTable;
+	}
+	public function getUserTable() {
+		if (! $this->userTable) {
+			
+			$this->userTable = $this->sm->get ( 'Application\Model\UserTable' );
+		}
+		return $this->userTable;
+	}
+	public function getAminUserTable() {
+		if (! $this->userTable) {
+			
+			$this->userTable = $this->sm->get ( 'Application\Model\AdminUserTable' );
+		}
+		return $this->userTable;
+	}
 }
-
 // end class IndexController

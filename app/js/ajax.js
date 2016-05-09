@@ -1,8 +1,7 @@
-/////////////////////////////////
-// Author: David Kang
-// Copyright memreas llc 2013
-/////////////////////////////////
-
+/**
+ * Copyright (C) 2016 memreas llc. - All Rights Reserved Unauthorized copying of
+ * this file, via any medium is strictly prohibited Proprietary and confidential
+ */
 var wsurl = '/index/ApiServerSide';
 var xml_str = "";
 

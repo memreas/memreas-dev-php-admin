@@ -170,6 +170,9 @@ class AWSMemreasAdminRedisSessionHandler implements \SessionHandlerInterface {
 			$_SESSION ['profile_pic'] = $this->url_signer->signArrayOfUrls ( null );
 		}
 		// Mlog::addone(__CLASS__.__METHOD__.':: $_SESSION[profile_pic]', $_SESSION['profile_pic']);
+		$_SESSION ['profile_pic_url'] = json_decode($_SESSION ['profile_pic'])[0];
+		Mlog::addone(__CLASS__.__METHOD__. __LINE__.'::$_SESSION [profile_pic_url]', $_SESSION ['profile_pic_url']);
+		
 		
 		error_log ( 'setSession(...) _SESSION vars --->' . print_r ( $_SESSION, true ) . PHP_EOL );
 		$this->setUIDLookup ();
