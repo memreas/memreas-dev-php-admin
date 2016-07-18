@@ -7,7 +7,7 @@
 namespace Application\Model;
 
 class MemreasConstants {
-	const MEMREAS_WS = "https://memreasdev-ws.memreas.com";
+	const MEMREAS_WS = "https://memreasdev-wsa.memreas.com";
 	
 	// Redis constant section
 	const REDIS_SERVER_ENDPOINT = "10.164.216.184";
