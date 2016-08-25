@@ -3,7 +3,7 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
@@ -56,6 +56,14 @@ class SelectDecorator extends Select implements PlatformDecoratorInterface
 
         $selectParameters = $parameters[self::SELECT];
 
+        /** if this is a DISTINCT query then real SELECT part goes to second element in array **/
+        $parameterIndex = 0;
+        if ($selectParameters[0] === 'DISTINCT') {
+            unset($selectParameters[0]);
+            $selectParameters = array_values($selectParameters);
+            $parameterIndex = 1;
+        }
+
         $starSuffix = $platform->getIdentifierSeparator() . self::SQL_STAR;
         foreach ($selectParameters[0] as $i => $columnParameters) {
             if ($columnParameters[0] == self::SQL_STAR || (isset($columnParameters[1]) && $columnParameters[1] == self::SQL_STAR) || strpos($columnParameters[0], $starSuffix)) {
@@ -99,7 +107,7 @@ class SelectDecorator extends Select implements PlatformDecoratorInterface
         }
 
         // add a column for row_number() using the order specification
-        $parameters[self::SELECT][0][] = ['ROW_NUMBER() OVER (' . $orderBy . ')', '[__ZEND_ROW_NUMBER]'];
+        $parameters[self::SELECT][$parameterIndex][] = ['ROW_NUMBER() OVER (' . $orderBy . ')', '[__ZEND_ROW_NUMBER]'];
 
         $sqls[self::SELECT] = $this->createSqlFromSpecificationAndParameters(
             $this->specifications[self::SELECT],
