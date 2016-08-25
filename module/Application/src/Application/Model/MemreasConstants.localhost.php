@@ -8,10 +8,10 @@ namespace Application\Model;
 
 class MemreasConstants {
 	//const MEMREAS_WS = "https://memreasdev-ws.memreas.com";
-	const MEMREAS_WS = "http://memreas-dev-php-ws.localhost";
+	const MEMREAS_WS = "http://127.0.0.1:8081";
 	
 	// Redis constant section
-	const REDIS_SERVER_ENDPOINT = "localhost";
+	const REDIS_SERVER_ENDPOINT = "127.0.0.1";
 	const REDIS_SERVER_USE = true;
 	const REDIS_SERVER_SESSION_ONLY = true;
 	const REDIS_SERVER_PORT = "6379";
