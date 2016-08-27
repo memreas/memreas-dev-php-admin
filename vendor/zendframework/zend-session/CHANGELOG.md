@@ -2,6 +2,104 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.7.3 - 2016-07-05
+
+### Added
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#51](https://github.com/zendframework/zend-session/pull/51) provides a fix to
+  the `DbTableGateway` save handler to prevent infinite recursion when
+  attempting to destroy an expired record during initial read operations.
+- [#45](https://github.com/zendframework/zend-session/pull/45) updates the
+  `SessionManager::regenerateId()` method to only regenerate the identifier if a
+  session already exists.
+
+## 2.7.2 - 2016-06-24
+
+### Added
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#46](https://github.com/zendframework/zend-session/pull/46) provides fixes to
+  each of the `Cache` and `DbTaleGateway` save handlers to ensure they work
+  when used under PHP 7.
+
+## 2.7.1 - 2016-05-11
+
+### Added
+
+- [#40](https://github.com/zendframework/zend-session/pull/40) adds and
+  publishes the documentation to https://zendframework.github.io/zend-session/
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#38](https://github.com/zendframework/zend-session/pull/38) ensures that the
+  value from `session.gc_maxlifetime` is cast to an integer before assigning
+  it as the `lifetime` value in the `MongoDB` adapter, ensuring sessions may be
+  deleted.
+
+## 2.7.0 - 2016-04-12
+
+### Added
+
+- [#23](https://github.com/zendframework/zend-session/pull/23) provides a new
+  `Id` validator to ensure that the session identifier is not malformed. This
+  validator is now enabled by default; to disable it, pass
+  `['attach_default_validators' => false]` as the fifth argument to
+  `SessionManager`, or pass an `options` array with that value under the
+  `session_manager` configuration key.
+- [#34](https://github.com/zendframework/zend-session/pull/34) adds the option
+  to use `exporeAfterSeconds` with the `MongoDB` save handler.
+- [#37](https://github.com/zendframework/zend-session/pull/37) exposes the
+  package as a standalone config-provider/component, adding:
+  - `Zend\Session\ConfigProvider`, which maps the default services offered by
+    the package, including the `ContainerAbstractServiceFactory`.
+  - `Zend\Session\Module`, which does the same, but for zend-mvc contexts.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#34](https://github.com/zendframework/zend-session/pull/34) updates the
+  component to use ext/mongodb + the MongoDB PHP client library, instead of
+  ext/mongo, for purposes of the `MongoDB` save handler, allowing the component
+  to be used with modern MongoDB installations.
+
 ## 2.6.2 - 2016-02-25
 
 ### Added

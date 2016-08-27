@@ -3,7 +3,7 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
@@ -39,25 +39,33 @@ class Sender implements HeaderInterface
 
         // check to ensure proper header type for this factory
         if (strtolower($name) !== 'sender') {
-            throw new Exception\InvalidArgumentException('Invalid header line for Sender string');
+            throw new Exception\InvalidArgumentException('Invalid header name for Sender string');
         }
 
-        $header      = new static();
-        $senderName  = '';
-        $senderEmail = '';
+        $header     = new static();
 
-        // Check for address, and set if found
-        if (preg_match('/^(?P<name>.*?)<(?P<email>[^>]+)>$/', $value, $matches)) {
-            $senderName = trim($matches['name']);
-            if (empty($senderName)) {
-                $senderName = null;
-            }
-            $senderEmail = $matches['email'];
-        } else {
-            $senderEmail = $value;
+        /**
+         * matches the header value so that the email must be enclosed by < > when a name is present
+         * 'name' and 'email' capture groups correspond respectively to 'display-name' and 'addr-spec' in the ABNF
+         * @see https://tools.ietf.org/html/rfc5322#section-3.4
+         */
+        $hasMatches = preg_match(
+            '/^(?:(?P<name>.+)\s)?(?(name)<|<?)(?P<email>[^\s]+?)(?(name)>|>?)$/',
+            $value,
+            $matches
+        );
+
+        if ($hasMatches !== 1) {
+            throw new Exception\InvalidArgumentException('Invalid header value for Sender string');
         }
 
-        $header->setAddress($senderEmail, $senderName);
+        $senderName = trim($matches['name']);
+
+        if (empty($senderName)) {
+            $senderName = null;
+        }
+
+        $header->setAddress($matches['email'], $senderName);
 
         return $header;
     }
