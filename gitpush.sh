@@ -24,8 +24,7 @@ set -v verbose #echo on
 git push
 
 
-if [ "$local" = "y" ]
-then
-	cp module/Application/src/Application/Model/MemreasConstants.localhost.php module/Application/src/Application/Model/MemreasConstants.php
-fi
 #eb events -f
+
+curl http://54.160.204.224:55154/?action=clearlog
+curl http://54.160.204.224:55154/?action=gitpull

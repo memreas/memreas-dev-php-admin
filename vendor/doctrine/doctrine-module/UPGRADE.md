@@ -1,3 +1,9 @@
+# 1.1.0
+ * fixed require-dev dependancies [#557](https://github.com/doctrine/DoctrineModule/pull/557)
+ * Update hydrator.md [#561](https://github.com/doctrine/DoctrineModule/pull/561)
+ * [git] Add .gitattributes to remove unneeded files [#559](https://github.com/doctrine/DoctrineModule/pull/559)
+ * refactored factories for SM v3 [#558](https://github.com/doctrine/DoctrineModule/pull/558)
+
 # 1.0.1
 
  * Drop compatibility with PHP 5.4 [#553](https://github.com/doctrine/DoctrineModule/pull/553)
@@ -8,6 +14,11 @@
 
  * Remove deprecated api call from test [#523](https://github.com/doctrine/DoctrineModule/pull/523)
  * Allow for the use of Zend\Cache\Service\StorageCacheAbstractServiceFactory [#547](https://github.com/doctrine/DoctrineModule/pull/547)
+
+# 0.10.1
+
+ * Drop compatibility with PHP 5.4 [#553](https://github.com/doctrine/DoctrineModule/pull/553)
+ * Update doctrine/common ~2.6 [#551](https://github.com/doctrine/DoctrineModule/pull/551)
 
 # 0.10.0
 

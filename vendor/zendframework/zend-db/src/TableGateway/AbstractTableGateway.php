@@ -3,7 +3,7 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
@@ -14,6 +14,7 @@ use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\ResultSet\ResultSetInterface;
 use Zend\Db\Sql\Delete;
 use Zend\Db\Sql\Insert;
+use Zend\Db\Sql\Join;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\TableIdentifier;
@@ -221,7 +222,7 @@ abstract class AbstractTableGateway implements TableGatewayInterface
                 && end($selectState['table']) != $this->table)
         ) {
             throw new Exception\RuntimeException(
-                'The table name of the provided select object must match that of the table'
+                'The table name of the provided Select object must match that of the table'
             );
         }
 
@@ -265,7 +266,7 @@ abstract class AbstractTableGateway implements TableGatewayInterface
 
     /**
      * @param Insert $insert
-     * @return mixed
+     * @return int
      */
     public function insertWith(Insert $insert)
     {
@@ -279,7 +280,7 @@ abstract class AbstractTableGateway implements TableGatewayInterface
      * @todo add $columns support
      *
      * @param Insert $insert
-     * @return mixed
+     * @return int
      * @throws Exception\RuntimeException
      */
     protected function executeInsert(Insert $insert)
@@ -315,8 +316,7 @@ abstract class AbstractTableGateway implements TableGatewayInterface
             $insert->into($insertState['table']);
         }
 
-        $return = $result->getAffectedRows();
-        return $return;
+        return $result->getAffectedRows();
     }
 
     /**
@@ -324,9 +324,10 @@ abstract class AbstractTableGateway implements TableGatewayInterface
      *
      * @param  array $set
      * @param  string|array|\Closure $where
+     * @param  null|array $joins
      * @return int
      */
-    public function update($set, $where = null)
+    public function update($set, $where = null, array $joins = null)
     {
         if (!$this->isInitialized) {
             $this->initialize();
@@ -337,12 +338,20 @@ abstract class AbstractTableGateway implements TableGatewayInterface
         if ($where !== null) {
             $update->where($where);
         }
+
+        if ($joins) {
+            foreach ($joins as $join) {
+                $type = isset($join['type']) ? $join['type'] : Join::JOIN_INNER;
+                $update->join($join['name'], $join['on'], $type);
+            }
+        }
+
         return $this->executeUpdate($update);
     }
 
     /**
      * @param \Zend\Db\Sql\Update $update
-     * @return mixed
+     * @return int
      */
     public function updateWith(Update $update)
     {
@@ -356,7 +365,7 @@ abstract class AbstractTableGateway implements TableGatewayInterface
      * @todo add $columns support
      *
      * @param Update $update
-     * @return mixed
+     * @return int
      * @throws Exception\RuntimeException
      */
     protected function executeUpdate(Update $update)
@@ -414,7 +423,7 @@ abstract class AbstractTableGateway implements TableGatewayInterface
 
     /**
      * @param Delete $delete
-     * @return mixed
+     * @return int
      */
     public function deleteWith(Delete $delete)
     {
@@ -426,7 +435,7 @@ abstract class AbstractTableGateway implements TableGatewayInterface
      * @todo add $columns support
      *
      * @param Delete $delete
-     * @return mixed
+     * @return int
      * @throws Exception\RuntimeException
      */
     protected function executeDelete(Delete $delete)
@@ -434,7 +443,7 @@ abstract class AbstractTableGateway implements TableGatewayInterface
         $deleteState = $delete->getRawState();
         if ($deleteState['table'] != $this->table) {
             throw new Exception\RuntimeException(
-                'The table name of the provided Update object must match that of the table'
+                'The table name of the provided Delete object must match that of the table'
             );
         }
 
