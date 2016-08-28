@@ -13,6 +13,7 @@ use Application\memreas\AWSMemreasAdminRedisSessionHandler;
 use Application\memreas\Mlog;
 use Application\memreas\MUUID;
 use Application\memreas\User;
+use Application\memreas\CheckGitPull;
 use Application\Model;
 use Application\Model\MemreasConstants;
 use Application\Model\UserTable;
@@ -306,7 +307,7 @@ class IndexController extends AbstractActionController {
 	}
 	public function logoutAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
-		Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ , 'IndexController -> logout->exec()...' );
+		Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, 'IndexController -> logout->exec()...' );
 		if ($this->fetchSession ()) {
 			try {
 				if (! empty ( $_SESSION ['sid'] )) {
@@ -320,7 +321,7 @@ class IndexController extends AbstractActionController {
 				error_log ( 'Caught exception: ' . $e->getMessage () . PHP_EOL );
 			}
 		}
-		Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__ , 'redirecting to index... ' );
+		Mlog::addone ( __CLASS__ . __METHOD__ . __LINE__, 'redirecting to index... ' );
 		return $this->redirect ()->toRoute ( 'index', array (
 				'action' => "index" 
 		) );
@@ -469,6 +470,13 @@ class IndexController extends AbstractActionController {
 			echo json_encode ( $data );
 			return '';
 		}
+	}
+	public function gitpullAction() {
+		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
+		$checkGitPull = new CheckGitPull ();
+		Mlog::addone ( __CLASS__ . __METHOD__, '::entered gitpull processing' );
+		echo $checkGitPull->exec ( true );
+		exit ();
 	}
 	public function showlogAction() {
 		Mlog::addone ( __CLASS__ . __METHOD__, __LINE__ );
