@@ -26,5 +26,5 @@ git push
 
 #eb events -f
 
-curl http://54.160.204.224:55154/?action=clearlog
-curl http://54.160.204.224:55154/?action=gitpull
+#curl https://memreasdev.memreas.com:9004/index/clearlog
+curl https://memreasdev.memreas.com:9004/index/gitpull
