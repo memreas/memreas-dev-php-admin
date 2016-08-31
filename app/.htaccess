@@ -27,8 +27,8 @@ php_value session.name "memreascookie"
 php_value session.gc_maxlifetime 3600
 
 ## BASIC PASSWORD PROTECTION
-AuthType basic
-AuthName "secure-content"
-AuthUserFile /var/app/current/apache_passwords
-Require valid-user
+#AuthType basic
+#AuthName "secure-content"
+#AuthUserFile /var/app/current/apache_passwords
+#Require valid-user
 
