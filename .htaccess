@@ -1,4 +1,3 @@
-<IfModule mod_php5.c>
 
 #Limits for file uploads
 php_value memory_limit 500M
@@ -41,5 +40,3 @@ php_value date.timezone "America/New_York"
  Deny from all
  Satisfy All
 </Files>
-
-</IfModule>
