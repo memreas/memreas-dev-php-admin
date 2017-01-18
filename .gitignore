@@ -10,6 +10,7 @@ nbproject
 composer.lock
 composer.phar
 php_errors.log
+local.php
 
 # Elastic Beanstalk Files
 .elasticbeanstalk
