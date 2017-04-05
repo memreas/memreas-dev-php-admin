@@ -23,4 +23,4 @@ cp module/Application/src/Application/Model/MemreasConstants.localhost.php modul
 #curl https://memreas-dev-deploy.memreas.com/prod_pull_n_aws_push.php?repo=admin
 
 #curl https://memreasprod.memreas.com:9004/index/clearlog
-curl https://memreasprod.memreas.com:9004/index/gitpull
+#curl https://memreasprod.memreas.com:9004/index/gitpull
