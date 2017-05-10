@@ -11,7 +11,7 @@ class MemreasConstants {
 	const MEMREAS_WS = "http://127.0.0.1:55152";
 	
 	// Redis constant section
-	const REDIS_SERVER_ENDPOINT = "52.15.136.98";
+	const REDIS_SERVER_ENDPOINT = "10.0.0.231";
 	const REDIS_SERVER_USE = true;
 	const REDIS_SERVER_SESSION_ONLY = true;
 	const REDIS_SERVER_PORT = "6379";
